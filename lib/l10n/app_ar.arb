@@ -1,0 +1,62 @@
+{
+  "@@locale": "ar",
+  "appTitle": "HealthyLife AI",
+  "commonRetry": "إعادة المحاولة",
+  "commonCancel": "إلغاء",
+  "commonConfirm": "تأكيد",
+  "commonSave": "حفظ",
+  "commonDone": "تم",
+  "commonClose": "إغلاق",
+  "commonBack": "رجوع",
+  "commonNext": "التالي",
+  "commonLoading": "جارٍ التحميل…",
+  "commonEmptyTitle": "لا توجد بيانات لعرضها بعد",
+  "commonEmptyBody": "ستظهر المعلومات هنا فور توفرها.",
+  "commonErrorTitle": "حدث خطأ ما",
+  "commonErrorBody": "تعذّر تحميل البيانات. حاول مرة أخرى.",
+  "commonOfflineTitle": "لا يوجد اتصال بالإنترنت",
+  "commonOfflineBody": "تحقق من اتصالك بالشبكة ثم أعد المحاولة.",
+  "commonSuccess": "تم بنجاح",
+  "failureNetwork": "تعذّر الاتصال بالخادم. تحقّق من شبكة الإنترنت وحاول مجدداً.",
+  "failureTimeout": "استغرق الاتصال وقتاً طويلاً. حاول مرة أخرى.",
+  "failureServer": "خدمة غير متاحة حالياً. حاول لاحقاً.",
+  "failureUnauthorized": "انتهت صلاحية الجلسة. سجّل الدخول مجدداً.",
+  "failureNotFound": "العنصر المطلوب غير موجود.",
+  "failureValidation": "تحقق من البيانات المدخلة وأعد المحاولة.",
+  "failureCache": "تعذّر قراءة البيانات المحفوظة محلياً.",
+  "failureUnexpected": "حدث خطأ غير متوقع. حاول مرة أخرى.",
+  "validationRequired": "هذا الحقل مطلوب",
+  "validationInvalidEmail": "أدخل بريداً إلكترونياً صحيحاً",
+  "validationTooShort": "يجب ألا يقل عن {min} أحرف",
+  "@validationTooShort": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      }
+    }
+  },
+  "validationTooLong": "يجب ألا يتجاوز {max} حرفاً",
+  "@validationTooLong": {
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "validationMissingUppercase": "أضف حرفاً كبيراً واحداً على الأقل",
+  "validationMissingDigit": "أضف رقماً واحداً على الأقل",
+  "validationMissingSpecial": "أضف رمزاً خاصاً واحداً على الأقل",
+  "validationMismatch": "القيمتان غير متطابقتين",
+  "validationInvalidNumber": "أرقاماً صحيحة فقط",
+  "validationOutOfRange": "القيمة يجب أن تكون بين {min} و {max}",
+  "@validationOutOfRange": {
+    "placeholders": {
+      "min": {
+        "type": "num"
+      },
+      "max": {
+        "type": "num"
+      }
+    }
+  }
+}

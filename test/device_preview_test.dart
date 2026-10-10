@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:healthylife_ai/main.dart';
-import 'package:healthylife_ai/screens/onboarding_measurements_screen.dart';
+import 'package:healthylife_ai/presentation/screens/onboarding_measurements_screen.dart';
 
 /// Deliberately trivial home: SplashScreen's self-rescheduling status timer and
 /// never-ending particle animation make any widget test of the real root

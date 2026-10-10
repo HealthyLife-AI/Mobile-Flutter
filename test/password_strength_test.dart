@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:healthylife_ai/widgets/password_strength_meter.dart';
+import 'package:healthylife_ai/presentation/widgets/password_strength_meter.dart';
 
 void main() {
   group('evaluatePasswordStrength', () {

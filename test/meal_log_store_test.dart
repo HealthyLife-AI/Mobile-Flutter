@@ -1,5 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:healthylife_ai/models/meal_models.dart';
+import 'package:healthylife_ai/data/mock/meal_mock_data.dart';
+import 'package:healthylife_ai/data/repositories/meal_log_store.dart';
+import 'package:healthylife_ai/domain/entities/meal_entities.dart';
 
 void main() {
   test('records planned and off-plan meals without duplicating a plan entry', () {

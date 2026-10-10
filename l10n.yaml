@@ -1,0 +1,9 @@
+# Flutter gen-l10n configuration.
+# Arabic is the template/source language (the product's primary locale);
+# English translations live in app_en.arb.
+arb-dir: lib/l10n
+template-arb-file: app_ar.arb
+output-dir: lib/l10n/generated
+output-class: AppLocalizations
+nullable-getter: false
+untranslated-messages-file: lib/l10n/untranslated_messages.txt

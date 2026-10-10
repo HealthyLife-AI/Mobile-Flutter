@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
-import '../../widgets/confirm_action_sheet.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../presentation/bloc/auth/auth_cubit.dart';
+import '../../presentation/widgets/confirm_action_sheet.dart';
 import 'app_page_route.dart';
-import '../../screens/onboarding_screen.dart';
+import '../../presentation/screens/onboarding_screen.dart';
 
-/// Confirms with the person, then tears down the navigation stack back to
+/// Confirms with the person, clears the persisted session through
+/// [AuthCubit.logout], then tears down the navigation stack back to
 /// the marketing onboarding carousel — the app's one "logged out" landing
 /// state, since activation here is invite-based rather than a traditional
 /// login screen. Every logout affordance in the app (Profile, the
@@ -17,7 +20,8 @@ Future<void> performLogoutFlow(BuildContext context) async {
     message: 'سيتم إنهاء الجلسة بأمان من هذا الجهاز بعد التأكد من مزامنة قياساتك وسجلاتك الأخيرة.',
     confirmLabel: 'تسجيل الخروج',
   );
-  if (confirmed == true && context.mounted) {
-    Navigator.of(context).pushAndRemoveUntil(AppPageRoute(builder: (_) => const OnboardingScreen()), (route) => false);
-  }
+  if (confirmed != true || !context.mounted) return;
+  await context.read<AuthCubit>().logout();
+  if (!context.mounted) return;
+  Navigator.of(context).pushAndRemoveUntil(AppPageRoute(builder: (_) => const OnboardingScreen()), (route) => false);
 }

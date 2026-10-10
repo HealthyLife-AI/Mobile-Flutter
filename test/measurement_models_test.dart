@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:healthylife_ai/models/measurement_models.dart';
+import 'package:healthylife_ai/data/mock/measurement_mock_data.dart';
 
 void main() {
   test('weight trend is chronologically ordered', () {

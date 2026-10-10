@@ -13,15 +13,31 @@ dependencies:
     sdk: flutter
   cupertino_icons: ^1.0.6
   device_preview: ^1.3.1
+  # State management (Cubits/Blocs) — see lib/presentation/bloc.
   flutter_bloc: ^9.1.1
+  # HTTP transport for ApiClient (lib/core/network). The app currently runs
+  # on mock data sources; this is the ready-to-wire real transport.
   http: ^1.2.2
+  # Local storage (session, settings, cached entries) behind the
+  # StorageService abstraction in lib/core/storage.
+  shared_preferences: ^2.3.0
+  # Date/number formatting used by flutter gen-l10n and formatters.
+  intl: any
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^3.0.0
+  # Bloc/Cubit unit testing.
+  bloc_test: ^10.0.0
+  # Test doubles for repositories/data sources.
+  mocktail: ^1.0.4
+  # Critical user-journey tests (requires a connected device or emulator).
+  integration_test:
+    sdk: flutter
 
 flutter:
   uses-material-design: true
+  generate: true
   assets:
     - assets/images/
