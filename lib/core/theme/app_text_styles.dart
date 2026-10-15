@@ -3,10 +3,16 @@ import 'app_colors.dart';
 
 /// Section 2.2 — Typography tokens. Rounded sans-serif family,
 /// weights/sizes fixed centrally so no screen hardcodes a TextStyle.
+///
+/// Font: Tajawal (SIL OFL) is bundled from `assets/fonts/` and declared under
+/// `flutter: fonts:` in pubspec.yaml at weights 400, 500, 700 and 800. Tajawal
+/// has no 600 face, so the w600 styles use the Bold face (700), the next weight up.
 class AppTextStyles {
   AppTextStyles._();
 
-  static const String fontFamily = 'Tajawal'; // rounded AR/EN-friendly fallback
+  /// Family used by every token and by the theme. Bundled, see the note above.
+  static const String fontFamily =
+      'Tajawal'; // rounded, covers Arabic and Latin
 
   static const TextStyle h1 = TextStyle(
     fontFamily: fontFamily,

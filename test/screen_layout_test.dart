@@ -1,31 +1,42 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:healthylife_ai/app_shell.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:healthylife_ai/core/di/app_dependencies.dart';
+import 'package:healthylife_ai/main.dart';
+import 'package:healthylife_ai/presentation/app_shell.dart';
 import 'package:healthylife_ai/core/theme/app_colors.dart';
 import 'package:healthylife_ai/core/theme/app_radius.dart';
-import 'package:healthylife_ai/core/theme/app_text_styles.dart';
-import 'package:healthylife_ai/models/meal_models.dart';
-import 'package:healthylife_ai/screens/about_app_screen.dart';
-import 'package:healthylife_ai/screens/daily_log_screen.dart';
-import 'package:healthylife_ai/screens/health_data_consent_screen.dart';
-import 'package:healthylife_ai/screens/language_settings_screen.dart';
-import 'package:healthylife_ai/screens/meal_detail_screen.dart';
-import 'package:healthylife_ai/screens/meal_log_success_screen.dart';
-import 'package:healthylife_ai/screens/notification_settings_screen.dart';
-import 'package:healthylife_ai/screens/onboarding_screen.dart';
-import 'package:healthylife_ai/screens/onboarding_health_screen.dart';
-import 'package:healthylife_ai/screens/onboarding_notifications_screen.dart';
-import 'package:healthylife_ai/screens/onboarding_measurements_screen.dart';
-import 'package:healthylife_ai/screens/password_settings_screen.dart';
-import 'package:healthylife_ai/screens/plan_preparing_screen.dart';
-import 'package:healthylife_ai/screens/profile_screen.dart';
-import 'package:healthylife_ai/screens/quantity_selector_screen.dart';
-import 'package:healthylife_ai/screens/specialist_profile_screen.dart';
-import 'package:healthylife_ai/screens/splash_screen.dart';
+import 'package:healthylife_ai/core/theme/app_theme.dart';
+import 'package:healthylife_ai/presentation/screens/weekly_plan_screen.dart';
+import 'package:healthylife_ai/presentation/bloc/meal_log/meal_log_cubit.dart';
+import 'package:healthylife_ai/domain/entities/meal_entities.dart';
+import 'package:healthylife_ai/domain/entities/measurement_entities.dart';
+import 'package:healthylife_ai/presentation/screens/first_measurement_screen.dart';
+import 'package:healthylife_ai/presentation/screens/about_app_screen.dart';
+import 'package:healthylife_ai/presentation/screens/daily_log_screen.dart';
+import 'package:healthylife_ai/presentation/screens/health_data_consent_screen.dart';
+import 'package:healthylife_ai/presentation/screens/language_settings_screen.dart';
+import 'package:healthylife_ai/presentation/screens/login_screen.dart';
+import 'package:healthylife_ai/presentation/screens/meal_detail_screen.dart';
+import 'package:healthylife_ai/presentation/screens/meal_log_success_screen.dart';
+import 'package:healthylife_ai/presentation/screens/notification_settings_screen.dart';
+import 'package:healthylife_ai/presentation/screens/onboarding_screen.dart';
+import 'package:healthylife_ai/presentation/screens/onboarding_health_screen.dart';
+import 'package:healthylife_ai/presentation/screens/onboarding_notifications_screen.dart';
+import 'package:healthylife_ai/presentation/screens/onboarding_measurements_screen.dart';
+import 'package:healthylife_ai/presentation/screens/password_settings_screen.dart';
+import 'package:healthylife_ai/presentation/screens/plan_preparing_screen.dart';
+import 'package:healthylife_ai/presentation/screens/profile_screen.dart';
+import 'package:healthylife_ai/presentation/screens/quantity_selector_screen.dart';
+import 'package:healthylife_ai/presentation/screens/specialist_profile_screen.dart';
+import 'package:healthylife_ai/presentation/screens/splash_screen.dart';
+
+import 'helpers/app_font.dart';
+import 'helpers/app_providers.dart';
+import 'helpers/localized_app.dart';
+import 'helpers/sample_meal_plan.dart';
 
 /// Guards the Soft Light refactor against the three regressions it introduced:
 ///
@@ -33,38 +44,12 @@ import 'package:healthylife_ai/screens/splash_screen.dart';
 ///  2. a CTA that drifts inside the scrollable or off-screen, and
 ///  3. an Arabic string that is no longer flush against the start (right) edge.
 ///
-/// Font note: `pubspec.yaml` bundles no Arabic font, so `AppTextStyles
-/// .fontFamily` ("Tajawal") resolves to the platform font at runtime. Widget
-/// tests would otherwise fall back to the Ahem test font, where every glyph is
-/// a full em wide — that inflates every string by roughly 2x and buries the
-/// test in false positives. We load Segoe UI (full Arabic coverage, realistic
-/// advance widths) under the family name the app actually asks for so the
+/// Screens mount under the app's real localizations in Arabic, so RTL comes
+/// from the locale exactly as in the running app — no forced Directionality.
+///
+/// Font note: the app's own font is loaded (see [loadAppFont]), so the
 /// layout maths matches the device.
 late bool _realFontLoaded;
-
-Future<bool> _loadSegoeAsTajawal() async {
-  try {
-    final regular = File(r'C:\Windows\Fonts\segoeui.ttf');
-    if (!regular.existsSync()) return false;
-    final loader = FontLoader(AppTextStyles.fontFamily);
-    for (final path in [
-      r'C:\Windows\Fonts\segoeui.ttf',
-      r'C:\Windows\Fonts\segoeuib.ttf'
-    ]) {
-      final file = File(path);
-      if (!file.existsSync()) continue;
-      loader.addFont(
-        file
-            .readAsBytes()
-            .then((bytes) => ByteData.view(Uint8List.fromList(bytes).buffer)),
-      );
-    }
-    await loader.load();
-    return true;
-  } catch (_) {
-    return false;
-  }
-}
 
 /// The narrowest phone still supported, and a tablet-ish width to prove the
 /// layouts stretch instead of clipping.
@@ -77,8 +62,8 @@ const Size _tablet = Size(834, 1112);
 /// An uncaught overflow is a test failure, but several overflow warnings are
 /// emitted through the reporter rather than thrown, so they are collected
 /// explicitly instead of relying on the default behaviour.
-Future<List<String>> _layoutErrors(
-    WidgetTester tester, Widget child, Size size) async {
+Future<List<String>> _layoutErrors(WidgetTester tester, Widget child, Size size,
+    {double textScale = 1.0}) async {
   tester.view.devicePixelRatio = 1.0;
   tester.view.physicalSize = size;
   addTearDown(tester.view.reset);
@@ -91,22 +76,12 @@ Future<List<String>> _layoutErrors(
   };
   try {
     await tester.pumpWidget(
-      Directionality(
-        textDirection: TextDirection.rtl,
-        child: MediaQuery(
-          data: MediaQueryData(
-              size: size, textScaler: const TextScaler.linear(1.0)),
-          child: MaterialApp(
-            debugShowCheckedModeBanner: false,
-            theme: ThemeData(
-                useMaterial3: true, colorSchemeSeed: AppColors.primary),
-            builder: (context, appChild) => Directionality(
-              textDirection: TextDirection.rtl,
-              child: appChild ?? const SizedBox.shrink(),
-            ),
-            home: child,
-          ),
-        ),
+      MediaQuery(
+        data: MediaQueryData(
+            size: size, textScaler: TextScaler.linear(textScale)),
+        // The app's own theme, so text that inherits its family measures in
+        // the font loaded above, as on the device.
+        child: appProviders(child, theme: AppTheme.light),
       ),
     );
     // Let entrance animations settle so lazily-built content is measured too.
@@ -137,7 +112,7 @@ void expectNoLayoutErrors(String label, List<String> errors) {
 void main() {
   setUpAll(() async {
     TestWidgetsFlutterBinding.ensureInitialized();
-    _realFontLoaded = await _loadSegoeAsTajawal();
+    _realFontLoaded = await loadAppFont();
     expect(_realFontLoaded, isTrue,
         reason: 'Segoe UI is required for realistic Arabic metrics');
   });
@@ -148,14 +123,7 @@ void main() {
     tester.view.physicalSize = const Size(390, 844);
     addTearDown(tester.view.reset);
 
-    await tester.pumpWidget(
-      MaterialApp(
-        builder: (context, child) => Directionality(
-            textDirection: TextDirection.rtl,
-            child: child ?? const SizedBox.shrink()),
-        home: const AppShell(),
-      ),
-    );
+    await tester.pumpWidget(appProviders(const AppShell()));
     await tester.tap(find.byIcon(Icons.event_note_rounded));
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 400));
@@ -164,8 +132,42 @@ void main() {
     await tester.tap(find.byTooltip('استعراض الخطة الأسبوعية'));
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 400));
-    expect(find.text('استعراض الخطة الأسبوعية'), findsOneWidget);
-    expect(find.text('الأسبوع الثالث'), findsOneWidget);
+    // The weekly plan's title (the daily log beneath has a button with the
+    // same words).
+    expect(
+        find.descendant(
+            of: find.byType(WeeklyPlanScreen),
+            matching: find.text('استعراض الخطة الأسبوعية')),
+        findsOneWidget);
+    // The nutritionist's plan, not demo content: its week (started two weeks
+    // ago) and a food that only the plan contains.
+    expect(find.text('الأسبوع ٣ من الخطة'), findsOneWidget);
+    // Today's total from the plan's summary_by_day (993 kcal).
+    expect(find.text('٩٩٣'), findsOneWidget);
+    await tester.scrollUntilVisible(find.text('صدر دجاج مشوي'), 300,
+        scrollable: find
+            .descendant(
+                of: find.byType(WeeklyPlanScreen),
+                matching: find.byType(Scrollable))
+            .first);
+    expect(find.text('صدر دجاج مشوي'), findsWidgets);
+  });
+
+  testWidgets('the button under "log a new meal" opens the weekly plan',
+      (tester) async {
+    await tester.pumpWidget(appProviders(const DailyLogScreen()));
+    await tester.pump(const Duration(seconds: 2));
+
+    final button = find.descendant(
+        of: find.byType(DailyLogScreen),
+        matching: find.text('استعراض الخطة الأسبوعية'));
+    await tester.scrollUntilVisible(button, 200,
+        scrollable: find.byType(Scrollable).first);
+    await tester.tap(button);
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 600));
+
+    expect(find.byType(WeeklyPlanScreen), findsOneWidget);
   });
 
   testWidgets('splash shows the full logo and advances after three seconds',
@@ -174,18 +176,20 @@ void main() {
     tester.view.physicalSize = const Size(390, 844);
     addTearDown(tester.view.reset);
 
-    await tester.pumpWidget(const MaterialApp(home: SplashScreen()));
+    // Real app root: at the 3 s mark the splash reads the session through
+    // the app-scoped AuthCubit (none is stored here, so sign-in opens).
+    await tester.pumpWidget(const HealthyLifeApp(home: SplashScreen()));
     await tester.pump(const Duration(milliseconds: 2900));
 
     expect(
         find.image(const AssetImage('assets/images/logo.png')), findsOneWidget);
     expect(find.byType(ScaleTransition), findsAtLeastNWidgets(2));
     expect(find.byType(SplashScreen), findsOneWidget);
-    expect(find.byType(OnboardingScreen), findsNothing);
+    expect(find.byType(LoginScreen), findsNothing);
 
     await tester.pump(const Duration(milliseconds: 100));
     await tester.pump(const Duration(milliseconds: 500));
-    expect(find.byType(OnboardingScreen), findsOneWidget);
+    expect(find.byType(LoginScreen), findsOneWidget);
   });
 
   testWidgets('notification completion opens plan preparation', (tester) async {
@@ -193,13 +197,10 @@ void main() {
     tester.view.physicalSize = const Size(390, 844);
     addTearDown(tester.view.reset);
 
+    // Real app root: finishing the wizard writes the session through the
+    // app-scoped AuthCubit — this used to throw ProviderNotFoundException.
     await tester.pumpWidget(
-      MaterialApp(
-        builder: (context, child) => Directionality(
-            textDirection: TextDirection.rtl,
-            child: child ?? const SizedBox.shrink()),
-        home: const OnboardingNotificationsScreen(),
-      ),
+      const HealthyLifeApp(home: OnboardingNotificationsScreen()),
     );
     // The CTA slides in on a 2s entrance; wait for it before tapping.
     await tester.pump(const Duration(milliseconds: 100));
@@ -224,7 +225,8 @@ void main() {
     ]) {
       final heading = find.text(label);
       await tester.scrollUntilVisible(heading, 180, scrollable: scrollable);
-      expect(tester.widget<Text>(heading.first).textAlign, TextAlign.right,
+      expectTextHugsStartEdge(tester, heading,
+          direction: TextDirection.rtl,
           reason: '$label should be right-aligned');
     }
   });
@@ -238,7 +240,8 @@ void main() {
     for (final name in ['متفورمين (Metformin) 500mg', 'فيتامين د 5000IU']) {
       final medication = find.text(name);
       await tester.scrollUntilVisible(medication, 180, scrollable: scrollable);
-      expect(tester.widget<Text>(medication.first).textAlign, TextAlign.right,
+      expectTextHugsStartEdge(tester, medication,
+          direction: TextDirection.rtl,
           reason: '$name should be right-aligned');
     }
   });
@@ -312,8 +315,14 @@ void main() {
       (tester) async {
     const food = SearchableFood(
         name: 'زبادي مضاف', caloriesPer100g: 59, macro: 'protein');
+    final deps = AppDependencies.inMemory();
     final errors = await _layoutErrors(
-        tester, const QuantitySelectorScreen(food: food), _tablet);
+        tester,
+        BlocProvider(
+          create: (_) => MealLogCubit(deps.mealLog, deps.logMeal),
+          child: const QuantitySelectorScreen(food: food),
+        ),
+        _tablet);
     expectNoLayoutErrors('quantity selector', errors);
 
     await tester.scrollUntilVisible(
@@ -327,15 +336,18 @@ void main() {
 
     expect(find.byType(MealLogSuccessScreen), findsOneWidget);
     expect(find.text(food.name), findsWidgets);
-    expect(MealLogStore.instance.entries.last.name, food.name);
-    expect(MealLogStore.instance.entries.last.isOffPlan, isTrue);
-    expect(MealLogStore.instance.entries.last.grams, 150);
+    final entries = (await deps.mealLog.getEntries()).valueOrNull!;
+    expect(entries.last.name, food.name);
+    expect(entries.last.isOffPlan, isTrue);
+    expect(entries.last.grams, 150);
   });
 
   group('overflow-free at every supported size', () {
     final screens = <String, Widget Function()>{
       'marketing onboarding': () => const OnboardingScreen(),
-      'splash': () => const SplashScreen(),
+      // "splash" is not here: its 3 s status timer and repeating ambient
+      // animation make it unfit for the generic pump harness. It has a
+      // dedicated test above.
       'daily log': () => const DailyLogScreen(),
       'initial measurements': () => const OnboardingMeasurementsScreen(),
       'onboarding notifications': () => const OnboardingNotificationsScreen(),
@@ -346,6 +358,13 @@ void main() {
       'language settings': () => const LanguageSettingsScreen(),
       'specialist profile': () => const SpecialistProfileScreen(),
       'app shell': () => const AppShell(),
+      'weekly plan': () => const WeeklyPlanScreen(),
+      'measurement prompt, first': () => const FirstMeasurementScreen(
+          showBack: false, showExitAction: false, replaceEntryRoute: false),
+      'measurement prompt, second': () =>
+          FirstMeasurementScreen(snapshot: _readings(1), onViewProgress: () {}),
+      'measurement prompt, weekly': () =>
+          FirstMeasurementScreen(snapshot: _readings(3), onViewProgress: () {}),
     };
 
     screens.forEach((name, builder) {
@@ -354,6 +373,24 @@ void main() {
             (tester) async {
           final errors = await _layoutErrors(tester, builder(), size);
           expectNoLayoutErrors('$name @ $size', errors);
+        });
+      }
+    });
+
+    // A larger system font, as many phones are set: the day strip and the
+    // daily log must still fit.
+    final largeFont = <String, Widget Function()>{
+      'weekly plan': () => const WeeklyPlanScreen(),
+      'daily log': () => const DailyLogScreen(),
+      'app shell': () => const AppShell(),
+    };
+    largeFont.forEach((name, builder) {
+      for (final scale in const [1.15, 1.3]) {
+        testWidgets('$name @ 360x780, font x$scale', (tester) async {
+          final errors = await _layoutErrors(
+              tester, builder(), const Size(360, 780),
+              textScale: scale);
+          expectNoLayoutErrors('$name @ font x$scale', errors);
         });
       }
     });
@@ -449,5 +486,29 @@ void main() {
   });
 }
 
-/// The lunch entry `MockData.lunchDetailGroups` is authored against.
-final Meal _lunch = MockData.todayMeals.firstWhere((m) => m.id == 'lunch');
+/// Lunch from the sample plan: three items, two of them with an alternative.
+final Meal _lunch = sampleLunch();
+
+/// Readings for the measurement prompt: [count] weekly readings, the latest
+/// on a long date (a Wednesday in September) to stress the date row.
+MeasurementSnapshot _readings(int count) {
+  final readings = [
+    for (var i = 0; i < count; i++)
+      MeasurementEntry(
+          id: '$i',
+          recordedAt: DateTime(2026, 9, 30 - 7 * (count - 1 - i)),
+          weightKg: 104.5 - i),
+  ];
+  return MeasurementSnapshot(
+    currentWeight: readings.last.weightKg,
+    previousWeight: null,
+    weightTrend: [
+      for (final r in readings)
+        WeightPoint(date: r.recordedAt, kg: r.weightKg!),
+    ],
+    circumference: const [],
+    daysLoggedThisWeek: 0,
+    daysLoggedThisMonth: 0,
+    savedEntries: readings,
+  );
+}

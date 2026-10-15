@@ -21,7 +21,8 @@ class AppPageRoute<T> extends PageRouteBuilder<T> {
   final WidgetBuilder builder;
 
   static ScreenEntranceVariant _nextVariant() {
-    final variant = ScreenEntranceVariant.values[_variantCounter % ScreenEntranceVariant.values.length];
+    final variant = ScreenEntranceVariant
+        .values[_variantCounter % ScreenEntranceVariant.values.length];
     _variantCounter += 1;
     return variant;
   }
@@ -35,12 +36,14 @@ class AppPageRoute<T> extends PageRouteBuilder<T> {
   }) : super(
           transitionDuration: const Duration(milliseconds: 520),
           reverseTransitionDuration: const Duration(milliseconds: 360),
-          pageBuilder: (context, animation, secondaryAnimation) => AnimatedScreen(
+          pageBuilder: (context, animation, secondaryAnimation) =>
+              AnimatedScreen(
             animation: animation,
             variant: incomingVariant ?? _nextVariant(),
             child: builder(context),
           ),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) => child,
+          transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+              child,
         );
 }
 
@@ -64,7 +67,8 @@ class AnimatedScreen extends StatelessWidget {
       reverseCurve: Curves.easeInCubic,
     );
 
-    final (Offset beginOffset, double beginScale, double beginRotate) = switch (variant) {
+    final (Offset beginOffset, double beginScale, double beginRotate) =
+        switch (variant) {
       ScreenEntranceVariant.softLift => (
           const Offset(0, 0.08),
           0.96,
@@ -85,11 +89,16 @@ class AnimatedScreen extends StatelessWidget {
     return FadeTransition(
       opacity: curved,
       child: SlideTransition(
-        position: Tween<Offset>(begin: beginOffset, end: Offset.zero).animate(curved),
+        position:
+            Tween<Offset>(begin: beginOffset, end: Offset.zero).animate(curved),
         child: Transform.scale(
-          scale: Tween<double>(begin: beginScale, end: 1).chain(CurveTween(curve: Curves.easeOutCubic)).evaluate(animation),
+          scale: Tween<double>(begin: beginScale, end: 1)
+              .chain(CurveTween(curve: Curves.easeOutCubic))
+              .evaluate(animation),
           child: Transform.rotate(
-            angle: Tween<double>(begin: beginRotate, end: 0).chain(CurveTween(curve: Curves.easeOutCubic)).evaluate(animation),
+            angle: Tween<double>(begin: beginRotate, end: 0)
+                .chain(CurveTween(curve: Curves.easeOutCubic))
+                .evaluate(animation),
             child: child,
           ),
         ),

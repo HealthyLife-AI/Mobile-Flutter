@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:healthylife_ai/screens/food_search_screen.dart';
-import 'package:healthylife_ai/screens/home_dashboard_screen.dart';
-import 'package:healthylife_ai/screens/meal_log_success_screen.dart';
-import 'package:healthylife_ai/screens/new_measurement_screen.dart';
-import 'package:healthylife_ai/screens/notifications_center_screen.dart';
-import 'package:healthylife_ai/screens/plan_preparing_screen.dart';
-import 'package:healthylife_ai/screens/progress_screen.dart';
+import 'package:healthylife_ai/presentation/screens/food_search_screen.dart';
+import 'package:healthylife_ai/presentation/screens/home_dashboard_screen.dart';
+import 'package:healthylife_ai/presentation/screens/meal_log_success_screen.dart';
+import 'package:healthylife_ai/presentation/screens/new_measurement_screen.dart';
+import 'package:healthylife_ai/presentation/screens/notifications_center_screen.dart';
+import 'package:healthylife_ai/presentation/screens/plan_preparing_screen.dart';
+import 'package:healthylife_ai/presentation/screens/progress_screen.dart';
+import 'helpers/app_providers.dart';
 
 /// Guards against `late final AnimationController` fields that are constructed
 /// from `dispose()`: the constructor looks up the TickerMode ancestor of an
@@ -26,7 +27,7 @@ void main() {
 
   for (final entry in screens.entries) {
     testWidgets('${entry.key} screen disposes cleanly', (tester) async {
-      await tester.pumpWidget(MaterialApp(home: entry.value()));
+      await tester.pumpWidget(appProviders(entry.value()));
       await tester.pump(const Duration(milliseconds: 100));
       await tester.pump(const Duration(seconds: 1));
 
