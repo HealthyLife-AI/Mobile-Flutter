@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import '../../core/theme/app_colors.dart';
 
+import '../../l10n/l10n.dart';
+
 /// Barcode Scanner — animated scan frame, a repeating light sweep,
 /// haptic/sound confirmation on a successful read (simulated here).
 class BarcodeScannerScreen extends StatefulWidget {
@@ -10,8 +12,11 @@ class BarcodeScannerScreen extends StatefulWidget {
   State<BarcodeScannerScreen> createState() => _BarcodeScannerScreenState();
 }
 
-class _BarcodeScannerScreenState extends State<BarcodeScannerScreen> with SingleTickerProviderStateMixin {
-  late final AnimationController _c = AnimationController(vsync: this, duration: const Duration(milliseconds: 1600))..repeat(reverse: true);
+class _BarcodeScannerScreenState extends State<BarcodeScannerScreen>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _c = AnimationController(
+      vsync: this, duration: const Duration(milliseconds: 1600))
+    ..repeat(reverse: true);
   bool _found = false;
 
   @override
@@ -37,9 +42,13 @@ class _BarcodeScannerScreenState extends State<BarcodeScannerScreen> with Single
             Padding(
               padding: const EdgeInsets.all(16),
               child: Row(children: [
-                IconButton(onPressed: () => Navigator.of(context).pop(), icon: const Icon(Icons.close_rounded, color: Colors.white)),
+                IconButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    icon: const Icon(Icons.close_rounded, color: Colors.white)),
                 const Spacer(),
-                const Text('امسح باركود المنتج', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600)),
+                Text(context.l10n.barcodeTitle,
+                    style: const TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.w600)),
               ]),
             ),
             Expanded(
@@ -53,7 +62,10 @@ class _BarcodeScannerScreenState extends State<BarcodeScannerScreen> with Single
                         width: 260,
                         height: 180,
                         decoration: BoxDecoration(
-                          border: Border.all(color: _found ? AppColors.accentGreen : Colors.white, width: 3),
+                          border: Border.all(
+                              color:
+                                  _found ? AppColors.accentGreen : Colors.white,
+                              width: 3),
                           borderRadius: BorderRadius.circular(20),
                         ),
                       ),
@@ -62,10 +74,16 @@ class _BarcodeScannerScreenState extends State<BarcodeScannerScreen> with Single
                           animation: _c,
                           builder: (context, _) => Positioned(
                             top: 10 + _c.value * 160,
-                            child: Container(width: 240, height: 2, color: AppColors.primary.withValues(alpha: 0.9)),
+                            child: Container(
+                                width: 240,
+                                height: 2,
+                                color:
+                                    AppColors.primary.withValues(alpha: 0.9)),
                           ),
                         ),
-                      if (_found) const Icon(Icons.check_circle_rounded, color: AppColors.accentGreen, size: 48),
+                      if (_found)
+                        const Icon(Icons.check_circle_rounded,
+                            color: AppColors.accentGreen, size: 48),
                     ],
                   ),
                 ),
@@ -74,7 +92,7 @@ class _BarcodeScannerScreenState extends State<BarcodeScannerScreen> with Single
             Padding(
               padding: const EdgeInsets.all(24),
               child: Text(
-                _found ? 'تم العثور على المنتج ✓' : 'وجّهي الكاميرا نحو الباركود — اضغطي للمحاكاة',
+                _found ? context.l10n.barcodeFound : context.l10n.barcodeHint,
                 textAlign: TextAlign.center,
                 style: const TextStyle(color: Colors.white70, fontSize: 13),
               ),

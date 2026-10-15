@@ -1,14 +1,19 @@
 /// Domain entities for meals, foods and log entries.
 ///
-/// Mirrors the shapes of the planned `/me/meal-plan` and `/foods/search`
-/// API responses (see the "Mobile API Reference" doc, section 3.1). Pure
-/// Dart â€” no Flutter imports, no mock data.
+/// [Meal] is what the screens show for one meal of the day. Built from the
+/// active plan (`meal_plan_entities.dart`), it keeps its [Meal.source] so a log
+/// can name the plan items that were eaten (API guide 6.1). Pure Dart — no
+/// Flutter imports, no mock data.
+library;
+
+import 'meal_plan_entities.dart';
 
 class MealItem {
   final String name;
   final int grams;
   final bool checked;
-  const MealItem({required this.name, required this.grams, this.checked = false});
+  const MealItem(
+      {required this.name, required this.grams, this.checked = false});
 }
 
 class Meal {
@@ -21,6 +26,10 @@ class Meal {
   final MealStatus status;
   final String iconEmojiSlot;
 
+  /// The plan meal this was built from, or null for a meal that is not from
+  /// the server's plan (for example one restored from an older log).
+  final PlanMeal? source;
+
   const Meal({
     required this.id,
     required this.name,
@@ -30,6 +39,7 @@ class Meal {
     required this.alternativesText,
     required this.status,
     required this.iconEmojiSlot,
+    this.source,
   });
 }
 
@@ -64,6 +74,14 @@ class FoodOption {
   final bool selected;
   final bool locked;
 
+  /// The dominant macro code (`protein`, `carbs`, `fat`, `default`) for the
+  /// option's icon, independent of the display language. Empty when unknown.
+  final String macro;
+
+  /// The plan item (or alternative) this option stands for; logged when the
+  /// patient picks it (API guide 6.1). Null for an option not from the plan.
+  final PlanItem? planItem;
+
   const FoodOption({
     required this.name,
     required this.grams,
@@ -72,6 +90,8 @@ class FoodOption {
     this.isOriginal = false,
     this.selected = false,
     this.locked = false,
+    this.macro = '',
+    this.planItem,
   });
 }
 
@@ -89,6 +109,23 @@ class SearchableFood {
   // dairy | cookedProtein | carb | nuts — a category system, NOT the
   // literal food name, and deliberately separate from mealType colors.
   final String category;
-  const SearchableFood({required this.name, required this.caloriesPer100g, required this.macro, this.category = 'default'});
-}
 
+  /// The food's id on the server (API guide 5.2). A log needs one, so a food
+  /// the app makes up (a manual estimate) has none.
+  final int? id;
+
+  /// The allergen groups the server tags the food with (guide 5.2).
+  final List<String> allergens;
+
+  /// Fibre per 100 g (guide 5.2). Null when the server sends none.
+  final double? fiberGPer100g;
+
+  const SearchableFood(
+      {required this.name,
+      required this.caloriesPer100g,
+      required this.macro,
+      this.category = 'default',
+      this.id,
+      this.allergens = const [],
+      this.fiberGPer100g});
+}

@@ -18,8 +18,12 @@ class MockData {
       iconEmojiSlot: 'sun',
       alternativesText: 'زبادي يوناني قليل الدسم (150غ) مع كوب توت أزرق',
       items: [
-        MealItem(name: 'شوفان عضوي بحبوب الشيا (60 غ)', grams: 60, checked: true),
-        MealItem(name: 'حليب لوز غير محلى أو قليل الدسم (200 مل)', grams: 200, checked: true),
+        MealItem(
+            name: 'شوفان عضوي بحبوب الشيا (60 غ)', grams: 60, checked: true),
+        MealItem(
+            name: 'حليب لوز غير محلى أو قليل الدسم (200 مل)',
+            grams: 200,
+            checked: true),
       ],
     ),
     Meal(
@@ -31,7 +35,8 @@ class MockData {
       iconEmojiSlot: 'leaf',
       alternativesText: 'كمثرى متوسطة الحجم (140غ) مع 3 حبات جوز عين الجمل',
       items: [
-        MealItem(name: 'تفاح أخضر شرائح طازجة (150 غ)', grams: 150, checked: true),
+        MealItem(
+            name: 'تفاح أخضر شرائح طازجة (150 غ)', grams: 150, checked: true),
         MealItem(name: 'لوز نيء غير مملح (15 غ)', grams: 15, checked: true),
       ],
     ),
@@ -42,7 +47,8 @@ class MockData {
       calories: 540,
       status: MealStatus.current,
       iconEmojiSlot: 'sun_orange',
-      alternativesText: 'شريحة سلمون مشوي (140غ) بدلاً من الدجاج، أو بطاطا حلوة مشوية (150غ)',
+      alternativesText:
+          'شريحة سلمون مشوي (140غ) بدلاً من الدجاج، أو بطاطا حلوة مشوية (150غ)',
       items: [
         MealItem(name: 'صدر دجاج مشوي متبل بالأعشاب', grams: 150),
         MealItem(name: 'أرز بسمتي بني مطهو على البخار', grams: 120),
@@ -117,21 +123,26 @@ class MockData {
     ),
   ];
 
-  static const List<SearchableFood> foodSearchResults = [
-    SearchableFood(name: 'تفاح أحمر طازج', caloriesPer100g: 52, macro: 'default', category: 'redFruit'),
-    SearchableFood(name: 'موز طازج', caloriesPer100g: 89, macro: 'fiber', category: 'greenFruit'),
-    SearchableFood(name: 'تمر سكري', caloriesPer100g: 277, macro: 'carbs', category: 'naturalSugar'),
-    SearchableFood(name: 'لبن زبادي يوناني 5%', caloriesPer100g: 59, macro: 'protein', category: 'dairy'),
-    SearchableFood(name: 'صدر دجاج مقلي', caloriesPer100g: 230, macro: 'default', category: 'cookedProtein'),
-    SearchableFood(name: 'أرز أبيض مطبوخ', caloriesPer100g: 130, macro: 'carbs', category: 'carb'),
-    SearchableFood(name: 'مكسرات مشكلة نيئة', caloriesPer100g: 607, macro: 'fat', category: 'nuts'),
-  ];
-
   static const List<RecommendationItem> recommendedRecipes = [
-    RecommendationItem(title: 'شوربة عدس دافئة', subtitle: '210 سعرة', icon: Icons.soup_kitchen_outlined, color: AppColors.accentOrange),
-    RecommendationItem(title: 'سلطة الكينوا', subtitle: '180 سعرة', icon: Icons.eco_rounded, color: AppColors.accentGreen),
-    RecommendationItem(title: 'سموذي التوت', subtitle: '150 سعرة', icon: Icons.local_drink_outlined, color: AppColors.accentPurple),
-    RecommendationItem(title: 'توست الأفوكادو', subtitle: '240 سعرة', icon: Icons.breakfast_dining_outlined, color: AppColors.primary),
+    RecommendationItem(
+        title: 'شوربة عدس دافئة',
+        subtitle: '210 سعرة',
+        icon: Icons.soup_kitchen_outlined,
+        color: AppColors.accentOrange),
+    RecommendationItem(
+        title: 'سلطة الكينوا',
+        subtitle: '180 سعرة',
+        icon: Icons.eco_rounded,
+        color: AppColors.accentGreen),
+    RecommendationItem(
+        title: 'سموذي التوت',
+        subtitle: '150 سعرة',
+        icon: Icons.local_drink_outlined,
+        color: AppColors.accentPurple),
+    RecommendationItem(
+        title: 'توست الأفوكادو',
+        subtitle: '240 سعرة',
+        icon: Icons.breakfast_dining_outlined,
+        color: AppColors.primary),
   ];
 }
-

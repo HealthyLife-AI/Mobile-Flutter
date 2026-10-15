@@ -1,32 +1,26 @@
-import '../../core/config/app_config.dart';
-import '../mock/meal_mock_data.dart';
-import '../models/meal_dto.dart';
+import '../../core/errors/app_exception.dart';
+import '../../core/network/api_client.dart';
 
-/// Remote contract for the meal plan. The mock implementation ships the
-/// same DTO shapes a real backend would return; replacing it with an HTTP
-/// implementation (backed by `ApiClient`) requires no repository changes.
+/// `GET /me/meal-plan` (API guide 5.1).
 abstract interface class MealPlanRemoteDataSource {
-  Future<List<MealDto>> fetchTodayPlan();
-
-  /// Smart-swap groups for one meal. The mock feed only contains lunch
-  /// groups (mirroring the current content set).
-  Future<List<FoodCategoryGroupDto>> fetchSwapOptions(String mealId);
+  /// The active plan as the server sent it, or null when there is none yet
+  /// (`204 No Content`).
+  Future<Map<String, dynamic>?> fetchActivePlan();
 }
 
-class MockMealPlanRemoteDataSource implements MealPlanRemoteDataSource {
-  const MockMealPlanRemoteDataSource({this.latency = AppConfig.mockLatency});
+class HttpMealPlanRemoteDataSource implements MealPlanRemoteDataSource {
+  HttpMealPlanRemoteDataSource(this._api);
 
-  final Duration latency;
-
-  @override
-  Future<List<MealDto>> fetchTodayPlan() async {
-    await Future<void>.delayed(latency);
-    return MockData.todayMeals.map(MealDto.fromEntity).toList();
-  }
+  final ApiClient _api;
 
   @override
-  Future<List<FoodCategoryGroupDto>> fetchSwapOptions(String mealId) async {
-    await Future<void>.delayed(latency);
-    return MockData.lunchDetailGroups.map(FoodCategoryGroupDto.fromEntity).toList();
+  Future<Map<String, dynamic>?> fetchActivePlan() async {
+    final raw = await _api.get('me/meal-plan');
+    // 204 arrives as null or an empty body: no active plan yet.
+    if (raw == null || raw == '') return null;
+    if (raw is! Map) {
+      throw const ParseException('The meal plan is not an object');
+    }
+    return Map<String, dynamic>.from(raw);
   }
 }

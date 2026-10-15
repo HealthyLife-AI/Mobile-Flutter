@@ -25,7 +25,8 @@ class _ButtonShineState extends State<ButtonShine>
   // looks up the TickerMode ancestor, which is already deactivated by then.
   AnimationController? _controllerOrNull;
 
-  AnimationController get _controller => _controllerOrNull ??= AnimationController(
+  AnimationController get _controller =>
+      _controllerOrNull ??= AnimationController(
         vsync: this,
         duration: const Duration(seconds: 4),
       )..repeat();
@@ -51,7 +52,9 @@ class _ButtonShineState extends State<ButtonShine>
           widget.child,
           Positioned.fill(
             child: IgnorePointer(
-              child: AnimatedBuilder(
+              // The shine moves forever: its repaint stays in this layer.
+              child: RepaintBoundary(
+                  child: AnimatedBuilder(
                 animation: _controller,
                 builder: (context, _) {
                   final t = _controller.value;
@@ -78,7 +81,7 @@ class _ButtonShineState extends State<ButtonShine>
                     ),
                   );
                 },
-              ),
+              )),
             ),
           ),
         ],
@@ -138,7 +141,8 @@ class _AnimatedGradientCtaButton extends StatefulWidget {
   });
 
   @override
-  State<_AnimatedGradientCtaButton> createState() => _AnimatedGradientCtaButtonState();
+  State<_AnimatedGradientCtaButton> createState() =>
+      _AnimatedGradientCtaButtonState();
 }
 
 class _AnimatedGradientCtaButtonState extends State<_AnimatedGradientCtaButton>
@@ -195,14 +199,16 @@ class _AnimatedGradientCtaButtonState extends State<_AnimatedGradientCtaButton>
               onPressed: disabled ? null : _handleTap,
               style: OutlinedButton.styleFrom(
                 side: const BorderSide(color: AppColors.primary, width: 1.4),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.pill)),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(AppRadius.pill)),
               ),
               child: ButtonShine(
                 borderRadius: BorderRadius.circular(AppRadius.pill),
                 child: Center(
                   child: Text(
                     widget.label,
-                    style: AppTextStyles.ctaText.copyWith(color: AppColors.primary),
+                    style: AppTextStyles.ctaText
+                        .copyWith(color: AppColors.primary),
                   ),
                 ),
               ),
@@ -212,61 +218,72 @@ class _AnimatedGradientCtaButtonState extends State<_AnimatedGradientCtaButton>
       );
     }
 
-    return AnimatedBuilder(
-      animation: _loop,
-      builder: (context, _) {
-        final glow = 0.5 + 0.5 * math.sin(_loop.value * 2 * math.pi);
-        return Opacity(
-          opacity: disabled && !widget.loading ? 0.5 : 1,
-          child: GestureDetector(
-            onTapDown: disabled ? null : (_) => _setPressed(true),
-            onTapCancel: disabled ? null : () => _setPressed(false),
-            onTapUp: disabled ? null : (_) => _setPressed(false),
-            onTap: disabled ? null : _handleTap,
-            child: AnimatedScale(
-              scale: _pressed ? 0.97 : 1,
-              duration: const Duration(milliseconds: 120),
-              curve: Curves.easeOut,
-              child: Container(
-                height: 54,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  gradient: grad,
-                  borderRadius: BorderRadius.circular(AppRadius.pill),
-                  boxShadow: [
-                    BoxShadow(
-                      color: grad.colors.last.withValues(alpha: 0.28 + 0.12 * glow),
-                      blurRadius: 16 + 8 * glow,
-                      offset: const Offset(0, 8),
-                    ),
+    // The glow runs forever, so only the button's own box is rebuilt and
+    // repainted on each frame: the label is built once, and the boundary
+    // keeps the repaint away from the rest of the screen (a text field and
+    // the keyboard's slide included).
+    final content = ButtonShine(
+      borderRadius: BorderRadius.circular(AppRadius.pill),
+      child: Center(
+        child: widget.loading
+            ? const SizedBox(
+                height: 22,
+                width: 22,
+                child: CircularProgressIndicator(
+                    strokeWidth: 2.4, color: Colors.white),
+              )
+            : Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (widget.icon != null) ...[
+                    Icon(widget.icon, color: Colors.white, size: 20),
+                    const SizedBox(width: 8),
                   ],
-                ),
-                child: ButtonShine(
-                  borderRadius: BorderRadius.circular(AppRadius.pill),
-                  child: Center(
-                    child: widget.loading
-                        ? const SizedBox(
-                            height: 22,
-                            width: 22,
-                            child: CircularProgressIndicator(strokeWidth: 2.4, color: Colors.white),
-                          )
-                        : Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              if (widget.icon != null) ...[
-                                Icon(widget.icon, color: Colors.white, size: 20),
-                                const SizedBox(width: 8),
-                              ],
-                              Text(widget.label, style: AppTextStyles.ctaText),
-                            ],
-                          ),
-                  ),
-                ),
+                  Text(widget.label, style: AppTextStyles.ctaText),
+                ],
               ),
+      ),
+    );
+
+    return RepaintBoundary(
+      child: Opacity(
+        opacity: disabled && !widget.loading ? 0.5 : 1,
+        child: GestureDetector(
+          onTapDown: disabled ? null : (_) => _setPressed(true),
+          onTapCancel: disabled ? null : () => _setPressed(false),
+          onTapUp: disabled ? null : (_) => _setPressed(false),
+          onTap: disabled ? null : _handleTap,
+          child: AnimatedScale(
+            scale: _pressed ? 0.97 : 1,
+            duration: const Duration(milliseconds: 120),
+            curve: Curves.easeOut,
+            child: AnimatedBuilder(
+              animation: _loop,
+              child: content,
+              builder: (context, child) {
+                final glow = 0.5 + 0.5 * math.sin(_loop.value * 2 * math.pi);
+                return Container(
+                  height: 54,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    gradient: grad,
+                    borderRadius: BorderRadius.circular(AppRadius.pill),
+                    boxShadow: [
+                      BoxShadow(
+                        color: grad.colors.last
+                            .withValues(alpha: 0.28 + 0.12 * glow),
+                        blurRadius: 16 + 8 * glow,
+                        offset: const Offset(0, 8),
+                      ),
+                    ],
+                  ),
+                  child: child,
+                );
+              },
             ),
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 }

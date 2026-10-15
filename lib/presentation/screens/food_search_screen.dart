@@ -2,39 +2,46 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../core/di/app_dependencies.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_radius.dart';
 import '../../core/theme/app_text_styles.dart';
 import '../../domain/entities/meal_entities.dart';
-import '../../data/mock/meal_mock_data.dart';
+import '../../domain/food_rules.dart';
+import '../bloc/food_search/food_search_cubit.dart';
+import '../bloc/nutritionist/nutritionist_cubit.dart';
 import '../widgets/food_tag_icon.dart';
+import '../widgets/load_error_view.dart';
 import '../widgets/clinical_trust_footer.dart';
 import '../widgets/gradient_cta_button.dart';
 import 'quantity_selector_screen.dart';
 import 'barcode_scanner_screen.dart';
+import 'notifications_center_screen.dart';
 import '../../core/navigation/app_page_route.dart';
 
-/// true = أرقام عربية-هندية (٥٢) زي التصميم. اجعليها false لو بدك 52.
-const bool _kArabicIndicDigits = true;
+import '../../l10n/l10n.dart';
 
 const Color _softMint = Color(0xFFF1FAF7);
 
-String _d(Object v) {
-  final s = '$v';
-  if (!_kArabicIndicDigits) return s;
-  const west = '0123456789';
-  const east = '٠١٢٣٤٥٦٧٨٩';
-  return s.split('').map((c) {
-    final i = west.indexOf(c);
-    return i == -1 ? c : east[i];
-  }).join();
-}
+/// Category filter chips. Held as ids (not their labels) so filtering keeps
+/// working whatever language the labels are shown in.
+enum _FoodFilter { all, fruitVeg, carbsGrains, proteins }
 
-String _foodsLabel(int n) {
-  if (n == 1) return 'طعام واحد';
-  if (n == 2) return 'طعامان';
-  if (n >= 3 && n <= 10) return '${_d(n)} أطعمة';
-  return '${_d(n)} طعاماً';
+extension on _FoodFilter {
+  String label(AppLocalizations l10n) {
+    switch (this) {
+      case _FoodFilter.all:
+        return l10n.notificationCategoryAll;
+      case _FoodFilter.fruitVeg:
+        return l10n.foodSearchFilterFruitVeg;
+      case _FoodFilter.carbsGrains:
+        return l10n.foodSearchFilterCarbsGrains;
+      case _FoodFilter.proteins:
+        return l10n.foodSearchFilterProteins;
+    }
+  }
 }
 
 bool _reduceMotion(BuildContext c) => MediaQuery.of(c).disableAnimations;
@@ -42,30 +49,57 @@ bool _reduceMotion(BuildContext c) => MediaQuery.of(c).disableAnimations;
 /// 5.4 "Ate Something Off-Plan" — search & browse (fork & knife tab).
 /// v2 correction: there is no AI chat here — search + manual estimate is
 /// the confirmed baseline (section 0). BeetAI is left as an open question.
-class FoodSearchScreen extends StatefulWidget {
+class FoodSearchScreen extends StatelessWidget {
   const FoodSearchScreen({super.key});
 
   @override
-  State<FoodSearchScreen> createState() => _FoodSearchScreenState();
+  Widget build(BuildContext context) {
+    final deps = context.read<AppDependencies>();
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (_) => FoodSearchCubit(
+            deps.searchFoods,
+            healthProfile: deps.patientHealthProfile,
+          )..loadAllergies(),
+        ),
+        BlocProvider(
+          create: (_) => NutritionistCubit(deps.nutritionist)..load(),
+        ),
+      ],
+      child: const _FoodSearchView(),
+    );
+  }
 }
 
-class _FoodSearchScreenState extends State<FoodSearchScreen> with TickerProviderStateMixin {
-  String _filter = 'الكل';
+class _FoodSearchView extends StatefulWidget {
+  const _FoodSearchView({super.key});
+
+  @override
+  State<_FoodSearchView> createState() => _FoodSearchViewState();
+}
+
+class _FoodSearchViewState extends State<_FoodSearchView>
+    with TickerProviderStateMixin {
+  _FoodFilter _filter = _FoodFilter.all;
   String _query = '';
-  // الترتيب زي التصميم: "الكل" أول واحد من اليمين.
-  final List<String> _categories = const ['الكل', 'فواكه وخضار', 'نشويات وحبوب', 'بروتينات'];
-  late final List<GlobalKey> _chipKeys = List.generate(_categories.length, (_) => GlobalKey());
+  // الترتيب زي التصميم: "الكل" أول واحد من البداية.
+  final List<_FoodFilter> _categories = _FoodFilter.values;
+  late final List<GlobalKey> _chipKeys =
+      List.generate(_categories.length, (_) => GlobalKey());
 
   final TextEditingController _controller = TextEditingController();
   final FocusNode _focus = FocusNode();
 
   /// حركة الدخول المتتابعة (مرة وحدة).
-  late final AnimationController _intro =
-      AnimationController(vsync: this, duration: const Duration(milliseconds: 1200))..forward();
+  late final AnimationController _intro = AnimationController(
+      vsync: this, duration: const Duration(milliseconds: 1200))
+    ..forward();
 
   /// حركة مستمرة (نبض القلب، نقطة الإشعار، تنفّس الزر).
-  late final AnimationController _loop =
-      AnimationController(vsync: this, duration: const Duration(milliseconds: 2800))..repeat();
+  late final AnimationController _loop = AnimationController(
+      vsync: this, duration: const Duration(milliseconds: 2800))
+    ..repeat();
 
   /// أول تحميل للقائمة فقط بيستنى انتهاء دخول الأقسام العلوية.
   bool _firstLoad = true;
@@ -111,7 +145,7 @@ class _FoodSearchScreenState extends State<FoodSearchScreen> with TickerProvider
   // M16 — category filter toggle: solid-fill cross-fade (AnimatedContainer
   // below) + the row auto-scrolling to center the tapped chip, then M17
   // refreshes the results list immediately.
-  void _selectFilter(String c) {
+  void _selectFilter(_FoodFilter c) {
     if (c == _filter) return;
     HapticFeedback.selectionClick();
     setState(() => _filter = c);
@@ -119,22 +153,25 @@ class _FoodSearchScreenState extends State<FoodSearchScreen> with TickerProvider
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final ctx = _chipKeys[i].currentContext;
       if (ctx != null) {
-        Scrollable.ensureVisible(ctx, alignment: 0.5, duration: const Duration(milliseconds: 300), curve: Curves.easeOutCubic);
+        Scrollable.ensureVisible(ctx,
+            alignment: 0.5,
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeOutCubic);
       }
     });
   }
 
-  List<SearchableFood> get _filtered {
-    final q = _query.trim();
-    return MockData.foodSearchResults.where((f) {
-      final matchesQuery = q.isEmpty || f.name.contains(q);
-      final matchesFilter = _filter == 'الكل' ||
-          (_filter == 'بروتينات' && (f.category == 'cookedProtein' || f.category == 'dairy')) ||
-          (_filter == 'نشويات وحبوب' && (f.category == 'carb' || f.category == 'naturalSugar')) ||
-          (_filter == 'فواكه وخضار' && (f.category == 'redFruit' || f.category == 'greenFruit'));
-      return matchesQuery && matchesFilter;
-    }).toList();
-  }
+  /// The rows the category chips leave. The search runs on the server (guide
+  /// 5.5), so only the chips filter here.
+  List<SearchableFood> _visible(List<SearchableFood> foods) => foods.where((f) {
+        return _filter == _FoodFilter.all ||
+            (_filter == _FoodFilter.proteins &&
+                (f.category == 'cookedProtein' || f.category == 'dairy')) ||
+            (_filter == _FoodFilter.carbsGrains &&
+                (f.category == 'carb' || f.category == 'naturalSugar')) ||
+            (_filter == _FoodFilter.fruitVeg &&
+                (f.category == 'redFruit' || f.category == 'greenFruit'));
+      }).toList();
 
   void _openWhatsAppSheet() {
     showModalBottomSheet(
@@ -148,12 +185,14 @@ class _FoodSearchScreenState extends State<FoodSearchScreen> with TickerProvider
   }
 
   void _openScanner() {
-    Navigator.of(context).push(AppPageRoute(builder: (_) => const BarcodeScannerScreen()));
+    Navigator.of(context)
+        .push(AppPageRoute(builder: (_) => const BarcodeScannerScreen()));
   }
 
   @override
   Widget build(BuildContext context) {
-    final results = _filtered;
+    final state = context.watch<FoodSearchCubit>().state;
+    final results = _visible(state.results);
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -166,7 +205,8 @@ class _FoodSearchScreenState extends State<FoodSearchScreen> with TickerProvider
               _reveal(0, .2, _buildHeader(), dy: -14),
               Expanded(
                 child: ListView(
-                  keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+                  keyboardDismissBehavior:
+                      ScrollViewKeyboardDismissBehavior.onDrag,
                   padding: const EdgeInsets.fromLTRB(18, 8, 18, 24),
                   children: [
                     // Reassurance card (section 1 tone): never judgmental.
@@ -176,6 +216,10 @@ class _FoodSearchScreenState extends State<FoodSearchScreen> with TickerProvider
                     const SizedBox(height: 14),
                     _reveal(.24, .48, _buildChips()),
                     const SizedBox(height: 18),
+                    if (state.allergyCheckFailed) ...[
+                      const _AllergyNotice(),
+                      const SizedBox(height: 14),
+                    ],
                     _reveal(.32, .54, _buildResultsHeader(results.length)),
                     const SizedBox(height: 10),
                     // M17 — results fade out on mismatch, new ones enter staggered
@@ -189,23 +233,48 @@ class _FoodSearchScreenState extends State<FoodSearchScreen> with TickerProvider
                         duration: const Duration(milliseconds: 160),
                         switchOutCurve: Curves.easeOut,
                         switchInCurve: Curves.easeOut,
-                        transitionBuilder: (child, anim) => FadeTransition(opacity: anim, child: child),
-                        child: results.isEmpty
-                            ? _NoResults(key: ValueKey('none-$_filter-$_query'), query: _query.trim())
-                            : Column(
-                                key: ValueKey('$_filter-$_query'),
-                                children: [
-                                  for (int i = 0; i < results.length; i++)
-                                    _ResultRow(
-                                      food: results[i],
-                                      delay: Duration(milliseconds: (_firstLoad ? 380 : 0) + math.min(i, 8) * 45),
-                                    ),
-                                ],
-                              ),
+                        transitionBuilder: (child, anim) =>
+                            FadeTransition(opacity: anim, child: child),
+                        child: state.status == FoodSearchStatus.error
+                            ? LoadErrorView(
+                                key: const ValueKey('search-error'),
+                                message:
+                                    loadFailureMessage(context, state.failure),
+                                onRetry: () =>
+                                    context.read<FoodSearchCubit>().refresh())
+                            : _query.trim().length < 2
+                                ? const _TypeToSearch(
+                                    key: ValueKey('type-to-search'))
+                                : results.isEmpty
+                                    ? _NoResults(
+                                        key: ValueKey('none-$_filter-$_query'),
+                                        query: _query.trim())
+                                    : Column(
+                                        key: ValueKey('$_filter-$_query'),
+                                        children: [
+                                          for (int i = 0;
+                                              i < results.length;
+                                              i++)
+                                            _ResultRow(
+                                              food: results[i],
+                                              allergic: mayContainAllergen(
+                                                  results[i],
+                                                  state.allergyGroups),
+                                              delay: Duration(
+                                                  milliseconds:
+                                                      (_firstLoad ? 380 : 0) +
+                                                          math.min(i, 8) * 45),
+                                            ),
+                                        ],
+                                      ),
                       ),
                     ),
                     const SizedBox(height: 8),
-                    _reveal(.6, .92, _CantFindItCard(onWhatsApp: _openWhatsAppSheet, loop: _loop)),
+                    _reveal(
+                        .6,
+                        .92,
+                        _CantFindItCard(
+                            onWhatsApp: _openWhatsAppSheet, loop: _loop)),
                     _reveal(.78, 1, const ClinicalTrustFooter(), dy: 14),
                   ],
                 ),
@@ -221,48 +290,62 @@ class _FoodSearchScreenState extends State<FoodSearchScreen> with TickerProvider
 
   Widget _buildHeader() {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(12, 10, 18, 6),
+      padding: const EdgeInsetsDirectional.fromSTEB(18, 10, 12, 6),
       child: Row(
         children: [
           Semantics(
             button: true,
-            label: 'رجوع',
+            label: context.l10n.commonBack,
             child: _PressScale(
               onTap: () => Navigator.of(context).maybePop(),
               child: const Padding(
                 padding: EdgeInsets.all(10),
-                child: Icon(Icons.arrow_back_rounded, size: 26, color: AppColors.textPrimary),
+                child: Icon(Icons.arrow_back_rounded,
+                    size: 26, color: AppColors.textPrimary),
               ),
             ),
           ),
           const SizedBox(width: 2),
-          const Expanded(child: Text('أكلت شيئاً خارج الخطة', maxLines: 1, overflow: TextOverflow.ellipsis, style: AppTextStyles.h1)),
+          Expanded(
+              child: Text(context.l10n.foodSearchAteOffPlan,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: AppTextStyles.h1)),
           Semantics(
             button: true,
-            label: 'الإشعارات',
+            label: context.l10n.commonNotifications,
             child: _PressScale(
-              onTap: () {},
+              onTap: () => Navigator.of(context).push(AppPageRoute(
+                  builder: (_) => const NotificationsCenterScreen())),
               child: SizedBox(
                 width: 44,
                 height: 44,
                 child: Stack(
                   alignment: Alignment.center,
                   children: [
-                    const Icon(Icons.notifications_none_rounded, size: 26, color: AppColors.textPrimary),
+                    const Icon(Icons.notifications_none_rounded,
+                        size: 26, color: AppColors.textPrimary),
                     PositionedDirectional(
                       top: 9,
                       end: 9,
                       child: AnimatedBuilder(
                         animation: _loop,
                         builder: (_, __) {
-                          final s = .5 + .5 * math.sin(_loop.value * 2 * math.pi);
+                          final s =
+                              .5 + .5 * math.sin(_loop.value * 2 * math.pi);
                           return Container(
                             width: 9,
                             height: 9,
                             decoration: BoxDecoration(
                               color: const Color(0xFFE5484D),
                               shape: BoxShape.circle,
-                              boxShadow: [BoxShadow(color: const Color(0xFFE5484D).withOpacity(.5 * s), blurRadius: 6, spreadRadius: 2 * s)],
+                              boxShadow: [
+                                BoxShadow(
+                                    color: const Color(0xFFE5484D)
+                                        .withOpacity(.5 * s),
+                                    blurRadius: 6,
+                                    spreadRadius: 2 * s)
+                              ],
                             ),
                           );
                         },
@@ -277,8 +360,10 @@ class _FoodSearchScreenState extends State<FoodSearchScreen> with TickerProvider
           Container(
             width: 44,
             height: 44,
-            decoration: const BoxDecoration(color: AppColors.primary, shape: BoxShape.circle),
-            child: const Icon(Icons.person_outline_rounded, color: Colors.white, size: 22),
+            decoration: const BoxDecoration(
+                color: AppColors.primary, shape: BoxShape.circle),
+            child: const Icon(Icons.person_outline_rounded,
+                color: Colors.white, size: 22),
           ),
         ],
       ),
@@ -294,7 +379,12 @@ class _FoodSearchScreenState extends State<FoodSearchScreen> with TickerProvider
         color: _softMint,
         borderRadius: BorderRadius.circular(AppRadius.card),
         border: Border.all(color: AppColors.primary.withOpacity(.06)),
-        boxShadow: [BoxShadow(color: AppColors.primary.withValues(alpha: 0.06), blurRadius: 14, offset: const Offset(0, 8))],
+        boxShadow: [
+          BoxShadow(
+              color: AppColors.primary.withValues(alpha: 0.06),
+              blurRadius: 14,
+              offset: const Offset(0, 8))
+        ],
       ),
       child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
         // القلب: نبضتان في كل دورة + توهج ناعم
@@ -312,9 +402,15 @@ class _FoodSearchScreenState extends State<FoodSearchScreen> with TickerProvider
                 decoration: BoxDecoration(
                   color: AppColors.primary,
                   borderRadius: BorderRadius.circular(14),
-                  boxShadow: [BoxShadow(color: AppColors.primary.withOpacity(.18 + .16 * glow), blurRadius: 10 + 8 * glow, spreadRadius: 1)],
+                  boxShadow: [
+                    BoxShadow(
+                        color: AppColors.primary.withOpacity(.18 + .16 * glow),
+                        blurRadius: 10 + 8 * glow,
+                        spreadRadius: 1)
+                  ],
                 ),
-                child: const Icon(Icons.favorite_rounded, color: Colors.white, size: 21),
+                child: const Icon(Icons.favorite_rounded,
+                    color: Colors.white, size: 21),
               ),
             );
           },
@@ -325,24 +421,34 @@ class _FoodSearchScreenState extends State<FoodSearchScreen> with TickerProvider
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(children: [
-                const Expanded(
+                Expanded(
                   child: Text(
-                    'لا داعي للقلق، نحن معك',
+                    context.l10n.foodSearchNoWorries,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: AppColors.primary),
+                    style: const TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.primary),
                   ),
                 ),
                 const SizedBox(width: 6),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                  decoration: BoxDecoration(color: AppColors.primary, borderRadius: BorderRadius.circular(AppRadius.pill)),
-                  child: const Text('متابعة آمنة', style: TextStyle(fontSize: 10.5, color: Colors.white, fontWeight: FontWeight.w600)),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                  decoration: BoxDecoration(
+                      color: AppColors.primary,
+                      borderRadius: BorderRadius.circular(AppRadius.pill)),
+                  child: Text(context.l10n.foodSearchSafeFollowUp,
+                      style: const TextStyle(
+                          fontSize: 10.5,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600)),
                 ),
               ]),
               const SizedBox(height: 6),
-              const Text(
-                'تسجيل كل ما تناولته بصدق يمكّن أخصائيتك من المتابعة الدقيقة وضبط خطتك بسلاسة دون حرمان.',
+              Text(
+                context.l10n.foodSearchHonestLogging,
                 style: AppTextStyles.caption,
               ),
             ],
@@ -367,7 +473,11 @@ class _FoodSearchScreenState extends State<FoodSearchScreen> with TickerProvider
         decoration: BoxDecoration(
           color: AppColors.surface,
           borderRadius: BorderRadius.circular(AppRadius.pill),
-          border: Border.all(color: focused ? AppColors.primary.withOpacity(.55) : Colors.transparent, width: 1.5),
+          border: Border.all(
+              color: focused
+                  ? AppColors.primary.withOpacity(.55)
+                  : Colors.transparent,
+              width: 1.5),
           boxShadow: [
             BoxShadow(
               color: AppColors.primary.withValues(alpha: focused ? 0.16 : 0.05),
@@ -382,7 +492,8 @@ class _FoodSearchScreenState extends State<FoodSearchScreen> with TickerProvider
               scale: focused ? 1.18 : 1,
               duration: const Duration(milliseconds: 260),
               curve: Curves.easeOutBack,
-              child: const Icon(Icons.search_rounded, color: AppColors.primary, size: 24),
+              child: const Icon(Icons.search_rounded,
+                  color: AppColors.primary, size: 24),
             ),
             const SizedBox(width: 8),
             Expanded(
@@ -390,45 +501,53 @@ class _FoodSearchScreenState extends State<FoodSearchScreen> with TickerProvider
                 controller: _controller,
                 focusNode: _focus,
                 textInputAction: TextInputAction.search,
-                onChanged: (v) => setState(() => _query = v),
-                decoration: const InputDecoration(
+                onChanged: (v) {
+                  setState(() => _query = v);
+                  context.read<FoodSearchCubit>().queryChanged(v);
+                },
+                decoration: InputDecoration(
                   border: InputBorder.none,
                   isDense: true,
-                  contentPadding: EdgeInsets.symmetric(vertical: 18),
-                  hintText: 'ابحث بالاسم العربي أو الإنجليزي',
-                  hintStyle: TextStyle(fontSize: 13, color: AppColors.textSecondary),
+                  contentPadding: const EdgeInsets.symmetric(vertical: 18),
+                  hintText: context.l10n.foodSearchHint,
+                  hintStyle: const TextStyle(
+                      fontSize: 13, color: AppColors.textSecondary),
                 ),
               ),
             ),
             AnimatedSwitcher(
               duration: const Duration(milliseconds: 200),
-              transitionBuilder: (c, a) => ScaleTransition(scale: a, child: FadeTransition(opacity: a, child: c)),
+              transitionBuilder: (c, a) => ScaleTransition(
+                  scale: a, child: FadeTransition(opacity: a, child: c)),
               child: _query.isEmpty
                   ? const SizedBox(key: ValueKey('noclear'))
                   : Semantics(
                       button: true,
-                      label: 'مسح البحث',
+                      label: context.l10n.foodSearchClear,
                       child: _PressScale(
                         key: const ValueKey('clear'),
                         onTap: () {
                           _controller.clear();
                           setState(() => _query = '');
+                          context.read<FoodSearchCubit>().queryChanged('');
                         },
                         child: const Padding(
                           padding: EdgeInsets.all(8),
-                          child: Icon(Icons.close_rounded, size: 18, color: AppColors.textSecondary),
+                          child: Icon(Icons.close_rounded,
+                              size: 18, color: AppColors.textSecondary),
                         ),
                       ),
                     ),
             ),
             Semantics(
               button: true,
-              label: 'مسح الباركود',
+              label: context.l10n.foodSearchScanBarcode,
               child: _PressScale(
                 onTap: _openScanner,
                 child: const Padding(
                   padding: EdgeInsets.all(8),
-                  child: Icon(Icons.qr_code_scanner_rounded, size: 22, color: AppColors.primary),
+                  child: Icon(Icons.qr_code_scanner_rounded,
+                      size: 22, color: AppColors.primary),
                 ),
               ),
             ),
@@ -462,7 +581,14 @@ class _FoodSearchScreenState extends State<FoodSearchScreen> with TickerProvider
               decoration: BoxDecoration(
                 color: active ? AppColors.primary : AppColors.chipInactiveBg,
                 borderRadius: BorderRadius.circular(AppRadius.pill),
-                boxShadow: active ? [BoxShadow(color: AppColors.primary.withOpacity(.28), blurRadius: 12, offset: const Offset(0, 4))] : null,
+                boxShadow: active
+                    ? [
+                        BoxShadow(
+                            color: AppColors.primary.withOpacity(.28),
+                            blurRadius: 12,
+                            offset: const Offset(0, 4))
+                      ]
+                    : null,
               ),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
@@ -473,7 +599,7 @@ class _FoodSearchScreenState extends State<FoodSearchScreen> with TickerProvider
                       color: active ? Colors.white : AppColors.textPrimary,
                       fontWeight: active ? FontWeight.w700 : FontWeight.w500,
                     ),
-                    child: Text(c),
+                    child: Text(c.label(context.l10n)),
                   ),
                   // علامة الصح تنفتح بحركة بدل ما تظهر فجأة
                   AnimatedSize(
@@ -482,7 +608,8 @@ class _FoodSearchScreenState extends State<FoodSearchScreen> with TickerProvider
                     child: active
                         ? const Padding(
                             padding: EdgeInsetsDirectional.only(start: 6),
-                            child: Icon(Icons.check_rounded, size: 16, color: Colors.white),
+                            child: Icon(Icons.check_rounded,
+                                size: 16, color: Colors.white),
                           )
                         : const SizedBox.shrink(),
                   ),
@@ -500,26 +627,36 @@ class _FoodSearchScreenState extends State<FoodSearchScreen> with TickerProvider
   Widget _buildResultsHeader(int count) {
     return Row(
       children: [
-        const Text('الأطعمة المقترحة', style: AppTextStyles.sectionHeading),
+        Text(context.l10n.foodSearchResultsTitle,
+            style: AppTextStyles.sectionHeading),
         const SizedBox(width: 8),
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-          decoration: BoxDecoration(color: AppColors.primaryTint, borderRadius: BorderRadius.circular(AppRadius.pill)),
+          decoration: BoxDecoration(
+              color: AppColors.primaryTint,
+              borderRadius: BorderRadius.circular(AppRadius.pill)),
           child: AnimatedSwitcher(
             duration: const Duration(milliseconds: 240),
             transitionBuilder: (c, a) => FadeTransition(
               opacity: a,
-              child: SlideTransition(position: Tween<Offset>(begin: const Offset(0, .6), end: Offset.zero).animate(a), child: c),
+              child: SlideTransition(
+                  position: Tween<Offset>(
+                          begin: const Offset(0, .6), end: Offset.zero)
+                      .animate(a),
+                  child: c),
             ),
             child: Text(
-              _foodsLabel(count),
+              context.l10n
+                  .foodSearchFoodsCount(count, context.localizeDigits(count)),
               key: ValueKey(count),
-              style: AppTextStyles.caption.copyWith(color: AppColors.primary, fontWeight: FontWeight.w600),
+              style: AppTextStyles.caption.copyWith(
+                  color: AppColors.primary, fontWeight: FontWeight.w600),
             ),
           ),
         ),
         const Spacer(),
-        Text('لكل ${_d(100)} غ', style: AppTextStyles.caption),
+        Text(context.l10n.foodSearchPer100g(context.localizeDigits(100)),
+            style: AppTextStyles.caption),
       ],
     );
   }
@@ -530,14 +667,20 @@ class _FoodSearchScreenState extends State<FoodSearchScreen> with TickerProvider
 class _ResultRow extends StatefulWidget {
   final SearchableFood food;
   final Duration delay;
-  const _ResultRow({required this.food, required this.delay});
+
+  /// The food may contain one of the patient's approved allergies (guide 5.3).
+  final bool allergic;
+  const _ResultRow(
+      {required this.food, required this.delay, this.allergic = false});
 
   @override
   State<_ResultRow> createState() => _ResultRowState();
 }
 
-class _ResultRowState extends State<_ResultRow> with SingleTickerProviderStateMixin {
-  late final AnimationController _c = AnimationController(vsync: this, duration: const Duration(milliseconds: 650));
+class _ResultRowState extends State<_ResultRow>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _c = AnimationController(
+      vsync: this, duration: const Duration(milliseconds: 650));
   bool _down = false;
 
   @override
@@ -568,9 +711,12 @@ class _ResultRowState extends State<_ResultRow> with SingleTickerProviderStateMi
     return AnimatedBuilder(
       animation: _c,
       builder: (context, _) {
-        final enter = Curves.easeOutCubic.transform(Interval(0, .6).transform(_c.value));
-        final pop = Curves.elasticOut.transform(Interval(.25, 1).transform(_c.value));
-        final count = Curves.easeOutCubic.transform(Interval(.15, .9).transform(_c.value));
+        final enter = Curves.easeOutCubic
+            .transform(const Interval(0, .6).transform(_c.value));
+        final pop = Curves.elasticOut
+            .transform(const Interval(.25, 1).transform(_c.value));
+        final count = Curves.easeOutCubic
+            .transform(const Interval(.15, .9).transform(_c.value));
 
         return Opacity(
           opacity: enter.clamp(0.0, 1.0).toDouble(),
@@ -581,7 +727,8 @@ class _ResultRowState extends State<_ResultRow> with SingleTickerProviderStateMi
               onTapDown: (_) => setState(() => _down = true),
               onTapUp: (_) => setState(() => _down = false),
               onTapCancel: () => setState(() => _down = false),
-              onTap: () => Navigator.of(context).push(AppPageRoute(builder: (_) => QuantitySelectorScreen(food: f))),
+              onTap: () => Navigator.of(context).push(AppPageRoute(
+                  builder: (_) => QuantitySelectorScreen(food: f))),
               child: AnimatedScale(
                 scale: _down ? .97 : 1,
                 duration: const Duration(milliseconds: 120),
@@ -592,28 +739,63 @@ class _ResultRowState extends State<_ResultRow> with SingleTickerProviderStateMi
                   decoration: BoxDecoration(
                     color: AppColors.surface,
                     borderRadius: BorderRadius.circular(AppRadius.cardSmall),
-                    boxShadow: [BoxShadow(color: Colors.black.withOpacity(.04), blurRadius: 12, offset: const Offset(0, 4))],
+                    boxShadow: [
+                      BoxShadow(
+                          color: Colors.black.withOpacity(.04),
+                          blurRadius: 12,
+                          offset: const Offset(0, 4))
+                    ],
                   ),
                   child: Row(
                     children: [
-                      Transform.scale(scale: pop.clamp(0.0, 1.4).toDouble(), child: FoodTagIcon(category: f.category)),
+                      Transform.scale(
+                          scale: pop.clamp(0.0, 1.4).toDouble(),
+                          child: FoodTagIcon(category: f.category)),
                       const SizedBox(width: 12),
-                      Expanded(child: Text(f.name, maxLines: 2, overflow: TextOverflow.ellipsis, style: AppTextStyles.body)),
+                      Expanded(
+                          child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(f.name,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: AppTextStyles.body),
+                          if (widget.allergic) ...[
+                            const SizedBox(height: 4),
+                            Text(context.l10n.foodAllergyBadge,
+                                style: AppTextStyles.caption.copyWith(
+                                    color: AppColors.danger,
+                                    fontWeight: FontWeight.w700)),
+                          ],
+                        ],
+                      )),
                       const SizedBox(width: 8),
                       // Calorie badge: light color per food CATEGORY (2.3), not macro.
                       Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
-                            decoration: BoxDecoration(color: AppColors.foodTagBg(f.category), borderRadius: BorderRadius.circular(AppRadius.pill)),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 12, vertical: 5),
+                            decoration: BoxDecoration(
+                                color: AppColors.foodTagBg(f.category),
+                                borderRadius:
+                                    BorderRadius.circular(AppRadius.pill)),
                             child: Text(
-                              '${_d((f.caloriesPer100g * count).round())} سعرة',
-                              style: TextStyle(fontSize: 11, fontWeight: FontWeight.w700, color: tagIcon),
+                              context.l10n.commonKcalValue(
+                                  context.localizeDigits(
+                                      (f.caloriesPer100g * count).round())),
+                              style: TextStyle(
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w700,
+                                  color: tagIcon),
                             ),
                           ),
                           const SizedBox(height: 4),
-                          Text('${_d(100)} غرام', style: AppTextStyles.caption),
+                          Text(
+                              context.l10n.commonGramsValue(
+                                  context.localizeDigits(100)),
+                              style: AppTextStyles.caption),
                         ],
                       ),
                       const SizedBox(width: 4),
@@ -622,7 +804,8 @@ class _ResultRowState extends State<_ResultRow> with SingleTickerProviderStateMi
                         offset: _down ? const Offset(-.35, 0) : Offset.zero,
                         duration: const Duration(milliseconds: 160),
                         curve: Curves.easeOut,
-                        child: const Icon(Icons.chevron_right_rounded, color: AppColors.textSecondary, size: 24),
+                        child: const Icon(Icons.chevron_right_rounded,
+                            color: AppColors.textSecondary, size: 24),
                       ),
                     ],
                   ),
@@ -632,6 +815,49 @@ class _ResultRowState extends State<_ResultRow> with SingleTickerProviderStateMi
           ),
         );
       },
+    );
+  }
+}
+
+/// Shown before two characters are typed. The server searches only from two
+/// characters (guide 5.5), and there is no list of suggestions to show.
+/// Says that allergy badges are off because the health profile could not be
+/// read, so the patient does not take an empty result for a safe one.
+class _AllergyNotice extends StatelessWidget {
+  const _AllergyNotice();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: AppColors.accentOrangeBg,
+        borderRadius: BorderRadius.circular(AppRadius.cardSmall),
+      ),
+      child: Row(
+        children: [
+          const Icon(Icons.info_outline_rounded,
+              size: 18, color: AppColors.accentOrange),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(context.l10n.foodAllergyCheckUnavailable,
+                style: AppTextStyles.caption),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _TypeToSearch extends StatelessWidget {
+  const _TypeToSearch({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 28),
+      child: Text(context.l10n.foodSearchTypeToSearch,
+          style: AppTextStyles.secondary, textAlign: TextAlign.center),
     );
   }
 }
@@ -650,18 +876,27 @@ class _NoResults extends StatelessWidget {
             tween: Tween(begin: 0, end: 1),
             duration: const Duration(milliseconds: 650),
             curve: Curves.elasticOut,
-            builder: (_, t, child) => Transform.scale(scale: t.clamp(0.0, 1.3).toDouble(), child: child),
+            builder: (_, t, child) => Transform.scale(
+                scale: t.clamp(0.0, 1.3).toDouble(), child: child),
             child: Container(
               width: 60,
               height: 60,
-              decoration: const BoxDecoration(color: AppColors.primaryTint, shape: BoxShape.circle),
-              child: const Icon(Icons.search_off_rounded, color: AppColors.primary, size: 28),
+              decoration: const BoxDecoration(
+                  color: AppColors.primaryTint, shape: BoxShape.circle),
+              child: const Icon(Icons.search_off_rounded,
+                  color: AppColors.primary, size: 28),
             ),
           ),
           const SizedBox(height: 12),
-          Text(query.isEmpty ? 'لا توجد أطعمة في هذا التصنيف' : 'لا نتائج مطابقة لـ "$query"', style: AppTextStyles.secondary, textAlign: TextAlign.center),
+          Text(
+              query.isEmpty
+                  ? context.l10n.foodSearchEmptyCategory
+                  : context.l10n.foodSearchNoResults(query),
+              style: AppTextStyles.secondary,
+              textAlign: TextAlign.center),
           const SizedBox(height: 4),
-          const Text('جرّبي كلمة أخرى أو اطلبي إضافة الصنف من الأسفل', style: AppTextStyles.caption, textAlign: TextAlign.center),
+          Text(context.l10n.foodSearchTryAnother,
+              style: AppTextStyles.caption, textAlign: TextAlign.center),
         ],
       ),
     );
@@ -680,6 +915,7 @@ class _CantFindItCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final nutritionist = context.watch<NutritionistCubit>().state.dataOrNull;
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -699,14 +935,19 @@ class _CantFindItCard extends StatelessWidget {
                 child: Stack(
                   clipBehavior: Clip.none,
                   children: [
-                    const CircleAvatar(radius: 24, backgroundColor: AppColors.primaryTint, child: Icon(Icons.support_agent_rounded, color: AppColors.primary, size: 26)),
+                    const CircleAvatar(
+                        radius: 24,
+                        backgroundColor: AppColors.primaryTint,
+                        child: Icon(Icons.support_agent_rounded,
+                            color: AppColors.primary, size: 26)),
                     PositionedDirectional(
                       bottom: 0,
                       end: 0,
                       child: AnimatedBuilder(
                         animation: loop,
                         builder: (_, __) {
-                          final s = .5 + .5 * math.sin(loop.value * 2 * math.pi);
+                          final s =
+                              .5 + .5 * math.sin(loop.value * 2 * math.pi);
                           return Container(
                             width: 12,
                             height: 12,
@@ -714,7 +955,13 @@ class _CantFindItCard extends StatelessWidget {
                               color: const Color(0xFF19D3A2),
                               shape: BoxShape.circle,
                               border: Border.all(color: Colors.white, width: 2),
-                              boxShadow: [BoxShadow(color: const Color(0xFF19D3A2).withOpacity(.5 * s), blurRadius: 6, spreadRadius: 2 * s)],
+                              boxShadow: [
+                                BoxShadow(
+                                    color: const Color(0xFF19D3A2)
+                                        .withOpacity(.5 * s),
+                                    blurRadius: 6,
+                                    spreadRadius: 2 * s)
+                              ],
                             ),
                           );
                         },
@@ -724,36 +971,54 @@ class _CantFindItCard extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 12),
-              const Expanded(
+              Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('لم تجد ما تبحث عنه؟', style: AppTextStyles.cardTitle),
-                    SizedBox(height: 2),
-                    Text('أخصائيتك أ. خلود العربي بانتظارك', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: AppColors.primary)),
+                    Text(context.l10n.foodSearchNotFound,
+                        style: AppTextStyles.cardTitle),
+                    const SizedBox(height: 2),
+                    Text(
+                        context.l10n.foodSearchSpecialistWaiting(
+                            nutritionist?.gender ?? 'unknown',
+                            nutritionist?.name ?? ''),
+                        style: const TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.primary)),
                   ],
                 ),
               ),
             ],
           ),
           const SizedBox(height: 12),
-          const Text(
-            'يمكنك إرسال اسم الصنف أو صورته لأخصائيتك لتضيفه إلى قاعدة بياناتك فوراً، أو لتقدير مكوناته الأساسية دون انقطاع عن أهدافك.',
+          Text(
+            context.l10n.foodSearchSendItemNote,
             style: AppTextStyles.caption,
           ),
           const SizedBox(height: 14),
           // الزر الرئيسي يتنفّس بخفّة ليلفت الانتباه
           AnimatedBuilder(
             animation: loop,
-            builder: (_, child) => Transform.scale(scale: 1 + .012 * math.sin(loop.value * 2 * math.pi), child: child),
-            child: GradientCtaButton(label: 'طلب إضافة صنف جديد عبر واتساب', icon: Icons.chat_rounded, onPressed: onWhatsApp),
+            builder: (_, child) => Transform.scale(
+                scale: 1 + .012 * math.sin(loop.value * 2 * math.pi),
+                child: child),
+            child: GradientCtaButton(
+                label: context.l10n.foodSearchRequestViaWhatsApp,
+                icon: Icons.chat_rounded,
+                onPressed: onWhatsApp),
           ),
           const SizedBox(height: 10),
           GradientCtaButton(
-            label: 'تقدير السعرات يدوياً (سريع)',
+            label: context.l10n.foodSearchManualEstimate,
             outlined: true,
             onPressed: () => Navigator.of(context).push(
-              AppPageRoute(builder: (_) => const QuantitySelectorScreen(food: SearchableFood(name: 'تقدير يدوي', caloriesPer100g: 100, macro: 'default'))),
+              AppPageRoute(
+                  builder: (_) => QuantitySelectorScreen(
+                      food: SearchableFood(
+                          name: context.l10n.foodSearchManualEstimateName,
+                          caloriesPer100g: 100,
+                          macro: 'default'))),
             ),
           ),
         ],
@@ -777,7 +1042,8 @@ class _WhatsAppRequestSheet extends StatelessWidget {
       child: child,
       builder: (_, t, child) => Opacity(
         opacity: t.clamp(0.0, 1.0).toDouble(),
-        child: Transform.translate(offset: Offset(0, (1 - t) * 16), child: child),
+        child:
+            Transform.translate(offset: Offset(0, (1 - t) * 16), child: child),
       ),
     );
   }
@@ -788,32 +1054,44 @@ class _WhatsAppRequestSheet extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(20, 12, 20, 28),
       decoration: const BoxDecoration(
         color: AppColors.surface,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(AppRadius.sheet)),
+        borderRadius:
+            BorderRadius.vertical(top: Radius.circular(AppRadius.sheet)),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Container(width: 40, height: 4, decoration: BoxDecoration(color: AppColors.border, borderRadius: BorderRadius.circular(2))),
+          Container(
+              width: 40,
+              height: 4,
+              decoration: BoxDecoration(
+                  color: AppColors.border,
+                  borderRadius: BorderRadius.circular(2))),
           const SizedBox(height: 18),
           TweenAnimationBuilder<double>(
             tween: Tween(begin: 0, end: 1),
             duration: const Duration(milliseconds: 750),
             curve: Curves.elasticOut,
-            builder: (_, t, child) => Transform.scale(scale: t.clamp(0.0, 1.3).toDouble(), child: child),
+            builder: (_, t, child) => Transform.scale(
+                scale: t.clamp(0.0, 1.3).toDouble(), child: child),
             child: Container(
               width: 56,
               height: 56,
-              decoration: const BoxDecoration(color: AppColors.primaryTint, shape: BoxShape.circle),
-              child: const Icon(Icons.chat_rounded, color: AppColors.primary, size: 26),
+              decoration: const BoxDecoration(
+                  color: AppColors.primaryTint, shape: BoxShape.circle),
+              child: const Icon(Icons.chat_rounded,
+                  color: AppColors.primary, size: 26),
             ),
           ),
           const SizedBox(height: 14),
-          _stagger(0, const Text('طلب إضافة صنف جديد', style: AppTextStyles.h1)),
+          _stagger(
+              0,
+              Text(context.l10n.foodSearchRequestNewItem,
+                  style: AppTextStyles.h1)),
           const SizedBox(height: 10),
           _stagger(
             1,
-            const Text(
-              'أرسلي اسم الصنف أو صورته لأخصائيتك عبر واتساب، وستتم إضافته إلى قاعدة بياناتك بأسرع وقت ممكن.',
+            Text(
+              context.l10n.foodSearchWhatsAppSheetBody,
               textAlign: TextAlign.center,
               style: AppTextStyles.secondary,
             ),
@@ -821,7 +1099,11 @@ class _WhatsAppRequestSheet extends StatelessWidget {
           const SizedBox(height: 20),
           _stagger(
             2,
-            GradientCtaButton(gradient: CtaGradientType.voice, label: 'فتح واتساب', icon: Icons.chat_rounded, onPressed: () => Navigator.of(context).pop()),
+            GradientCtaButton(
+                gradient: CtaGradientType.voice,
+                label: context.l10n.commonOpenWhatsApp,
+                icon: Icons.chat_rounded,
+                onPressed: () => Navigator.of(context).pop()),
           ),
         ],
       ),

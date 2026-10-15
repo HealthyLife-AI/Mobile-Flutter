@@ -49,7 +49,8 @@ class _WeightChartPainter extends CustomPainter {
     for (int i = 0; i <= ticks; i++) {
       final v = minV + (range * i / ticks);
       final y = topPad + chartH - (chartH * i / ticks);
-      canvas.drawLine(Offset(leftPad, y), Offset(size.width - rightPad, y), gridPaint);
+      canvas.drawLine(
+          Offset(leftPad, y), Offset(size.width - rightPad, y), gridPaint);
       final tp = TextPainter(
         text: TextSpan(text: v.round().toString(), style: labelStyle),
         textDirection: TextDirection.ltr,
@@ -58,7 +59,8 @@ class _WeightChartPainter extends CustomPainter {
     }
 
     Offset pointOffset(int i) {
-      final x = leftPad + chartW * i / (points.length - 1).clamp(1, double.infinity);
+      final x =
+          leftPad + chartW * i / (points.length - 1).clamp(1, double.infinity);
       final y = topPad + chartH - (chartH * (points[i].kg - minV) / range);
       return Offset(x, y);
     }
@@ -80,7 +82,10 @@ class _WeightChartPainter extends CustomPainter {
       fillPath,
       Paint()
         ..shader = LinearGradient(
-          colors: [AppColors.primary.withValues(alpha: 0.18), AppColors.primary.withValues(alpha: 0.0)],
+          colors: [
+            AppColors.primary.withValues(alpha: 0.18),
+            AppColors.primary.withValues(alpha: 0.0)
+          ],
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
         ).createShader(Rect.fromLTWH(0, topPad, size.width, chartH)),
@@ -108,7 +113,13 @@ class _WeightChartPainter extends CustomPainter {
       final o = pointOffset(i);
       if (points[i].clinicVerified) {
         canvas.drawCircle(o, 7, Paint()..color = AppColors.surface);
-        canvas.drawCircle(o, 7, Paint()..color = AppColors.primary..style = PaintingStyle.stroke..strokeWidth = 2.5);
+        canvas.drawCircle(
+            o,
+            7,
+            Paint()
+              ..color = AppColors.primary
+              ..style = PaintingStyle.stroke
+              ..strokeWidth = 2.5);
         canvas.drawCircle(o, 2.5, Paint()..color = AppColors.primary);
       } else {
         canvas.drawCircle(o, 4.5, Paint()..color = AppColors.primary);

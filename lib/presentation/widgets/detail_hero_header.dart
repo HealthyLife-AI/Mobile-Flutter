@@ -27,7 +27,8 @@ class DetailHeroHeader extends StatelessWidget {
           child: Container(
             height: topPanelHeight,
             width: double.infinity,
-            decoration: const BoxDecoration(gradient: AppColors.primaryDarkGradient),
+            decoration:
+                const BoxDecoration(gradient: AppColors.primaryDarkGradient),
             padding: const EdgeInsets.all(20),
             child: topPanelChild,
           ),
@@ -38,7 +39,8 @@ class DetailHeroHeader extends StatelessWidget {
             width: double.infinity,
             decoration: const BoxDecoration(
               color: AppColors.surface,
-              borderRadius: BorderRadius.vertical(top: Radius.circular(AppRadius.sheet)),
+              borderRadius:
+                  BorderRadius.vertical(top: Radius.circular(AppRadius.sheet)),
             ),
             padding: const EdgeInsets.all(20),
             child: sheetChild,

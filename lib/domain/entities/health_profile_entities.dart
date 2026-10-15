@@ -35,4 +35,3 @@ class MedicationEntry {
   final String frequency;
   const MedicationEntry({required this.name, required this.frequency});
 }
-

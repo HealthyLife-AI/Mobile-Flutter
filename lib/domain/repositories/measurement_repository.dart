@@ -1,8 +1,8 @@
 import '../../core/errors/result.dart';
 import '../entities/measurement_entities.dart';
 
-/// Body measurements: baseline (clinic/mock) data merged with locally
-/// saved readings.
+/// Body measurements: the readings from the server, plus any still waiting in
+/// the offline queue.
 abstract interface class MeasurementRepository {
   Future<Result<MeasurementSnapshot>> getSnapshot();
 

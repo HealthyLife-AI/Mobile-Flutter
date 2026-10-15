@@ -1,10 +1,9 @@
 import '../../core/errors/result.dart';
-import '../entities/meal_entities.dart';
+import '../entities/meal_plan_entities.dart';
 
-/// Today's generated meal plan.
+/// The patient's active meal plan, as the nutritionist set it (API guide 5.1).
 abstract interface class MealPlanRepository {
-  Future<Result<List<Meal>>> getTodayMeals();
-
-  /// Smart-swap options for one meal (protein / carbs / vegetables groups).
-  Future<Result<List<FoodCategoryGroup>>> getSwapOptions(String mealId);
+  /// The active plan, or null when the nutritionist has not activated one
+  /// yet (`204`), which screens show as an empty state, not an error.
+  Future<Result<MealPlan?>> getActivePlan();
 }

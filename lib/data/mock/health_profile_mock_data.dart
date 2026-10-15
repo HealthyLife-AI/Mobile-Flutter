@@ -90,4 +90,3 @@ class HealthProfileMockData {
     MedicationEntry(name: 'فيتامين د 5000IU', frequency: 'أسبوعياً'),
   ];
 }
-

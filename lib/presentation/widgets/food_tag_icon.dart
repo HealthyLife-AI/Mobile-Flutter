@@ -4,7 +4,8 @@ import '../../core/theme/app_colors.dart';
 IconData _categoryIcon(String category) {
   switch (category) {
     case 'redFruit':
-      return Icons.circle; // apple-like dot, kept simple/abstract per spec's "icon" not literal artwork
+      return Icons
+          .circle; // apple-like dot, kept simple/abstract per spec's "icon" not literal artwork
     case 'greenFruit':
       return Icons.eco_rounded;
     case 'naturalSugar':
@@ -37,8 +38,10 @@ class FoodTagIcon extends StatelessWidget {
     return Container(
       width: size,
       height: size,
-      decoration: BoxDecoration(color: AppColors.foodTagBg(category), shape: BoxShape.circle),
-      child: Icon(_categoryIcon(category), color: AppColors.foodTagIcon(category), size: size * 0.45),
+      decoration: BoxDecoration(
+          color: AppColors.foodTagBg(category), shape: BoxShape.circle),
+      child: Icon(_categoryIcon(category),
+          color: AppColors.foodTagIcon(category), size: size * 0.45),
     );
   }
 }

@@ -3,34 +3,25 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_radius.dart';
 import '../../core/theme/app_text_styles.dart';
 import '../../domain/entities/meal_entities.dart';
-import '../../data/repositories/meal_log_store.dart';
+import '../bloc/meal_log/meal_log_cubit.dart';
 import '../widgets/gradient_cta_button.dart';
+import '../widgets/load_error_view.dart';
 import '../widgets/clinical_trust_footer.dart';
 import 'meal_log_success_screen.dart';
 import '../widgets/app_header_bar.dart';
 import '../../core/navigation/app_page_route.dart';
 
-/// true = أرقام عربية-هندية (٥٢) زي التصميم. اجعليها false لو بدك 52.
-const bool _kArabicIndicDigits = true;
+import '../widgets/directional_icon.dart';
+import '../../l10n/l10n.dart';
 
 const Color _mint = Color(0xFFD9F5EC);
 const Color _periwinkle = Color(0xFFDDE6F8);
 const Color _cardBase = Color(0xFFF4F7FD);
-
-String _d(Object v) {
-  final s = '$v';
-  if (!_kArabicIndicDigits) return s;
-  const west = '0123456789';
-  const east = '٠١٢٣٤٥٦٧٨٩';
-  return s.split('').map((c) {
-    final i = west.indexOf(c);
-    return i == -1 ? c : east[i];
-  }).join();
-}
 
 /// Quantity/grams stepper screen (POST /me/meal-logs quantity_grams field).
 class QuantitySelectorScreen extends StatefulWidget {
@@ -41,26 +32,32 @@ class QuantitySelectorScreen extends StatefulWidget {
   State<QuantitySelectorScreen> createState() => _QuantitySelectorScreenState();
 }
 
-class _QuantitySelectorScreenState extends State<QuantitySelectorScreen> with TickerProviderStateMixin {
+class _QuantitySelectorScreenState extends State<QuantitySelectorScreen>
+    with TickerProviderStateMixin {
   int _grams = 150;
   bool _lastWasAdd = true;
+
+  /// True while the log is being saved. A second tap is ignored.
+  bool _saving = false;
   final List<int> _quickAmounts = const [50, 100, 150, 200];
 
   // M13 — الكمية المضافة "تقفز" من زر +/- باتجاه الرقم (Scale+Bounce ~380ms).
-  late final AnimationController _jumpController =
-      AnimationController(vsync: this, duration: const Duration(milliseconds: 380));
+  late final AnimationController _jumpController = AnimationController(
+      vsync: this, duration: const Duration(milliseconds: 380));
 
   /// نبضة صغيرة على رقم السعرات عند كل تغيير.
-  late final AnimationController _bump =
-      AnimationController(vsync: this, duration: const Duration(milliseconds: 360));
+  late final AnimationController _bump = AnimationController(
+      vsync: this, duration: const Duration(milliseconds: 360));
 
   /// حركة الدخول المتتابعة.
-  late final AnimationController _intro =
-      AnimationController(vsync: this, duration: const Duration(milliseconds: 1400))..forward();
+  late final AnimationController _intro = AnimationController(
+      vsync: this, duration: const Duration(milliseconds: 1400))
+    ..forward();
 
   /// حركة مستمرة (بقع الخلفية، التوهج، نبض القلب...).
-  late final AnimationController _loop =
-      AnimationController(vsync: this, duration: const Duration(milliseconds: 3200))..repeat();
+  late final AnimationController _loop = AnimationController(
+      vsync: this, duration: const Duration(milliseconds: 3200))
+    ..repeat();
 
   int get _calories => (_grams * widget.food.caloriesPer100g / 100).round();
 
@@ -107,7 +104,7 @@ class _QuantitySelectorScreenState extends State<QuantitySelectorScreen> with Ti
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
-      appBar: const AppHeaderBar(title: 'أكلت شيئاً خارج الخطة'),
+      appBar: AppHeaderBar(title: context.l10n.foodSearchAteOffPlan),
       body: AnimatedBuilder(
         animation: _intro,
         builder: (context, _) => ListView(
@@ -140,7 +137,12 @@ class _QuantitySelectorScreenState extends State<QuantitySelectorScreen> with Ti
   BoxDecoration _cardDeco() => BoxDecoration(
         color: AppColors.surface,
         borderRadius: BorderRadius.circular(AppRadius.card),
-        boxShadow: [BoxShadow(color: Colors.black.withOpacity(.04), blurRadius: 14, offset: const Offset(0, 5))],
+        boxShadow: [
+          BoxShadow(
+              color: Colors.black.withOpacity(.04),
+              blurRadius: 14,
+              offset: const Offset(0, 5))
+        ],
       );
 
   Widget _buildFoodCard() {
@@ -151,8 +153,11 @@ class _QuantitySelectorScreenState extends State<QuantitySelectorScreen> with Ti
         Container(
           width: 58,
           height: 58,
-          decoration: BoxDecoration(color: AppColors.foodTagBg(widget.food.category), borderRadius: BorderRadius.circular(16)),
-          child: Icon(Icons.restaurant_rounded, color: AppColors.foodTagIcon(widget.food.category)),
+          decoration: BoxDecoration(
+              color: AppColors.foodTagBg(widget.food.category),
+              borderRadius: BorderRadius.circular(16)),
+          child: Icon(Icons.restaurant_rounded,
+              color: AppColors.foodTagIcon(widget.food.category)),
         ),
         const SizedBox(width: 12),
         Expanded(
@@ -160,16 +165,31 @@ class _QuantitySelectorScreenState extends State<QuantitySelectorScreen> with Ti
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(children: [
-                Flexible(child: Text(widget.food.name, maxLines: 1, overflow: TextOverflow.ellipsis, style: AppTextStyles.cardTitle)),
+                Flexible(
+                    child: Text(widget.food.name,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: AppTextStyles.cardTitle)),
                 const SizedBox(width: 8),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 3),
-                  decoration: BoxDecoration(color: AppColors.primary, borderRadius: BorderRadius.circular(AppRadius.pill)),
-                  child: const Text('فاكهة طازجة', style: TextStyle(fontSize: 10.5, color: Colors.white, fontWeight: FontWeight.w600)),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 9, vertical: 3),
+                  decoration: BoxDecoration(
+                      color: AppColors.primary,
+                      borderRadius: BorderRadius.circular(AppRadius.pill)),
+                  child: Text(context.l10n.quantityFreshFruit,
+                      style: const TextStyle(
+                          fontSize: 10.5,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600)),
                 ),
               ]),
               const SizedBox(height: 5),
-              Text('${_d(widget.food.caloriesPer100g)} سعرة حرارية لكل ${_d(100)} غرام', style: AppTextStyles.caption),
+              Text(
+                  context.l10n.quantityKcalPerGrams(
+                      context.localizeDigits(widget.food.caloriesPer100g),
+                      context.localizeDigits(100)),
+                  style: AppTextStyles.caption),
             ],
           ),
         ),
@@ -194,8 +214,14 @@ class _QuantitySelectorScreenState extends State<QuantitySelectorScreen> with Ti
                   final s = math.sin(_loop.value * 2 * math.pi);
                   final c = math.cos(_loop.value * 2 * math.pi);
                   return Stack(children: [
-                    Positioned(top: -60 + 14 * s, right: -50 + 12 * c, child: const _Blob(size: 200, color: _mint)),
-                    Positioned(bottom: -70 + 12 * c, left: -60 + 14 * s, child: const _Blob(size: 220, color: _periwinkle)),
+                    PositionedDirectional(
+                        top: -60 + 14 * s,
+                        start: -50 + 12 * c,
+                        child: const _Blob(size: 200, color: _mint)),
+                    PositionedDirectional(
+                        bottom: -70 + 12 * c,
+                        end: -60 + 14 * s,
+                        child: const _Blob(size: 220, color: _periwinkle)),
                   ]);
                 },
               ),
@@ -206,59 +232,93 @@ class _QuantitySelectorScreenState extends State<QuantitySelectorScreen> with Ti
                 children: [
                   AnimatedBuilder(
                     animation: _bump,
-                    builder: (_, child) => Transform.scale(scale: 1 + .06 * math.sin(math.pi * _bump.value), child: child),
+                    builder: (_, child) => Transform.scale(
+                        scale: 1 + .06 * math.sin(math.pi * _bump.value),
+                        child: child),
                     child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 12, vertical: 7),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(AppRadius.pill),
-                        boxShadow: [BoxShadow(color: Colors.black.withOpacity(.04), blurRadius: 8)],
+                        boxShadow: [
+                          BoxShadow(
+                              color: Colors.black.withOpacity(.04),
+                              blurRadius: 8)
+                        ],
                       ),
                       child: Row(mainAxisSize: MainAxisSize.min, children: [
-                        const Icon(Icons.local_fire_department_rounded, size: 15, color: AppColors.primary),
+                        const Icon(Icons.local_fire_department_rounded,
+                            size: 15, color: AppColors.primary),
                         const SizedBox(width: 5),
                         AnimatedSwitcher(
                           duration: const Duration(milliseconds: 260),
                           transitionBuilder: (c, a) => FadeTransition(
                             opacity: a,
-                            child: SlideTransition(position: Tween<Offset>(begin: const Offset(0, .4), end: Offset.zero).animate(a), child: c),
+                            child: SlideTransition(
+                                position: Tween<Offset>(
+                                        begin: const Offset(0, .4),
+                                        end: Offset.zero)
+                                    .animate(a),
+                                child: c),
                           ),
                           child: Text(
-                            '${_d(widget.food.caloriesPer100g)} سعرة × ${_d((_grams / 100).toStringAsFixed(2))} حصة',
+                            context.l10n.quantityKcalTimesPortions(
+                                context.localizeDigits(
+                                    widget.food.caloriesPer100g),
+                                context.localizeDigits(
+                                    (_grams / 100).toStringAsFixed(2))),
                             key: ValueKey(_grams),
-                            style: AppTextStyles.caption.copyWith(color: AppColors.primary, fontWeight: FontWeight.w600),
+                            style: AppTextStyles.caption.copyWith(
+                                color: AppColors.primary,
+                                fontWeight: FontWeight.w600),
                           ),
                         ),
                       ]),
                     ),
                   ),
                   const SizedBox(height: 14),
-                  Row(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.end, children: [
-                    AnimatedBuilder(
-                      animation: _bump,
-                      builder: (_, child) => Transform.scale(scale: 1 + .08 * math.sin(math.pi * _bump.value), child: child),
-                      child: TweenAnimationBuilder<double>(
-                        tween: Tween(begin: 0, end: _calories.toDouble()),
-                        duration: const Duration(milliseconds: 700),
-                        curve: Curves.easeOutCubic,
-                        builder: (_, v, __) => Text(
-                          _d(v.round()),
-                          style: AppTextStyles.metricLarge.copyWith(fontSize: 46, color: AppColors.primary),
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        AnimatedBuilder(
+                          animation: _bump,
+                          builder: (_, child) => Transform.scale(
+                              scale: 1 + .08 * math.sin(math.pi * _bump.value),
+                              child: child),
+                          child: TweenAnimationBuilder<double>(
+                            tween: Tween(begin: 0, end: _calories.toDouble()),
+                            duration: const Duration(milliseconds: 700),
+                            curve: Curves.easeOutCubic,
+                            builder: (_, v, __) => Text(
+                              context.localizeDigits(v.round()),
+                              style: AppTextStyles.metricLarge.copyWith(
+                                  fontSize: 46, color: AppColors.primary),
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                    const SizedBox(width: 8),
-                    const Padding(padding: EdgeInsets.only(bottom: 8), child: Text('سعرة حرارية', style: AppTextStyles.secondary)),
-                  ]),
+                        const SizedBox(width: 8),
+                        Padding(
+                            padding: const EdgeInsets.only(bottom: 8),
+                            child: Text(context.l10n.commonCaloriesUnit,
+                                style: AppTextStyles.secondary)),
+                      ]),
                   const SizedBox(height: 6),
-                  const Text('القيمة محسوبة بالكامل وتُضاف بدقة إلى خطتك اليومية', style: AppTextStyles.caption, textAlign: TextAlign.center),
+                  Text(context.l10n.quantityCalculatedNote,
+                      style: AppTextStyles.caption,
+                      textAlign: TextAlign.center),
                   const SizedBox(height: 18),
                   _buildStepper(),
                   const SizedBox(height: 12),
                   Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                    Text('المدى المتاح: ${_d(1)} غرام حتى ${_d(1000)} غرام', style: AppTextStyles.caption),
+                    Text(
+                        context.l10n.quantityRange(context.localizeDigits(1),
+                            context.localizeDigits(1000)),
+                        style: AppTextStyles.caption),
                     const SizedBox(width: 6),
-                    const Icon(Icons.info_outline_rounded, size: 15, color: AppColors.primary),
+                    const Icon(Icons.info_outline_rounded,
+                        size: 15, color: AppColors.primary),
                   ]),
                 ],
               ),
@@ -275,7 +335,12 @@ class _QuantitySelectorScreenState extends State<QuantitySelectorScreen> with Ti
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
-        boxShadow: [BoxShadow(color: Colors.black.withOpacity(.05), blurRadius: 14, offset: const Offset(0, 5))],
+        boxShadow: [
+          BoxShadow(
+              color: Colors.black.withOpacity(.05),
+              blurRadius: 14,
+              offset: const Offset(0, 5))
+        ],
       ),
       child: Stack(
         clipBehavior: Clip.none,
@@ -284,7 +349,10 @@ class _QuantitySelectorScreenState extends State<QuantitySelectorScreen> with Ti
           // في الـ RTL: أول عنصر يمين (−) وآخر عنصر يسار (+) زي التصميم.
           Row(
             children: [
-              _StepperButton(icon: Icons.remove_rounded, filled: false, onStep: () => _changeGrams(-10)),
+              _StepperButton(
+                  icon: Icons.remove_rounded,
+                  filled: false,
+                  onStep: () => _changeGrams(-10)),
               Expanded(
                 child: Column(children: [
                   // رقم الغرامات: يتدحرج لفوق عند الزيادة ولتحت عند النقصان
@@ -294,19 +362,30 @@ class _QuantitySelectorScreenState extends State<QuantitySelectorScreen> with Ti
                       transitionBuilder: (child, anim) {
                         final incoming = child.key == ValueKey(_grams);
                         final dir = _lastWasAdd ? 1.0 : -1.0;
-                        final begin = Offset(0, incoming ? .7 * dir : -.7 * dir);
+                        final begin =
+                            Offset(0, incoming ? .7 * dir : -.7 * dir);
                         return FadeTransition(
                           opacity: anim,
-                          child: SlideTransition(position: Tween<Offset>(begin: begin, end: Offset.zero).animate(anim), child: child),
+                          child: SlideTransition(
+                              position:
+                                  Tween<Offset>(begin: begin, end: Offset.zero)
+                                      .animate(anim),
+                              child: child),
                         );
                       },
-                      child: Text(_d(_grams), key: ValueKey(_grams), style: AppTextStyles.metricLarge),
+                      child: Text(context.localizeDigits(_grams),
+                          key: ValueKey(_grams),
+                          style: AppTextStyles.metricLarge),
                     ),
                   ),
-                  const Text('غرام (g)', style: AppTextStyles.caption),
+                  Text(context.l10n.quantityGramsUnit,
+                      style: AppTextStyles.caption),
                 ]),
               ),
-              _StepperButton(icon: Icons.add_rounded, filled: true, onStep: () => _changeGrams(10)),
+              _StepperButton(
+                  icon: Icons.add_rounded,
+                  filled: true,
+                  onStep: () => _changeGrams(10)),
             ],
           ),
           // M13: شارة "+10/-10" تقفز من الزر المضغوط باتجاه الرقم
@@ -316,9 +395,13 @@ class _QuantitySelectorScreenState extends State<QuantitySelectorScreen> with Ti
               builder: (context, child) {
                 if (_jumpController.isDismissed) return const SizedBox.shrink();
                 final t = _jumpController.value;
-                // الزر + على اليسار البصري، والزر − على اليمين البصري.
-                final startAlign = _lastWasAdd ? const Alignment(-0.85, 0) : const Alignment(0.85, 0);
-                final align = Alignment.lerp(startAlign, Alignment.center, Curves.easeOutCubic.transform(t))!;
+                // الزر + في نهاية الصف (اليسار في العربية)، والزر − في بدايته.
+                final sign = rtlDesignSign(context);
+                final startAlign = _lastWasAdd
+                    ? Alignment(-0.85 * sign, 0)
+                    : Alignment(0.85 * sign, 0);
+                final align = Alignment.lerp(startAlign, Alignment.center,
+                    Curves.easeOutCubic.transform(t))!;
                 final bounce = Curves.elasticOut.transform(t.clamp(0.0, 1.0));
                 final opacity = (1 - t).clamp(0.0, 1.0);
                 return Positioned.fill(
@@ -329,11 +412,22 @@ class _QuantitySelectorScreenState extends State<QuantitySelectorScreen> with Ti
                       child: Transform.scale(
                         scale: 0.6 + bounce * 0.6,
                         child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                          decoration: BoxDecoration(gradient: AppColors.primaryGradient, borderRadius: BorderRadius.circular(AppRadius.pill)),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 6),
+                          decoration: BoxDecoration(
+                              gradient: AppColors.primaryGradient,
+                              borderRadius:
+                                  BorderRadius.circular(AppRadius.pill)),
                           child: Text(
-                            _lastWasAdd ? '${_d(10)}+' : '${_d(10)}-',
-                            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 12),
+                            _lastWasAdd
+                                ? context.l10n
+                                    .quantityStepAdd(context.localizeDigits(10))
+                                : context.l10n.quantityStepSubtract(
+                                    context.localizeDigits(10)),
+                            style: const TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w700,
+                                fontSize: 12),
                           ),
                         ),
                       ),
@@ -352,9 +446,9 @@ class _QuantitySelectorScreenState extends State<QuantitySelectorScreen> with Ti
 
   Widget _buildQuickHeader() {
     return Row(children: [
-      const Text('كميات شائعة وسريعة:', style: AppTextStyles.cardTitle),
+      Text(context.l10n.quantityCommonAmounts, style: AppTextStyles.cardTitle),
       const Spacer(),
-      const Text('اختر بلمسة واحدة', style: AppTextStyles.caption),
+      Text(context.l10n.quantityOneTap, style: AppTextStyles.caption),
     ]);
   }
 
@@ -384,8 +478,14 @@ class _QuantitySelectorScreenState extends State<QuantitySelectorScreen> with Ti
                       margin: const EdgeInsets.symmetric(horizontal: 4),
                       decoration: BoxDecoration(
                         gradient: AppColors.primaryGradient,
-                        borderRadius: BorderRadius.circular(AppRadius.cardSmall),
-                        boxShadow: [BoxShadow(color: AppColors.primary.withOpacity(.3), blurRadius: 12, offset: const Offset(0, 4))],
+                        borderRadius:
+                            BorderRadius.circular(AppRadius.cardSmall),
+                        boxShadow: [
+                          BoxShadow(
+                              color: AppColors.primary.withOpacity(.3),
+                              blurRadius: 12,
+                              offset: const Offset(0, 4))
+                        ],
                       ),
                     ),
                   ),
@@ -405,9 +505,11 @@ class _QuantitySelectorScreenState extends State<QuantitySelectorScreen> with Ti
                         duration: const Duration(milliseconds: 250),
                         style: AppTextStyles.body.copyWith(
                           color: active ? Colors.white : AppColors.textPrimary,
-                          fontWeight: active ? FontWeight.w700 : FontWeight.w500,
+                          fontWeight:
+                              active ? FontWeight.w700 : FontWeight.w500,
                         ),
-                        child: Text('${_d(g)} غ'),
+                        child: Text(context.l10n
+                            .commonGramsShortValue(context.localizeDigits(g))),
                       ),
                     ),
                   ),
@@ -432,15 +534,24 @@ class _QuantitySelectorScreenState extends State<QuantitySelectorScreen> with Ti
           Row(children: [
             const Icon(Icons.tune_rounded, size: 18, color: AppColors.primary),
             const SizedBox(width: 6),
-            const Text('شريط الضبط الدقيق', style: AppTextStyles.cardTitle),
+            Text(context.l10n.quantityFineSlider,
+                style: AppTextStyles.cardTitle),
             const Spacer(),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-              decoration: BoxDecoration(color: AppColors.chipInactiveBg, borderRadius: BorderRadius.circular(AppRadius.pill)),
+              decoration: BoxDecoration(
+                  color: AppColors.chipInactiveBg,
+                  borderRadius: BorderRadius.circular(AppRadius.pill)),
               child: AnimatedSwitcher(
                 duration: const Duration(milliseconds: 180),
-                transitionBuilder: (c, a) => FadeTransition(opacity: a, child: ScaleTransition(scale: a, child: c)),
-                child: Text('${_d(_grams)} غرام', key: ValueKey(_grams), style: AppTextStyles.caption.copyWith(color: AppColors.primary, fontWeight: FontWeight.w600)),
+                transitionBuilder: (c, a) => FadeTransition(
+                    opacity: a, child: ScaleTransition(scale: a, child: c)),
+                child: Text(
+                    context.l10n
+                        .commonGramsValue(context.localizeDigits(_grams)),
+                    key: ValueKey(_grams),
+                    style: AppTextStyles.caption.copyWith(
+                        color: AppColors.primary, fontWeight: FontWeight.w600)),
               ),
             ),
           ]),
@@ -451,7 +562,8 @@ class _QuantitySelectorScreenState extends State<QuantitySelectorScreen> with Ti
               activeTrackColor: AppColors.primary,
               inactiveTrackColor: AppColors.chipInactiveBg,
               thumbColor: AppColors.primary,
-              thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 11, elevation: 3),
+              thumbShape: const RoundSliderThumbShape(
+                  enabledThumbRadius: 11, elevation: 3),
               overlayShape: const RoundSliderOverlayShape(overlayRadius: 22),
               overlayColor: AppColors.primary.withOpacity(0.15),
               trackShape: const RoundedRectSliderTrackShape(),
@@ -465,7 +577,12 @@ class _QuantitySelectorScreenState extends State<QuantitySelectorScreen> with Ti
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [1, 125, 250, 375, 500].map((v) => Text('${_d(v)} غ', style: AppTextStyles.caption)).toList(),
+            children: [1, 125, 250, 375, 500]
+                .map((v) => Text(
+                    context.l10n
+                        .commonGramsShortValue(context.localizeDigits(v)),
+                    style: AppTextStyles.caption))
+                .toList(),
           ),
         ],
       ),
@@ -477,7 +594,9 @@ class _QuantitySelectorScreenState extends State<QuantitySelectorScreen> with Ti
   Widget _buildTip() {
     return Container(
       padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(color: AppColors.primaryTint.withOpacity(.55), borderRadius: BorderRadius.circular(AppRadius.card)),
+      decoration: BoxDecoration(
+          color: AppColors.primaryTint.withOpacity(.55),
+          borderRadius: BorderRadius.circular(AppRadius.card)),
       child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
         // المصباح: توهج أصفر ناعم يتنفّس
         AnimatedBuilder(
@@ -490,19 +609,28 @@ class _QuantitySelectorScreenState extends State<QuantitySelectorScreen> with Ti
               decoration: BoxDecoration(
                 color: AppColors.primary.withOpacity(.28),
                 borderRadius: BorderRadius.circular(12),
-                boxShadow: [BoxShadow(color: const Color(0xFFFFC15A).withOpacity(.12 + .28 * s), blurRadius: 10 + 8 * s, spreadRadius: 1)],
+                boxShadow: [
+                  BoxShadow(
+                      color: const Color(0xFFFFC15A).withOpacity(.12 + .28 * s),
+                      blurRadius: 10 + 8 * s,
+                      spreadRadius: 1)
+                ],
               ),
-              child: const Icon(Icons.lightbulb_outline_rounded, color: AppColors.textPrimary, size: 20),
+              child: const Icon(Icons.lightbulb_outline_rounded,
+                  color: AppColors.textPrimary, size: 20),
             );
           },
         ),
         const SizedBox(width: 12),
         Expanded(
-          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            const Text('تلميح للمساعدة في التقدير', style: AppTextStyles.cardTitle),
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Text(context.l10n.quantityEstimateHint,
+                style: AppTextStyles.cardTitle),
             const SizedBox(height: 4),
             Text(
-              'تفاحة متوسطة الحجم تعادل تقريباً ${_d(150)} غرام، بينما كف اليد المنبسط يعادل حوالي ${_d(100)} غرام من اللحوم أو الأرز المطبوخ، يمكنك دوماً التقدير بالتقريب دون قلق.',
+              context.l10n.quantityEstimateBody(
+                  context.localizeDigits(150), context.localizeDigits(100)),
               style: AppTextStyles.caption,
             ),
           ]),
@@ -528,20 +656,31 @@ class _QuantitySelectorScreenState extends State<QuantitySelectorScreen> with Ti
               child: Container(
                 width: 42,
                 height: 42,
-                decoration: BoxDecoration(color: AppColors.primaryTint, borderRadius: BorderRadius.circular(14)),
-                child: const Icon(Icons.favorite_border_rounded, color: AppColors.primary, size: 21),
+                decoration: BoxDecoration(
+                    color: AppColors.primaryTint,
+                    borderRadius: BorderRadius.circular(14)),
+                child: const Icon(Icons.favorite_border_rounded,
+                    color: AppColors.primary, size: 21),
               ),
             ),
             const SizedBox(width: 12),
-            const Expanded(
-              child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                Text('نهج مطمئن وصحي', style: AppTextStyles.cardTitle),
-                SizedBox(height: 3),
-                Text('المرونة في التسجيل هي أساس استمرارية العادات الصحية', style: AppTextStyles.caption),
-              ]),
+            Expanded(
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(context.l10n.quantityReassuring,
+                        style: AppTextStyles.cardTitle),
+                    const SizedBox(height: 3),
+                    Text(context.l10n.quantityFlexibility,
+                        style: AppTextStyles.caption),
+                  ]),
             ),
             const SizedBox(width: 8),
-            Transform.rotate(angle: sway, alignment: Alignment.bottomCenter, child: const Icon(Icons.eco_outlined, color: AppColors.primary, size: 26)),
+            Transform.rotate(
+                angle: sway,
+                alignment: Alignment.bottomCenter,
+                child: const Icon(Icons.eco_outlined,
+                    color: AppColors.primary, size: 26)),
           ]);
         },
       ),
@@ -550,13 +689,31 @@ class _QuantitySelectorScreenState extends State<QuantitySelectorScreen> with Ti
 
   Widget _buildCta() {
     return GradientCtaButton(
-      label: 'تأكيد الكمية وتسجيل الطعام',
+      label: context.l10n.quantityConfirm,
       icon: Icons.check_circle_outline_rounded,
-      onPressed: () {
-        final entry = MealLogStore.instance.recordFood(widget.food, _grams);
-        Navigator.of(context).push(AppPageRoute(builder: (_) => MealLogSuccessScreen(entry: entry)));
-      },
+      loading: _saving,
+      onPressed: _saving ? null : _confirm,
     );
+  }
+
+  /// Logs the food at the chosen portion. The success screen opens once the log
+  /// is kept on the device, even if it is still waiting to reach the server. A
+  /// refused log shows its reason and stays on this screen.
+  Future<void> _confirm() async {
+    setState(() => _saving = true);
+    final result =
+        await context.read<MealLogCubit>().logFood(widget.food, grams: _grams);
+    if (!mounted) return;
+    setState(() => _saving = false);
+    final entry = result.valueOrNull;
+    if (entry == null) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(loadFailureMessage(context, result.failureOrNull)),
+      ));
+      return;
+    }
+    Navigator.of(context)
+        .push(AppPageRoute(builder: (_) => MealLogSuccessScreen(entry: entry)));
   }
 }
 
@@ -585,7 +742,8 @@ class _StepperButton extends StatefulWidget {
   final IconData icon;
   final bool filled;
   final VoidCallback onStep;
-  const _StepperButton({required this.icon, required this.filled, required this.onStep});
+  const _StepperButton(
+      {required this.icon, required this.filled, required this.onStep});
 
   @override
   State<_StepperButton> createState() => _StepperButtonState();
@@ -600,7 +758,8 @@ class _StepperButtonState extends State<_StepperButton> {
     setState(() => _down = true);
     widget.onStep();
     _delay = Timer(const Duration(milliseconds: 320), () {
-      _repeat = Timer.periodic(const Duration(milliseconds: 75), (_) => widget.onStep());
+      _repeat = Timer.periodic(
+          const Duration(milliseconds: 75), (_) => widget.onStep());
     });
   }
 
@@ -635,10 +794,17 @@ class _StepperButtonState extends State<_StepperButton> {
             gradient: widget.filled ? AppColors.primaryGradient : null,
             color: widget.filled ? null : AppColors.primaryTint,
             boxShadow: widget.filled
-                ? [BoxShadow(color: AppColors.primary.withOpacity(.3), blurRadius: 12, offset: const Offset(0, 4))]
+                ? [
+                    BoxShadow(
+                        color: AppColors.primary.withOpacity(.3),
+                        blurRadius: 12,
+                        offset: const Offset(0, 4))
+                  ]
                 : null,
           ),
-          child: Icon(widget.icon, color: widget.filled ? Colors.white : AppColors.primary, size: 24),
+          child: Icon(widget.icon,
+              color: widget.filled ? Colors.white : AppColors.primary,
+              size: 24),
         ),
       ),
     );

@@ -23,12 +23,14 @@ class MealLogEntryDto {
   final bool isOffPlan;
   final MealDto? plannedMeal;
 
-  factory MealLogEntryDto.fromJson(Map<String, dynamic> json) => MealLogEntryDto(
+  factory MealLogEntryDto.fromJson(Map<String, dynamic> json) =>
+      MealLogEntryDto(
         id: json['id'] as String? ?? '',
         name: json['name'] as String? ?? '',
         calories: (json['calories'] as num?)?.toInt() ?? 0,
         grams: (json['grams'] as num?)?.toInt() ?? 0,
-        loggedAt: DateTime.tryParse(json['loggedAt'] as String? ?? '') ?? DateTime.now(),
+        loggedAt: DateTime.tryParse(json['loggedAt'] as String? ?? '') ??
+            DateTime.now(),
         isOffPlan: json['isOffPlan'] as bool? ?? false,
         plannedMeal: json['plannedMeal'] is Map<String, dynamic>
             ? MealDto.fromJson(json['plannedMeal'] as Map<String, dynamic>)
@@ -62,6 +64,7 @@ class MealLogEntryDto {
         grams: e.grams,
         loggedAt: e.loggedAt,
         isOffPlan: e.isOffPlan,
-        plannedMeal: e.plannedMeal == null ? null : MealDto.fromEntity(e.plannedMeal!),
+        plannedMeal:
+            e.plannedMeal == null ? null : MealDto.fromEntity(e.plannedMeal!),
       );
 }

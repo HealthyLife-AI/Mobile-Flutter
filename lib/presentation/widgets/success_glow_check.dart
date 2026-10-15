@@ -15,11 +15,14 @@ class SuccessGlowCheck extends StatefulWidget {
   State<SuccessGlowCheck> createState() => _SuccessGlowCheckState();
 }
 
-class _SuccessGlowCheckState extends State<SuccessGlowCheck> with TickerProviderStateMixin {
-  late final AnimationController _scaleController =
-      AnimationController(vsync: this, duration: const Duration(milliseconds: 300))..forward();
-  late final AnimationController _glowController =
-      AnimationController(vsync: this, duration: const Duration(milliseconds: 600))..forward();
+class _SuccessGlowCheckState extends State<SuccessGlowCheck>
+    with TickerProviderStateMixin {
+  late final AnimationController _scaleController = AnimationController(
+      vsync: this, duration: const Duration(milliseconds: 300))
+    ..forward();
+  late final AnimationController _glowController = AnimationController(
+      vsync: this, duration: const Duration(milliseconds: 600))
+    ..forward();
 
   @override
   void dispose() {
@@ -31,7 +34,8 @@ class _SuccessGlowCheckState extends State<SuccessGlowCheck> with TickerProvider
   @override
   Widget build(BuildContext context) {
     return ScaleTransition(
-      scale: CurvedAnimation(parent: _scaleController, curve: Curves.easeOutBack),
+      scale:
+          CurvedAnimation(parent: _scaleController, curve: Curves.easeOutBack),
       child: FadeTransition(
         opacity: _scaleController,
         child: AnimatedBuilder(
@@ -39,7 +43,8 @@ class _SuccessGlowCheckState extends State<SuccessGlowCheck> with TickerProvider
           builder: (context, child) {
             // Pulses once (0 -> 1 -> settle at a low resting glow), never loops.
             final t = _glowController.value;
-            final pulse = t < 1 ? (1 - (t - 0.5).abs() * 2).clamp(0.0, 1.0) : 0.3;
+            final pulse =
+                t < 1 ? (1 - (t - 0.5).abs() * 2).clamp(0.0, 1.0) : 0.3;
             return Container(
               width: widget.size,
               height: widget.size,
@@ -47,13 +52,18 @@ class _SuccessGlowCheckState extends State<SuccessGlowCheck> with TickerProvider
                 shape: BoxShape.circle,
                 gradient: AppColors.successGlowGradient,
                 boxShadow: [
-                  BoxShadow(color: AppColors.primary.withValues(alpha: 0.25 + 0.25 * pulse), blurRadius: 24 + 16 * pulse, spreadRadius: 2 * pulse),
+                  BoxShadow(
+                      color: AppColors.primary
+                          .withValues(alpha: 0.25 + 0.25 * pulse),
+                      blurRadius: 24 + 16 * pulse,
+                      spreadRadius: 2 * pulse),
                 ],
               ),
               child: child,
             );
           },
-          child: Icon(Icons.check_rounded, color: Colors.white, size: widget.size * 0.5),
+          child: Icon(Icons.check_rounded,
+              color: Colors.white, size: widget.size * 0.5),
         ),
       ),
     );

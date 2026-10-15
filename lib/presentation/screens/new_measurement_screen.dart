@@ -1,17 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../core/di/app_dependencies.dart';
+import '../../core/errors/failure.dart';
+import '../../core/navigation/app_page_route.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_radius.dart';
 import '../../core/theme/app_text_styles.dart';
-import '../widgets/gradient_cta_button.dart';
-import '../widgets/clinical_trust_footer.dart';
-import 'measurement_guide_screen.dart';
-import 'first_measurement_screen.dart';
+import '../../domain/entities/measurement_entities.dart';
+import '../../domain/usecases/save_measurement_use_case.dart';
+import '../../l10n/l10n.dart';
+import '../bloc/nutritionist/nutritionist_cubit.dart';
 import '../widgets/app_header_bar.dart';
-import '../../core/navigation/app_page_route.dart';
+import '../widgets/clinical_trust_footer.dart';
+import '../widgets/directional_icon.dart';
+import '../widgets/gradient_cta_button.dart';
+import 'measurement_guide_screen.dart';
 
 /// "تفاصيل القياس" — POST /me/measurements. Weight is required; every
 /// circumference field is optional ("سجّلي ما يتوفر لديك فقط دون أي إلزام").
+///
+/// The stepper, the quick picks and the field hints start from the patient's
+/// saved readings. Until a weight is picked, save stays off.
 class MeasurementEntryScreen extends StatefulWidget {
+  /// Called after a reading is saved, before this screen closes.
   final VoidCallback? onSaved;
 
   const MeasurementEntryScreen({super.key, this.onSaved});
@@ -22,24 +34,32 @@ class MeasurementEntryScreen extends StatefulWidget {
 
 class _MeasurementEntryScreenState extends State<MeasurementEntryScreen>
     with SingleTickerProviderStateMixin {
-  static const double _previousWeight = 78.4;
+  /// Where the stepper starts when the patient has no saved weight yet.
+  static const double _startWeight = 70.0;
 
-  double _weight = 78.4;
-  bool _circumferenceExpanded = true;
+  static const List<String> _partKeys = ['waist', 'hip', 'thigh', 'arm'];
+
   late final AnimationController _enter;
 
-  final Map<String, String> _lastValues = const {
-    'waist': '82',
-    'hip': '98',
-    'thigh': '54',
-    'arm': '29',
-  };
+  /// The weight on the stepper. Shown as '—' until [_weightChosen].
+  double _weight = _startWeight;
+
+  /// False until a weight is picked: from the stepper, a quick pick, or the
+  /// last saved reading.
+  bool _weightChosen = false;
+
+  bool _saving = false;
+  bool _circumferenceExpanded = true;
+
+  /// The latest saved weight and circumferences, when there are any.
+  double? _lastWeight;
+  final Map<String, double?> _lastCm = {};
+
+  /// Messages under each field, from the last refused save.
+  final Map<String, String> _errors = {};
 
   final Map<String, TextEditingController> _controllers = {
-    'waist': TextEditingController(),
-    'hip': TextEditingController(),
-    'thigh': TextEditingController(),
-    'arm': TextEditingController(),
+    for (final key in _partKeys) key: TextEditingController(),
   };
 
   @override
@@ -49,6 +69,7 @@ class _MeasurementEntryScreenState extends State<MeasurementEntryScreen>
       vsync: this,
       duration: const Duration(milliseconds: 1200),
     )..forward();
+    _loadLast();
   }
 
   @override
@@ -60,9 +81,148 @@ class _MeasurementEntryScreenState extends State<MeasurementEntryScreen>
     super.dispose();
   }
 
+  /// Reads the saved readings for the hints. If the read fails the screen
+  /// simply has no hints: the patient can still pick a weight and save.
+  Future<void> _loadLast() async {
+    final deps = context.read<AppDependencies>();
+    final snapshot = (await deps.measurement.getSnapshot()).valueOrNull;
+    if (!mounted || snapshot == null) return;
+
+    // Newest first, so each part keeps its latest value.
+    final latest = <String, double?>{};
+    for (final entry in snapshot.savedEntries.reversed) {
+      latest['waist'] ??= entry.waistCm;
+      latest['hip'] ??= entry.hipCm;
+      latest['thigh'] ??= entry.thighCm;
+      latest['arm'] ??= entry.armCm;
+    }
+
+    final weight = snapshot.currentWeight;
+    setState(() {
+      _lastCm
+        ..clear()
+        ..addAll(latest);
+      _lastWeight = weight;
+      if (weight != null && !_weightChosen) {
+        _weight = weight;
+        _weightChosen = true;
+      }
+    });
+  }
+
+  bool get _canSave => _weightChosen && !_saving;
+
+  void _pickWeight() {
+    _weightChosen = true;
+    _errors.remove('weight');
+  }
+
   void _changeWeight(double delta) {
     final double next = ((_weight + delta) * 10).round() / 10;
-    setState(() => _weight = next.clamp(20.0, 300.0).toDouble());
+    setState(() {
+      _weight = next.clamp(20.0, 300.0).toDouble();
+      _pickWeight();
+    });
+  }
+
+  Future<void> _save() async {
+    if (!_canSave) return;
+    final l10n = context.l10n;
+
+    // Typed text becomes numbers here. Text that is not a number is refused
+    // before anything is sent.
+    final cm = <String, double?>{};
+    final invalid = <String, String>{};
+    for (final key in _partKeys) {
+      final text = _controllers[key]!.text.trim().replaceAll(',', '.');
+      if (text.isEmpty) {
+        cm[key] = null;
+        continue;
+      }
+      final value = double.tryParse(text);
+      if (value == null) {
+        invalid[key] = l10n.validationInvalidNumber;
+      } else {
+        cm[key] = value;
+      }
+    }
+    if (invalid.isNotEmpty) {
+      setState(() {
+        _errors
+          ..clear()
+          ..addAll(invalid);
+      });
+      return;
+    }
+
+    setState(() {
+      _saving = true;
+      _errors.clear();
+    });
+
+    final deps = context.read<AppDependencies>();
+    final now = DateTime.now();
+    final result = await deps.saveMeasurement(MeasurementEntry(
+      id: now.microsecondsSinceEpoch.toString(),
+      recordedAt: now,
+      weightKg: double.parse(_weight.toStringAsFixed(1)),
+      waistCm: cm['waist'],
+      hipCm: cm['hip'],
+      thighCm: cm['thigh'],
+      armCm: cm['arm'],
+    ));
+    if (!mounted) return;
+
+    final failure = result.failureOrNull;
+    if (failure == null) {
+      widget.onSaved?.call();
+      Navigator.of(context).pop();
+      return;
+    }
+
+    final messages = failure is ValidationFailure
+        ? {
+            for (final e in failure.fieldErrors.entries)
+              e.key: _errorText(e.key, e.value),
+          }
+        : <String, String>{};
+    setState(() {
+      _saving = false;
+      _errors
+        ..clear()
+        ..addAll(messages);
+    });
+    if (failure is! ValidationFailure) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(failure is NetworkFailure
+            ? l10n.commonOfflineBody
+            : l10n.commonErrorBody),
+      ));
+    }
+  }
+
+  /// The message for a field the use case refused. The codes come from
+  /// [SaveMeasurementUseCase].
+  String _errorText(String field, String code) {
+    final l10n = context.l10n;
+    if (code == 'validation.required') return l10n.validationRequired;
+    final range = field == 'weight'
+        ? SaveMeasurementUseCase.weightRangeKg
+        : SaveMeasurementUseCase.circumferenceRangeCm[field];
+    if (range == null) return l10n.commonErrorBody;
+    return l10n.validationOutOfRange(range.$1, range.$2);
+  }
+
+  /// The last saved value of [key] as shown in its hint, or null.
+  String? _lastText(String key) {
+    final value = _lastCm[key];
+    return value == null ? null : context.localizeDigits(_cmText(value));
+  }
+
+  void _openGuide() {
+    Navigator.of(context).push(
+      AppPageRoute(builder: (_) => const MeasurementGuideScreen()),
+    );
   }
 
   /// Staggered entrance: fade + slide up, each section starts a bit later.
@@ -85,19 +245,15 @@ class _MeasurementEntryScreenState extends State<MeasurementEntryScreen>
     );
   }
 
-  void _openGuide() {
-    Navigator.of(context).push(
-      AppPageRoute(builder: (_) => const MeasurementGuideScreen()),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Directionality(
-      textDirection: TextDirection.rtl,
+    return BlocProvider<NutritionistCubit>(
+      create: (context) =>
+          NutritionistCubit(context.read<AppDependencies>().nutritionist)
+            ..load(),
       child: Scaffold(
         backgroundColor: AppColors.background,
-        appBar: const AppHeaderBar(title: 'تفاصيل القياس'),
+        appBar: AppHeaderBar(title: context.l10n.measurementEntryTitle),
         body: ListView(
           physics: const BouncingScrollPhysics(),
           padding: const EdgeInsets.fromLTRB(16, 14, 16, 110),
@@ -118,29 +274,15 @@ class _MeasurementEntryScreenState extends State<MeasurementEntryScreen>
                 children: [
                   _PressScale(
                     child: GradientCtaButton(
-                      label: 'حفظ القياسات',
+                      label: context.l10n.measurementEntrySave,
                       icon: Icons.check_circle_outline_rounded,
-                      onPressed: () {
-                        if (widget.onSaved != null) {
-                          widget.onSaved!();
-                          Navigator.of(context).pop();
-                          return;
-                        }
-
-                        Navigator.of(context).push(
-                          AppPageRoute(
-                            builder: (_) => FirstMeasurementScreen(
-                              weightKg: double.parse(_weight.toStringAsFixed(1)),
-                            ),
-                          ),
-                        );
-                      },
+                      onPressed: _canSave ? _save : null,
                     ),
                   ),
                   const SizedBox(height: 6),
                   TextButton(
                     onPressed: () => Navigator.of(context).pop(),
-                    child: const Text('إلغاء والعودة للتقدّم',
+                    child: Text(context.l10n.measurementEntryCancel,
                         style: AppTextStyles.secondary),
                   ),
                   const ClinicalTrustFooter(),
@@ -175,13 +317,18 @@ class _MeasurementEntryScreenState extends State<MeasurementEntryScreen>
                     color: AppColors.primaryTint,
                     borderRadius: BorderRadius.circular(AppRadius.pill),
                   ),
-                  child: const Row(
+                  child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text('عرض', style: AppTextStyles.pillLabel),
-                      SizedBox(width: 4),
-                      Icon(Icons.arrow_back_rounded,
-                          size: 14, color: AppColors.primary),
+                      Text(context.l10n.measurementEntryView,
+                          style: AppTextStyles.pillLabel),
+                      const SizedBox(width: 4),
+                      Icon(
+                          directionalIcon(context,
+                              rtl: Icons.arrow_back_rounded,
+                              ltr: Icons.arrow_forward_rounded),
+                          size: 14,
+                          color: AppColors.primary),
                     ],
                   ),
                 ),
@@ -202,12 +349,12 @@ class _MeasurementEntryScreenState extends State<MeasurementEntryScreen>
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text('دليل القياس المصوّر',
+                    Text(context.l10n.measurementEntryGuideTitle,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: AppTextStyles.cardTitle),
                     const SizedBox(height: 2),
-                    const Text('خطوات بسيطة للحصول على قراءة دقيقة',
+                    Text(context.l10n.measurementEntryGuideSubtitle,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         style: AppTextStyles.caption),
@@ -236,17 +383,20 @@ class _MeasurementEntryScreenState extends State<MeasurementEntryScreen>
         children: [
           Row(
             children: [
-              const Expanded(
-                child: Text('تاريخ تسجيل القياس', maxLines: 1, overflow: TextOverflow.ellipsis, style: AppTextStyles.cardTitle),
+              Expanded(
+                child: Text(context.l10n.measurementEntryDate,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: AppTextStyles.cardTitle),
               ),
               const SizedBox(width: 8),
               Icon(Icons.event_busy_outlined,
                   size: 13,
                   color: AppColors.textSecondary.withValues(alpha: 0.8)),
               const SizedBox(width: 4),
-              const Flexible(
+              Flexible(
                 child: Text(
-                  'لا يمكن تحديد موعد مستقبلي',
+                  context.l10n.measurementEntryNoFuture,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: AppTextStyles.caption,
@@ -261,27 +411,27 @@ class _MeasurementEntryScreenState extends State<MeasurementEntryScreen>
               color: AppColors.background,
               borderRadius: BorderRadius.circular(AppRadius.cardSmall),
             ),
-            child: const Row(
+            child: Row(
               children: [
-                _IconSquare(icon: Icons.calendar_today_rounded, size: 40),
-                SizedBox(width: 12),
+                const _IconSquare(icon: Icons.calendar_today_rounded, size: 40),
+                const SizedBox(width: 12),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('اليوم، الأحد 21 سبتمبر 2025',
+                      Text(context.l10n.measurementEntryToday,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: AppTextStyles.body),
-                      SizedBox(height: 2),
-                      Text('توقيت التسجيل المقترح: صباحاً قبل الإفطار',
+                      const SizedBox(height: 2),
+                      Text(context.l10n.measurementEntrySuggestedTime,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                           style: AppTextStyles.caption),
                     ],
                   ),
                 ),
-                Icon(Icons.expand_more_rounded,
+                const Icon(Icons.expand_more_rounded,
                     color: AppColors.textSecondary),
               ],
             ),
@@ -292,11 +442,22 @@ class _MeasurementEntryScreenState extends State<MeasurementEntryScreen>
   }
 
   Widget _buildWeightCard() {
-    final List<_QuickChip> chips = [
-      const _QuickChip(label: '78.0', value: 78.0),
-      const _QuickChip(label: 'السابق (78.4)', value: _previousWeight),
-      const _QuickChip(label: '78.5', value: 78.5),
-    ];
+    final l10n = context.l10n;
+    final double? last = _lastWeight;
+    // Three quick picks around the last saved weight, with no saved weight
+    // there is nothing to pick around.
+    final List<_QuickChip> chips = last == null
+        ? const []
+        : [
+            for (final offset in const [-0.5, 0.0, 0.5])
+              _QuickChip(
+                label: context
+                    .localizeDigits(_tenth(last + offset).toStringAsFixed(1)),
+                value: _tenth(last + offset),
+              ),
+          ];
+    final String? weightError = _errors['weight'];
+    final String shown = _weightChosen ? _weight.toStringAsFixed(1) : '—';
 
     return _SectionCard(
       child: Column(
@@ -304,11 +465,13 @@ class _MeasurementEntryScreenState extends State<MeasurementEntryScreen>
         children: [
           Row(
             children: [
-              const _IconSquare(
-                  icon: Icons.monitor_weight_outlined, size: 36),
+              const _IconSquare(icon: Icons.monitor_weight_outlined, size: 36),
               const SizedBox(width: 10),
-              const Expanded(
-                child: Text('الوزن الحالي', maxLines: 1, overflow: TextOverflow.ellipsis, style: AppTextStyles.sectionHeading),
+              Expanded(
+                child: Text(l10n.measurementsCurrentWeight,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: AppTextStyles.sectionHeading),
               ),
               const SizedBox(width: 8),
               Container(
@@ -318,8 +481,8 @@ class _MeasurementEntryScreenState extends State<MeasurementEntryScreen>
                   color: AppColors.danger.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(AppRadius.pill),
                 ),
-                child: const Text('مطلوب',
-                    style: TextStyle(
+                child: Text(l10n.measurementEntryRequired,
+                    style: const TextStyle(
                         color: AppColors.danger,
                         fontSize: 11,
                         fontWeight: FontWeight.w700)),
@@ -327,23 +490,23 @@ class _MeasurementEntryScreenState extends State<MeasurementEntryScreen>
             ],
           ),
           const SizedBox(height: 12),
-          Container(
-            width: double.infinity,
-            child: Container(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
+          if (last != null) ...[
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
               decoration: BoxDecoration(
                 color: AppColors.background,
                 borderRadius: BorderRadius.circular(AppRadius.pill),
               ),
-              child: const Row(
+              child: Row(
                 children: [
-                  Icon(Icons.history_rounded,
+                  const Icon(Icons.history_rounded,
                       size: 14, color: AppColors.textSecondary),
-                  SizedBox(width: 6),
+                  const SizedBox(width: 6),
                   Flexible(
                     child: Text(
-                      'آخر قياس مسجل: 78.4 كغ (19 سبتمبر)',
+                      l10n.measurementEntryLastValueHint(context.localizeDigits(
+                          '${_tenth(last).toStringAsFixed(1)} ${l10n.commonKgUnit}')),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: AppTextStyles.caption,
@@ -352,8 +515,8 @@ class _MeasurementEntryScreenState extends State<MeasurementEntryScreen>
                 ],
               ),
             ),
-          ),
-          const SizedBox(height: 14),
+            const SizedBox(height: 14),
+          ],
           Row(
             children: [
               _RoundStepBtn(
@@ -388,14 +551,14 @@ class _MeasurementEntryScreenState extends State<MeasurementEntryScreen>
                           ),
                         ),
                         child: Text(
-                          _weight.toStringAsFixed(1),
-                          key: ValueKey<String>(_weight.toStringAsFixed(1)),
-                          style: AppTextStyles.metricLarge
-                              .copyWith(fontSize: 30),
+                          context.localizeDigits(shown),
+                          key: ValueKey<String>(shown),
+                          style:
+                              AppTextStyles.metricLarge.copyWith(fontSize: 30),
                         ),
                       ),
                       const SizedBox(width: 6),
-                      const Text('كغ', style: AppTextStyles.secondary),
+                      Text(l10n.commonKgUnit, style: AppTextStyles.secondary),
                     ],
                   ),
                 ),
@@ -408,55 +571,66 @@ class _MeasurementEntryScreenState extends State<MeasurementEntryScreen>
               ),
             ],
           ),
-          const SizedBox(height: 12),
-          LayoutBuilder(
-            builder: (context, constraints) {
-              final double spacing = 8;
-              final double chipWidth = constraints.maxWidth >= 330
-                  ? (constraints.maxWidth - spacing * 2) / 3
-                  : (constraints.maxWidth - spacing) / 2;
+          if (weightError != null) ...[
+            const SizedBox(height: 8),
+            Text(weightError,
+                style: AppTextStyles.caption.copyWith(color: AppColors.danger)),
+          ],
+          if (chips.isNotEmpty) ...[
+            const SizedBox(height: 12),
+            LayoutBuilder(
+              builder: (context, constraints) {
+                const double spacing = 8;
+                final double chipWidth = constraints.maxWidth >= 330
+                    ? (constraints.maxWidth - spacing * 2) / 3
+                    : (constraints.maxWidth - spacing) / 2;
 
-              return Wrap(
-                spacing: spacing,
-                runSpacing: 8,
-                children: chips.map((chip) {
-                  final bool selected = (_weight - chip.value).abs() < 0.001;
-                  return SizedBox(
-                    width: chipWidth,
-                    child: _PressScale(
-                      child: GestureDetector(
-                        onTap: () => setState(() => _weight = chip.value),
-                        child: AnimatedContainer(
-                          duration: const Duration(milliseconds: 250),
-                          curve: Curves.easeOut,
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 8, vertical: 10),
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            color: selected
-                                ? AppColors.primary
-                                : AppColors.primaryTint,
-                            borderRadius:
-                                BorderRadius.circular(AppRadius.cardSmall),
-                          ),
-                          child: AnimatedDefaultTextStyle(
+                return Wrap(
+                  spacing: spacing,
+                  runSpacing: 8,
+                  children: chips.map((chip) {
+                    final bool selected =
+                        _weightChosen && (_weight - chip.value).abs() < 0.001;
+                    return SizedBox(
+                      width: chipWidth,
+                      child: _PressScale(
+                        child: GestureDetector(
+                          onTap: () => setState(() {
+                            _weight = chip.value;
+                            _pickWeight();
+                          }),
+                          child: AnimatedContainer(
                             duration: const Duration(milliseconds: 250),
-                            style: AppTextStyles.caption.copyWith(
-                              color:
-                                  selected ? Colors.white : AppColors.primary,
-                              fontWeight: FontWeight.w600,
+                            curve: Curves.easeOut,
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 10),
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              color: selected
+                                  ? AppColors.primary
+                                  : AppColors.primaryTint,
+                              borderRadius:
+                                  BorderRadius.circular(AppRadius.cardSmall),
                             ),
-                            child: Text(chip.label,
-                                maxLines: 1, overflow: TextOverflow.ellipsis),
+                            child: AnimatedDefaultTextStyle(
+                              duration: const Duration(milliseconds: 250),
+                              style: AppTextStyles.caption.copyWith(
+                                color:
+                                    selected ? Colors.white : AppColors.primary,
+                                fontWeight: FontWeight.w600,
+                              ),
+                              child: Text(chip.label,
+                                  maxLines: 1, overflow: TextOverflow.ellipsis),
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  );
-                }).toList(),
-              );
-            },
-          ),
+                    );
+                  }).toList(),
+                );
+              },
+            ),
+          ],
           const SizedBox(height: 14),
           Container(
             padding: const EdgeInsets.all(12),
@@ -464,13 +638,13 @@ class _MeasurementEntryScreenState extends State<MeasurementEntryScreen>
               color: AppColors.background,
               borderRadius: BorderRadius.circular(AppRadius.cardSmall),
             ),
-            child: const Row(
+            child: Row(
               children: [
-                Text('🙂', style: TextStyle(fontSize: 16)),
-                SizedBox(width: 8),
+                const Text('🙂', style: TextStyle(fontSize: 16)),
+                const SizedBox(width: 8),
                 Expanded(
                   child: Text(
-                    'يساعد قياس الوزن المنتظم صباحاً بعد الاستيقاظ على تزويد أخصائيتك ببيانات موثوقة تعكس تطورك الحقيقي.',
+                    l10n.measurementEntryRegularNote,
                     textAlign: TextAlign.start,
                     style: AppTextStyles.caption,
                   ),
@@ -497,9 +671,9 @@ class _MeasurementEntryScreenState extends State<MeasurementEntryScreen>
               children: [
                 const _IconSquare(icon: Icons.straighten_rounded, size: 36),
                 const SizedBox(width: 10),
-                const Expanded(
+                Expanded(
                   child: Text(
-                    'قياسات المحيط بشريط القياس',
+                    context.l10n.measurementEntryCircumferenceTitle,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: AppTextStyles.sectionHeading,
@@ -516,8 +690,8 @@ class _MeasurementEntryScreenState extends State<MeasurementEntryScreen>
                         color: AppColors.primaryTint,
                         borderRadius: BorderRadius.circular(AppRadius.pill),
                       ),
-                      child: const Text('اختياري',
-                          style: TextStyle(
+                      child: Text(context.l10n.commonOptional,
+                          style: const TextStyle(
                               fontSize: 11, color: AppColors.primary)),
                     ),
                     AnimatedRotation(
@@ -533,7 +707,7 @@ class _MeasurementEntryScreenState extends State<MeasurementEntryScreen>
             ),
           ),
           const SizedBox(height: 6),
-          const Text('سجّلي ما يتوفر لديك فقط دون أي إلزام',
+          Text(context.l10n.measurementEntryOptionalNote,
               style: AppTextStyles.caption),
           ClipRect(
             child: AnimatedSize(
@@ -570,21 +744,22 @@ class _MeasurementEntryScreenState extends State<MeasurementEntryScreen>
                                   children: [
                                     const Icon(Icons.open_in_new_rounded,
                                         size: 14, color: AppColors.primary),
-                                     ConstrainedBox(
+                                    ConstrainedBox(
                                       constraints:
-                                          BoxConstraints(maxWidth: 120),
+                                          const BoxConstraints(maxWidth: 120),
                                       child: Text(
-                                        'كيف أقيس بدقة؟',
+                                        context
+                                            .l10n.measurementEntryHowToMeasure,
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
                                         style: AppTextStyles.pillLabel,
                                       ),
                                     ),
                                     ConstrainedBox(
-                                      constraints:
-                                          BoxConstraints(maxWidth: detailsWidth),
-                                      child: const Text(
-                                        'القياسات بالسنتيمتر (سم)',
+                                      constraints: BoxConstraints(
+                                          maxWidth: detailsWidth),
+                                      child: Text(
+                                        context.l10n.measurementEntryUnitCm,
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
                                         textAlign: TextAlign.end,
@@ -601,26 +776,34 @@ class _MeasurementEntryScreenState extends State<MeasurementEntryScreen>
                         ),
                         const SizedBox(height: 12),
                         _CircField(
-                            label: 'محيط الخصر',
-                            hint: 'عند أضيق نقطة فوق السرة',
-                            controller: _controllers['waist']!,
-                            lastValue: _lastValues['waist']!),
+                          label: context.l10n.measurementWaist,
+                          hint: context.l10n.measurementWaistHint,
+                          controller: _controllers['waist']!,
+                          lastValue: _lastText('waist'),
+                          error: _errors['waist'],
+                        ),
                         _CircField(
-                            label: 'محيط الورك',
-                            hint: 'عند أعرض نقطة في الحوض',
-                            controller: _controllers['hip']!,
-                            lastValue: _lastValues['hip']!),
+                          label: context.l10n.measurementHip,
+                          hint: context.l10n.measurementHipHint,
+                          controller: _controllers['hip']!,
+                          lastValue: _lastText('hip'),
+                          error: _errors['hip'],
+                        ),
                         _CircField(
-                            label: 'محيط الفخذ',
-                            hint: 'منتصف المسافة بين الورك والركبة',
-                            controller: _controllers['thigh']!,
-                            lastValue: _lastValues['thigh']!),
+                          label: context.l10n.measurementThigh,
+                          hint: context.l10n.measurementThighHint,
+                          controller: _controllers['thigh']!,
+                          lastValue: _lastText('thigh'),
+                          error: _errors['thigh'],
+                        ),
                         _CircField(
-                            label: 'محيط الذراع',
-                            hint: 'منتصف العضد مع استرخاء اليد',
-                            controller: _controllers['arm']!,
-                            lastValue: _lastValues['arm']!,
-                            isLast: true),
+                          label: context.l10n.measurementArm,
+                          hint: context.l10n.measurementArmHint,
+                          controller: _controllers['arm']!,
+                          lastValue: _lastText('arm'),
+                          error: _errors['arm'],
+                          isLast: true,
+                        ),
                       ],
                     )
                   : const SizedBox(width: double.infinity),
@@ -632,34 +815,50 @@ class _MeasurementEntryScreenState extends State<MeasurementEntryScreen>
   }
 
   Widget _buildPrivacyCard() {
-    return const _SectionCard(
-      padding: EdgeInsets.all(16),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _IconSquare(icon: Icons.verified_user_outlined, size: 40),
-          SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('خصوصيتك الصحية أمانة', style: AppTextStyles.cardTitle),
-                SizedBox(height: 4),
-                Text(
-                  'جميع بياناتك محمية وتصل بأمان لملفك الطبي المباشر لدى أ. خلود العربي دون أي أحكام أو تقييمات مسبقة، لتعديل خطتك بما يناسبك.',
-                  textAlign: TextAlign.start,
-                  style: AppTextStyles.caption,
+    return Builder(
+      builder: (context) {
+        final nutritionist =
+            context.watch<NutritionistCubit>().state.dataOrNull;
+        return _SectionCard(
+          padding: const EdgeInsets.all(16),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const _IconSquare(icon: Icons.verified_user_outlined, size: 40),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(context.l10n.measurementEntryPrivacyTitle,
+                        style: AppTextStyles.cardTitle),
+                    const SizedBox(height: 4),
+                    Text(
+                      context.l10n.measurementEntryPrivacyBody(
+                          nutritionist?.gender ?? 'unknown',
+                          nutritionist?.name ?? ''),
+                      textAlign: TextAlign.start,
+                      style: AppTextStyles.caption,
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 }
 
 // ───────────────────────── Helpers ─────────────────────────
+
+/// Rounds to one decimal, the precision the screen and the API use for weight.
+double _tenth(double value) => (value * 10).round() / 10;
+
+/// A centimetre value without a trailing `.0`.
+String _cmText(double cm) =>
+    cm == cm.roundToDouble() ? cm.round().toString() : cm.toStringAsFixed(1);
 
 class _QuickChip {
   final String label;
@@ -779,8 +978,7 @@ class _RoundStepBtn extends StatelessWidget {
             color: filled ? AppColors.primary : AppColors.surface,
             border: filled
                 ? null
-                : Border.all(
-                    color: AppColors.primary.withValues(alpha: 0.35)),
+                : Border.all(color: AppColors.primary.withValues(alpha: 0.35)),
           ),
           child: Icon(
             icon,
@@ -796,14 +994,20 @@ class _CircField extends StatefulWidget {
   final String label;
   final String hint;
   final TextEditingController controller;
-  final String lastValue;
+
+  /// The last saved value, shown as the field's hint. Null when there is none.
+  final String? lastValue;
+
+  /// The message from a refused save, shown under the field.
+  final String? error;
   final bool isLast;
 
   const _CircField({
     required this.label,
     required this.hint,
     required this.controller,
-    required this.lastValue,
+    this.lastValue,
+    this.error,
     this.isLast = false,
   });
 
@@ -828,6 +1032,14 @@ class _CircFieldState extends State<_CircField> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    final String? last = widget.lastValue;
+    final String? error = widget.error;
+
+    final Color borderColor = error != null
+        ? AppColors.danger
+        : (_focus.hasFocus ? AppColors.primary : Colors.transparent);
+
     return Container(
       margin: EdgeInsets.only(bottom: widget.isLast ? 0 : 12),
       child: Column(
@@ -844,12 +1056,7 @@ class _CircFieldState extends State<_CircField> {
             decoration: BoxDecoration(
               color: AppColors.background,
               borderRadius: BorderRadius.circular(AppRadius.cardSmall),
-              border: Border.all(
-                color: _focus.hasFocus
-                    ? AppColors.primary
-                    : Colors.transparent,
-                width: 1.4,
-              ),
+              border: Border.all(color: borderColor, width: 1.4),
             ),
             child: TextField(
               controller: widget.controller,
@@ -859,11 +1066,18 @@ class _CircFieldState extends State<_CircField> {
                   const TextInputType.numberWithOptions(decimal: true),
               decoration: InputDecoration(
                 border: InputBorder.none,
-                hintText: 'آخر قياس: ${widget.lastValue}',
-                suffixText: 'سم',
+                hintText: last == null
+                    ? null
+                    : l10n.measurementEntryLastValueHint(last),
+                suffixText: l10n.commonCmUnit,
               ),
             ),
           ),
+          if (error != null) ...[
+            const SizedBox(height: 6),
+            Text(error,
+                style: AppTextStyles.caption.copyWith(color: AppColors.danger)),
+          ],
         ],
       ),
     );

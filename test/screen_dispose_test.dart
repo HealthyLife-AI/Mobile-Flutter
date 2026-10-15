@@ -8,6 +8,7 @@ import 'package:healthylife_ai/presentation/screens/new_measurement_screen.dart'
 import 'package:healthylife_ai/presentation/screens/notifications_center_screen.dart';
 import 'package:healthylife_ai/presentation/screens/plan_preparing_screen.dart';
 import 'package:healthylife_ai/presentation/screens/progress_screen.dart';
+import 'helpers/app_providers.dart';
 
 /// Guards against `late final AnimationController` fields that are constructed
 /// from `dispose()`: the constructor looks up the TickerMode ancestor of an
@@ -26,7 +27,7 @@ void main() {
 
   for (final entry in screens.entries) {
     testWidgets('${entry.key} screen disposes cleanly', (tester) async {
-      await tester.pumpWidget(MaterialApp(home: entry.value()));
+      await tester.pumpWidget(appProviders(entry.value()));
       await tester.pump(const Duration(milliseconds: 100));
       await tester.pump(const Duration(seconds: 1));
 

@@ -7,6 +7,9 @@ class AppRadius {
   static const double cardSmall = 16;
   static const double pill = 999;
   static const double sheet = 24;
+
+  /// Material filled buttons (four of the five existing call sites use 14).
+  static const double button = 14;
   // FullWidthActionBar (section 2.5 exception): a flow-completion CTA gets
   // noticeably LESS rounding than the usual pill, and no side margin.
   static const double actionBar = 10;

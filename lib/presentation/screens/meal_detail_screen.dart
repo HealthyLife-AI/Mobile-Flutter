@@ -1,22 +1,23 @@
-// ignore_for_file: unused_import
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../core/di/app_dependencies.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_radius.dart';
 import '../../core/theme/app_text_styles.dart';
 import '../../domain/entities/meal_entities.dart';
-import '../../data/mock/meal_mock_data.dart';
-import '../../data/repositories/meal_log_store.dart';
-import '../widgets/gradient_cta_button.dart';
-import '../widgets/metric_stat_box.dart' show AnimatedNumberCounter;
-import '../widgets/substitution_badges.dart';
-import '../widgets/clinical_trust_footer.dart';
-import '../widgets/meal_card.dart' show mealSlotIcon, mealSlotBg, mealSlotIconColor;
+import '../../domain/entities/meal_plan_entities.dart';
+import '../bloc/meal_log/meal_log_cubit.dart';
+import '../bloc/nutritionist/nutritionist_cubit.dart';
+import '../meal_plan_view.dart';
+import '../widgets/load_error_view.dart';
 import 'meal_log_success_screen.dart';
 import '../widgets/app_header_bar.dart';
 import '../../core/navigation/app_page_route.dart';
+
+import '../../l10n/l10n.dart';
 
 /// تفاصيل الوجبة — شريط الوجبة الحالية، بطاقة الاستبدال الذكي، بطاقة السعرات
 /// والماكروز، ثم مجموعات المكونات والبدائل، وزر التسجيل.
@@ -31,14 +32,21 @@ class MealDetailScreen extends StatefulWidget {
   State<MealDetailScreen> createState() => _MealDetailScreenState();
 }
 
-class _MealDetailScreenState extends State<MealDetailScreen> with TickerProviderStateMixin {
-  // مفتاح المجموعة = عنوانها، والقيمة = فهرس الخيار المحدد (الافتراضي 0).
-  final Map<String, int> _selected = {};
+class _MealDetailScreenState extends State<MealDetailScreen>
+    with TickerProviderStateMixin {
+  // مفتاح المجموعة = ترتيبها، والقيمة = فهرس الخيار المحدد (الافتراضي 0 =
+  // الصنف الأصلي). الترتيب لا الاسم، لأن صنفين قد يحملان نفس الاسم.
+  final Map<int, int> _selected = {};
 
-  late final AnimationController _intro =
-      AnimationController(vsync: this, duration: const Duration(milliseconds: 1700))..forward();
-  late final AnimationController _loop =
-      AnimationController(vsync: this, duration: const Duration(milliseconds: 2400))..repeat();
+  /// True while the planned meal is being logged. A second tap is ignored.
+  bool _logging = false;
+
+  late final AnimationController _intro = AnimationController(
+      vsync: this, duration: const Duration(milliseconds: 1700))
+    ..forward();
+  late final AnimationController _loop = AnimationController(
+      vsync: this, duration: const Duration(milliseconds: 2400))
+    ..repeat();
 
   @override
   void dispose() {
@@ -47,37 +55,73 @@ class _MealDetailScreenState extends State<MealDetailScreen> with TickerProvider
     super.dispose();
   }
 
-  int _selectedIndex(FoodCategoryGroup g) =>
-      ((_selected[g.title] ?? 0).clamp(0, g.options.length - 1)).toInt();
+  int _selectedIndex(int groupIndex, FoodCategoryGroup g) =>
+      ((_selected[groupIndex] ?? 0).clamp(0, g.options.length - 1)).toInt();
 
   /// إجمالي السعرات = سعرات الوجبة الأصلية + فرق كل بديل مختار.
   int _totalCalories(List<FoodCategoryGroup> groups) {
     var total = widget.meal.calories;
-    for (final g in groups) {
-      final original = g.options.firstWhere((o) => o.isOriginal, orElse: () => g.options.first);
-      total += g.options[_selectedIndex(g)].calories - original.calories;
+    for (var gi = 0; gi < groups.length; gi++) {
+      final g = groups[gi];
+      final original = g.options
+          .firstWhere((o) => o.isOriginal, orElse: () => g.options.first);
+      total += g.options[_selectedIndex(gi, g)].calories - original.calories;
     }
     return total;
+  }
+
+  /// Marks the plan meal as eaten, with the food picked in each group (the
+  /// planned item or an alternative). The success screen opens once the log
+  /// is kept on the device; the server copy goes through the offline queue.
+  Future<void> _logPlanned(Meal meal, List<FoodCategoryGroup> groups) async {
+    if (_logging) return;
+    HapticFeedback.mediumImpact();
+    setState(() => _logging = true);
+    final eaten = [
+      for (var gi = 0; gi < groups.length; gi++)
+        groups[gi].options[_selectedIndex(gi, groups[gi])].planItem,
+    ].whereType<PlanItem>().toList();
+    final result = await context
+        .read<MealLogCubit>()
+        .logPlanned(meal, eaten: eaten.isEmpty ? null : eaten);
+    if (!mounted) return;
+    setState(() => _logging = false);
+    final entry = result.valueOrNull;
+    if (entry == null) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(loadFailureMessage(context, result.failureOrNull)),
+      ));
+      return;
+    }
+    Navigator.of(context)
+        .push(AppPageRoute(builder: (_) => MealLogSuccessScreen(entry: entry)));
   }
 
   @override
   Widget build(BuildContext context) {
     final meal = widget.meal;
-    final groups = MockData.lunchDetailGroups;
+    // The planned items and the alternatives the nutritionist allowed (5.1).
+    final source = meal.source;
+    final groups = source == null
+        ? const <FoodCategoryGroup>[]
+        : planSwapGroups(context, source);
     var i = 0;
 
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      appBar: const AppHeaderBar(title: 'تفاصيل الوجبة'),
-      body: Directionality(
-        textDirection: TextDirection.rtl,
-        child: ListView(
+    return BlocProvider<NutritionistCubit>(
+      create: (context) =>
+          NutritionistCubit(context.read<AppDependencies>().nutritionist)
+            ..load(),
+      child: Scaffold(
+        backgroundColor: AppColors.background,
+        appBar: AppHeaderBar(title: context.l10n.mealDetailTitle),
+        body: ListView(
           padding: const EdgeInsets.fromLTRB(18, 8, 18, 28),
           children: [
             _Reveal(
               anim: _intro,
               index: i++,
-              child: _TopRow(mealName: meal.name, timeRange: meal.timeRange, loop: _loop),
+              child: _TopRow(
+                  mealName: meal.name, timeRange: meal.timeRange, loop: _loop),
             ),
             const SizedBox(height: 14),
             _Reveal(anim: _intro, index: i++, child: const _SmartSwapNotice()),
@@ -85,7 +129,8 @@ class _MealDetailScreenState extends State<MealDetailScreen> with TickerProvider
             _Reveal(
               anim: _intro,
               index: i++,
-              child: _CaloriesCard(calories: _totalCalories(groups), loop: _loop),
+              child:
+                  _CaloriesCard(calories: _totalCalories(groups), loop: _loop),
             ),
             const SizedBox(height: 22),
             _Reveal(
@@ -93,31 +138,32 @@ class _MealDetailScreenState extends State<MealDetailScreen> with TickerProvider
               index: i++,
               child: Row(
                 children: [
-                  const Flexible(
+                  Flexible(
                     child: Text(
-                      'مكونات الوجبة والبدائل',
+                      context.l10n.mealDetailIngredients,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: AppTextStyles.sectionHeading,
                     ),
                   ),
                   const Spacer(),
-                  Text('${groups.length} أصناف غذائية', style: AppTextStyles.caption),
+                  Text(context.l10n.mealDetailItemsCount(groups.length),
+                      style: AppTextStyles.caption),
                 ],
               ),
             ),
             const SizedBox(height: 12),
-            for (final group in groups)
+            for (var gi = 0; gi < groups.length; gi++)
               _Reveal(
                 anim: _intro,
                 index: i++,
                 child: _CategoryGroupCard(
-                  group: group,
-                  selectedIndex: _selectedIndex(group),
+                  group: groups[gi],
+                  selectedIndex: _selectedIndex(gi, groups[gi]),
                   onSelect: (idx) {
-                    if (idx == _selectedIndex(group)) return;
+                    if (idx == _selectedIndex(gi, groups[gi])) return;
                     HapticFeedback.selectionClick();
-                    setState(() => _selected[group.title] = idx);
+                    setState(() => _selected[gi] = idx);
                   },
                 ),
               ),
@@ -127,11 +173,7 @@ class _MealDetailScreenState extends State<MealDetailScreen> with TickerProvider
               index: i++,
               child: _LogButton(
                 loop: _loop,
-                onPressed: () {
-                  HapticFeedback.mediumImpact();
-                  final entry = MealLogStore.instance.recordPlanned(meal);
-                  Navigator.of(context).push(AppPageRoute(builder: (_) => MealLogSuccessScreen(entry: entry)));
-                },
+                onPressed: () => _logPlanned(meal, groups),
               ),
             ),
             const SizedBox(height: 12),
@@ -143,10 +185,12 @@ class _MealDetailScreenState extends State<MealDetailScreen> with TickerProvider
                 children: [
                   RotationTransition(
                     turns: _loop,
-                    child: const Icon(Icons.autorenew_rounded, size: 14, color: AppColors.primary),
+                    child: const Icon(Icons.autorenew_rounded,
+                        size: 14, color: AppColors.primary),
                   ),
                   const SizedBox(width: 6),
-                  const Text('سيتم تحديث سجل اليوم ونسبة التزامك فوراً', style: AppTextStyles.caption),
+                  Text(context.l10n.mealDetailUpdateNote,
+                      style: AppTextStyles.caption),
                 ],
               ),
             ),
@@ -169,11 +213,14 @@ class _Reveal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final start = (index * 0.06).clamp(0.0, 0.6).toDouble();
-    final a = CurvedAnimation(parent: anim, curve: Interval(start, start + 0.4, curve: Curves.easeOutCubic));
+    final a = CurvedAnimation(
+        parent: anim,
+        curve: Interval(start, start + 0.4, curve: Curves.easeOutCubic));
     return FadeTransition(
       opacity: a,
       child: SlideTransition(
-        position: Tween<Offset>(begin: const Offset(0, 0.07), end: Offset.zero).animate(a),
+        position: Tween<Offset>(begin: const Offset(0, 0.07), end: Offset.zero)
+            .animate(a),
         child: child,
       ),
     );
@@ -187,7 +234,8 @@ class _TopRow extends StatelessWidget {
   final String mealName;
   final String timeRange;
   final Animation<double> loop;
-  const _TopRow({required this.mealName, required this.timeRange, required this.loop});
+  const _TopRow(
+      {required this.mealName, required this.timeRange, required this.loop});
 
   @override
   Widget build(BuildContext context) {
@@ -208,10 +256,14 @@ class _TopRow extends StatelessWidget {
                 const SizedBox(width: 6),
                 Flexible(
                   child: Text(
-                    'الوجبة الحالية • $timeRange',
+                    // The API sends no meal times (5.1).
+                    timeRange.isEmpty
+                        ? context.l10n.mealDetailFromPlan
+                        : context.l10n.mealDetailCurrentMeal(timeRange),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: AppTextStyles.caption.copyWith(fontSize: 11.5, color: AppColors.textPrimary),
+                    style: AppTextStyles.caption
+                        .copyWith(fontSize: 11.5, color: AppColors.textPrimary),
                   ),
                 ),
               ],
@@ -224,7 +276,10 @@ class _TopRow extends StatelessWidget {
             mealName,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: AppTextStyles.caption.copyWith(fontSize: 13, fontWeight: FontWeight.w600, color: AppColors.primary),
+            style: AppTextStyles.caption.copyWith(
+                fontSize: 13,
+                fontWeight: FontWeight.w600,
+                color: AppColors.primary),
           ),
         ),
       ],
@@ -259,7 +314,8 @@ class _PulseDot extends StatelessWidget {
               Container(
                 width: 7,
                 height: 7,
-                decoration: const BoxDecoration(color: AppColors.primary, shape: BoxShape.circle),
+                decoration: const BoxDecoration(
+                    color: AppColors.primary, shape: BoxShape.circle),
               ),
             ],
           );
@@ -284,21 +340,25 @@ class _SmartSwapNotice extends StatelessWidget {
         borderRadius: BorderRadius.circular(AppRadius.card),
         border: Border.all(color: AppColors.hairline),
       ),
-      child: const Row(
+      child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          _SwapIcon(),
-          SizedBox(width: 12),
+          const _SwapIcon(),
+          const SizedBox(width: 12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text('مرونة الاستبدال الذكي', style: AppTextStyles.cardTitle),
-                SizedBox(height: 6),
+                Text(context.l10n.mealDetailSmartSwap,
+                    style: AppTextStyles.cardTitle),
+                const SizedBox(height: 6),
                 Text(
-                  'اختر البديل إذا لم يتوفر الصنف الأصلي، والبديل يستبدل الصنف ولا يُضاف إليه لتحقيق التوازن التغذوي الدقيق.',
-                  style: TextStyle(fontSize: 11.5, height: 1.8, color: AppColors.textSecondary),
+                  context.l10n.mealDetailSwapNote,
+                  style: const TextStyle(
+                      fontSize: 11.5,
+                      height: 1.8,
+                      color: AppColors.textSecondary),
                 ),
               ],
             ),
@@ -335,12 +395,14 @@ class _SwapIconState extends State<_SwapIcon> {
       child: Container(
         width: 44,
         height: 44,
-        decoration: BoxDecoration(color: AppColors.primary, borderRadius: BorderRadius.circular(13)),
+        decoration: BoxDecoration(
+            color: AppColors.primary, borderRadius: BorderRadius.circular(13)),
         child: AnimatedRotation(
           turns: _turns,
           duration: const Duration(milliseconds: 700),
           curve: Curves.easeInOutBack,
-          child: const Icon(Icons.swap_horiz_rounded, color: Colors.white, size: 22),
+          child: const Icon(Icons.swap_horiz_rounded,
+              color: Colors.white, size: 22),
         ),
       ),
     );
@@ -357,6 +419,7 @@ class _CaloriesCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final nutritionist = context.watch<NutritionistCubit>().state.dataOrNull;
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -375,8 +438,10 @@ class _CaloriesCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text('إجمالي السعرات النشطة',
-                        style: AppTextStyles.caption.copyWith(color: AppColors.primary, fontWeight: FontWeight.w500)),
+                    Text(context.l10n.mealDetailTotalCalories,
+                        style: AppTextStyles.caption.copyWith(
+                            color: AppColors.primary,
+                            fontWeight: FontWeight.w500)),
                     const SizedBox(height: 4),
                     Row(
                       mainAxisSize: MainAxisSize.min,
@@ -385,10 +450,15 @@ class _CaloriesCard extends StatelessWidget {
                       children: [
                         _CountText(
                           value: calories,
-                          style: const TextStyle(fontSize: 38, fontWeight: FontWeight.w800, color: AppColors.primary, height: 1.1),
+                          style: const TextStyle(
+                              fontSize: 38,
+                              fontWeight: FontWeight.w800,
+                              color: AppColors.primary,
+                              height: 1.1),
                         ),
                         const SizedBox(width: 8),
-                        const Text('سعرة حرارية', style: AppTextStyles.secondary),
+                        Text(context.l10n.commonCaloriesUnit,
+                            style: AppTextStyles.secondary),
                       ],
                     ),
                   ],
@@ -403,26 +473,38 @@ class _CaloriesCard extends StatelessWidget {
               Container(
                 width: 22,
                 height: 22,
-                decoration: const BoxDecoration(color: Color(0xFFD5F5E9), shape: BoxShape.circle),
-                child: const Icon(Icons.check_rounded, size: 14, color: Color(0xFF12B886)),
+                decoration: const BoxDecoration(
+                    color: Color(0xFFD5F5E9), shape: BoxShape.circle),
+                child: const Icon(Icons.check_rounded,
+                    size: 14, color: Color(0xFF12B886)),
               ),
               const SizedBox(width: 8),
-              const Expanded(
+              Expanded(
                 child: Text(
-                  'وجبة متوازنة معتمدة من أ. خلود العربي (أخصائية التغذية)',
+                  context.l10n.mealDetailApprovedBy(
+                      nutritionist?.gender ?? 'unknown',
+                      nutritionist?.name ?? ''),
                   style: AppTextStyles.caption,
                 ),
               ),
             ],
           ),
           const SizedBox(height: 14),
-          const Row(
+          Row(
             children: [
-              Expanded(child: _MacroBox(label: 'البروتين', grams: 43, order: 0)),
-              SizedBox(width: 10),
-              Expanded(child: _MacroBox(label: 'الكارب', grams: 38, order: 1)),
-              SizedBox(width: 10),
-              Expanded(child: _MacroBox(label: 'الدهون الصحية', grams: 14, order: 2)),
+              Expanded(
+                  child: _MacroBox(
+                      label: context.l10n.macroProtein, grams: 43, order: 0)),
+              const SizedBox(width: 10),
+              Expanded(
+                  child: _MacroBox(
+                      label: context.l10n.macroCarbs, grams: 38, order: 1)),
+              const SizedBox(width: 10),
+              Expanded(
+                  child: _MacroBox(
+                      label: context.l10n.macroHealthyFats,
+                      grams: 14,
+                      order: 2)),
             ],
           ),
         ],
@@ -466,14 +548,17 @@ class _Flame extends StatelessWidget {
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             boxShadow: [
-              BoxShadow(color: AppColors.primary.withValues(alpha: 0.06 + 0.12 * s), blurRadius: 16 + 10 * s),
+              BoxShadow(
+                  color: AppColors.primary.withValues(alpha: 0.06 + 0.12 * s),
+                  blurRadius: 16 + 10 * s),
             ],
           ),
           child: Transform.rotate(
             angle: math.sin(loop.value * 4 * math.pi) * 0.05,
             child: Transform.scale(
               scale: 1 + 0.09 * s,
-              child: const Icon(Icons.local_fire_department_outlined, size: 36, color: AppColors.primary),
+              child: const Icon(Icons.local_fire_department_outlined,
+                  size: 36, color: AppColors.primary),
             ),
           ),
         );
@@ -487,7 +572,8 @@ class _MacroBox extends StatelessWidget {
   final String label;
   final int grams;
   final int order;
-  const _MacroBox({required this.label, required this.grams, required this.order});
+  const _MacroBox(
+      {required this.label, required this.grams, required this.order});
 
   @override
   Widget build(BuildContext context) {
@@ -501,19 +587,25 @@ class _MacroBox extends StatelessWidget {
       ),
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 6),
-        decoration: BoxDecoration(color: const Color(0xFFF4F6FD), borderRadius: BorderRadius.circular(14)),
+        decoration: BoxDecoration(
+            color: const Color(0xFFF4F6FD),
+            borderRadius: BorderRadius.circular(14)),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            FittedBox(child: Text(label, maxLines: 1, style: AppTextStyles.caption.copyWith(fontSize: 11.5))),
+            FittedBox(
+                child: Text(label,
+                    maxLines: 1,
+                    style: AppTextStyles.caption.copyWith(fontSize: 11.5))),
             const SizedBox(height: 6),
             TweenAnimationBuilder<double>(
               tween: Tween<double>(begin: 0, end: grams.toDouble()),
               duration: Duration(milliseconds: 900 + order * 150),
               curve: Curves.easeOutCubic,
               builder: (_, v, __) => Text(
-                '${v.round()} غ',
-                style: AppTextStyles.caption.copyWith(fontSize: 11.5, color: AppColors.textSecondary),
+                context.l10n.commonGramsShortValue(v.round()),
+                style: AppTextStyles.caption
+                    .copyWith(fontSize: 11.5, color: AppColors.textSecondary),
               ),
             ),
           ],
@@ -531,14 +623,18 @@ class _CategoryGroupCard extends StatelessWidget {
   final int selectedIndex;
   final ValueChanged<int> onSelect;
 
-  const _CategoryGroupCard({required this.group, required this.selectedIndex, required this.onSelect});
+  const _CategoryGroupCard(
+      {required this.group,
+      required this.selectedIndex,
+      required this.onSelect});
 
   static const Color _green = Color(0xFF34D3A5);
 
   @override
   Widget build(BuildContext context) {
     final bool locked = group.options.length == 1 && group.options.first.locked;
-    final original = group.options.firstWhere((o) => o.isOriginal, orElse: () => group.options.first);
+    final original = group.options
+        .firstWhere((o) => o.isOriginal, orElse: () => group.options.first);
 
     return Container(
       margin: const EdgeInsets.only(bottom: 14),
@@ -556,7 +652,9 @@ class _CategoryGroupCard extends StatelessWidget {
               Container(
                 width: 9,
                 height: 9,
-                decoration: BoxDecoration(color: locked ? _green : AppColors.primary, shape: BoxShape.circle),
+                decoration: BoxDecoration(
+                    color: locked ? _green : AppColors.primary,
+                    shape: BoxShape.circle),
               ),
               const SizedBox(width: 8),
               Expanded(
@@ -570,26 +668,35 @@ class _CategoryGroupCard extends StatelessWidget {
               const SizedBox(width: 8),
               if (locked)
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                  decoration: BoxDecoration(color: AppColors.primary, borderRadius: BorderRadius.circular(AppRadius.pill)),
-                  child: const Row(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                  decoration: BoxDecoration(
+                      color: AppColors.primary,
+                      borderRadius: BorderRadius.circular(AppRadius.pill)),
+                  child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text('صنف أساسي بدون بديل',
-                          style: TextStyle(fontSize: 10.5, color: Colors.white, fontWeight: FontWeight.w500)),
-                      SizedBox(width: 4),
-                      Icon(Icons.check_circle_outline_rounded, size: 13, color: Colors.white),
+                      Text(context.l10n.mealDetailNoAlternative,
+                          style: const TextStyle(
+                              fontSize: 10.5,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w500)),
+                      const SizedBox(width: 4),
+                      const Icon(Icons.check_circle_outline_rounded,
+                          size: 13, color: Colors.white),
                     ],
                   ),
                 )
               else
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(AppRadius.pill),
                     border: Border.all(color: AppColors.border),
                   ),
-                  child: Text('اختر صنفاً واحداً', style: AppTextStyles.caption.copyWith(fontSize: 10.5)),
+                  child: Text(context.l10n.mealDetailChooseOne,
+                      style: AppTextStyles.caption.copyWith(fontSize: 10.5)),
                 ),
             ],
           ),
@@ -643,7 +750,9 @@ class _OptionTile extends StatelessWidget {
           color: selected ? const Color(0xFFF5F7FD) : AppColors.surface,
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
-            color: selected ? AppColors.primary.withValues(alpha: 0.35) : AppColors.hairline,
+            color: selected
+                ? AppColors.primary.withValues(alpha: 0.35)
+                : AppColors.hairline,
             width: selected ? 1.2 : 1,
           ),
         ),
@@ -668,16 +777,21 @@ class _OptionTile extends StatelessWidget {
                     crossAxisAlignment: WrapCrossAlignment.center,
                     children: [
                       Text(option.name,
-                          style: AppTextStyles.body.copyWith(fontSize: 13, fontWeight: FontWeight.w600)),
+                          style: AppTextStyles.body.copyWith(
+                              fontSize: 13, fontWeight: FontWeight.w600)),
                       if (original && !locked)
-                        _pill('الصنف المجدول الأصلي', filled: true)
+                        _pill(context.l10n.mealDetailOriginalItem, filled: true)
                       else if (!original && !locked)
-                        _pill('يستبدل ${_short(replacesName)}', filled: false),
+                        _pill(
+                            context.l10n
+                                .mealDetailReplaces(_short(replacesName)),
+                            filled: false),
                     ],
                   ),
                   if (hasDesc) ...[
                     const SizedBox(height: 4),
-                    Text(option.macroLabel, style: AppTextStyles.caption.copyWith(fontSize: 11)),
+                    Text(option.macroLabel,
+                        style: AppTextStyles.caption.copyWith(fontSize: 11)),
                   ],
                   const SizedBox(height: 6),
                   Text.rich(
@@ -685,13 +799,19 @@ class _OptionTile extends StatelessWidget {
                       style: AppTextStyles.caption.copyWith(fontSize: 11.5),
                       children: [
                         TextSpan(
-                          text: '${option.grams} غرام',
-                          style: const TextStyle(color: AppColors.primary, fontWeight: FontWeight.w700),
+                          text: context.l10n.commonGramsValue(option.grams),
+                          style: const TextStyle(
+                              color: AppColors.primary,
+                              fontWeight: FontWeight.w700),
                         ),
                         const TextSpan(text: '  •  '),
-                        TextSpan(text: '${option.calories} سعرة حرارية'),
+                        TextSpan(
+                            text: context.l10n
+                                .commonCaloriesValue(option.calories)),
                         if (!original && !locked && calorieDelta != 0)
-                          TextSpan(text: ' (${calorieDelta > 0 ? '+' : '-'}${calorieDelta.abs()})'),
+                          TextSpan(
+                              text:
+                                  ' (${calorieDelta > 0 ? '+' : '-'}${calorieDelta.abs()})'),
                       ],
                     ),
                   ),
@@ -746,7 +866,8 @@ class _FoodThumb extends StatelessWidget {
         ),
         border: Border.all(color: Colors.white, width: 2),
       ),
-      child: Icon(categoryIcon(option), size: 28, color: const Color(0xFFD9822B)),
+      child:
+          Icon(categoryIcon(option), size: 28, color: const Color(0xFFD9822B)),
     );
   }
 }
@@ -761,9 +882,10 @@ class _RadioMark extends StatefulWidget {
   State<_RadioMark> createState() => _RadioMarkState();
 }
 
-class _RadioMarkState extends State<_RadioMark> with SingleTickerProviderStateMixin {
-  late final AnimationController _ripple =
-      AnimationController(vsync: this, duration: const Duration(milliseconds: 650));
+class _RadioMarkState extends State<_RadioMark>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _ripple = AnimationController(
+      vsync: this, duration: const Duration(milliseconds: 650));
 
   @override
   void didUpdateWidget(covariant _RadioMark old) {
@@ -791,13 +913,17 @@ class _RadioMarkState extends State<_RadioMark> with SingleTickerProviderStateMi
             animation: _ripple,
             builder: (_, __) {
               final t = Curves.easeOutCubic.transform(_ripple.value);
-              if (_ripple.value == 0 || _ripple.value == 1) return const SizedBox.shrink();
+              if (_ripple.value == 0 || _ripple.value == 1) {
+                return const SizedBox.shrink();
+              }
               return Container(
                 width: 28 + 16 * t,
                 height: 28 + 16 * t,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  border: Border.all(color: AppColors.primary.withValues(alpha: (1 - t) * 0.5), width: 2),
+                  border: Border.all(
+                      color: AppColors.primary.withValues(alpha: (1 - t) * 0.5),
+                      width: 2),
                 ),
               );
             },
@@ -815,11 +941,13 @@ class _RadioMarkState extends State<_RadioMark> with SingleTickerProviderStateMi
               duration: const Duration(milliseconds: 380),
               switchInCurve: Curves.elasticOut,
               switchOutCurve: Curves.easeIn,
-              transitionBuilder: (child, anim) => ScaleTransition(scale: anim, child: child),
+              transitionBuilder: (child, anim) =>
+                  ScaleTransition(scale: anim, child: child),
               child: widget.locked
                   ? const _ShakingLock(key: ValueKey('lock'))
                   : (widget.selected
-                      ? const Icon(Icons.check_rounded, key: ValueKey('check'), size: 17, color: Colors.white)
+                      ? const Icon(Icons.check_rounded,
+                          key: ValueKey('check'), size: 17, color: Colors.white)
                       : const SizedBox.shrink(key: ValueKey('empty'))),
             ),
           ),
@@ -877,7 +1005,10 @@ class _LogButtonState extends State<_LogButton> {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
             boxShadow: [
-              BoxShadow(color: AppColors.primary.withValues(alpha: 0.25), blurRadius: 14, offset: const Offset(0, 6)),
+              BoxShadow(
+                  color: AppColors.primary.withValues(alpha: 0.25),
+                  blurRadius: 14,
+                  offset: const Offset(0, 6)),
             ],
           ),
           child: ClipRRect(
@@ -885,12 +1016,14 @@ class _LogButtonState extends State<_LogButton> {
             child: Stack(
               alignment: Alignment.center,
               children: [
-                Positioned.fill(child: ColoredBox(color: AppColors.primary)),
+                const Positioned.fill(
+                    child: ColoredBox(color: AppColors.primary)),
                 Positioned.fill(
                   child: AnimatedBuilder(
                     animation: widget.loop,
                     builder: (_, __) {
-                      final t = (widget.loop.value / 0.5).clamp(0.0, 1.0).toDouble();
+                      final t =
+                          (widget.loop.value / 0.5).clamp(0.0, 1.0).toDouble();
                       return Align(
                         alignment: Alignment(-1.6 + 3.2 * t, 0),
                         child: FractionallySizedBox(
@@ -912,13 +1045,17 @@ class _LogButtonState extends State<_LogButton> {
                     },
                   ),
                 ),
-                const Row(
+                Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text('سجّلت هذه الوجبة الآن',
-                        style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: Colors.white)),
-                    SizedBox(width: 10),
-                    Icon(Icons.check_circle_outline_rounded, size: 22, color: Colors.white),
+                    Text(context.l10n.mealDetailLoggedNow,
+                        style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white)),
+                    const SizedBox(width: 10),
+                    const Icon(Icons.check_circle_outline_rounded,
+                        size: 22, color: Colors.white),
                   ],
                 ),
               ],
@@ -955,18 +1092,24 @@ class MacroTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 6),
-      decoration: BoxDecoration(color: tintBg.withValues(alpha: 0.55), borderRadius: BorderRadius.circular(AppRadius.cardSmall)),
+      decoration: BoxDecoration(
+          color: tintBg.withValues(alpha: 0.55),
+          borderRadius: BorderRadius.circular(AppRadius.cardSmall)),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(icon, size: 18, color: tint),
           const SizedBox(height: 6),
           FittedBox(
-            child: Text(value, style: AppTextStyles.body.copyWith(fontWeight: FontWeight.w800)),
+            child: Text(value,
+                style:
+                    AppTextStyles.body.copyWith(fontWeight: FontWeight.w800)),
           ),
           const SizedBox(height: 2),
           FittedBox(
-            child: Text(label, maxLines: 1, style: AppTextStyles.caption.copyWith(fontSize: 11)),
+            child: Text(label,
+                maxLines: 1,
+                style: AppTextStyles.caption.copyWith(fontSize: 11)),
           ),
         ],
       ),
@@ -977,11 +1120,24 @@ class MacroTile extends StatelessWidget {
 /// Per-option food glyph — derived from the option's macro label (and, as a
 /// fallback, the food name).
 IconData categoryIcon(FoodOption option) {
+  // A food from the plan carries its macro code, whatever the language.
+  switch (option.macro) {
+    case 'protein':
+      return Icons.set_meal_outlined;
+    case 'carbs':
+      return Icons.bakery_dining_outlined;
+    case 'fat':
+      return Icons.water_drop_outlined;
+  }
   final label = '${option.macroLabel} ${option.name}';
   if (label.contains('بروتين')) return Icons.set_meal_outlined;
-  if (label.contains('كارب') || label.contains('نشويات')) return Icons.bakery_dining_outlined;
+  if (label.contains('كارب') || label.contains('نشويات')) {
+    return Icons.bakery_dining_outlined;
+  }
   if (label.contains('دهون')) return Icons.water_drop_outlined;
   if (label.contains('فاكهة')) return Icons.apple_rounded;
-  if (label.contains('خضار') || label.contains('ألياف')) return Icons.eco_outlined;
+  if (label.contains('خضار') || label.contains('ألياف')) {
+    return Icons.eco_outlined;
+  }
   return Icons.restaurant_menu_rounded;
 }

@@ -1,13 +1,19 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_radius.dart';
 import '../../core/theme/app_text_styles.dart';
 import '../../core/navigation/app_page_route.dart';
 import '../widgets/gradient_cta_button.dart';
 import '../widgets/confirm_action_sheet.dart';
-import 'onboarding_measurements_screen.dart';
+import '../../core/errors/failure.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+import '../bloc/auth/auth_cubit.dart';
 import 'privacy_document_screen.dart';
+
+import '../../l10n/l10n.dart';
 
 class _ConsentClause {
   final IconData icon;
@@ -25,125 +31,185 @@ class HealthDataConsentScreen extends StatefulWidget {
   const HealthDataConsentScreen({super.key});
 
   @override
-  State<HealthDataConsentScreen> createState() => _HealthDataConsentScreenState();
+  State<HealthDataConsentScreen> createState() =>
+      _HealthDataConsentScreenState();
 }
 
 class _HealthDataConsentScreenState extends State<HealthDataConsentScreen> {
   int? _expandedIndex = 0;
   bool _agreed = false;
 
-  static const List<_ConsentClause> _clauses = [
-    _ConsentClause(
-      Icons.lock_outline_rounded,
-      'كيف تُحفظ بياناتك الصحية؟',
-      'تشفير كامل وفق أعلى معايير الخصوصية الصحية السريرية (HIPAA standards). تُخزَّن السجلات على خوادم طبية معزولة لا يمكن لأي طرف ثالث أو شركة إعلانات الوصول إليها تحت أي ظرف.',
-    ),
-    _ConsentClause(
-      Icons.medical_services_outlined,
-      'من يمكنه الاطلاع عليها؟',
-      'أخصائية التغذية العلاجية المعتمدة على حسابك فقط، عبر نظام مراجعة سريري مشفر. لا تُشارك بياناتك مع أي جهة أخرى، ولا تُستخدم لأي غرض تسويقي.',
-    ),
-    _ConsentClause(
-      Icons.person_remove_alt_1_outlined,
-      'حقك الكامل في إلغاء الموافقة',
-      'يمكنك سحب موافقتك في أي وقت من الحساب ← الخصوصية. سيؤدي ذلك إلى إيقاف تخصيص الخطة الغذائية تلقائياً حتى تجديد الموافقة، دون التأثير على سجلاتك المحفوظة.',
-    ),
-  ];
+  static List<_ConsentClause> _clauses(AppLocalizations l10n) => [
+        _ConsentClause(
+          Icons.lock_outline_rounded,
+          l10n.consentClauseStorageTitle,
+          l10n.consentClauseStorageBody,
+        ),
+        _ConsentClause(
+          Icons.medical_services_outlined,
+          l10n.consentClauseAccessTitle,
+          l10n.consentClauseAccessBody,
+        ),
+        _ConsentClause(
+          Icons.person_remove_alt_1_outlined,
+          l10n.consentClauseRevokeTitle,
+          l10n.consentClauseRevokeBody,
+        ),
+      ];
 
   Future<void> _confirmExit() async {
     final confirmed = await ConfirmActionSheet.show(
       context,
       icon: Icons.privacy_tip_outlined,
-      title: 'الخروج من إعداد ملفك الصحي؟',
-      message: 'لن تتمكني من متابعة رحلتك العلاجية أو الوصول لخطتك الغذائية قبل الموافقة على شروط الخصوصية الصحية.',
-      confirmLabel: 'الخروج الآن',
-      cancelLabel: 'متابعة الموافقة',
+      title: context.l10n.consentExitTitle,
+      message: context.l10n.consentExitMessage,
+      confirmLabel: context.l10n.consentExitConfirm,
+      cancelLabel: context.l10n.consentExitCancel,
     );
-    if (confirmed == true && mounted) Navigator.of(context).pop();
+    // Leaving before accepting ends the session: the policy is required to use the app.
+    if (confirmed == true && mounted) await context.read<AuthCubit>().signOut();
   }
 
-  void _continue() {
-    Navigator.of(context).push(AppPageRoute(builder: (_) => const OnboardingMeasurementsScreen()));
+  /// Opens `policy_url` from the consent response (API guide 4). When the server
+  /// sent no usable URL, the bundled privacy document is shown instead.
+  Future<void> _openPolicy() async {
+    final raw = context.read<AuthCubit>().state.consent?.policyUrl;
+    final uri = raw == null ? null : Uri.tryParse(raw);
+    if (uri == null || (uri.scheme != 'https' && uri.scheme != 'http')) {
+      await Navigator.of(context)
+          .push(AppPageRoute(builder: (_) => const PrivacyDocumentScreen()));
+      return;
+    }
+    var opened = false;
+    try {
+      opened = await launchUrl(uri, mode: LaunchMode.externalApplication);
+    } catch (_) {
+      opened = false;
+    }
+    if (!opened && mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(context.l10n.linkCouldNotOpen)),
+      );
+    }
+  }
+
+  /// Accepts the policy. On success the auth listener replaces this screen with
+  /// the wizard, so only a failure is shown here.
+  Future<void> _continue() async {
+    final cubit = context.read<AuthCubit>();
+    await cubit.acceptConsent();
+    if (!mounted) return;
+    final failure = cubit.state.failure;
+    if (failure == null) return;
+    final l10n = context.l10n;
+    final message = switch (failure) {
+      ApiFailure(code: 'consent_version_mismatch') =>
+        l10n.consentVersionChanged,
+      NetworkFailure() => l10n.commonOfflineBody,
+      _ => l10n.commonErrorBody,
+    };
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(message)));
   }
 
   @override
   Widget build(BuildContext context) {
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: Scaffold(
-        backgroundColor: AppColors.background,
-        body: SafeArea(
-          child: Column(children: [
-            _ConsentHeader(onBack: _confirmExit, onClose: _confirmExit),
-            Expanded(
-              child: ListView(
-                padding: EdgeInsets.zero,
-                children: [
-                  // ===== الجزء العلوي الجديد (Hero) =====
-                  const _ConsentHero(),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(22, 4, 22, 20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        const _Reveal(
-                          delay: Duration(milliseconds: 900),
-                          child: _EncryptionBanner(),
-                        ),
-                        const SizedBox(height: 16),
-                        _Reveal(
-                          delay: const Duration(milliseconds: 1050),
-                          child: _buildCharterCard(),
-                        ),
-                        const SizedBox(height: 20),
-                        Row(children: [
-                          const Expanded(child: Text('بنود الخصوصية ومسؤولية الحفظ', style: AppTextStyles.sectionHeading)),
-                          Text('${_clauses.length} بنود رئيسية', style: AppTextStyles.caption),
-                        ]),
-                        const SizedBox(height: 12),
-                        for (int i = 0; i < _clauses.length; i++) _buildClause(i),
-                        const SizedBox(height: 8),
-                        _AgreementCheckRow(
-                          checked: _agreed,
-                          onChanged: (v) => setState(() => _agreed = v),
-                        ),
-                        const SizedBox(height: 12),
-                        Row(children: [
+    return Scaffold(
+      backgroundColor: AppColors.background,
+      body: SafeArea(
+        child: Column(children: [
+          _ConsentHeader(onBack: _confirmExit, onClose: _confirmExit),
+          Expanded(
+            child: ListView(
+              padding: EdgeInsets.zero,
+              children: [
+                // ===== الجزء العلوي الجديد (Hero) =====
+                const _ConsentHero(),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(22, 4, 22, 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      const _Reveal(
+                        delay: Duration(milliseconds: 900),
+                        child: _EncryptionBanner(),
+                      ),
+                      const SizedBox(height: 16),
+                      _Reveal(
+                        delay: const Duration(milliseconds: 1050),
+                        child: _buildCharterCard(),
+                      ),
+                      const SizedBox(height: 20),
+                      Row(children: [
+                        Expanded(
+                            child: Text(context.l10n.consentClausesHeader,
+                                style: AppTextStyles.sectionHeading)),
+                        Text(
+                            context.l10n.consentClausesCount(
+                                _clauses(context.l10n).length),
+                            style: AppTextStyles.caption),
+                      ]),
+                      const SizedBox(height: 12),
+                      for (int i = 0; i < _clauses(context.l10n).length; i++)
+                        _buildClause(i),
+                      const SizedBox(height: 8),
+                      _AgreementCheckRow(
+                        checked: _agreed,
+                        onChanged: (v) => setState(() => _agreed = v),
+                      ),
+                      const SizedBox(height: 12),
+                      // The link and the "verified" note share a line when
+                      // they fit; on a narrow phone the note moves below.
+                      Wrap(
+                        alignment: WrapAlignment.spaceBetween,
+                        crossAxisAlignment: WrapCrossAlignment.center,
+                        spacing: 8,
+                        children: [
                           InkWell(
-                            onTap: () => Navigator.of(context).push(AppPageRoute(builder: (_) => const PrivacyDocumentScreen())),
-                            child: const Padding(
-                              padding: EdgeInsets.symmetric(vertical: 6),
-                              child: Row(mainAxisSize: MainAxisSize.min, children: [
-                                Text('قراءة وثيقة الخصوصية السريرية الكاملة', style: AppTextStyles.pillLabel),
-                                SizedBox(width: 6),
-                                // arrow_forward بينعكس تلقائياً في RTL ويشاور لليسار
-                                Icon(Icons.arrow_forward_rounded, size: 14, color: AppColors.primary),
-                              ]),
+                            onTap: _openPolicy,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 6),
+                              child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(context.l10n.consentReadFullDocument,
+                                        style: AppTextStyles.pillLabel),
+                                    const SizedBox(width: 6),
+                                    // arrow_forward بينعكس تلقائياً في RTL ويشاور لليسار
+                                    const Icon(Icons.arrow_forward_rounded,
+                                        size: 14, color: AppColors.primary),
+                                  ]),
                             ),
                           ),
-                          const Spacer(),
-                          const Icon(Icons.check_circle_rounded, size: 14, color: AppColors.primary),
-                          const SizedBox(width: 4),
-                          const Text('موثّق', style: AppTextStyles.caption),
-                        ]),
-                      ],
-                    ),
+                          Row(mainAxisSize: MainAxisSize.min, children: [
+                            const Icon(Icons.check_circle_rounded,
+                                size: 14, color: AppColors.primary),
+                            const SizedBox(width: 4),
+                            Text(context.l10n.consentVerified,
+                                style: AppTextStyles.caption),
+                          ]),
+                        ],
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(22, 0, 22, 16),
-              child: Column(children: [
-                GradientCtaButton(label: 'متابعة إعداد خطتي الصحية', onPressed: _agreed ? _continue : null),
-                if (!_agreed) ...[
-                  const SizedBox(height: 8),
-                  const Text('يُرجى الموافقة على الشروط السريرية للمتابعة', style: AppTextStyles.caption),
-                ],
-              ]),
-            ),
-          ]),
-        ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(22, 0, 22, 16),
+            child: Column(children: [
+              GradientCtaButton(
+                  label: context.l10n.consentCta,
+                  onPressed: _agreed ? _continue : null),
+              if (!_agreed) ...[
+                const SizedBox(height: 8),
+                Text(context.l10n.consentPleaseAgree,
+                    style: AppTextStyles.caption),
+              ],
+            ]),
+          ),
+        ]),
       ),
     );
   }
@@ -161,11 +227,16 @@ class _HealthDataConsentScreenState extends State<HealthDataConsentScreen> {
           Container(
             width: 38,
             height: 38,
-            decoration: BoxDecoration(color: AppColors.primary, borderRadius: BorderRadius.circular(12)),
-            child: const Icon(Icons.shield_outlined, color: Colors.white, size: 19),
+            decoration: BoxDecoration(
+                color: AppColors.primary,
+                borderRadius: BorderRadius.circular(12)),
+            child: const Icon(Icons.shield_outlined,
+                color: Colors.white, size: 19),
           ),
           const SizedBox(width: 10),
-          const Expanded(child: Text('ميثاق الخصوصية التغذوية', style: AppTextStyles.sectionHeading)),
+          Expanded(
+              child: Text(context.l10n.consentCharterTitle,
+                  style: AppTextStyles.sectionHeading)),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
             decoration: BoxDecoration(
@@ -173,22 +244,28 @@ class _HealthDataConsentScreenState extends State<HealthDataConsentScreen> {
               borderRadius: BorderRadius.circular(AppRadius.pill),
               border: Border.all(color: AppColors.border),
             ),
-            child: const Text('موثّق سري', style: TextStyle(fontSize: 10, color: AppColors.primary)),
+            child: Text(context.l10n.consentConfidentialVerified,
+                style: const TextStyle(fontSize: 10, color: AppColors.primary)),
           ),
         ]),
         const SizedBox(height: 10),
-        const Text(
-          'بياناتك (سجل الوجبات، القياسات، والحالة الصحية) تصل لأخصائيتك فقط وتُستخدم لبناء خطتك الغذائية ومتابعة تقدمك السريري بأمان.',
+        Text(
+          context.l10n.consentDataUseNote,
           style: AppTextStyles.caption,
         ),
         const SizedBox(height: 12),
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-          decoration: BoxDecoration(color: AppColors.surface, borderRadius: BorderRadius.circular(AppRadius.cardSmall)),
-          child: const Row(children: [
-            Icon(Icons.lock_outline_rounded, size: 14, color: AppColors.primary),
-            SizedBox(width: 8),
-            Expanded(child: Text('مشفّرة بنظام bit-256 ومتوافقة مع المعايير الصحية السريرية (HIPAA).', style: AppTextStyles.caption)),
+          decoration: BoxDecoration(
+              color: AppColors.surface,
+              borderRadius: BorderRadius.circular(AppRadius.cardSmall)),
+          child: Row(children: [
+            const Icon(Icons.lock_outline_rounded,
+                size: 14, color: AppColors.primary),
+            const SizedBox(width: 8),
+            Expanded(
+                child: Text(context.l10n.consentEncryptionShort,
+                    style: AppTextStyles.caption)),
           ]),
         ),
       ]),
@@ -196,7 +273,7 @@ class _HealthDataConsentScreenState extends State<HealthDataConsentScreen> {
   }
 
   Widget _buildClause(int index) {
-    final clause = _clauses[index];
+    final clause = _clauses(context.l10n)[index];
     final bool expanded = _expandedIndex == index;
     return Container(
       margin: const EdgeInsets.only(bottom: 10),
@@ -205,7 +282,10 @@ class _HealthDataConsentScreenState extends State<HealthDataConsentScreen> {
         color: AppColors.surface,
         borderRadius: BorderRadius.circular(AppRadius.cardSmall),
         boxShadow: [
-          BoxShadow(color: Colors.black.withAlpha(10), blurRadius: 10, offset: const Offset(0, 3)),
+          BoxShadow(
+              color: Colors.black.withAlpha(10),
+              blurRadius: 10,
+              offset: const Offset(0, 3)),
         ],
       ),
       child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
@@ -216,21 +296,33 @@ class _HealthDataConsentScreenState extends State<HealthDataConsentScreen> {
             Container(
               width: 34,
               height: 34,
-              decoration: BoxDecoration(color: AppColors.primaryTint, borderRadius: BorderRadius.circular(10)),
+              decoration: BoxDecoration(
+                  color: AppColors.primaryTint,
+                  borderRadius: BorderRadius.circular(10)),
               child: Icon(clause.icon, color: AppColors.primary, size: 17),
             ),
             const SizedBox(width: 10),
-            Expanded(child: Text(clause.question, style: AppTextStyles.body.copyWith(fontWeight: FontWeight.w700))),
-            Icon(expanded ? Icons.expand_less_rounded : Icons.expand_more_rounded, color: AppColors.textSecondary, size: 20),
+            Expanded(
+                child: Text(clause.question,
+                    style: AppTextStyles.body
+                        .copyWith(fontWeight: FontWeight.w700))),
+            Icon(
+                expanded
+                    ? Icons.expand_less_rounded
+                    : Icons.expand_more_rounded,
+                color: AppColors.textSecondary,
+                size: 20),
           ]),
         ),
         AnimatedCrossFade(
           firstChild: const SizedBox(width: double.infinity),
           secondChild: Padding(
             padding: const EdgeInsets.only(top: 10),
-            child: Text(clause.answer, style: AppTextStyles.caption.copyWith(height: 1.6)),
+            child: Text(clause.answer,
+                style: AppTextStyles.caption.copyWith(height: 1.6)),
           ),
-          crossFadeState: expanded ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+          crossFadeState:
+              expanded ? CrossFadeState.showSecond : CrossFadeState.showFirst,
           duration: const Duration(milliseconds: 220),
           sizeCurve: Curves.easeOutCubic,
         ),
@@ -259,12 +351,13 @@ class _ConsentHeader extends StatelessWidget {
           onTap: onBack,
           radius: 22,
           // arrow_back بينعكس تلقائياً في RTL ويصير يشاور لليمين
-          child: const Icon(Icons.arrow_back_rounded, size: 24, color: AppColors.textPrimary),
+          child: const Icon(Icons.arrow_back_rounded,
+              size: 24, color: AppColors.textPrimary),
         ),
         const SizedBox(width: 10),
         Expanded(
           child: Text(
-            'الموافقة على استخدام البيانات الصحية',
+            context.l10n.consentTitle,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: AppTextStyles.cardTitle.copyWith(fontSize: 14),
@@ -273,14 +366,17 @@ class _ConsentHeader extends StatelessWidget {
         InkResponse(
           onTap: onClose,
           radius: 20,
-          child: const Icon(Icons.close_rounded, size: 22, color: AppColors.textSecondary),
+          child: const Icon(Icons.close_rounded,
+              size: 22, color: AppColors.textSecondary),
         ),
         const SizedBox(width: 10),
         Container(
           width: 32,
           height: 32,
-          decoration: const BoxDecoration(color: AppColors.primary, shape: BoxShape.circle),
-          child: const Icon(Icons.person_outline_rounded, size: 17, color: Colors.white),
+          decoration: const BoxDecoration(
+              color: AppColors.primary, shape: BoxShape.circle),
+          child: const Icon(Icons.person_outline_rounded,
+              size: 17, color: Colors.white),
         ),
       ]),
     );
@@ -305,7 +401,8 @@ class _RevealState extends State<_Reveal> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(vsync: this, duration: const Duration(milliseconds: 650));
+    _controller = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 650));
     _curve = CurvedAnimation(parent: _controller, curve: Curves.easeOutCubic);
     Future.delayed(widget.delay, () {
       if (mounted) _controller.forward();
@@ -354,24 +451,26 @@ class _ConsentHero extends StatelessWidget {
       ),
       child: Stack(children: [
         // دوائر زخرفية خفيفة في الخلفية
-        Positioned(
-          top: -40,
-          right: -30,
-          child: Container(
-            width: 130,
-            height: 130,
-            decoration: BoxDecoration(shape: BoxShape.circle, color: AppColors.primary.withAlpha(14)),
-          ),
-        ),
-        Positioned(
-          top: 70,
-          left: -45,
-          child: Container(
-            width: 110,
-            height: 110,
-            decoration: BoxDecoration(shape: BoxShape.circle, color: AppColors.accentGreen.withAlpha(18)),
-          ),
-        ),
+        PositionedDirectional(
+            top: -40,
+            start: -30,
+            child: Container(
+              width: 130,
+              height: 130,
+              decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: AppColors.primary.withAlpha(14)),
+            )),
+        PositionedDirectional(
+            top: 70,
+            end: -45,
+            child: Container(
+              width: 110,
+              height: 110,
+              decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: AppColors.accentGreen.withAlpha(18)),
+            )),
         Padding(
           padding: const EdgeInsets.fromLTRB(22, 18, 22, 20),
           child: Column(children: [
@@ -380,40 +479,46 @@ class _ConsentHero extends StatelessWidget {
             _Reveal(
               delay: const Duration(milliseconds: 450),
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
                 decoration: BoxDecoration(
                   color: AppColors.surface,
                   borderRadius: BorderRadius.circular(AppRadius.pill),
                   border: Border.all(color: AppColors.border),
                   boxShadow: [
-                    BoxShadow(color: AppColors.primary.withAlpha(22), blurRadius: 12, offset: const Offset(0, 4)),
+                    BoxShadow(
+                        color: AppColors.primary.withAlpha(22),
+                        blurRadius: 12,
+                        offset: const Offset(0, 4)),
                   ],
                 ),
-                  child: const Row(mainAxisSize: MainAxisSize.min, children: [
-                    Icon(Icons.verified_user_rounded, size: 14, color: AppColors.primary),
-                    SizedBox(width: 6),
-                    Text(
-                      'منظومة الحماية السريرية الذكية',
-                      style: TextStyle(
-                        fontFamily: AppTextStyles.fontFamily,
-                        fontSize: 11,
-                        color: AppColors.primary,
-                        fontWeight: FontWeight.w700,
-                      ),
+                child: Row(mainAxisSize: MainAxisSize.min, children: [
+                  const Icon(Icons.verified_user_rounded,
+                      size: 14, color: AppColors.primary),
+                  const SizedBox(width: 6),
+                  Text(
+                    context.l10n.consentProtectionSystem,
+                    style: const TextStyle(
+                      fontFamily: AppTextStyles.fontFamily,
+                      fontSize: 11,
+                      color: AppColors.primary,
+                      fontWeight: FontWeight.w700,
                     ),
-                  ]),
+                  ),
+                ]),
               ),
             ),
             const SizedBox(height: 18),
-            const _Reveal(
-              delay: Duration(milliseconds: 600),
-              child: Text('قبل أن نبدأ رحلتك الصحية', textAlign: TextAlign.center, style: AppTextStyles.h1),
+            _Reveal(
+              delay: const Duration(milliseconds: 600),
+              child: Text(context.l10n.consentBeforeWeStart,
+                  textAlign: TextAlign.center, style: AppTextStyles.h1),
             ),
             const SizedBox(height: 10),
-            const _Reveal(
-              delay: Duration(milliseconds: 750),
+            _Reveal(
+              delay: const Duration(milliseconds: 750),
               child: Text(
-                'نحن نلتزم بحماية خصوصية بياناتك الصحية والسريرية بأقصى درجات الشفافية والأمان.',
+                context.l10n.consentCommitment,
                 textAlign: TextAlign.center,
                 style: AppTextStyles.secondary,
               ),
@@ -437,7 +542,8 @@ class _ShieldHero extends StatefulWidget {
   State<_ShieldHero> createState() => _ShieldHeroState();
 }
 
-class _ShieldHeroState extends State<_ShieldHero> with TickerProviderStateMixin {
+class _ShieldHeroState extends State<_ShieldHero>
+    with TickerProviderStateMixin {
   late final AnimationController _entrance;
   late final AnimationController _pulse;
   late final Animation<double> _shieldScale;
@@ -447,18 +553,24 @@ class _ShieldHeroState extends State<_ShieldHero> with TickerProviderStateMixin 
   @override
   void initState() {
     super.initState();
-    _entrance = AnimationController(vsync: this, duration: const Duration(milliseconds: 1800));
-    _pulse = AnimationController(vsync: this, duration: const Duration(milliseconds: 2400));
+    _entrance = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 1800));
+    _pulse = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 2400));
 
     _shieldScale = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(parent: _entrance, curve: const Interval(0.0, 0.45, curve: Curves.easeOutBack)),
+      CurvedAnimation(
+          parent: _entrance,
+          curve: const Interval(0.0, 0.45, curve: Curves.easeOutBack)),
     );
     _checkProgress = CurvedAnimation(
       parent: _entrance,
       curve: const Interval(0.42, 0.78, curve: Curves.easeOutCubic),
     );
     _badgeScale = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(parent: _entrance, curve: const Interval(0.7, 1.0, curve: Curves.easeOutBack)),
+      CurvedAnimation(
+          parent: _entrance,
+          curve: const Interval(0.7, 1.0, curve: Curves.easeOutBack)),
     );
 
     _entrance.forward();
@@ -501,53 +613,62 @@ class _ShieldHeroState extends State<_ShieldHero> with TickerProviderStateMixin 
         _ripple(0.5),
         ScaleTransition(
           scale: _shieldScale,
-          child: Stack(alignment: Alignment.center, clipBehavior: Clip.none, children: [
-            Container(
-              width: 92,
-              height: 92,
-              decoration: BoxDecoration(
-                color: AppColors.accentGreenBg,
-                shape: BoxShape.circle,
-                border: Border.all(color: AppColors.surface, width: 3),
-                boxShadow: [
-                  BoxShadow(color: AppColors.accentGreen.withAlpha(60), blurRadius: 22, offset: const Offset(0, 8)),
-                ],
-              ),
-              child: Stack(alignment: Alignment.center, children: [
-                const Icon(Icons.shield_rounded, color: AppColors.accentGreen, size: 56),
-                // علامة الصح بتترسم جوا الدرع
-                Transform.translate(
-                  offset: const Offset(0, -1),
-                  child: AnimatedBuilder(
-                    animation: _checkProgress,
-                    builder: (context, _) {
-                      return CustomPaint(
-                        size: const Size(26, 26),
-                        painter: _CheckPainter(progress: _checkProgress.value),
-                      );
-                    },
-                  ),
-                ),
-              ]),
-            ),
-            Positioned(
-              bottom: 0,
-              right: 0,
-              child: ScaleTransition(
-                scale: _badgeScale,
-                child: Container(
-                  width: 28,
-                  height: 28,
+          child: Stack(
+              alignment: Alignment.center,
+              clipBehavior: Clip.none,
+              children: [
+                Container(
+                  width: 92,
+                  height: 92,
                   decoration: BoxDecoration(
-                    color: AppColors.primary,
+                    color: AppColors.accentGreenBg,
                     shape: BoxShape.circle,
-                    border: Border.all(color: AppColors.surface, width: 2.5),
+                    border: Border.all(color: AppColors.surface, width: 3),
+                    boxShadow: [
+                      BoxShadow(
+                          color: AppColors.accentGreen.withAlpha(60),
+                          blurRadius: 22,
+                          offset: const Offset(0, 8)),
+                    ],
                   ),
-                  child: const Icon(Icons.lock_rounded, color: Colors.white, size: 14),
+                  child: Stack(alignment: Alignment.center, children: [
+                    const Icon(Icons.shield_rounded,
+                        color: AppColors.accentGreen, size: 56),
+                    // علامة الصح بتترسم جوا الدرع
+                    Transform.translate(
+                      offset: const Offset(0, -1),
+                      child: AnimatedBuilder(
+                        animation: _checkProgress,
+                        builder: (context, _) {
+                          return CustomPaint(
+                            size: const Size(26, 26),
+                            painter:
+                                _CheckPainter(progress: _checkProgress.value),
+                          );
+                        },
+                      ),
+                    ),
+                  ]),
                 ),
-              ),
-            ),
-          ]),
+                PositionedDirectional(
+                    bottom: 0,
+                    start: 0,
+                    child: ScaleTransition(
+                      scale: _badgeScale,
+                      child: Container(
+                        width: 28,
+                        height: 28,
+                        decoration: BoxDecoration(
+                          color: AppColors.primary,
+                          shape: BoxShape.circle,
+                          border:
+                              Border.all(color: AppColors.surface, width: 2.5),
+                        ),
+                        child: const Icon(Icons.lock_rounded,
+                            color: Colors.white, size: 14),
+                      ),
+                    )),
+              ]),
         ),
       ]),
     );
@@ -575,13 +696,16 @@ class _CheckPainter extends CustomPainter {
 
     final Path partial = Path();
     for (final metric in full.computeMetrics()) {
-      partial.addPath(metric.extractPath(0, metric.length * math.min(progress, 1.0)), Offset.zero);
+      partial.addPath(
+          metric.extractPath(0, metric.length * math.min(progress, 1.0)),
+          Offset.zero);
     }
     canvas.drawPath(partial, paint);
   }
 
   @override
-  bool shouldRepaint(covariant _CheckPainter oldDelegate) => oldDelegate.progress != progress;
+  bool shouldRepaint(covariant _CheckPainter oldDelegate) =>
+      oldDelegate.progress != progress;
 }
 
 /// صورة الرعاية مع شريط التشفير فوقها (بدل البطاقة المنفصلة السابقة).
@@ -602,7 +726,8 @@ class _EncryptionBanner extends StatelessWidget {
             fit: BoxFit.cover,
             errorBuilder: (_, __, ___) => Container(
               color: AppColors.primaryTint,
-              child: const Icon(Icons.health_and_safety_rounded, size: 48, color: AppColors.primary),
+              child: const Icon(Icons.health_and_safety_rounded,
+                  size: 48, color: AppColors.primary),
             ),
           ),
           // تدرّج داكن من الأسفل لقراءة النص
@@ -611,21 +736,28 @@ class _EncryptionBanner extends StatelessWidget {
               gradient: LinearGradient(
                 begin: Alignment.bottomCenter,
                 end: Alignment.center,
-                colors: [Colors.black.withAlpha(170), Colors.black.withAlpha(0)],
+                colors: [
+                  Colors.black.withAlpha(170),
+                  Colors.black.withAlpha(0)
+                ],
               ),
             ),
           ),
-          const Positioned(
+          Positioned(
             left: 12,
             right: 12,
             bottom: 10,
             child: Row(children: [
-              Icon(Icons.enhanced_encryption_rounded, size: 16, color: AppColors.accentGreen),
-              SizedBox(width: 8),
+              const Icon(Icons.enhanced_encryption_rounded,
+                  size: 16, color: AppColors.accentGreen),
+              const SizedBox(width: 8),
               Expanded(
                 child: Text(
-                  'بياناتك الطبية مشفرة بنظام bit AES-256 من لحظة إدخالها',
-                  style: TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: Colors.white),
+                  context.l10n.consentAesNote,
+                  style: const TextStyle(
+                      fontSize: 11,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white),
                 ),
               ),
             ]),
@@ -650,7 +782,8 @@ class _AgreementCheckRow extends StatelessWidget {
         decoration: BoxDecoration(
           color: checked ? AppColors.primaryTint : AppColors.surface,
           borderRadius: BorderRadius.circular(AppRadius.card),
-          border: Border.all(color: checked ? AppColors.primary : AppColors.border),
+          border:
+              Border.all(color: checked ? AppColors.primary : AppColors.border),
         ),
         child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
           AnimatedContainer(
@@ -661,20 +794,28 @@ class _AgreementCheckRow extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(6),
               color: checked ? AppColors.primary : Colors.transparent,
-              border: Border.all(color: checked ? AppColors.primary : AppColors.iconMuted, width: 1.4),
+              border: Border.all(
+                  color: checked ? AppColors.primary : AppColors.iconMuted,
+                  width: 1.4),
             ),
-            child: checked ? const Icon(Icons.check_rounded, color: Colors.white, size: 15) : null,
+            child: checked
+                ? const Icon(Icons.check_rounded, color: Colors.white, size: 15)
+                : null,
           ),
           const SizedBox(width: 12),
           Expanded(
-            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Text(
-                'قرأت ووافقت على شروط مشاركة البيانات بسياسة الخصوصية الصحية.',
-                style: AppTextStyles.caption.copyWith(color: AppColors.textPrimary, fontWeight: FontWeight.w600, height: 1.5),
+                context.l10n.consentCheckbox,
+                style: AppTextStyles.caption.copyWith(
+                    color: AppColors.textPrimary,
+                    fontWeight: FontWeight.w600,
+                    height: 1.5),
               ),
               const SizedBox(height: 4),
-              const Text(
-                'موافقتك قابلة للتعديل أو الإلغاء فوراً في أي وقت.',
+              Text(
+                context.l10n.consentRevocable,
                 style: AppTextStyles.caption,
               ),
             ]),

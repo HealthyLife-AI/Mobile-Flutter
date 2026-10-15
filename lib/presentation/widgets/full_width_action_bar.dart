@@ -12,7 +12,8 @@ class FullWidthActionBar extends StatelessWidget {
   final IconData? icon;
   final VoidCallback? onPressed;
 
-  const FullWidthActionBar({super.key, required this.label, this.icon, this.onPressed});
+  const FullWidthActionBar(
+      {super.key, required this.label, this.icon, this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +31,10 @@ class FullWidthActionBar extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(label, style: AppTextStyles.ctaText),
-                if (icon != null) ...[const SizedBox(width: 8), Icon(icon, color: Colors.white, size: 20)],
+                if (icon != null) ...[
+                  const SizedBox(width: 8),
+                  Icon(icon, color: Colors.white, size: 20)
+                ],
               ],
             ),
           ),

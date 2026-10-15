@@ -9,7 +9,11 @@ class ShimmerBox extends StatefulWidget {
   final double height;
   final BorderRadius borderRadius;
 
-  const ShimmerBox({super.key, this.width, required this.height, this.borderRadius = const BorderRadius.all(Radius.circular(8))});
+  const ShimmerBox(
+      {super.key,
+      this.width,
+      required this.height,
+      this.borderRadius = const BorderRadius.all(Radius.circular(8))});
 
   const ShimmerBox.circle({super.key, required double size})
       : width = size,
@@ -20,8 +24,11 @@ class ShimmerBox extends StatefulWidget {
   State<ShimmerBox> createState() => _ShimmerBoxState();
 }
 
-class _ShimmerBoxState extends State<ShimmerBox> with SingleTickerProviderStateMixin {
-  late final AnimationController _c = AnimationController(vsync: this, duration: const Duration(milliseconds: 1400))..repeat();
+class _ShimmerBoxState extends State<ShimmerBox>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _c = AnimationController(
+      vsync: this, duration: const Duration(milliseconds: 1400))
+    ..repeat();
 
   @override
   void dispose() {
@@ -45,7 +52,11 @@ class _ShimmerBoxState extends State<ShimmerBox> with SingleTickerProviderStateM
                 gradient: LinearGradient(
                   begin: Alignment(1 - 3 * t, 0),
                   end: Alignment(2.2 - 3 * t, 0),
-                  colors: const [AppColors.chipInactiveBg, Color(0xFFEDEBFA), AppColors.chipInactiveBg],
+                  colors: const [
+                    AppColors.chipInactiveBg,
+                    Color(0xFFEDEBFA),
+                    AppColors.chipInactiveBg
+                  ],
                   stops: const [0.25, 0.5, 0.75],
                 ),
               ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_radius.dart';
 import '../../core/theme/app_text_styles.dart';
+import 'directional_icon.dart';
 
 /// SettingsRow — the recurring "icon + title/subtitle + chevron" row used
 /// across Account, About App, and other settings screens. Centralized so
@@ -56,8 +57,10 @@ class _SettingsRowState extends State<SettingsRow> {
         );
       },
       child: GestureDetector(
-        onTapDown: isInteractive ? (_) => setState(() => _pressed = true) : null,
-        onTapCancel: isInteractive ? () => setState(() => _pressed = false) : null,
+        onTapDown:
+            isInteractive ? (_) => setState(() => _pressed = true) : null,
+        onTapCancel:
+            isInteractive ? () => setState(() => _pressed = false) : null,
         onTapUp: isInteractive ? (_) => setState(() => _pressed = false) : null,
         onTap: widget.onTap,
         child: AnimatedScale(
@@ -71,7 +74,10 @@ class _SettingsRowState extends State<SettingsRow> {
             decoration: BoxDecoration(
               color: AppColors.surface,
               borderRadius: BorderRadius.circular(AppRadius.cardSmall),
-              border: Border.all(color: _pressed ? AppColors.primary.withValues(alpha: 0.18) : Colors.transparent),
+              border: Border.all(
+                  color: _pressed
+                      ? AppColors.primary.withValues(alpha: 0.18)
+                      : Colors.transparent),
               boxShadow: _pressed
                   ? [
                       BoxShadow(
@@ -82,50 +88,59 @@ class _SettingsRowState extends State<SettingsRow> {
                     ]
                   : null,
             ),
-            child: Directionality(
-              textDirection: TextDirection.rtl,
-              child: Row(
-                children: [
-                  AnimatedContainer(
-                    duration: const Duration(milliseconds: 180),
-                    width: 38,
-                    height: 38,
-                    decoration: BoxDecoration(
-                      color: widget.iconBg ?? AppColors.primaryTint,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Icon(widget.icon, color: widget.iconColor ?? AppColors.primary, size: 18),
+            child: Row(
+              children: [
+                AnimatedContainer(
+                  duration: const Duration(milliseconds: 180),
+                  width: 38,
+                  height: 38,
+                  decoration: BoxDecoration(
+                    color: widget.iconBg ?? AppColors.primaryTint,
+                    borderRadius: BorderRadius.circular(10),
                   ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            if (widget.trailingBadge != null) ...[widget.trailingBadge!, const SizedBox(width: 8)],
-                            Flexible(
-                              child: Text(widget.title, textAlign: TextAlign.right, style: AppTextStyles.body),
-                            ),
+                  child: Icon(widget.icon,
+                      color: widget.iconColor ?? AppColors.primary, size: 18),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          if (widget.trailingBadge != null) ...[
+                            widget.trailingBadge!,
+                            const SizedBox(width: 8)
                           ],
-                        ),
-                        if (widget.subtitle != null) ...[
-                          const SizedBox(height: 2),
-                          Text(widget.subtitle!, style: AppTextStyles.caption, textAlign: TextAlign.right),
+                          Flexible(
+                            child: Text(widget.title,
+                                textAlign: TextAlign.start,
+                                style: AppTextStyles.body),
+                          ),
                         ],
+                      ),
+                      if (widget.subtitle != null) ...[
+                        const SizedBox(height: 2),
+                        Text(widget.subtitle!,
+                            style: AppTextStyles.caption,
+                            textAlign: TextAlign.start),
                       ],
-                    ),
+                    ],
                   ),
-                  const SizedBox(width: 8),
-                  AnimatedRotation(
-                    turns: _pressed ? -0.02 : 0,
-                    duration: const Duration(milliseconds: 180),
-                    child: const Icon(Icons.chevron_left_rounded, color: AppColors.iconMuted),
-                  ),
-                ],
-              ),
+                ),
+                const SizedBox(width: 8),
+                AnimatedRotation(
+                  turns: _pressed ? -0.02 * rtlDesignSign(context) : 0,
+                  duration: const Duration(milliseconds: 180),
+                  child: Icon(
+                      directionalIcon(context,
+                          rtl: Icons.chevron_left_rounded,
+                          ltr: Icons.chevron_right_rounded),
+                      color: AppColors.iconMuted),
+                ),
+              ],
             ),
           ),
         ),

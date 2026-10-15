@@ -2,14 +2,16 @@ import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../core/di/app_dependencies.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_radius.dart';
 import '../../core/theme/app_text_styles.dart';
 import 'plan_preparing_screen.dart';
 import '../../core/navigation/app_page_route.dart';
-import '../bloc/auth/auth_cubit.dart';
+
+import '../../l10n/l10n.dart';
 
 // ───────────────────────── ألوان إضافية مأخوذة من التصميم ─────────────────────────
 const Color _kMint = Color(0xFF5EE0B0);
@@ -29,16 +31,26 @@ class OnboardingNotificationsScreen extends StatefulWidget {
   const OnboardingNotificationsScreen({super.key});
 
   @override
-  State<OnboardingNotificationsScreen> createState() => _OnboardingNotificationsScreenState();
+  State<OnboardingNotificationsScreen> createState() =>
+      _OnboardingNotificationsScreenState();
 }
 
-class _OnboardingNotificationsScreenState extends State<OnboardingNotificationsScreen>
-    with TickerProviderStateMixin {
+class _OnboardingNotificationsScreenState
+    extends State<OnboardingNotificationsScreen> with TickerProviderStateMixin {
   late final AnimationController _enter;
   late final AnimationController _loop;
 
   late final Animation<double> _header, _hero, _heroScale, _title, _desc;
-  late final Animation<double> _c1, _c2, _c3, _k1, _k2, _k3, _privacy, _cta, _later, _progress;
+  late final Animation<double> _c1,
+      _c2,
+      _c3,
+      _k1,
+      _k2,
+      _k3,
+      _privacy,
+      _cta,
+      _later,
+      _progress;
 
   Animation<double> _iv(double b, double e, [Curve c = Curves.easeOutCubic]) =>
       CurvedAnimation(parent: _enter, curve: Interval(b, e, curve: c));
@@ -46,8 +58,12 @@ class _OnboardingNotificationsScreenState extends State<OnboardingNotificationsS
   @override
   void initState() {
     super.initState();
-    _enter = AnimationController(vsync: this, duration: const Duration(milliseconds: 2000))..forward();
-    _loop = AnimationController(vsync: this, duration: const Duration(seconds: 4))..repeat();
+    _enter = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 2000))
+      ..forward();
+    _loop =
+        AnimationController(vsync: this, duration: const Duration(seconds: 4))
+          ..repeat();
 
     _header = _iv(0.00, 0.25);
     _hero = _iv(0.05, 0.40);
@@ -73,12 +89,21 @@ class _OnboardingNotificationsScreenState extends State<OnboardingNotificationsS
     super.dispose();
   }
 
+  /// The primary call to action: asks for the notification permission, then
+  /// finishes onboarding whether the answer is yes or no. The OS prompt is the
+  /// only place it is asked; a refusal simply means the person can turn them on
+  /// later from the notification settings.
+  Future<void> _enableAndFinish() async {
+    final deps = context.read<AppDependencies>();
+    await deps.notificationPermissions.request();
+    // The token can only be fetched once the permission allows it on iOS.
+    unawaited(deps.push.start());
+    if (!mounted) return;
+    _finish();
+  }
+
   void _finish() {
-    // TODO: اطلبي إذن الإشعارات هنا قبل الانتقال (permission_handler / firebase_messaging).
-    // The wizard ends here: flip the session to "ready" so the guarded shell
-    // push later (and on the next cold start) is allowed. Failure is
-    // non-fatal: worst case the splash re-enters the flow instead of the shell.
-    unawaited(context.read<AuthCubit>().completeOnboarding());
+    // The preparing screen ends onboarding; the auth listener then opens the shell.
     Navigator.of(context).pushAndRemoveUntil(
       AppPageRoute(builder: (_) => const PlanPreparingScreen()),
       (route) => false,
@@ -87,136 +112,150 @@ class _OnboardingNotificationsScreenState extends State<OnboardingNotificationsS
 
   @override
   Widget build(BuildContext context) {
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        body: SafeArea(
-          child: Column(
-            children: [
-              _Reveal(
-                animation: _header,
-                dy: -0.3,
-                child: _TopBar(loop: _loop, progress: _progress, onBack: () => Navigator.of(context).maybePop()),
-              ),
-              Expanded(
-                child: Center(
-                  child: SingleChildScrollView(
-                    physics: const ClampingScrollPhysics(),
-                    padding: const EdgeInsets.fromLTRB(20, 6, 20, 6),
-                    child: Center(
-                      child: ConstrainedBox(
-                        constraints: const BoxConstraints(maxWidth: 460),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            FadeTransition(
-                              opacity: _hero,
-                              child: ScaleTransition(scale: _heroScale, child: _BellHero(loop: _loop)),
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: SafeArea(
+        child: Column(
+          children: [
+            _Reveal(
+              animation: _header,
+              dy: -0.3,
+              child: _TopBar(
+                  loop: _loop,
+                  progress: _progress,
+                  onBack: () => Navigator.of(context).maybePop()),
+            ),
+            Expanded(
+              child: Center(
+                child: SingleChildScrollView(
+                  physics: const ClampingScrollPhysics(),
+                  padding: const EdgeInsets.fromLTRB(20, 6, 20, 6),
+                  child: Center(
+                    child: ConstrainedBox(
+                      constraints: const BoxConstraints(maxWidth: 460),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          FadeTransition(
+                            opacity: _hero,
+                            child: ScaleTransition(
+                                scale: _heroScale,
+                                child: _BellHero(loop: _loop)),
+                          ),
+                          const SizedBox(height: 12),
+                          _Reveal(
+                            animation: _title,
+                            child: Text(
+                              context.l10n.onboardingNotificationsTitle,
+                              textAlign: TextAlign.center,
+                              style: AppTextStyles.h1,
                             ),
-                            const SizedBox(height: 12),
-                            _Reveal(
-                              animation: _title,
-                              child: const Text(
-                                'لا تفوّت مواعيد وجباتك',
+                          ),
+                          const SizedBox(height: 10),
+                          _Reveal(
+                            animation: _desc,
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10),
+                              child: Text(
+                                context.l10n.onboardingNotificationsIntro,
                                 textAlign: TextAlign.center,
-                                style: AppTextStyles.h1,
+                                style: AppTextStyles.secondary
+                                    .copyWith(height: 1.6),
                               ),
                             ),
-                            const SizedBox(height: 10),
-                            _Reveal(
-                              animation: _desc,
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 10),
-                                child: Text(
-                                  'فعّل الإشعارات لتصلك تذكيرات الوجبات المخصصة، وتنبيهات الأخصائي لمتابعة التزامك أولاً بأول وبكل سلاسة.',
-                                  textAlign: TextAlign.center,
-                                  style: AppTextStyles.secondary.copyWith(height: 1.6),
-                                ),
-                              ),
+                          ),
+                          const SizedBox(height: 22),
+                          _Reveal(
+                            animation: _c1,
+                            dy: 0.25,
+                            child: _FeatureCard(
+                              icon: Icons.restaurant_rounded,
+                              title: context
+                                  .l10n.onboardingNotificationsMealReminders,
+                              description: context.l10n
+                                  .onboardingNotificationsMealRemindersDesc,
+                              check: _k1,
                             ),
-                            const SizedBox(height: 22),
-                            _Reveal(
-                              animation: _c1,
-                              dy: 0.25,
-                              child: _FeatureCard(
-                                icon: Icons.restaurant_rounded,
-                                title: 'تذكيرات بمواعيد الوجبات المحددة',
-                                description:
-                                    'تنبيه لطيف قبل موعد الوجبة لمساعدتك على تنظيم يومك وتناول طعامك الصحي في التوقيت الأنسب لجسمك.',
-                                check: _k1,
-                              ),
+                          ),
+                          const SizedBox(height: 12),
+                          _Reveal(
+                            animation: _c2,
+                            dy: 0.25,
+                            child: _FeatureCard(
+                              icon: Icons.forum_outlined,
+                              title: context.l10n
+                                  .onboardingNotificationsSpecialistMessages,
+                              description: context.l10n
+                                  .onboardingNotificationsSpecialistMessagesDesc,
+                              emphasized: true,
+                              check: _k2,
                             ),
-                            const SizedBox(height: 12),
-                            _Reveal(
-                              animation: _c2,
-                              dy: 0.25,
-                              child: _FeatureCard(
-                                icon: Icons.forum_outlined,
-                                title: 'رسائل وتوجيهات مباشرة من الأخصائي',
-                                description:
-                                    'استلم تعليقات أخصائيتك وتعديلات الخطة فور إرسالها دون الحاجة لتفقد التطبيق باستمرار.',
-                                emphasized: true,
-                                check: _k2,
-                              ),
+                          ),
+                          const SizedBox(height: 12),
+                          _Reveal(
+                            animation: _c3,
+                            dy: 0.25,
+                            child: _FeatureCard(
+                              icon: Icons.insights_rounded,
+                              title: context
+                                  .l10n.onboardingNotificationsWeightReminders,
+                              description: context.l10n
+                                  .onboardingNotificationsWeightRemindersDesc,
+                              check: _k3,
                             ),
-                            const SizedBox(height: 12),
-                            _Reveal(
-                              animation: _c3,
-                              dy: 0.25,
-                              child: _FeatureCard(
-                                icon: Icons.insights_rounded,
-                                title: 'تنبيهات لموعد تسجيل الوزن أسبوعياً',
-                                description:
-                                    'تذكير أسبوعي في الوقت الصباحي المثالي للقياس لمتابعة تطور نتائجك ومؤشراتك الحيوية بدقة.',
-                                check: _k3,
-                              ),
-                            ),
-                            const SizedBox(height: 18),
-                            _Reveal(animation: _privacy, dy: 0.2, child: const _PrivacyNote()),
-                          ],
-                        ),
+                          ),
+                          const SizedBox(height: 18),
+                          _Reveal(
+                              animation: _privacy,
+                              dy: 0.2,
+                              child: const _PrivacyNote()),
+                        ],
                       ),
                     ),
                   ),
                 ),
               ),
-              // شريط سفلي ثابت: الزر بعرض الشاشة بالكامل
-              _Reveal(
-                animation: _cta,
-                dy: 1.0,
-                child: Container(
-                  padding: const EdgeInsets.fromLTRB(16, 12, 16, 6),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(color: Colors.black.withAlpha(12), blurRadius: 18, offset: const Offset(0, -5)),
-                    ],
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      _ShimmerCtaButton(
-                        key: const Key('onboarding-notifications-cta'),
-                        label: 'تفعيل الإشعارات الآن',
-                        loop: _loop,
+            ),
+            // شريط سفلي ثابت: الزر بعرض الشاشة بالكامل
+            _Reveal(
+              animation: _cta,
+              dy: 1.0,
+              child: Container(
+                padding: const EdgeInsets.fromLTRB(16, 12, 16, 6),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                        color: Colors.black.withAlpha(12),
+                        blurRadius: 18,
+                        offset: const Offset(0, -5)),
+                  ],
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    _ShimmerCtaButton(
+                      key: const Key('onboarding-notifications-cta'),
+                      label: context.l10n.onboardingNotificationsEnable,
+                      loop: _loop,
+                      onPressed: _enableAndFinish,
+                    ),
+                    FadeTransition(
+                      opacity: _later,
+                      child: TextButton(
                         onPressed: _finish,
+                        child: Text(context.l10n.onboardingNotificationsLater,
+                            style: AppTextStyles.secondary),
                       ),
-                      FadeTransition(
-                        opacity: _later,
-                        child: TextButton(
-                          onPressed: _finish,
-                          child: const Text('ليس الآن، سأضبطها لاحقاً', style: AppTextStyles.secondary),
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -237,7 +276,8 @@ class _Reveal extends StatelessWidget {
     return FadeTransition(
       opacity: animation,
       child: SlideTransition(
-        position: Tween<Offset>(begin: Offset(0, dy), end: Offset.zero).animate(animation),
+        position: Tween<Offset>(begin: Offset(0, dy), end: Offset.zero)
+            .animate(animation),
         child: child,
       ),
     );
@@ -253,14 +293,10 @@ class _TopBar extends StatelessWidget {
   final Animation<double> progress;
   final VoidCallback onBack;
 
-  const _TopBar({required this.loop, required this.progress, required this.onBack});
+  const _TopBar(
+      {required this.loop, required this.progress, required this.onBack});
 
   static const double _from = 2 / 3;
-
-  static String _ar(int n) {
-    const d = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
-    return n.toString().split('').map((c) => d[int.parse(c)]).join();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -274,16 +310,21 @@ class _TopBar extends StatelessWidget {
                 onTap: onBack,
                 radius: 24,
                 // في RTL يتجه هذا السهم لليمين تلقائياً
-                child: const Icon(Icons.arrow_back_rounded, size: 26, color: AppColors.textPrimary),
+                child: const Icon(Icons.arrow_back_rounded,
+                    size: 26, color: AppColors.textPrimary),
               ),
               const SizedBox(width: 12),
-              Text('الإشعارات', style: AppTextStyles.cardTitle.copyWith(fontSize: 19, fontWeight: FontWeight.w700)),
+              Text(context.l10n.commonNotifications,
+                  style: AppTextStyles.cardTitle
+                      .copyWith(fontSize: 19, fontWeight: FontWeight.w700)),
               const Spacer(),
               Container(
                 width: 40,
                 height: 40,
-                decoration: const BoxDecoration(color: AppColors.primaryTint, shape: BoxShape.circle),
-                child: const Icon(Icons.person_rounded, size: 21, color: AppColors.primary),
+                decoration: const BoxDecoration(
+                    color: AppColors.primaryTint, shape: BoxShape.circle),
+                child: const Icon(Icons.person_rounded,
+                    size: 21, color: AppColors.primary),
               ),
             ],
           ),
@@ -297,10 +338,15 @@ class _TopBar extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      Text('خطوة ٣ من ٣ (${_ar(pct)}%)',
-                          style: AppTextStyles.caption.copyWith(fontWeight: FontWeight.w700, color: AppColors.textPrimary)),
+                      Text(
+                          context.l10n.onboardingStepProgress(
+                              context.localizeDigits(pct)),
+                          style: AppTextStyles.caption.copyWith(
+                              fontWeight: FontWeight.w700,
+                              color: AppColors.textPrimary)),
                       const Spacer(),
-                      const Text('إعداد التنبيهات • HealthyLife', style: AppTextStyles.caption),
+                      Text(context.l10n.onboardingNotificationsHeader,
+                          style: AppTextStyles.caption),
                     ],
                   ),
                   const SizedBox(height: 9),
@@ -332,23 +378,28 @@ class _ProgressBar extends StatelessWidget {
           children: [
             Container(
               height: 7,
-              decoration: BoxDecoration(color: const Color(0xFFE3E8EF), borderRadius: BorderRadius.circular(4)),
+              decoration: BoxDecoration(
+                  color: const Color(0xFFE3E8EF),
+                  borderRadius: BorderRadius.circular(4)),
             ),
             Align(
-              alignment: AlignmentDirectional.centerStart, // يبدأ من اليمين في RTL
+              alignment:
+                  AlignmentDirectional.centerStart, // يبدأ من اليمين في RTL
               child: Container(
                 width: c.maxWidth * value,
                 height: 7,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(4),
-                  gradient: const LinearGradient(colors: [_kMint, AppColors.primary]),
+                  gradient:
+                      const LinearGradient(colors: [_kMint, AppColors.primary]),
                 ),
                 child: Align(
                   alignment: AlignmentDirectional.centerEnd, // رأس الشريط
                   child: AnimatedBuilder(
                     animation: loop,
                     builder: (_, __) {
-                      final p = 0.5 + 0.5 * math.sin(loop.value * 2 * math.pi * 2);
+                      final p =
+                          0.5 + 0.5 * math.sin(loop.value * 2 * math.pi * 2);
                       return Transform.translate(
                         offset: const Offset(-1, 0),
                         child: Container(
@@ -359,7 +410,11 @@ class _ProgressBar extends StatelessWidget {
                             shape: BoxShape.circle,
                             border: Border.all(color: _kMint, width: 2.5),
                             boxShadow: [
-                              BoxShadow(color: _kMint.withAlpha((120 * p).toInt() + 40), blurRadius: 8, spreadRadius: 2 * p),
+                              BoxShadow(
+                                  color:
+                                      _kMint.withAlpha((120 * p).toInt() + 40),
+                                  blurRadius: 8,
+                                  spreadRadius: 2 * p),
                             ],
                           ),
                         ),
@@ -408,91 +463,104 @@ class _BellHero extends StatelessWidget {
             final breathe = 1 + 0.06 * math.sin(t * 2 * math.pi);
             final float = math.sin(t * 2 * math.pi * 2) * 2.5;
 
-            return Stack(alignment: Alignment.center, clipBehavior: Clip.none, children: [
-              // الهالة الخضراء (تتنفس)
-              Transform.scale(
-                scale: breathe,
-                child: Container(
-                  width: d * 1.15,
-                  height: d * 1.15,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    gradient: RadialGradient(colors: [
-                      _kMint.withAlpha(120),
-                      _kMint.withAlpha(0),
-                    ]),
-                  ),
-                ),
-              ),
-
-              // موجات تنتشر من الجرس (3 موجات متتابعة)
-              for (int i = 0; i < 3; i++) _ripple(d, ring, (t * 1.0 + i / 3) % 1.0),
-
-              // الحلقة البيضاء
-              Container(
-                width: ring,
-                height: ring,
-                decoration: BoxDecoration(
-                  color: AppColors.surface,
-                  shape: BoxShape.circle,
-                  boxShadow: [
-                    BoxShadow(color: AppColors.primary.withAlpha(36), blurRadius: 20, offset: const Offset(0, 5)),
-                  ],
-                ),
-              ),
-
-              // الحلقة المنقّطة الدوّارة
-              Transform.rotate(
-                angle: t * 2 * math.pi,
-                child: CustomPaint(
-                  size: Size.square(ring * 0.88),
-                  painter: _DashedCirclePainter(color: AppColors.primary.withAlpha(70)),
-                ),
-              ),
-
-              // النواة على شكل قطرة + الجرس يهتز
-              SizedBox(
-                width: core,
-                height: core * 1.1,
-                child: CustomPaint(
-                  painter: const _DropPainter(color: AppColors.primary),
-                  child: Align(
-                    alignment: const Alignment(0, 0.25),
-                    child: Transform.rotate(
-                      angle: swing,
-                      alignment: Alignment.topCenter,
-                      child: Icon(Icons.notifications_active_rounded, color: Colors.white, size: core * 0.5),
+            return Stack(
+                alignment: Alignment.center,
+                clipBehavior: Clip.none,
+                children: [
+                  // الهالة الخضراء (تتنفس)
+                  Transform.scale(
+                    scale: breathe,
+                    child: Container(
+                      width: d * 1.15,
+                      height: d * 1.15,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        gradient: RadialGradient(colors: [
+                          _kMint.withAlpha(120),
+                          _kMint.withAlpha(0),
+                        ]),
+                      ),
                     ),
                   ),
-                ),
-              ),
 
-              // الشارة الطافية + لمعة صغيرة تومض
-              Positioned(
-                top: d * 0.20 + float,
-                right: d * 0.20,
-                child: Container(
-                  width: d * 0.13,
-                  height: d * 0.13,
-                  decoration: BoxDecoration(
-                    color: _kMint,
-                    shape: BoxShape.circle,
-                    border: Border.all(color: AppColors.surface, width: 1.5),
+                  // موجات تنتشر من الجرس (3 موجات متتابعة)
+                  for (int i = 0; i < 3; i++)
+                    _ripple(d, ring, (t * 1.0 + i / 3) % 1.0),
+
+                  // الحلقة البيضاء
+                  Container(
+                    width: ring,
+                    height: ring,
+                    decoration: BoxDecoration(
+                      color: AppColors.surface,
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                            color: AppColors.primary.withAlpha(36),
+                            blurRadius: 20,
+                            offset: const Offset(0, 5)),
+                      ],
+                    ),
                   ),
-                ),
-              ),
-              Positioned(
-                top: d * 0.30 - float,
-                right: d * 0.06,
-                child: Opacity(
-                  opacity: (0.4 + 0.6 * (0.5 + 0.5 * math.sin(t * 2 * math.pi * 3))).clamp(0.0, 1.0),
-                  child: Transform.scale(
-                    scale: 0.8 + 0.4 * (0.5 + 0.5 * math.sin(t * 2 * math.pi * 3)),
-                    child: const Icon(Icons.auto_awesome_rounded, size: 14, color: _kMint),
+
+                  // الحلقة المنقّطة الدوّارة
+                  Transform.rotate(
+                    angle: t * 2 * math.pi,
+                    child: CustomPaint(
+                      size: Size.square(ring * 0.88),
+                      painter: _DashedCirclePainter(
+                          color: AppColors.primary.withAlpha(70)),
+                    ),
                   ),
-                ),
-              ),
-            ]);
+
+                  // النواة على شكل قطرة + الجرس يهتز
+                  SizedBox(
+                    width: core,
+                    height: core * 1.1,
+                    child: CustomPaint(
+                      painter: const _DropPainter(color: AppColors.primary),
+                      child: Align(
+                        alignment: const Alignment(0, 0.25),
+                        child: Transform.rotate(
+                          angle: swing,
+                          alignment: Alignment.topCenter,
+                          child: Icon(Icons.notifications_active_rounded,
+                              color: Colors.white, size: core * 0.5),
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  // الشارة الطافية + لمعة صغيرة تومض
+                  PositionedDirectional(
+                      top: d * 0.20 + float,
+                      start: d * 0.20,
+                      child: Container(
+                        width: d * 0.13,
+                        height: d * 0.13,
+                        decoration: BoxDecoration(
+                          color: _kMint,
+                          shape: BoxShape.circle,
+                          border:
+                              Border.all(color: AppColors.surface, width: 1.5),
+                        ),
+                      )),
+                  PositionedDirectional(
+                      top: d * 0.30 - float,
+                      start: d * 0.06,
+                      child: Opacity(
+                        opacity: (0.4 +
+                                0.6 *
+                                    (0.5 + 0.5 * math.sin(t * 2 * math.pi * 3)))
+                            .clamp(0.0, 1.0),
+                        child: Transform.scale(
+                          scale: 0.8 +
+                              0.4 * (0.5 + 0.5 * math.sin(t * 2 * math.pi * 3)),
+                          child: const Icon(Icons.auto_awesome_rounded,
+                              size: 14, color: _kMint),
+                        ),
+                      )),
+                ]);
           },
         ),
       ),
@@ -506,7 +574,8 @@ class _BellHero extends StatelessWidget {
       height: size,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        border: Border.all(color: _kMint.withAlpha((110 * (1 - p)).toInt()), width: 1.6),
+        border: Border.all(
+            color: _kMint.withAlpha((110 * (1 - p)).toInt()), width: 1.6),
       ),
     );
   }
@@ -593,7 +662,10 @@ class _FeatureCard extends StatelessWidget {
         color: AppColors.surface,
         borderRadius: BorderRadius.circular(AppRadius.card),
         boxShadow: [
-          BoxShadow(color: Colors.black.withAlpha(14), blurRadius: 14, offset: const Offset(0, 3)),
+          BoxShadow(
+              color: Colors.black.withAlpha(14),
+              blurRadius: 14,
+              offset: const Offset(0, 3)),
         ],
       ),
       child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -608,10 +680,12 @@ class _FeatureCard extends StatelessWidget {
         ),
         const SizedBox(width: 12),
         Expanded(
-          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Text(title, style: AppTextStyles.cardTitle.copyWith(fontSize: 14)),
             const SizedBox(height: 6),
-            Text(description, style: AppTextStyles.caption.copyWith(height: 1.6)),
+            Text(description,
+                style: AppTextStyles.caption.copyWith(height: 1.6)),
           ]),
         ),
         const SizedBox(width: 10),
@@ -621,8 +695,10 @@ class _FeatureCard extends StatelessWidget {
             width: 24,
             height: 24,
             margin: const EdgeInsets.only(top: 2),
-            decoration: const BoxDecoration(color: _kCheckBg, shape: BoxShape.circle),
-            child: const Icon(Icons.check_rounded, size: 15, color: AppColors.primary),
+            decoration:
+                const BoxDecoration(color: _kCheckBg, shape: BoxShape.circle),
+            child: const Icon(Icons.check_rounded,
+                size: 15, color: AppColors.primary),
           ),
         ),
       ]),
@@ -647,18 +723,22 @@ class _PrivacyNote extends StatelessWidget {
         Container(
           width: 40,
           height: 40,
-          decoration: BoxDecoration(color: const Color(0xFFE6EBFA), borderRadius: BorderRadius.circular(11)),
-          child: const Icon(Icons.lock_outline_rounded, size: 19, color: AppColors.primary),
+          decoration: BoxDecoration(
+              color: const Color(0xFFE6EBFA),
+              borderRadius: BorderRadius.circular(11)),
+          child: const Icon(Icons.lock_outline_rounded,
+              size: 19, color: AppColors.primary),
         ),
         const SizedBox(width: 12),
         Expanded(
           child: Text.rich(
             TextSpan(children: [
               TextSpan(
-                text: 'نحترم هدوءك وخصوصيتك: ',
-                style: AppTextStyles.caption.copyWith(fontWeight: FontWeight.w700, color: AppColors.textPrimary),
+                text: context.l10n.onboardingNotificationsRespectLabel,
+                style: AppTextStyles.caption.copyWith(
+                    fontWeight: FontWeight.w700, color: AppColors.textPrimary),
               ),
-              const TextSpan(text: 'لن نرسل أي إعلانات ترويجية، ويمكنك دائماً ضبط أو كتم أوقات التنبيهات من الإعدادات.'),
+              TextSpan(text: context.l10n.onboardingNotificationsRespectBody),
             ]),
             style: AppTextStyles.caption.copyWith(height: 1.6),
           ),
@@ -675,7 +755,11 @@ class _ShimmerCtaButton extends StatefulWidget {
   final Animation<double> loop;
   final VoidCallback onPressed;
 
-  const _ShimmerCtaButton({super.key, required this.label, required this.loop, required this.onPressed});
+  const _ShimmerCtaButton(
+      {super.key,
+      required this.label,
+      required this.loop,
+      required this.onPressed});
 
   @override
   State<_ShimmerCtaButton> createState() => _ShimmerCtaButtonState();
@@ -712,7 +796,8 @@ class _ShimmerCtaButtonState extends State<_ShimmerCtaButton> {
                 borderRadius: BorderRadius.circular(20),
                 boxShadow: [
                   BoxShadow(
-                    color: AppColors.primary.withAlpha(50 + (40 * glow).toInt()),
+                    color:
+                        AppColors.primary.withAlpha(50 + (40 * glow).toInt()),
                     blurRadius: 14 + 8 * glow,
                     offset: const Offset(0, 6),
                   ),
@@ -723,27 +808,27 @@ class _ShimmerCtaButtonState extends State<_ShimmerCtaButton> {
                 child: LayoutBuilder(builder: (context, c) {
                   final w = c.maxWidth;
                   return Stack(alignment: Alignment.center, children: [
-                    Positioned(
-                      left: -w * 0.3 + s * w * 1.6,
-                      top: 0,
-                      bottom: 0,
-                      width: w * 0.3,
-                      child: Transform(
-                        transform: Matrix4.skewX(-0.35),
-                        child: DecoratedBox(
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(colors: [
-                              Colors.white.withAlpha(0),
-                              Colors.white.withAlpha(60),
-                              Colors.white.withAlpha(0),
-                            ]),
+                    PositionedDirectional(
+                        end: -w * 0.3 + s * w * 1.6,
+                        top: 0,
+                        bottom: 0,
+                        width: w * 0.3,
+                        child: Transform(
+                          transform: Matrix4.skewX(-0.35),
+                          child: DecoratedBox(
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(colors: [
+                                Colors.white.withAlpha(0),
+                                Colors.white.withAlpha(60),
+                                Colors.white.withAlpha(0),
+                              ]),
+                            ),
                           ),
-                        ),
-                      ),
-                    ),
+                        )),
                     Text(
                       widget.label,
-                      style: AppTextStyles.cardTitle.copyWith(color: Colors.white, fontSize: 16),
+                      style: AppTextStyles.cardTitle
+                          .copyWith(color: Colors.white, fontSize: 16),
                     ),
                   ]);
                 }),

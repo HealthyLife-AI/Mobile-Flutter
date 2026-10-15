@@ -28,7 +28,9 @@ class DefaultAppLogger implements AppLogger {
 
   @override
   void warn(String message, {Object? error}) {
-    if (_enabled) debugPrint('[WARN] $message${error == null ? '' : ' :: $error'}');
+    if (_enabled) {
+      debugPrint('[WARN] $message${error == null ? '' : ' :: $error'}');
+    }
   }
 
   @override

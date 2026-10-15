@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_text_styles.dart';
+import '../../l10n/l10n.dart';
 
 /// AutoRedirectCountdown — M13: a REAL countdown (not static text), with a
 /// slowly, continuously rotating refresh icon for the countdown's duration.
@@ -9,17 +10,20 @@ import '../../core/theme/app_text_styles.dart';
 class AutoRedirectCountdown extends StatefulWidget {
   final int seconds;
   final VoidCallback onDone;
-  const AutoRedirectCountdown({super.key, this.seconds = 2, required this.onDone});
+  const AutoRedirectCountdown(
+      {super.key, this.seconds = 2, required this.onDone});
 
   @override
   State<AutoRedirectCountdown> createState() => _AutoRedirectCountdownState();
 }
 
-class _AutoRedirectCountdownState extends State<AutoRedirectCountdown> with SingleTickerProviderStateMixin {
+class _AutoRedirectCountdownState extends State<AutoRedirectCountdown>
+    with SingleTickerProviderStateMixin {
   late int _remaining = widget.seconds;
   Timer? _timer;
-  late final AnimationController _spin =
-      AnimationController(vsync: this, duration: Duration(milliseconds: widget.seconds * 1000))..repeat();
+  late final AnimationController _spin = AnimationController(
+      vsync: this, duration: Duration(milliseconds: widget.seconds * 1000))
+    ..repeat();
 
   @override
   void initState() {
@@ -45,9 +49,13 @@ class _AutoRedirectCountdownState extends State<AutoRedirectCountdown> with Sing
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        RotationTransition(turns: _spin, child: const Icon(Icons.refresh_rounded, size: 16, color: AppColors.textSecondary)),
+        RotationTransition(
+            turns: _spin,
+            child: const Icon(Icons.refresh_rounded,
+                size: 16, color: AppColors.textSecondary)),
         const SizedBox(width: 8),
-        Text('جاري نقلك تلقائياً خلال $_remaining ${_remaining == 1 ? "ثانية" : "ثوانٍ"}…', style: AppTextStyles.caption),
+        Text(context.l10n.redirectCountdown(_remaining, '$_remaining'),
+            style: AppTextStyles.caption),
       ],
     );
   }

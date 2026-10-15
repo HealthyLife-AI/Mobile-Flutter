@@ -43,7 +43,8 @@ class AnimatedBottomNavPill extends StatelessWidget {
                 offset: const Offset(0, 12),
               ),
             ],
-            border: Border.all(color: AppColors.primary.withValues(alpha: 0.08)),
+            border:
+                Border.all(color: AppColors.primary.withValues(alpha: 0.08)),
           ),
           child: Row(
             textDirection: isRtl ? TextDirection.rtl : TextDirection.ltr,
@@ -69,7 +70,8 @@ class AnimatedBottomNavPill extends StatelessWidget {
                             borderRadius: BorderRadius.circular(22),
                             boxShadow: [
                               BoxShadow(
-                                color: AppColors.primary.withValues(alpha: 0.22),
+                                color:
+                                    AppColors.primary.withValues(alpha: 0.22),
                                 blurRadius: 14,
                                 offset: const Offset(0, 8),
                               ),
@@ -81,7 +83,8 @@ class AnimatedBottomNavPill extends StatelessWidget {
                       children: [
                         Icon(
                           tabs[index].icon,
-                          color: active ? Colors.white : AppColors.textSecondary,
+                          color:
+                              active ? Colors.white : AppColors.textSecondary,
                           size: 22,
                         ),
                         const SizedBox(height: 3),
@@ -94,7 +97,8 @@ class AnimatedBottomNavPill extends StatelessWidget {
                                   fit: BoxFit.scaleDown,
                                   child: Text(
                                     tabs[index].label,
-                                    key: ValueKey('active-${tabs[index].label}'),
+                                    key:
+                                        ValueKey('active-${tabs[index].label}'),
                                     maxLines: 1,
                                     softWrap: false,
                                     style: AppTextStyles.caption.copyWith(
@@ -103,7 +107,8 @@ class AnimatedBottomNavPill extends StatelessWidget {
                                     ),
                                   ),
                                 )
-                              : const SizedBox.shrink(key: ValueKey('inactive')),
+                              : const SizedBox.shrink(
+                                  key: ValueKey('inactive')),
                         ),
                       ],
                     ),

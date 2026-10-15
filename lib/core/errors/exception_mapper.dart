@@ -8,15 +8,33 @@ import '../../core/logging/app_logger.dart';
 Failure failureFromException(Object error, [StackTrace? stack]) {
   if (error is AppException) {
     return switch (error) {
-      NetworkException(:final kind) => NetworkFailure(kind: kind, debugMessage: error.message),
-      ServerException(:final statusCode) => ServerFailure(statusCode: statusCode, debugMessage: error.message),
-      UnauthorizedException() => UnauthorizedFailure(debugMessage: error.message),
+      NetworkException(:final kind) =>
+        NetworkFailure(kind: kind, debugMessage: error.message),
+      ApiException(
+        :final statusCode,
+        :final code,
+        :final body,
+        :final retryAfter
+      ) =>
+        ApiFailure(
+          statusCode: statusCode,
+          code: code,
+          body: body,
+          retryAfter: retryAfter,
+          debugMessage: error.message,
+        ),
+      ServerException(:final statusCode) =>
+        ServerFailure(statusCode: statusCode, debugMessage: error.message),
+      UnauthorizedException() =>
+        UnauthorizedFailure(debugMessage: error.message),
       NotFoundException() => NotFoundFailure(debugMessage: error.message),
-      ValidationException(:final fieldErrors) =>
-        ValidationFailure(fieldErrors: fieldErrors, debugMessage: error.message),
-      ParseException() => UnexpectedFailure(debugMessage: error.message, cause: error),
+      ValidationException(:final fieldErrors) => ValidationFailure(
+          fieldErrors: fieldErrors, debugMessage: error.message),
+      ParseException() =>
+        UnexpectedFailure(debugMessage: error.message, cause: error),
       StorageException() => CacheFailure(debugMessage: error.message),
-      UnexpectedException(:final cause) => UnexpectedFailure(debugMessage: error.message, cause: cause),
+      UnexpectedException(:final cause) =>
+        UnexpectedFailure(debugMessage: error.message, cause: cause),
     };
   }
   return UnexpectedFailure(debugMessage: '$error', cause: error);

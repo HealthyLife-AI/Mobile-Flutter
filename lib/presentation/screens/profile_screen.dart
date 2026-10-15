@@ -2,10 +2,14 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../core/di/app_dependencies.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_radius.dart';
 import '../../core/theme/app_text_styles.dart';
 import '../widgets/locked_feature_overlay.dart';
+import '../bloc/auth/auth_cubit.dart';
+import '../bloc/nutritionist/nutritionist_cubit.dart';
 import 'achievements_screen.dart';
 import 'notifications_center_screen.dart';
 import 'notification_settings_screen.dart';
@@ -15,11 +19,16 @@ import 'schedule_calls_screen.dart';
 import 'measurements_screen.dart';
 import 'specialist_profile_screen.dart';
 import 'password_settings_screen.dart';
+import 'delete_account_screen.dart';
 import 'language_settings_screen.dart';
 import 'about_app_screen.dart';
 import 'health_record_screen.dart';
 import '../../core/navigation/app_page_route.dart';
 import '../../core/navigation/logout_flow.dart';
+
+import '../widgets/directional_icon.dart';
+import '../widgets/person_avatar.dart';
+import '../../l10n/l10n.dart';
 
 // ───────────────────────── ألوان إضافية مأخوذة من التصميم ─────────────────────────
 const Color _kMint = Color(0xFF5EE0B0);
@@ -36,7 +45,10 @@ double _swing(double t, {double span = 0.2, double amp = 0.4, int waves = 5}) {
 }
 
 List<BoxShadow> _cardShadow() => [
-      BoxShadow(color: Colors.black.withAlpha(14), blurRadius: 18, offset: const Offset(0, 5)),
+      BoxShadow(
+          color: Colors.black.withAlpha(14),
+          blurRadius: 18,
+          offset: const Offset(0, 5)),
     ];
 
 class _NavItem {
@@ -64,14 +76,21 @@ class ProfileScreen extends StatefulWidget {
   State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateMixin {
+class _ProfileScreenState extends State<ProfileScreen>
+    with TickerProviderStateMixin {
   final GlobalKey _settingsKey = GlobalKey();
   bool _moreOpen = false;
   bool _healthCvUnlocked = false;
 
   late final AnimationController _enter;
   late final AnimationController _loop;
-  late final Animation<double> _header, _identity, _badgePop, _heading, _more, _logout, _caption;
+  late final Animation<double> _header,
+      _identity,
+      _badgePop,
+      _heading,
+      _more,
+      _logout,
+      _caption;
   late final List<Animation<double>> _rows;
 
   Animation<double> _iv(double b, double e, [Curve c = Curves.easeOutCubic]) =>
@@ -80,8 +99,12 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
   @override
   void initState() {
     super.initState();
-    _enter = AnimationController(vsync: this, duration: const Duration(milliseconds: 2300))..forward();
-    _loop = AnimationController(vsync: this, duration: const Duration(seconds: 6))..repeat();
+    _enter = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 2300))
+      ..forward();
+    _loop =
+        AnimationController(vsync: this, duration: const Duration(seconds: 6))
+          ..repeat();
 
     _header = _iv(0.00, 0.18);
     _identity = _iv(0.08, 0.38);
@@ -100,7 +123,8 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
     super.dispose();
   }
 
-  void _go(Widget screen) => Navigator.of(context).push(AppPageRoute(builder: (_) => screen));
+  void _go(Widget screen) =>
+      Navigator.of(context).push(AppPageRoute(builder: (_) => screen));
 
   /// يمرّر القائمة إلى كتلة إعدادات الحساب.
   void _jumpToSettings() {
@@ -115,28 +139,48 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
   }
 
   List<_NavItem> get _moreItems => [
-        _NavItem(Icons.straighten_rounded, 'الوزن ومحيط الجسم', 'سجّلي قياساتك وتابعي مسار تغيّرك',
+        _NavItem(
+            Icons.straighten_rounded,
+            context.l10n.measurementsTitle,
+            context.l10n.profileMeasurementsSubtitle,
             () => const MeasurementsScreen()),
-        _NavItem(Icons.folder_shared_outlined, 'السجل الطبي', 'المستوى، الهدف، الأدوية والتشخيصات المعتمدة',
+        _NavItem(
+            Icons.folder_shared_outlined,
+            context.l10n.healthRecordTitle,
+            context.l10n.profileHealthRecordSubtitle,
             () => const HealthRecordScreen()),
-        _NavItem(Icons.emoji_events_outlined, 'إنجازاتي', null, () => const AchievementsScreen()),
-        _NavItem(Icons.favorite_border_rounded, 'ربط تطبيق الصحة', null, () => const HealthSyncScreen()),
-        _NavItem(Icons.bedtime_outlined, 'النوم والإجهاد والمزاج', null, () => const SleepStressMoodScreen()),
-        _NavItem(Icons.event_available_outlined, 'المواعيد والمتابعة', null, () => const ScheduleCallsScreen()),
-        _NavItem(Icons.mark_email_unread_outlined, 'سجل الإشعارات', null, () => const NotificationsCenterScreen()),
+        _NavItem(Icons.emoji_events_outlined, context.l10n.profileAchievements,
+            null, () => const AchievementsScreen()),
+        _NavItem(Icons.favorite_border_rounded, context.l10n.healthSyncTitle,
+            null, () => const HealthSyncScreen()),
+        _NavItem(Icons.bedtime_outlined, context.l10n.profileWellbeing, null,
+            () => const SleepStressMoodScreen()),
+        _NavItem(
+            Icons.event_available_outlined,
+            context.l10n.profileAppointments,
+            null,
+            () => const ScheduleCallsScreen()),
+        _NavItem(
+            Icons.mark_email_unread_outlined,
+            context.l10n.profileNotificationLog,
+            null,
+            () => const NotificationsCenterScreen()),
       ];
 
   @override
   Widget build(BuildContext context) {
     final bottomInset = MediaQuery.paddingOf(context).bottom;
 
-    return Directionality(
-      textDirection: TextDirection.rtl,
+    return BlocProvider<NutritionistCubit>(
+      create: (context) =>
+          NutritionistCubit(context.read<AppDependencies>().nutritionist)
+            ..load(),
       child: Scaffold(
         backgroundColor: Colors.white,
         body: SafeArea(
           child: ListView(
-            physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+            physics: const BouncingScrollPhysics(
+                parent: AlwaysScrollableScrollPhysics()),
             padding: EdgeInsets.fromLTRB(18, 14, 18, 132 + bottomInset),
             children: [
               // ───────── الهيدر ─────────
@@ -147,11 +191,12 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
                   padding: const EdgeInsets.symmetric(horizontal: 6),
                   child: Row(
                     children: [
-                      Text('الحساب', style: AppTextStyles.h1.copyWith(fontSize: 22)),
+                      Text(context.l10n.profileTitle,
+                          style: AppTextStyles.h1.copyWith(fontSize: 22)),
                       const Spacer(),
                       // الأيقونة تنقل إلى كتلة الإعدادات (نفس وظيفة زر الترس القديم)
                       Tooltip(
-                        message: 'الإعدادات',
+                        message: context.l10n.commonSettings,
                         child: GestureDetector(
                           onTap: () {
                             HapticFeedback.selectionClick();
@@ -160,8 +205,11 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
                           child: Container(
                             width: 44,
                             height: 44,
-                            decoration: const BoxDecoration(color: AppColors.primary, shape: BoxShape.circle),
-                            child: const Icon(Icons.person_outline_rounded, color: Colors.white, size: 23),
+                            decoration: const BoxDecoration(
+                                color: AppColors.primary,
+                                shape: BoxShape.circle),
+                            child: const Icon(Icons.person_outline_rounded,
+                                color: Colors.white, size: 23),
                           ),
                         ),
                       ),
@@ -172,15 +220,19 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
               const SizedBox(height: 16),
 
               // ───────── بطاقة الهوية ─────────
-              _Reveal(animation: _identity, dy: 0.2, child: _IdentityCard(loop: _loop, badgePop: _badgePop)),
+              _Reveal(
+                  animation: _identity,
+                  dy: 0.2,
+                  child: _IdentityCard(loop: _loop, badgePop: _badgePop)),
               const SizedBox(height: 22),
 
               // ───────── عنوان القسم ─────────
               _Reveal(
                 animation: _heading,
-                child: const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 6),
-                  child: Text('إعدادات الحساب والمتابعة', style: AppTextStyles.sectionHeading),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 6),
+                  child: Text(context.l10n.profileAccountSettings,
+                      style: AppTextStyles.sectionHeading),
                 ),
               ),
               const SizedBox(height: 12),
@@ -194,11 +246,21 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
                       animation: _rows[0],
                       dx: 0.12,
                       dy: 0,
-                      child: _SettingsTile(
-                        icon: Icons.assignment_ind_outlined,
-                        title: 'الأخصائي الغذائي',
-                        subtitle: 'أ. خلود العربي (أخصائية التغذية العلاجية)',
-                        onTap: () => _go(const SpecialistProfileScreen()),
+                      child: Builder(
+                        builder: (context) {
+                          final nutritionist = context
+                              .watch<NutritionistCubit>()
+                              .state
+                              .dataOrNull;
+                          return _SettingsTile(
+                            icon: Icons.assignment_ind_outlined,
+                            title: context.l10n.profileDietitian,
+                            subtitle: context.l10n.profileDietitianName(
+                                nutritionist?.gender ?? 'unknown',
+                                nutritionist?.name ?? ''),
+                            onTap: () => _go(const SpecialistProfileScreen()),
+                          );
+                        },
                       ),
                     ),
                     _Reveal(
@@ -212,11 +274,12 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
                           builder: (_, __) => Transform.rotate(
                             angle: _swing(_loop.value),
                             alignment: Alignment.topCenter,
-                            child: const Icon(Icons.notifications_none_rounded, color: AppColors.primary, size: 25),
+                            child: const Icon(Icons.notifications_none_rounded,
+                                color: AppColors.primary, size: 25),
                           ),
                         ),
-                        title: 'الإشعارات',
-                        subtitle: 'التذكير بالوجبات والقياسات',
+                        title: context.l10n.commonNotifications,
+                        subtitle: context.l10n.profileNotificationsSubtitle,
                         onTap: () => _go(const NotificationSettingsScreen()),
                       ),
                     ),
@@ -226,8 +289,8 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
                       dy: 0,
                       child: _SettingsTile(
                         icon: Icons.lock_outline_rounded,
-                        title: 'كلمة المرور',
-                        subtitle: 'تحديث وحماية الحساب',
+                        title: context.l10n.passwordTitle,
+                        subtitle: context.l10n.profilePasswordSubtitle,
                         onTap: () => _go(const PasswordSettingsScreen()),
                       ),
                     ),
@@ -237,12 +300,18 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
                       dy: 0,
                       child: _SettingsTile(
                         icon: Icons.translate_rounded,
-                        title: 'اللغة',
-                        subtitle: 'العربية (الحالية)',
+                        title: context.l10n.languageTitle,
+                        subtitle: context.l10n.profileLanguageCurrent,
                         trailing: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                          decoration: BoxDecoration(color: _kLavender, borderRadius: BorderRadius.circular(AppRadius.pill)),
-                          child: const Text('عربي', style: TextStyle(fontSize: 11, color: AppColors.primary)),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 4),
+                          decoration: BoxDecoration(
+                              color: _kLavender,
+                              borderRadius:
+                                  BorderRadius.circular(AppRadius.pill)),
+                          child: Text(context.l10n.profileLanguageBadge,
+                              style: const TextStyle(
+                                  fontSize: 11, color: AppColors.primary)),
                         ),
                         onTap: () => _go(const LanguageSettingsScreen()),
                       ),
@@ -253,9 +322,10 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
                       dy: 0,
                       child: _SettingsTile(
                         icon: Icons.info_outline_rounded,
-                        title: 'حول التطبيق',
-                        subtitle: 'الإصدار 1.0.0',
-                        trailing: const Text('v1.0.0', style: AppTextStyles.caption),
+                        title: context.l10n.aboutTitle,
+                        subtitle: context.l10n.profileVersion,
+                        trailing:
+                            const Text('v1.0.0', style: AppTextStyles.caption),
                         onTap: () => _go(const AboutAppScreen()),
                       ),
                     ),
@@ -275,7 +345,7 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
                   onOpen: _go,
                   lockedTile: LockedFeatureOverlay(
                     locked: !_healthCvUnlocked,
-                    message: 'هذه الميزة تتطلب باقة أعلى — تواصلي مع أخصائيتك للترقية',
+                    message: context.l10n.profileUpgradeRequired,
                     onContact: () {
                       HapticFeedback.selectionClick();
                       setState(() {
@@ -284,7 +354,8 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
                       });
                     },
                     child: ConstrainedBox(
-                      constraints: BoxConstraints(minHeight: _healthCvUnlocked ? 0 : 184),
+                      constraints: BoxConstraints(
+                          minHeight: _healthCvUnlocked ? 0 : 184),
                       child: Align(
                         alignment: Alignment.topCenter,
                         child: GestureDetector(
@@ -292,8 +363,8 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
                           onTap: () => _go(const HealthRecordScreen()),
                           child: _SettingsTile(
                             icon: Icons.medical_information_outlined,
-                            title: 'الملف الصحي (Health CV)',
-                            subtitle: 'سجل صحي شامل يعدّه أخصائيك',
+                            title: context.l10n.profileHealthCv,
+                            subtitle: context.l10n.profileHealthCvSubtitle,
                           ),
                         ),
                       ),
@@ -304,15 +375,27 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
               const SizedBox(height: 22),
 
               // ───────── تسجيل الخروج ─────────
-              _Reveal(animation: _logout, dy: 0.3, child: _LogoutTile(loop: _loop)),
+              _Reveal(
+                  animation: _logout, dy: 0.3, child: _LogoutTile(loop: _loop)),
               const SizedBox(height: 10),
               FadeTransition(
                 opacity: _caption,
-                child: const Center(
+                child: Center(
                   child: Text(
-                    'يتطلب تأكيد تسجيل الخروج لضمان مزامنة قياساتك الأخيرة',
+                    context.l10n.profileLogoutCaption,
                     textAlign: TextAlign.center,
                     style: AppTextStyles.caption,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 10),
+              Center(
+                child: TextButton(
+                  onPressed: () => _go(const DeleteAccountScreen()),
+                  child: Text(
+                    context.l10n.accountDeleteTitle,
+                    style:
+                        AppTextStyles.caption.copyWith(color: AppColors.danger),
                   ),
                 ),
               ),
@@ -332,14 +415,19 @@ class _Reveal extends StatelessWidget {
   final double dx;
   final double dy;
 
-  const _Reveal({required this.animation, required this.child, this.dx = 0, this.dy = 0.15});
+  const _Reveal(
+      {required this.animation,
+      required this.child,
+      this.dx = 0,
+      this.dy = 0.15});
 
   @override
   Widget build(BuildContext context) {
     return FadeTransition(
       opacity: animation,
       child: SlideTransition(
-        position: Tween<Offset>(begin: Offset(dx, dy), end: Offset.zero).animate(animation),
+        position: Tween<Offset>(begin: Offset(dx, dy), end: Offset.zero)
+            .animate(animation),
         child: child,
       ),
     );
@@ -372,16 +460,14 @@ class _IdentityCard extends StatelessWidget {
               builder: (_, __) {
                 final a = loop.value * 2 * math.pi;
                 return Stack(clipBehavior: Clip.hardEdge, children: [
-                  Positioned(
-                    left: -70 + 16 * math.sin(a),
-                    top: -60 + 10 * math.cos(a),
-                    child: _blob(190, 95),
-                  ),
-                  Positioned(
-                    right: -60 + 12 * math.cos(a),
-                    top: -40 + 12 * math.sin(a),
-                    child: _blob(160, 60),
-                  ),
+                  PositionedDirectional(
+                      end: -70 + 16 * math.sin(a),
+                      top: -60 + 10 * math.cos(a),
+                      child: _blob(190, 95)),
+                  PositionedDirectional(
+                      start: -60 + 12 * math.cos(a),
+                      top: -40 + 12 * math.sin(a),
+                      child: _blob(160, 60)),
                 ]);
               },
             ),
@@ -402,10 +488,18 @@ class _IdentityCard extends StatelessWidget {
                           Row(
                             children: [
                               Expanded(
-                                child: Text('سارة أحمد',
+                                child: Text(
+                                    context
+                                            .watch<AuthCubit>()
+                                            .state
+                                            .user
+                                            ?.name ??
+                                        '',
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
-                                    style: AppTextStyles.cardTitle.copyWith(fontSize: 21, fontWeight: FontWeight.w700)),
+                                    style: AppTextStyles.cardTitle.copyWith(
+                                        fontSize: 21,
+                                        fontWeight: FontWeight.w700)),
                               ),
                               _ActiveChip(loop: loop),
                             ],
@@ -417,8 +511,7 @@ class _IdentityCard extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: 18),
-                _ClinicBlock(loop: loop),
+                _ClinicCard(loop: loop),
               ],
             ),
           ),
@@ -432,7 +525,8 @@ class _IdentityCard extends StatelessWidget {
         height: size,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          gradient: RadialGradient(colors: [_kMint.withAlpha(alpha), _kMint.withAlpha(0)]),
+          gradient: RadialGradient(
+              colors: [_kMint.withAlpha(alpha), _kMint.withAlpha(0)]),
         ),
       );
 }
@@ -445,67 +539,65 @@ class _Avatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final user = context.watch<AuthCubit>().state.user;
     return SizedBox(
       width: 100,
       height: 100,
-      child: Stack(clipBehavior: Clip.none, alignment: Alignment.center, children: [
-        // حلقة متدرجة تدور
-        AnimatedBuilder(
-          animation: loop,
-          builder: (_, __) => Transform.rotate(
-            angle: loop.value * 2 * math.pi,
-            child: Container(
-              width: 100,
-              height: 100,
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                gradient: SweepGradient(
-                  colors: [_kMint, Color(0x005EE0B0), _kMint],
-                  stops: [0.0, 0.6, 1.0],
+      child: Stack(
+          clipBehavior: Clip.none,
+          alignment: Alignment.center,
+          children: [
+            // حلقة متدرجة تدور
+            AnimatedBuilder(
+              animation: loop,
+              builder: (_, __) => Transform.rotate(
+                angle: loop.value * 2 * math.pi,
+                child: Container(
+                  width: 100,
+                  height: 100,
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    gradient: SweepGradient(
+                      colors: [_kMint, Color(0x005EE0B0), _kMint],
+                      stops: [0.0, 0.6, 1.0],
+                    ),
+                  ),
                 ),
               ),
             ),
-          ),
-        ),
-        Container(
-          width: 94,
-          height: 94,
-          decoration: const BoxDecoration(color: Colors.white, shape: BoxShape.circle),
-        ),
-        ClipOval(
-          child: Image.asset(
-            // TODO: ضعي مسار صورة المريضة الحقيقية.
-            'assets/images/profile_avatar.jpg',
-            width: 88,
-            height: 88,
-            fit: BoxFit.cover,
-            errorBuilder: (_, __, ___) => Container(
-              width: 88,
-              height: 88,
-              color: AppColors.primaryTint,
-              child: const Icon(Icons.person_rounded, color: AppColors.primary, size: 44),
+            Container(
+              width: 94,
+              height: 94,
+              decoration: const BoxDecoration(
+                  color: Colors.white, shape: BoxShape.circle),
             ),
-          ),
-        ),
-        // شارة التوثيق (تظهر بـ elastic)
-        PositionedDirectional(
-          bottom: -2,
-          end: -2,
-          child: ScaleTransition(
-            scale: badgePop,
-            child: Container(
-              width: 32,
-              height: 32,
-              decoration: BoxDecoration(
-                color: AppColors.primary,
-                shape: BoxShape.circle,
-                border: Border.all(color: Colors.white, width: 2.5),
+            // The patient's own photo when the profile has one, her initial
+            // otherwise: nothing is bundled into the app.
+            PersonAvatar(
+              imageUrl: user?.avatarUrl,
+              name: user?.name,
+              size: 88,
+            ),
+            // شارة التوثيق (تظهر بـ elastic)
+            PositionedDirectional(
+              bottom: -2,
+              end: -2,
+              child: ScaleTransition(
+                scale: badgePop,
+                child: Container(
+                  width: 32,
+                  height: 32,
+                  decoration: BoxDecoration(
+                    color: AppColors.primary,
+                    shape: BoxShape.circle,
+                    border: Border.all(color: Colors.white, width: 2.5),
+                  ),
+                  child: const Icon(Icons.verified_rounded,
+                      color: Colors.white, size: 18),
+                ),
               ),
-              child: const Icon(Icons.verified_rounded, color: Colors.white, size: 18),
             ),
-          ),
-        ),
-      ]),
+          ]),
     );
   }
 }
@@ -518,7 +610,9 @@ class _ActiveChip extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-      decoration: BoxDecoration(color: _kMintSoft, borderRadius: BorderRadius.circular(AppRadius.pill)),
+      decoration: BoxDecoration(
+          color: _kMintSoft,
+          borderRadius: BorderRadius.circular(AppRadius.pill)),
       child: Row(mainAxisSize: MainAxisSize.min, children: [
         AnimatedBuilder(
           animation: loop,
@@ -530,13 +624,22 @@ class _ActiveChip extends StatelessWidget {
               decoration: BoxDecoration(
                 color: AppColors.primary,
                 shape: BoxShape.circle,
-                boxShadow: [BoxShadow(color: _kMint.withAlpha((150 * p).toInt()), blurRadius: 5, spreadRadius: 1.5 * p)],
+                boxShadow: [
+                  BoxShadow(
+                      color: _kMint.withAlpha((150 * p).toInt()),
+                      blurRadius: 5,
+                      spreadRadius: 1.5 * p)
+                ],
               ),
             );
           },
         ),
         const SizedBox(width: 5),
-        const Text('نشط', style: TextStyle(fontSize: 11, color: AppColors.primary, fontWeight: FontWeight.w600)),
+        Text(context.l10n.healthRecordActive,
+            style: const TextStyle(
+                fontSize: 11,
+                color: AppColors.primary,
+                fontWeight: FontWeight.w600)),
       ]),
     );
   }
@@ -555,8 +658,9 @@ class _CodePill extends StatelessWidget {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
           color: _kLavender,
-          child: Text('كود المريض: HL-0042',
-              style: AppTextStyles.caption.copyWith(color: AppColors.primary, fontWeight: FontWeight.w600)),
+          child: Text(context.l10n.profilePatientCode,
+              style: AppTextStyles.caption.copyWith(
+                  color: AppColors.primary, fontWeight: FontWeight.w600)),
         ),
         Positioned.fill(
           child: IgnorePointer(
@@ -566,24 +670,23 @@ class _CodePill extends StatelessWidget {
                 final w = c.maxWidth;
                 final s = ((loop.value - 0.3) / 0.3).clamp(0.0, 1.0);
                 return Stack(children: [
-                  Positioned(
-                    left: -w * 0.3 + s * w * 1.6,
-                    top: 0,
-                    bottom: 0,
-                    width: w * 0.3,
-                    child: Transform(
-                      transform: Matrix4.skewX(-0.35),
-                      child: DecoratedBox(
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(colors: [
-                            Colors.white.withAlpha(0),
-                            Colors.white.withAlpha(150),
-                            Colors.white.withAlpha(0),
-                          ]),
+                  PositionedDirectional(
+                      end: -w * 0.3 + s * w * 1.6,
+                      top: 0,
+                      bottom: 0,
+                      width: w * 0.3,
+                      child: Transform(
+                        transform: Matrix4.skewX(-0.35),
+                        child: DecoratedBox(
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(colors: [
+                              Colors.white.withAlpha(0),
+                              Colors.white.withAlpha(150),
+                              Colors.white.withAlpha(0),
+                            ]),
+                          ),
                         ),
-                      ),
-                    ),
-                  ),
+                      )),
                 ]);
               }),
             ),
@@ -594,15 +697,22 @@ class _CodePill extends StatelessWidget {
   }
 }
 
-class _ClinicBlock extends StatelessWidget {
+/// The clinic the patient follows, from the server's nutritionist profile.
+/// Nothing shows until that profile has a clinic name.
+class _ClinicCard extends StatelessWidget {
   final Animation<double> loop;
-  const _ClinicBlock({required this.loop});
+  const _ClinicCard({required this.loop});
 
   @override
   Widget build(BuildContext context) {
+    final clinic =
+        context.watch<NutritionistCubit>().state.dataOrNull?.clinicName;
+    if (clinic == null) return const SizedBox.shrink();
     return Container(
+      margin: const EdgeInsets.only(top: 18),
       padding: const EdgeInsets.fromLTRB(14, 14, 14, 14),
-      decoration: BoxDecoration(color: _kLavender, borderRadius: BorderRadius.circular(20)),
+      decoration: BoxDecoration(
+          color: _kLavender, borderRadius: BorderRadius.circular(20)),
       child: Row(children: [
         AnimatedBuilder(
           animation: loop,
@@ -614,24 +724,34 @@ class _ClinicBlock extends StatelessWidget {
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(14),
-                boxShadow: [BoxShadow(color: AppColors.primary.withAlpha((30 * p).toInt()), blurRadius: 10, spreadRadius: 1.5 * p)],
+                boxShadow: [
+                  BoxShadow(
+                      color: AppColors.primary.withAlpha((30 * p).toInt()),
+                      blurRadius: 10,
+                      spreadRadius: 1.5 * p)
+                ],
               ),
               child: Transform.scale(
                 scale: 1 + 0.08 * p,
-                child: const Icon(Icons.add_box_outlined, color: AppColors.primary, size: 24),
+                child: const Icon(Icons.add_box_outlined,
+                    color: AppColors.primary, size: 24),
               ),
             );
           },
         ),
         const SizedBox(width: 12),
-        const Expanded(
+        Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('العيادة المتابعة', style: AppTextStyles.caption),
-              SizedBox(height: 3),
-              Text('عيادة التغذية العلاجية المتخصصة',
-                  style: TextStyle(fontSize: 14.5, fontWeight: FontWeight.w800, color: AppColors.textPrimary)),
+              Text(context.l10n.profileFollowingClinic,
+                  style: AppTextStyles.caption),
+              const SizedBox(height: 3),
+              Text(clinic,
+                  style: const TextStyle(
+                      fontSize: 14.5,
+                      fontWeight: FontWeight.w800,
+                      color: AppColors.textPrimary)),
             ],
           ),
         ),
@@ -651,7 +771,9 @@ class _GroupCard extends StatelessWidget {
     final items = <Widget>[];
     for (int i = 0; i < children.length; i++) {
       items.add(children[i]);
-      if (i < children.length - 1) items.add(const Divider(height: 1, thickness: 1, color: _kDivider));
+      if (i < children.length - 1) {
+        items.add(const Divider(height: 1, thickness: 1, color: _kDivider));
+      }
     }
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
@@ -722,7 +844,8 @@ class _SettingsTileState extends State<_SettingsTile> {
                   color: _pressed ? _kMintSoft : _kLavender,
                   borderRadius: BorderRadius.circular(18),
                 ),
-                child: widget.iconWidget ?? Icon(widget.icon, color: AppColors.primary, size: 25),
+                child: widget.iconWidget ??
+                    Icon(widget.icon, color: AppColors.primary, size: 25),
               ),
             ),
             const SizedBox(width: 14),
@@ -730,7 +853,8 @@ class _SettingsTileState extends State<_SettingsTile> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(widget.title, style: AppTextStyles.cardTitle.copyWith(fontSize: 15.5)),
+                  Text(widget.title,
+                      style: AppTextStyles.cardTitle.copyWith(fontSize: 15.5)),
                   if (widget.subtitle != null) ...[
                     const SizedBox(height: 4),
                     Text(widget.subtitle!, style: AppTextStyles.caption),
@@ -747,8 +871,13 @@ class _SettingsTileState extends State<_SettingsTile> {
               AnimatedSlide(
                 duration: const Duration(milliseconds: 200),
                 curve: Curves.easeOut,
-                offset: Offset(_pressed ? -0.5 : 0, 0),
-                child: const Icon(Icons.chevron_left_rounded, size: 22, color: AppColors.textSecondary),
+                offset: Offset(_pressed ? -0.5 * rtlDesignSign(context) : 0, 0),
+                child: Icon(
+                    directionalIcon(context,
+                        rtl: Icons.chevron_left_rounded,
+                        ltr: Icons.chevron_right_rounded),
+                    size: 22,
+                    color: AppColors.textSecondary),
               ),
             ],
           ]),
@@ -798,17 +927,22 @@ class _MoreCard extends StatelessWidget {
                 Container(
                   width: 56,
                   height: 56,
-                  decoration: BoxDecoration(color: _kLavender, borderRadius: BorderRadius.circular(18)),
-                  child: const Icon(Icons.dashboard_customize_outlined, color: AppColors.primary, size: 25),
+                  decoration: BoxDecoration(
+                      color: _kLavender,
+                      borderRadius: BorderRadius.circular(18)),
+                  child: const Icon(Icons.dashboard_customize_outlined,
+                      color: AppColors.primary, size: 25),
                 ),
                 const SizedBox(width: 14),
-                const Expanded(
+                Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('المزيد', style: AppTextStyles.cardTitle),
-                      SizedBox(height: 4),
-                      Text('القياسات، السجل الطبي، الإنجازات والمواعيد', style: AppTextStyles.caption),
+                      Text(context.l10n.profileMore,
+                          style: AppTextStyles.cardTitle),
+                      const SizedBox(height: 4),
+                      Text(context.l10n.profileMoreSubtitle,
+                          style: AppTextStyles.caption),
                     ],
                   ),
                 ),
@@ -816,7 +950,8 @@ class _MoreCard extends StatelessWidget {
                   turns: open ? 0.5 : 0,
                   duration: const Duration(milliseconds: 350),
                   curve: Curves.easeOutBack,
-                  child: const Icon(Icons.expand_more_rounded, size: 24, color: AppColors.textSecondary),
+                  child: const Icon(Icons.expand_more_rounded,
+                      size: 24, color: AppColors.textSecondary),
                 ),
               ]),
             ),
@@ -829,7 +964,8 @@ class _MoreCard extends StatelessWidget {
                 ? Column(
                     children: [
                       for (final it in items) ...[
-                        const Divider(height: 1, thickness: 1, color: _kDivider),
+                        const Divider(
+                            height: 1, thickness: 1, color: _kDivider),
                         _SettingsTile(
                           icon: it.icon,
                           title: it.title,
@@ -899,25 +1035,33 @@ class _LogoutTileState extends State<_LogoutTile> {
                 Container(
                   width: 54,
                   height: 54,
-                  decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(17)),
-                  child: const Icon(Icons.logout_rounded, color: AppColors.danger, size: 25),
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(17)),
+                  child: const Icon(Icons.logout_rounded,
+                      color: AppColors.danger, size: 25),
                 ),
                 const SizedBox(width: 14),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text('تسجيل الخروج',
-                          style: TextStyle(color: _kLogoutText, fontWeight: FontWeight.w800, fontSize: 15.5)),
+                      Text(context.l10n.commonLogout,
+                          style: const TextStyle(
+                              color: _kLogoutText,
+                              fontWeight: FontWeight.w800,
+                              fontSize: 15.5)),
                       const SizedBox(height: 4),
-                      Text('إنهاء الجلسة بأمان من هذا الجهاز',
-                          style: AppTextStyles.caption.copyWith(color: _kLogoutText.withAlpha(200))),
+                      Text(context.l10n.profileLogoutSubtitle,
+                          style: AppTextStyles.caption
+                              .copyWith(color: _kLogoutText.withAlpha(200))),
                     ],
                   ),
                 ),
                 Transform.translate(
                   offset: Offset(nudge, 0),
-                  child: const Icon(Icons.east_rounded, color: AppColors.danger, size: 24),
+                  child: const Icon(Icons.east_rounded,
+                      color: AppColors.danger, size: 24),
                 ),
               ]),
             );

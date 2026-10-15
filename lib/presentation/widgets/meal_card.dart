@@ -5,6 +5,8 @@ import '../../core/theme/app_text_styles.dart';
 import '../../domain/entities/meal_entities.dart';
 import 'gradient_cta_button.dart';
 
+import '../../l10n/l10n.dart';
+
 IconData mealSlotIcon(String slot) {
   switch (slot) {
     case 'sun':
@@ -93,7 +95,12 @@ class MealCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(AppRadius.card),
         border: isCurrent ? null : Border.all(color: AppColors.borderLight),
         boxShadow: isCurrent
-            ? [BoxShadow(color: AppColors.primary.withValues(alpha: 0.12), blurRadius: 24, offset: const Offset(0, 10))]
+            ? [
+                BoxShadow(
+                    color: AppColors.primary.withValues(alpha: 0.12),
+                    blurRadius: 24,
+                    offset: const Offset(0, 10))
+              ]
             : [],
       ),
       child: Column(
@@ -104,7 +111,8 @@ class MealCard extends StatelessWidget {
               height: 6,
               decoration: const BoxDecoration(
                 gradient: AppColors.primaryGradient,
-                borderRadius: BorderRadius.vertical(top: Radius.circular(AppRadius.card)),
+                borderRadius:
+                    BorderRadius.vertical(top: Radius.circular(AppRadius.card)),
               ),
             ),
           Padding(
@@ -117,18 +125,18 @@ class MealCard extends StatelessWidget {
                     _CaloriesChip(calories: meal.calories),
                     const Spacer(),
                     if (meal.status == MealStatus.logged)
-                      const Flexible(
+                      Flexible(
                         child: _StatusPill(
-                          text: 'تم تسجيل الوجبة',
+                          text: context.l10n.mealCardLogged,
                           color: AppColors.accentGreen,
                           bg: AppColors.accentGreenBg,
                           icon: Icons.check_circle_rounded,
                         ),
                       )
                     else if (isCurrent)
-                      const Flexible(
+                      Flexible(
                         child: _StatusPill(
-                          text: 'الوجبة القادمة / الحالية',
+                          text: context.l10n.mealCardNextCurrent,
                           color: AppColors.primary,
                           bg: AppColors.accentGreenBg,
                           icon: null,
@@ -136,9 +144,9 @@ class MealCard extends StatelessWidget {
                         ),
                       )
                     else
-                      const Flexible(
+                      Flexible(
                         child: _StatusPill(
-                          text: 'مجدولة لاحقاً',
+                          text: context.l10n.mealCardScheduledLater,
                           color: AppColors.textSecondary,
                           bg: AppColors.chipInactiveBg,
                         ),
@@ -148,36 +156,50 @@ class MealCard extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 12),
-                Text(meal.name, textAlign: TextAlign.right, style: AppTextStyles.sectionHeading),
+                Text(meal.name,
+                    textAlign: TextAlign.start,
+                    style: AppTextStyles.sectionHeading),
                 const SizedBox(height: 4),
-                Text(meal.timeRange, textAlign: TextAlign.right, style: AppTextStyles.secondary),
+                Text(meal.timeRange,
+                    textAlign: TextAlign.start, style: AppTextStyles.secondary),
                 const SizedBox(height: 16),
                 ...meal.items.map((it) => Padding(
                       padding: const EdgeInsets.only(bottom: 10),
                       child: Row(
                         children: [
                           Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 4),
                             decoration: BoxDecoration(
                               color: AppColors.chipInactiveBg,
-                              borderRadius: BorderRadius.circular(AppRadius.pill),
+                              borderRadius:
+                                  BorderRadius.circular(AppRadius.pill),
                             ),
-                            child: Text('${it.grams} غ', style: AppTextStyles.caption),
+                            child: Text(
+                                context.l10n.commonGramsShortValue(it.grams),
+                                style: AppTextStyles.caption),
                           ),
                           const Spacer(),
                           Expanded(
                             flex: 4,
-                            child: Text(it.name, textAlign: TextAlign.right, style: AppTextStyles.body),
+                            child: Text(it.name,
+                                textAlign: TextAlign.start,
+                                style: AppTextStyles.body),
                           ),
                           const SizedBox(width: 8),
                           if (meal.status != MealStatus.logged)
                             Icon(
-                              it.checked ? Icons.check_box_rounded : Icons.check_box_outline_blank_rounded,
-                              color: it.checked ? AppColors.primary : AppColors.textSecondary,
+                              it.checked
+                                  ? Icons.check_box_rounded
+                                  : Icons.check_box_outline_blank_rounded,
+                              color: it.checked
+                                  ? AppColors.primary
+                                  : AppColors.textSecondary,
                               size: 20,
                             )
                           else
-                            const Icon(Icons.check_rounded, color: AppColors.accentGreen, size: 18),
+                            const Icon(Icons.check_rounded,
+                                color: AppColors.accentGreen, size: 18),
                         ],
                       ),
                     )),
@@ -185,20 +207,23 @@ class MealCard extends StatelessWidget {
                 GestureDetector(
                   onTap: onSwapAlternatives,
                   child: Container(
-                    padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 14),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 12, horizontal: 14),
                     decoration: BoxDecoration(
                       border: Border.all(color: AppColors.borderLight),
                       borderRadius: BorderRadius.circular(AppRadius.pill),
                     ),
                     child: Row(
                       children: [
-                        const Icon(Icons.swap_horiz_rounded, color: AppColors.primary, size: 18),
+                        const Icon(Icons.swap_horiz_rounded,
+                            color: AppColors.primary, size: 18),
                         const SizedBox(width: 8),
                         Expanded(
                           child: Text(
                             meal.alternativesText,
-                            textAlign: TextAlign.right,
-                            style: AppTextStyles.caption.copyWith(color: AppColors.primary),
+                            textAlign: TextAlign.start,
+                            style: AppTextStyles.caption
+                                .copyWith(color: AppColors.primary),
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -210,7 +235,7 @@ class MealCard extends StatelessWidget {
                 if (isCurrent) ...[
                   const SizedBox(height: 14),
                   GradientCtaButton(
-                    label: 'سجّل هذه الوجبة الآن',
+                    label: context.l10n.mealCardLogNow,
                     icon: Icons.add_circle_outline_rounded,
                     onPressed: onLog,
                   ),
@@ -229,10 +254,16 @@ class MealCard extends StatelessWidget {
       width: 44,
       height: 44,
       decoration: BoxDecoration(
-        color: showGrayBox ? AppColors.chipInactiveBg : mealSlotBg(meal.iconEmojiSlot),
+        color: showGrayBox
+            ? AppColors.chipInactiveBg
+            : mealSlotBg(meal.iconEmojiSlot),
         shape: BoxShape.circle,
       ),
-      child: Icon(mealSlotIcon(meal.iconEmojiSlot), color: showGrayBox ? AppColors.textSecondary : mealSlotIconColor(meal.iconEmojiSlot), size: 22),
+      child: Icon(mealSlotIcon(meal.iconEmojiSlot),
+          color: showGrayBox
+              ? AppColors.textSecondary
+              : mealSlotIconColor(meal.iconEmojiSlot),
+          size: 22),
     );
     if (!enableHero) return icon;
     return Hero(tag: 'meal-icon-${meal.id}', child: icon);
@@ -247,8 +278,12 @@ class _CaloriesChip extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-      decoration: BoxDecoration(color: AppColors.primarySoftBg, borderRadius: BorderRadius.circular(AppRadius.pill)),
-      child: Text('$calories سعرة', style: AppTextStyles.caption.copyWith(color: AppColors.primary, fontWeight: FontWeight.w700)),
+      decoration: BoxDecoration(
+          color: AppColors.primarySoftBg,
+          borderRadius: BorderRadius.circular(AppRadius.pill)),
+      child: Text(context.l10n.commonKcalValue(calories),
+          style: AppTextStyles.caption
+              .copyWith(color: AppColors.primary, fontWeight: FontWeight.w700)),
     );
   }
 }
@@ -259,17 +294,29 @@ class _StatusPill extends StatelessWidget {
   final Color bg;
   final IconData? icon;
   final bool dotOnly;
-  const _StatusPill({required this.text, required this.color, required this.bg, this.icon, this.dotOnly = false});
+  const _StatusPill(
+      {required this.text,
+      required this.color,
+      required this.bg,
+      this.icon,
+      this.dotOnly = false});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
-      decoration: BoxDecoration(color: bg, borderRadius: BorderRadius.circular(AppRadius.pill)),
+      decoration: BoxDecoration(
+          color: bg, borderRadius: BorderRadius.circular(AppRadius.pill)),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          if (dotOnly) Container(width: 8, height: 8, margin: const EdgeInsets.only(left: 6), decoration: BoxDecoration(color: color, shape: BoxShape.circle)),
+          if (dotOnly)
+            Container(
+                width: 8,
+                height: 8,
+                margin: const EdgeInsetsDirectional.only(end: 6),
+                decoration:
+                    BoxDecoration(color: color, shape: BoxShape.circle)),
           if (icon != null) Icon(icon, size: 14, color: color),
           if (icon != null) const SizedBox(width: 4),
           Flexible(
@@ -277,7 +324,8 @@ class _StatusPill extends StatelessWidget {
               text,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: AppTextStyles.caption.copyWith(color: color, fontWeight: FontWeight.w600),
+              style: AppTextStyles.caption
+                  .copyWith(color: color, fontWeight: FontWeight.w600),
             ),
           ),
         ],

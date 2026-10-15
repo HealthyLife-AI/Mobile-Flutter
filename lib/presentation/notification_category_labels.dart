@@ -1,23 +1,25 @@
 import 'package:flutter/material.dart';
 
-import '../../domain/entities/notification_entities.dart';
+import '../domain/entities/notification_entities.dart';
+import '../l10n/l10n.dart';
 
-/// Presentation helpers for [NotificationCategory]: icon + Arabic label.
-/// (Locale-aware label extraction happens in the localization layer.)
+/// Presentation helpers for [NotificationCategory]: icon + localized label.
 
 extension NotificationCategoryLabel on NotificationCategory {
-  String get label {
+  String label(AppLocalizations l10n) {
     switch (this) {
       case NotificationCategory.all:
-        return 'الكل';
+        return l10n.notificationCategoryAll;
       case NotificationCategory.meals:
-        return 'الوجبات';
+        return l10n.notificationCategoryMeals;
       case NotificationCategory.measurements:
-        return 'القياسات';
+        return l10n.notificationCategoryMeasurements;
       case NotificationCategory.planUpdates:
-        return 'تحديثات الخطة';
+        return l10n.notificationCategoryPlanUpdates;
+      case NotificationCategory.nutritionist:
+        return l10n.notificationCategoryNutritionist;
       case NotificationCategory.other:
-        return 'الأخرى';
+        return l10n.notificationCategoryOther;
     }
   }
 
@@ -31,9 +33,10 @@ extension NotificationCategoryLabel on NotificationCategory {
         return Icons.balance_rounded;
       case NotificationCategory.planUpdates:
         return Icons.event_note_rounded;
+      case NotificationCategory.nutritionist:
+        return Icons.medical_services_outlined;
       case NotificationCategory.other:
         return Icons.more_horiz_rounded;
     }
   }
 }
-

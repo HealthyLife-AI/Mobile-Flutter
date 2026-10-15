@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_radius.dart';
 import '../../core/theme/app_text_styles.dart';
+import '../bloc/auth/auth_cubit.dart';
 import '../widgets/app_header_bar.dart';
+
+import '../../l10n/l10n.dart';
 
 /// ⚠️ NOT PART OF THE CONFIRMED BASELINE (Master Build Prompt EN, section 0):
 /// "AI Chat: left as an open question... search + manual estimate is the
@@ -27,9 +31,9 @@ class BeetAiChatScreen extends StatefulWidget {
 
 class _BeetAiChatScreenState extends State<BeetAiChatScreen> {
   final TextEditingController _controller = TextEditingController();
-  final List<_ChatMessage> _messages = [
-    const _ChatMessage('أهلاً سارة! أنا BeetAI، اسأليني عن أي شيء يخص خطتك الغذائية أو سجّلي وجبة بسرعة 🌿', false),
-  ];
+  // The welcome bubble is not stored here: it is built from the current
+  // locale on every build, so it follows a language switch.
+  final List<_ChatMessage> _messages = [];
   bool _typing = false;
 
   void _send(String text) {
@@ -43,7 +47,7 @@ class _BeetAiChatScreenState extends State<BeetAiChatScreen> {
       if (!mounted) return;
       setState(() {
         _typing = false;
-        _messages.add(const _ChatMessage('تم تسجيل ذلك في سجلك، هل تودين إضافة أي تفاصيل أخرى؟', false));
+        _messages.add(_ChatMessage(context.l10n.beetaiLoggedReply, false));
       });
     });
   }
@@ -51,14 +55,18 @@ class _BeetAiChatScreenState extends State<BeetAiChatScreen> {
   @override
   Widget build(BuildContext context) {
     final bool hasText = _controller.text.trim().isNotEmpty;
+    final patientName = context.watch<AuthCubit>().state.user?.name ?? '';
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppHeaderBar(
         title: 'BeetAI',
-        subtitle: 'مساعدك الذكي',
+        subtitle: context.l10n.beetaiSubtitle,
         backIcon: Icons.close_rounded,
         actions: [
-          HeaderActionIcon(icon: Icons.mic_none_rounded, tooltip: 'إدخال صوتي', onTap: () {}),
+          HeaderActionIcon(
+              icon: Icons.mic_none_rounded,
+              tooltip: context.l10n.beetaiVoiceInput,
+              onTap: () {}),
         ],
       ),
       body: Column(
@@ -67,6 +75,11 @@ class _BeetAiChatScreenState extends State<BeetAiChatScreen> {
             child: ListView(
               padding: const EdgeInsets.all(16),
               children: [
+                _Bubble(
+                    message: _ChatMessage(
+                        context.l10n.beetaiWelcome(
+                            patientName.isEmpty ? 'no' : 'yes', patientName),
+                        false)),
                 for (final m in _messages) _Bubble(message: m),
                 if (_typing) const _TypingIndicator(),
               ],
@@ -79,31 +92,43 @@ class _BeetAiChatScreenState extends State<BeetAiChatScreen> {
                 Container(
                   width: 44,
                   height: 44,
-                  decoration: const BoxDecoration(color: AppColors.surface, shape: BoxShape.circle),
-                  child: const Icon(Icons.camera_alt_outlined, color: AppColors.primary, size: 20),
+                  decoration: const BoxDecoration(
+                      color: AppColors.surface, shape: BoxShape.circle),
+                  child: const Icon(Icons.camera_alt_outlined,
+                      color: AppColors.primary, size: 20),
                 ),
                 const SizedBox(width: 8),
                 Expanded(
                   child: Container(
                     padding: const EdgeInsets.symmetric(horizontal: 14),
-                    decoration: BoxDecoration(color: AppColors.surface, borderRadius: BorderRadius.circular(AppRadius.pill)),
+                    decoration: BoxDecoration(
+                        color: AppColors.surface,
+                        borderRadius: BorderRadius.circular(AppRadius.pill)),
                     child: TextField(
                       controller: _controller,
-                      textAlign: TextAlign.right,
+                      textAlign: TextAlign.start,
                       onChanged: (_) => setState(() {}),
                       onSubmitted: _send,
-                      decoration: const InputDecoration(border: InputBorder.none, hintText: 'اسألي BeetAI أو سجّلي وجبة…'),
+                      decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: context.l10n.beetaiInputHint),
                     ),
                   ),
                 ),
                 const SizedBox(width: 8),
                 GestureDetector(
-                  onTap: () => _send(hasText ? _controller.text : 'رسالة صوتية'),
+                  onTap: () => _send(hasText
+                      ? _controller.text
+                      : context.l10n.beetaiVoiceMessage),
                   child: Container(
                     width: 48,
                     height: 48,
-                    decoration: const BoxDecoration(shape: BoxShape.circle, gradient: AppColors.ctaVoiceGradient),
-                    child: Icon(hasText ? Icons.send_rounded : Icons.graphic_eq_rounded, color: Colors.white),
+                    decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        gradient: AppColors.ctaVoiceGradient),
+                    child: Icon(
+                        hasText ? Icons.send_rounded : Icons.graphic_eq_rounded,
+                        color: Colors.white),
                   ),
                 ),
               ],
@@ -122,19 +147,24 @@ class _Bubble extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Align(
-      alignment: message.fromUser ? AlignmentDirectional.centerEnd : AlignmentDirectional.centerStart,
+      alignment: message.fromUser
+          ? AlignmentDirectional.centerEnd
+          : AlignmentDirectional.centerStart,
       child: Container(
         margin: const EdgeInsets.only(bottom: 12),
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-        constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.75),
+        constraints:
+            BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.75),
         decoration: BoxDecoration(
           gradient: message.fromUser ? AppColors.primaryGradient : null,
           color: message.fromUser ? null : AppColors.surface,
           borderRadius: BorderRadius.circular(AppRadius.cardSmall),
         ),
         child: Text(message.text,
-            textAlign: TextAlign.right,
-            style: AppTextStyles.body.copyWith(color: message.fromUser ? Colors.white : AppColors.textPrimary)),
+            textAlign: TextAlign.start,
+            style: AppTextStyles.body.copyWith(
+                color:
+                    message.fromUser ? Colors.white : AppColors.textPrimary)),
       ),
     );
   }
@@ -147,8 +177,11 @@ class _TypingIndicator extends StatefulWidget {
   State<_TypingIndicator> createState() => _TypingIndicatorState();
 }
 
-class _TypingIndicatorState extends State<_TypingIndicator> with SingleTickerProviderStateMixin {
-  late final AnimationController _c = AnimationController(vsync: this, duration: const Duration(milliseconds: 900))..repeat();
+class _TypingIndicatorState extends State<_TypingIndicator>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _c = AnimationController(
+      vsync: this, duration: const Duration(milliseconds: 900))
+    ..repeat();
 
   @override
   void dispose() {
@@ -162,7 +195,9 @@ class _TypingIndicatorState extends State<_TypingIndicator> with SingleTickerPro
       alignment: AlignmentDirectional.centerStart,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-        decoration: BoxDecoration(color: AppColors.surface, borderRadius: BorderRadius.circular(AppRadius.cardSmall)),
+        decoration: BoxDecoration(
+            color: AppColors.surface,
+            borderRadius: BorderRadius.circular(AppRadius.cardSmall)),
         child: AnimatedBuilder(
           animation: _c,
           builder: (context, _) => Row(
@@ -175,7 +210,11 @@ class _TypingIndicatorState extends State<_TypingIndicator> with SingleTickerPro
                 padding: const EdgeInsets.symmetric(horizontal: 2),
                 child: Opacity(
                   opacity: opacity,
-                  child: Container(width: 7, height: 7, decoration: const BoxDecoration(color: AppColors.primary, shape: BoxShape.circle)),
+                  child: Container(
+                      width: 7,
+                      height: 7,
+                      decoration: const BoxDecoration(
+                          color: AppColors.primary, shape: BoxShape.circle)),
                 ),
               );
             }),

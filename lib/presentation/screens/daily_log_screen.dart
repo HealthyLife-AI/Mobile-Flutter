@@ -2,33 +2,25 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../core/navigation/app_page_route.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_radius.dart';
 import '../../core/theme/app_text_styles.dart';
 import '../../domain/entities/meal_entities.dart';
-import '../../data/mock/meal_mock_data.dart';
-import '../../data/repositories/meal_log_store.dart';
+import '../../domain/entities/meal_plan_entities.dart';
+import '../../core/time/date_only.dart';
+import '../bloc/meal_log/meal_log_cubit.dart';
+import '../bloc/meal_plan/meal_plan_cubit.dart';
+import '../meal_plan_view.dart';
 import 'log_meal_intro_screen.dart';
 import 'meal_detail_screen.dart';
+import 'notifications_center_screen.dart';
 import 'weekly_plan_screen.dart';
 
-const int _dailyGoal = 1800;
+import '../../l10n/l10n.dart';
+
 const Color _mutedIcon = Color(0xFF475467);
-
-/// true = أرقام عربية-هندية (١٢٤٠) زي التصميم. اجعليها false لو بدك 1240.
-const bool _kArabicIndicDigits = true;
-
-String _d(Object v) {
-  final s = '$v';
-  if (!_kArabicIndicDigits) return s;
-  const west = '0123456789';
-  const east = '٠١٢٣٤٥٦٧٨٩';
-  return s.split('').map((c) {
-    final i = west.indexOf(c);
-    return i == -1 ? c : east[i];
-  }).join();
-}
 
 String _fmt(int n) {
   final s = n.toString();
@@ -40,14 +32,8 @@ String _fmt(int n) {
   return buf.toString();
 }
 
-/// نص الوجبات بالمفرد/المثنى/الجمع الصحيح.
-String _mealsLabel(int n) {
-  if (n == 1) return 'وجبة واحدة';
-  if (n == 2) return 'وجبتان';
-  return '${_d(n)} وجبات';
-}
-
-bool _reduceMotion(BuildContext context) => MediaQuery.of(context).disableAnimations;
+bool _reduceMotion(BuildContext context) =>
+    MediaQuery.of(context).disableAnimations;
 
 class DailyLogScreen extends StatefulWidget {
   const DailyLogScreen({super.key});
@@ -65,15 +51,18 @@ class _DailyLogScreenState extends State<DailyLogScreen> {
   Set<String>? _initialIds;
 
   void _openWeeklyPlan() {
-    Navigator.of(context).push(AppPageRoute(builder: (_) => const WeeklyPlanScreen()));
+    Navigator.of(context)
+        .push(AppPageRoute(builder: (_) => const WeeklyPlanScreen()));
   }
 
   void _openMeal(Meal meal) {
-    Navigator.of(context).push(AppPageRoute(builder: (_) => MealDetailScreen(meal: meal)));
+    Navigator.of(context)
+        .push(AppPageRoute(builder: (_) => MealDetailScreen(meal: meal)));
   }
 
   void _onAddMeal() {
-    Navigator.of(context).push(AppPageRoute(builder: (_) => const LogMealIntroScreen()));
+    Navigator.of(context)
+        .push(AppPageRoute(builder: (_) => const LogMealIntroScreen()));
   }
 
   void _delete(_LogItem item) {
@@ -83,32 +72,56 @@ class _DailyLogScreenState extends State<DailyLogScreen> {
       ..hideCurrentSnackBar()
       ..showSnackBar(
         SnackBar(
-          content: const Text('تم حذف الوجبة من سجل اليوم'),
+          content: Text(context.l10n.dailyLogMealDeleted),
           behavior: SnackBarBehavior.floating,
           margin: const EdgeInsets.fromLTRB(18, 0, 18, 100),
           duration: const Duration(seconds: 4),
           action: SnackBarAction(
-            label: 'تراجع',
+            label: context.l10n.commonUndo,
             onPressed: () => setState(() => _removed.remove(item.id)),
           ),
         ),
       );
   }
 
-  List<_LogItem> _collectItems() {
-    final entries = MealLogStore.instance.entries;
-    final loggedPlanIds = entries.map((e) => e.plannedMeal?.id).whereType<String>().toSet();
+  /// Today's items: the plan's meals logged today (in the plan's order), then
+  /// planned meals logged today that are no longer in the plan, then today's
+  /// off-plan foods. Calories are what was logged, swaps included. Logs from
+  /// earlier days are kept but not shown here.
+  List<_LogItem> _collectItems(
+      List<MealLogEntry> logged, List<Meal> todayMeals) {
+    final now = DateTime.now();
+    final entries =
+        logged.where((e) => isSameLocalDay(e.loggedAt, now)).toList();
+    final byPlanMeal = {
+      for (final e in entries)
+        if (e.plannedMeal != null) e.plannedMeal!.id: e,
+    };
 
-    final planned = MockData.todayMeals
-        .where((m) => m.status == MealStatus.logged || loggedPlanIds.contains(m.id))
-        .map((m) => _LogItem(id: m.id, name: m.name, calories: m.calories, time: m.timeRange, meal: m));
+    final planned = [
+      for (final m in todayMeals)
+        if (byPlanMeal[m.id] case final entry?)
+          _LogItem(
+              id: m.id,
+              name: m.name,
+              calories: entry.calories,
+              time: m.timeRange,
+              meal: m),
+    ];
 
     final added = entries
-        .where((e) => e.plannedMeal != null && !MockData.todayMeals.any((m) => m.id == e.plannedMeal!.id))
-        .map((e) => e.plannedMeal!)
-        .map((m) => _LogItem(id: m.id, name: m.name, calories: m.calories, time: m.timeRange, meal: m));
+        .where((e) =>
+            e.plannedMeal != null &&
+            !todayMeals.any((m) => m.id == e.plannedMeal!.id))
+        .map((e) => _LogItem(
+            id: e.plannedMeal!.id,
+            name: e.plannedMeal!.name,
+            calories: e.calories,
+            time: e.plannedMeal!.timeRange,
+            meal: e.plannedMeal!));
 
-    final offPlanList = entries.where((e) => e.isOffPlan).toList().reversed.toList();
+    final offPlanList =
+        entries.where((e) => e.isOffPlan).toList().reversed.toList();
     final off = <_LogItem>[
       for (var i = 0; i < offPlanList.length; i++)
         _LogItem(
@@ -129,13 +142,22 @@ class _DailyLogScreenState extends State<DailyLogScreen> {
       backgroundColor: AppColors.background,
       body: SafeArea(
         bottom: false,
-        child: AnimatedBuilder(
-          animation: MealLogStore.instance,
-          builder: (context, _) {
-            final items = _collectItems();
+        child: BlocBuilder<MealLogCubit, MealLogState>(
+          builder: (context, mealLog) {
+            // Today's meals and calorie target, from the nutritionist's plan.
+            final MealPlan? plan =
+                context.watch<MealPlanCubit>().state.dataOrNull;
+            final now = DateTime.now();
+            final todayMeals = plan == null
+                ? const <Meal>[]
+                : planMealsFor(context, plan, now,
+                    isLogged: mealLog.isPlannedLogged);
+            final goal = plan?.totalOn(now).calories.round() ?? 0;
+            final items = _collectItems(mealLog.entries, todayMeals);
             _initialIds ??= items.map((i) => i.id).toSet();
 
-            final active = items.where((i) => !_removed.contains(i.id)).toList();
+            final active =
+                items.where((i) => !_removed.contains(i.id)).toList();
             final calories = active.fold<int>(0, (t, i) => t + i.calories);
             final count = active.length;
             final showEmpty = _previewEmpty || count == 0;
@@ -144,11 +166,15 @@ class _DailyLogScreenState extends State<DailyLogScreen> {
             return ListView(
               padding: const EdgeInsets.fromLTRB(18, 12, 18, 120),
               children: [
-                _FadeSlide(delayMs: 0, dy: -16, child: _Header(onCalendar: _openWeeklyPlan)),
+                _FadeSlide(
+                    delayMs: 0,
+                    dy: -16,
+                    child: _Header(onCalendar: _openWeeklyPlan)),
                 const SizedBox(height: 16),
                 _FadeSlide(
                   delayMs: 120,
-                  child: _SummaryCard(count: count, calories: calories, goal: _dailyGoal),
+                  child: _SummaryCard(
+                      count: count, calories: calories, goal: goal),
                 ),
                 const SizedBox(height: 22),
                 _FadeSlide(
@@ -169,7 +195,9 @@ class _DailyLogScreenState extends State<DailyLogScreen> {
                   transitionBuilder: (child, anim) => FadeTransition(
                     opacity: anim,
                     child: SlideTransition(
-                      position: Tween<Offset>(begin: const Offset(0, .06), end: Offset.zero).animate(anim),
+                      position: Tween<Offset>(
+                              begin: const Offset(0, .06), end: Offset.zero)
+                          .animate(anim),
                       child: child,
                     ),
                   ),
@@ -181,13 +209,17 @@ class _DailyLogScreenState extends State<DailyLogScreen> {
                             for (var i = 0; i < items.length; i++)
                               _FadeSlide(
                                 key: ValueKey(items[i].id),
-                                delayMs: _initialIds!.contains(items[i].id) ? 340 + math.min(i, 5) * 100 : 0,
+                                delayMs: _initialIds!.contains(items[i].id)
+                                    ? 340 + math.min(i, 5) * 100
+                                    : 0,
                                 child: _CollapsibleCard(
                                   removed: _removed.contains(items[i].id),
                                   child: _TimelineCard(
                                     item: items[i],
                                     isLatest: items[i].id == latestId,
-                                    onTap: items[i].meal == null ? null : () => _openMeal(items[i].meal!),
+                                    onTap: items[i].meal == null
+                                        ? null
+                                        : () => _openMeal(items[i].meal!),
                                     onDelete: () => _delete(items[i]),
                                   ),
                                 ),
@@ -196,9 +228,14 @@ class _DailyLogScreenState extends State<DailyLogScreen> {
                         ),
                 ),
                 const SizedBox(height: 4),
-                _FadeSlide(delayMs: 700, child: const _ReminderCard()),
+                const _FadeSlide(delayMs: 700, child: _ReminderCard()),
                 const SizedBox(height: 16),
-                _FadeSlide(delayMs: 820, child: _AddMealButton(onTap: _onAddMeal)),
+                _FadeSlide(
+                    delayMs: 820, child: _AddMealButton(onTap: _onAddMeal)),
+                const SizedBox(height: 12),
+                _FadeSlide(
+                    delayMs: 900,
+                    child: _WeeklyPlanButton(onTap: _openWeeklyPlan)),
               ],
             );
           },
@@ -243,15 +280,24 @@ class _Header extends StatelessWidget {
         Container(
           width: 38,
           height: 38,
-          decoration: const BoxDecoration(color: AppColors.primary, shape: BoxShape.circle),
-          child: const Icon(Icons.person_outline_rounded, color: Colors.white, size: 20),
+          decoration: const BoxDecoration(
+              color: AppColors.primary, shape: BoxShape.circle),
+          child: const Icon(Icons.person_outline_rounded,
+              color: Colors.white, size: 20),
         ),
         const SizedBox(width: 10),
-        const Text('سجل اليوم', style: AppTextStyles.cardTitle),
+        Text(context.l10n.dailyLogTitle, style: AppTextStyles.cardTitle),
         const Spacer(),
-        _HeaderIcon(icon: Icons.notifications_none_rounded, onTap: () {}, tooltip: 'الإشعارات'),
+        _HeaderIcon(
+            icon: Icons.notifications_none_rounded,
+            onTap: () => Navigator.of(context).push(AppPageRoute(
+                builder: (_) => const NotificationsCenterScreen())),
+            tooltip: context.l10n.commonNotifications),
         const SizedBox(width: 4),
-        _HeaderIcon(icon: Icons.calendar_month_outlined, onTap: onCalendar, tooltip: 'استعراض الخطة الأسبوعية'),
+        _HeaderIcon(
+            icon: Icons.calendar_month_outlined,
+            onTap: onCalendar,
+            tooltip: context.l10n.dailyLogWeeklyPlanTooltip),
       ],
     );
   }
@@ -261,7 +307,8 @@ class _HeaderIcon extends StatelessWidget {
   final IconData icon;
   final VoidCallback onTap;
   final String tooltip;
-  const _HeaderIcon({required this.icon, required this.onTap, required this.tooltip});
+  const _HeaderIcon(
+      {required this.icon, required this.onTap, required this.tooltip});
 
   @override
   Widget build(BuildContext context) {
@@ -288,13 +335,17 @@ class _SummaryCard extends StatelessWidget {
   final int count;
   final int calories;
   final int goal;
-  const _SummaryCard({required this.count, required this.calories, required this.goal});
+  const _SummaryCard(
+      {required this.count, required this.calories, required this.goal});
 
   @override
   Widget build(BuildContext context) {
-    final percent = (calories / goal * 100).round();
-    final progress = (calories / goal).clamp(0.0, 1.0).toDouble();
-    final over = calories > goal;
+    // No plan, or a plan without calories: there is no target to compare to.
+    final hasGoal = goal > 0;
+    final percent = hasGoal ? (calories / goal * 100).round() : 0;
+    final progress =
+        hasGoal ? (calories / goal).clamp(0.0, 1.0).toDouble() : 0.0;
+    final over = hasGoal && calories > goal;
     final accent = over ? AppColors.accentOrange : AppColors.primary;
 
     return Container(
@@ -309,17 +360,24 @@ class _SummaryCard extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text('اليوم النشط', style: AppTextStyles.caption),
+                    Text(context.l10n.dailyLogActiveDay,
+                        style: AppTextStyles.caption),
                     const SizedBox(height: 4),
-                    Text(_d('الأحد، 21 سبتمبر 2025'), style: AppTextStyles.h1),
+                    Text(
+                        context.localizeDigits(MaterialLocalizations.of(context)
+                            .formatFullDate(DateTime.now())),
+                        style: AppTextStyles.h1),
                   ],
                 ),
               ),
               Container(
                 width: 44,
                 height: 44,
-                decoration: BoxDecoration(color: AppColors.primaryTint, borderRadius: BorderRadius.circular(14)),
-                child: const Icon(Icons.event_available_rounded, color: AppColors.primary),
+                decoration: BoxDecoration(
+                    color: AppColors.primaryTint,
+                    borderRadius: BorderRadius.circular(14)),
+                child: const Icon(Icons.event_available_rounded,
+                    color: AppColors.primary),
               ),
             ],
           ),
@@ -330,9 +388,11 @@ class _SummaryCard extends StatelessWidget {
                 child: _StatTile(
                   icon: Icons.restaurant_rounded,
                   filled: false,
-                  label: 'الوجبات المسجلة',
+                  label: context.l10n.dailyLogLoggedMeals,
                   value: count.toDouble(),
-                  format: _mealsLabel,
+                  // Singular / dual / plural from the locale's plural rules.
+                  format: (n) => context.l10n
+                      .dailyLogMealsCount(n, context.localizeDigits(n)),
                 ),
               ),
               const SizedBox(width: 10),
@@ -340,9 +400,10 @@ class _SummaryCard extends StatelessWidget {
                 child: _StatTile(
                   icon: Icons.local_fire_department_rounded,
                   filled: true,
-                  label: 'مجموع الطاقة المستهلكة',
+                  label: context.l10n.dailyLogTotalEnergy,
                   value: calories.toDouble(),
-                  format: (n) => '${_d(_fmt(n))} سعرة',
+                  format: (n) => context.l10n
+                      .commonKcalValue(context.localizeDigits(_fmt(n))),
                 ),
               ),
             ],
@@ -354,7 +415,10 @@ class _SummaryCard extends StatelessWidget {
               const SizedBox(width: 6),
               Expanded(
                 child: Text(
-                  over ? 'تجاوزت الهدف بـ ${_d(_fmt(calories - goal))} سعرة' : 'توازن الطاقة اليومي المتزن',
+                  over
+                      ? context.l10n.dailyLogOverGoal(
+                          context.localizeDigits(_fmt(calories - goal)))
+                      : context.l10n.dailyLogBalancedEnergy,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: AppTextStyles.caption,
@@ -366,8 +430,10 @@ class _SummaryCard extends StatelessWidget {
                 duration: const Duration(milliseconds: 1400),
                 curve: Curves.easeOutCubic,
                 builder: (_, v, __) => Text(
-                  '${_d(v.round())}٪ من الموصى به',
-                  style: AppTextStyles.caption.copyWith(color: accent, fontWeight: FontWeight.w700),
+                  context.l10n.dailyLogPercentOfRecommended(
+                      context.localizeDigits(v.round())),
+                  style: AppTextStyles.caption
+                      .copyWith(color: accent, fontWeight: FontWeight.w700),
                 ),
               ),
             ],
@@ -377,8 +443,8 @@ class _SummaryCard extends StatelessWidget {
           const SizedBox(height: 10),
           Text(
             over
-                ? 'لا بأس، الأرقام مرشد هادئ وليست حكماً، وغداً يوم جديد.'
-                : 'خياراتك اليوم متنوعة ومغذية، تذكّر أن الأرقام مرشد هادئ لدعم نشاطك وصحتك.',
+                ? context.l10n.dailyLogOverGoalReassurance
+                : context.l10n.dailyLogVariedChoices,
             style: AppTextStyles.caption,
           ),
         ],
@@ -419,14 +485,18 @@ class _StatTile extends StatelessWidget {
               color: filled ? AppColors.primary : AppColors.primaryTint,
               shape: BoxShape.circle,
             ),
-            child: Icon(icon, size: 16, color: filled ? Colors.white : AppColors.primary),
+            child: Icon(icon,
+                size: 16, color: filled ? Colors.white : AppColors.primary),
           ),
           const SizedBox(width: 8),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(label, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 10.5, color: _mutedIcon)),
+                Text(label,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(fontSize: 10.5, color: _mutedIcon)),
                 const SizedBox(height: 2),
                 TweenAnimationBuilder<double>(
                   tween: Tween(begin: 0, end: value),
@@ -435,7 +505,9 @@ class _StatTile extends StatelessWidget {
                   builder: (_, v, __) => FittedBox(
                     fit: BoxFit.scaleDown,
                     alignment: AlignmentDirectional.centerStart,
-                    child: Text(format(v.round()), maxLines: 1, style: AppTextStyles.cardTitle.copyWith(fontSize: 14)),
+                    child: Text(format(v.round()),
+                        maxLines: 1,
+                        style: AppTextStyles.cardTitle.copyWith(fontSize: 14)),
                   ),
                 ),
               ],
@@ -457,9 +529,10 @@ class _EnergyBar extends StatefulWidget {
   State<_EnergyBar> createState() => _EnergyBarState();
 }
 
-class _EnergyBarState extends State<_EnergyBar> with SingleTickerProviderStateMixin {
-  late final AnimationController _shimmer =
-      AnimationController(vsync: this, duration: const Duration(milliseconds: 2200));
+class _EnergyBarState extends State<_EnergyBar>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _shimmer = AnimationController(
+      vsync: this, duration: const Duration(milliseconds: 2200));
 
   @override
   void didChangeDependencies() {
@@ -505,7 +578,8 @@ class _EnergyBarState extends State<_EnergyBar> with SingleTickerProviderStateMi
                           children: [
                             ColoredBox(color: widget.color),
                             Align(
-                              alignment: Alignment(-1.6 + 3.2 * _shimmer.value, 0),
+                              alignment:
+                                  Alignment(-1.6 + 3.2 * _shimmer.value, 0),
                               child: FractionallySizedBox(
                                 widthFactor: .35,
                                 child: DecoratedBox(
@@ -539,7 +613,8 @@ class _EnergyBarState extends State<_EnergyBar> with SingleTickerProviderStateMi
 class _SectionHeader extends StatelessWidget {
   final bool previewEmpty;
   final VoidCallback onTogglePreview;
-  const _SectionHeader({required this.previewEmpty, required this.onTogglePreview});
+  const _SectionHeader(
+      {required this.previewEmpty, required this.onTogglePreview});
 
   @override
   Widget build(BuildContext context) {
@@ -551,7 +626,7 @@ class _SectionHeader extends StatelessWidget {
         // toggle pill past the right edge on narrow (320dp) screens.
         Expanded(
           child: Text(
-            'التسلسل الزمني',
+            context.l10n.dailyLogTimeline,
             style: AppTextStyles.cardTitle,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
@@ -560,7 +635,7 @@ class _SectionHeader extends StatelessWidget {
         Semantics(
           button: true,
           toggled: previewEmpty,
-          label: 'معاينة السجل الفارغ',
+          label: context.l10n.dailyLogPreviewEmpty,
           child: _PressableScale(
             onTap: onTogglePreview,
             child: AnimatedContainer(
@@ -575,9 +650,12 @@ class _SectionHeader extends StatelessWidget {
                 children: [
                   AnimatedSwitcher(
                     duration: const Duration(milliseconds: 250),
-                    transitionBuilder: (c, a) => ScaleTransition(scale: a, child: c),
+                    transitionBuilder: (c, a) =>
+                        ScaleTransition(scale: a, child: c),
                     child: Icon(
-                      previewEmpty ? Icons.visibility_off_outlined : Icons.visibility_outlined,
+                      previewEmpty
+                          ? Icons.visibility_off_outlined
+                          : Icons.visibility_outlined,
                       key: ValueKey(previewEmpty),
                       size: 14,
                       color: previewEmpty ? Colors.white : AppColors.primary,
@@ -585,7 +663,7 @@ class _SectionHeader extends StatelessWidget {
                   ),
                   const SizedBox(width: 5),
                   Text(
-                    'معاينة السجل الفارغ',
+                    context.l10n.dailyLogPreviewEmpty,
                     style: TextStyle(
                       fontSize: 11,
                       fontWeight: FontWeight.w600,
@@ -609,21 +687,30 @@ class _TimelineCard extends StatelessWidget {
   final bool isLatest;
   final VoidCallback? onTap;
   final VoidCallback onDelete;
-  const _TimelineCard({required this.item, required this.isLatest, required this.onDelete, this.onTap});
+  const _TimelineCard(
+      {required this.item,
+      required this.isLatest,
+      required this.onDelete,
+      this.onTap});
 
   @override
   Widget build(BuildContext context) {
     final accent = item.offPlan ? AppColors.accentOrange : AppColors.primary;
-    final accentBg = item.offPlan ? AppColors.accentOrangeBg : AppColors.primaryTint;
-    final tagText = item.offPlan ? 'خارج الخطة • إضافة حرة' : 'من الخطة الغذائية';
-    final tagIcon = item.offPlan ? Icons.add_circle_outline_rounded : Icons.check_circle_outline_rounded;
+    final accentBg =
+        item.offPlan ? AppColors.accentOrangeBg : AppColors.primaryTint;
+    final tagText = item.offPlan
+        ? context.l10n.dailyLogOffPlanFree
+        : context.l10n.dailyLogFromPlan;
+    final tagIcon = item.offPlan
+        ? Icons.add_circle_outline_rounded
+        : Icons.check_circle_outline_rounded;
 
     return _PressableScale(
       onTap: onTap,
       pressedScale: .98,
       child: Container(
         margin: const EdgeInsets.only(bottom: 12),
-        padding: const EdgeInsets.fromLTRB(14, 14, 8, 14),
+        padding: const EdgeInsetsDirectional.fromSTEB(8, 14, 14, 14),
         decoration: _cardDecoration(),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -635,11 +722,14 @@ class _TimelineCard extends StatelessWidget {
                   pulse: isLatest,
                   color: accent,
                   background: accentBg,
-                  icon: item.offPlan ? Icons.restaurant_rounded : Icons.rice_bowl_rounded,
+                  icon: item.offPlan
+                      ? Icons.restaurant_rounded
+                      : Icons.rice_bowl_rounded,
                 ),
                 if (item.time != null) ...[
                   const SizedBox(height: 6),
-                  Text(_d(item.time!), style: const TextStyle(fontSize: 10, color: _mutedIcon)),
+                  Text(context.localizeDigits(item.time!),
+                      style: const TextStyle(fontSize: 10, color: _mutedIcon)),
                 ],
               ],
             ),
@@ -658,13 +748,19 @@ class _TimelineCard extends StatelessWidget {
                           tagText,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: accent),
+                          style: TextStyle(
+                              fontSize: 11,
+                              fontWeight: FontWeight.w600,
+                              color: accent),
                         ),
                       ),
                     ],
                   ),
                   const SizedBox(height: 6),
-                  Text(item.name, maxLines: 2, overflow: TextOverflow.ellipsis, style: AppTextStyles.cardTitle),
+                  Text(item.name,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: AppTextStyles.cardTitle),
                   const SizedBox(height: 8),
                   Wrap(
                     spacing: 14,
@@ -674,11 +770,13 @@ class _TimelineCard extends StatelessWidget {
                       Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Icon(Icons.local_fire_department_rounded, size: 14, color: accent),
+                          Icon(Icons.local_fire_department_rounded,
+                              size: 14, color: accent),
                           const SizedBox(width: 3),
                           Flexible(
                             child: Text(
-                              '${_d(item.calories)} سعرة',
+                              context.l10n.commonKcalValue(
+                                  context.localizeDigits(item.calories)),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: AppTextStyles.caption,
@@ -690,11 +788,13 @@ class _TimelineCard extends StatelessWidget {
                         Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            const Icon(Icons.scale_rounded, size: 14, color: _mutedIcon),
+                            const Icon(Icons.scale_rounded,
+                                size: 14, color: _mutedIcon),
                             const SizedBox(width: 3),
                             Flexible(
                               child: Text(
-                                '${_d(item.grams!)} غرام',
+                                context.l10n.commonGramsValue(
+                                    context.localizeDigits(item.grams!)),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: AppTextStyles.caption,
@@ -709,14 +809,15 @@ class _TimelineCard extends StatelessWidget {
             ),
             Semantics(
               button: true,
-              label: 'حذف الوجبة',
+              label: context.l10n.dailyLogDeleteMeal,
               child: Tooltip(
-                message: 'حذف الوجبة',
+                message: context.l10n.dailyLogDeleteMeal,
                 child: _PressableScale(
                   onTap: onDelete,
                   child: const Padding(
                     padding: EdgeInsets.all(11),
-                    child: Icon(Icons.delete_outline_rounded, size: 22, color: _mutedIcon),
+                    child: Icon(Icons.delete_outline_rounded,
+                        size: 22, color: _mutedIcon),
                   ),
                 ),
               ),
@@ -734,14 +835,20 @@ class _PulsingIcon extends StatefulWidget {
   final Color color;
   final Color background;
   final IconData icon;
-  const _PulsingIcon({required this.pulse, required this.color, required this.background, required this.icon});
+  const _PulsingIcon(
+      {required this.pulse,
+      required this.color,
+      required this.background,
+      required this.icon});
 
   @override
   State<_PulsingIcon> createState() => _PulsingIconState();
 }
 
-class _PulsingIconState extends State<_PulsingIcon> with SingleTickerProviderStateMixin {
-  late final AnimationController _c = AnimationController(vsync: this, duration: const Duration(milliseconds: 1800));
+class _PulsingIconState extends State<_PulsingIcon>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _c = AnimationController(
+      vsync: this, duration: const Duration(milliseconds: 1800));
 
   void _sync() {
     final run = widget.pulse && !_reduceMotion(context);
@@ -790,7 +897,9 @@ class _PulsingIconState extends State<_PulsingIcon> with SingleTickerProviderSta
                     child: Container(
                       width: 44 + 8 * t,
                       height: 44 + 8 * t,
-                      decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: widget.color, width: 2)),
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(color: widget.color, width: 2)),
                     ),
                   );
                 },
@@ -799,7 +908,8 @@ class _PulsingIconState extends State<_PulsingIcon> with SingleTickerProviderSta
           Container(
             width: 44,
             height: 44,
-            decoration: BoxDecoration(color: widget.background, shape: BoxShape.circle),
+            decoration:
+                BoxDecoration(color: widget.background, shape: BoxShape.circle),
             child: Icon(widget.icon, color: widget.color, size: 22),
           ),
         ],
@@ -819,7 +929,8 @@ class _CollapsibleCard extends StatelessWidget {
     return AnimatedCrossFade(
       duration: const Duration(milliseconds: 380),
       sizeCurve: Curves.easeInOutCubic,
-      crossFadeState: removed ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+      crossFadeState:
+          removed ? CrossFadeState.showSecond : CrossFadeState.showFirst,
       firstChild: child,
       secondChild: const SizedBox(width: double.infinity),
     );
@@ -835,17 +946,20 @@ class _ReminderCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(color: AppColors.primaryTint, borderRadius: BorderRadius.circular(AppRadius.card)),
+      decoration: BoxDecoration(
+          color: AppColors.primaryTint,
+          borderRadius: BorderRadius.circular(AppRadius.card)),
       child: Row(
         children: [
-          const Expanded(
+          Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('تذكير أخصائي التغذية', style: AppTextStyles.cardTitle),
-                SizedBox(height: 6),
+                Text(context.l10n.dailyLogDietitianReminder,
+                    style: AppTextStyles.cardTitle),
+                const SizedBox(height: 6),
                 Text(
-                  'المرونة جزء أساسي من النجاح المستدام. تدوينك اليومي بصدق هو الخطوة الأهم لدعم رعايتك الذاتية.',
+                  context.l10n.dailyLogFlexibilityNote,
                   style: AppTextStyles.caption,
                 ),
               ],
@@ -855,8 +969,10 @@ class _ReminderCard extends StatelessWidget {
           Container(
             width: 42,
             height: 42,
-            decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(14)),
-            child: const Icon(Icons.self_improvement_rounded, color: AppColors.primary),
+            decoration: BoxDecoration(
+                color: Colors.white, borderRadius: BorderRadius.circular(14)),
+            child: const Icon(Icons.self_improvement_rounded,
+                color: AppColors.primary),
           ),
         ],
       ),
@@ -882,12 +998,15 @@ class _EmptyState extends StatelessWidget {
               child: Container(
                 width: 64,
                 height: 64,
-                decoration: const BoxDecoration(color: AppColors.primaryTint, shape: BoxShape.circle),
-                child: const Icon(Icons.restaurant_menu_rounded, color: AppColors.primary, size: 30),
+                decoration: const BoxDecoration(
+                    color: AppColors.primaryTint, shape: BoxShape.circle),
+                child: const Icon(Icons.restaurant_menu_rounded,
+                    color: AppColors.primary, size: 30),
               ),
             ),
             const SizedBox(height: 12),
-            const Text('لم تُسجّل أي وجبة بعد', style: AppTextStyles.secondary),
+            Text(context.l10n.dailyLogNoMealsYet,
+                style: AppTextStyles.secondary),
           ],
         ),
       ),
@@ -903,7 +1022,7 @@ class _AddMealButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Semantics(
       button: true,
-      label: 'تسجيل وجبة جديدة',
+      label: context.l10n.navLogMealTooltip,
       child: _PressableScale(
         onTap: onTap,
         pressedScale: .96,
@@ -914,15 +1033,71 @@ class _AddMealButton extends StatelessWidget {
             color: AppColors.primary,
             borderRadius: BorderRadius.circular(AppRadius.card),
             boxShadow: [
-              BoxShadow(color: AppColors.primary.withOpacity(.28), blurRadius: 16, offset: const Offset(0, 6)),
+              BoxShadow(
+                  color: AppColors.primary.withOpacity(.28),
+                  blurRadius: 16,
+                  offset: const Offset(0, 6)),
             ],
           ),
-          child: const Row(
+          child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(Icons.add_circle_outline_rounded, color: Colors.white, size: 22),
-              SizedBox(width: 8),
-              Text('تسجيل وجبة جديدة', style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w600)),
+              const Icon(Icons.add_circle_outline_rounded,
+                  color: Colors.white, size: 22),
+              const SizedBox(width: 8),
+              Text(context.l10n.navLogMealTooltip,
+                  style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w600)),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// The second action under "log a new meal": the week's plan, the same screen
+/// the calendar icon in the header opens.
+class _WeeklyPlanButton extends StatelessWidget {
+  final VoidCallback onTap;
+  const _WeeklyPlanButton({required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    final label = context.l10n.dailyLogWeeklyPlanTooltip;
+    return Semantics(
+      button: true,
+      label: label,
+      excludeSemantics: true,
+      child: _PressableScale(
+        onTap: onTap,
+        pressedScale: .96,
+        child: Container(
+          height: 54,
+          alignment: Alignment.center,
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          decoration: BoxDecoration(
+            color: AppColors.surface,
+            borderRadius: BorderRadius.circular(AppRadius.card),
+            border: Border.all(color: AppColors.primary, width: 1.4),
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(Icons.calendar_month_rounded,
+                  color: AppColors.primary, size: 22),
+              const SizedBox(width: 8),
+              Flexible(
+                child: Text(label,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                        color: AppColors.primary,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600)),
+              ),
             ],
           ),
         ),
@@ -938,7 +1113,10 @@ BoxDecoration _cardDecoration() => BoxDecoration(
       borderRadius: BorderRadius.circular(AppRadius.card),
       border: Border.all(color: AppColors.border),
       boxShadow: [
-        BoxShadow(color: Colors.black.withOpacity(.04), blurRadius: 12, offset: const Offset(0, 4)),
+        BoxShadow(
+            color: Colors.black.withOpacity(.04),
+            blurRadius: 12,
+            offset: const Offset(0, 4)),
       ],
     );
 
@@ -947,7 +1125,8 @@ class _FadeSlide extends StatelessWidget {
   final int delayMs;
   final double dy;
   final Widget child;
-  const _FadeSlide({super.key, required this.delayMs, required this.child, this.dy = 26});
+  const _FadeSlide(
+      {super.key, required this.delayMs, required this.child, this.dy = 26});
 
   @override
   Widget build(BuildContext context) {
@@ -960,7 +1139,8 @@ class _FadeSlide extends StatelessWidget {
       child: child,
       builder: (context, t, child) => Opacity(
         opacity: t.clamp(0.0, 1.0).toDouble(),
-        child: Transform.translate(offset: Offset(0, (1 - t) * dy), child: child),
+        child:
+            Transform.translate(offset: Offset(0, (1 - t) * dy), child: child),
       ),
     );
   }
@@ -971,7 +1151,8 @@ class _PressableScale extends StatefulWidget {
   final Widget child;
   final VoidCallback? onTap;
   final double pressedScale;
-  const _PressableScale({required this.child, this.onTap, this.pressedScale = .88});
+  const _PressableScale(
+      {required this.child, this.onTap, this.pressedScale = .88});
 
   @override
   State<_PressableScale> createState() => _PressableScaleState();

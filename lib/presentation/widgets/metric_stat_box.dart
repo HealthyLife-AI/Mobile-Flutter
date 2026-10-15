@@ -21,7 +21,9 @@ class MetricStatBox extends StatelessWidget {
         ),
         child: Column(
           children: [
-            Text(value, style: AppTextStyles.body.copyWith(fontWeight: FontWeight.w800)),
+            Text(value,
+                style:
+                    AppTextStyles.body.copyWith(fontWeight: FontWeight.w800)),
             const SizedBox(height: 4),
             Text(label, style: AppTextStyles.caption),
           ],
@@ -36,7 +38,8 @@ class AnimatedNumberCounter extends StatelessWidget {
   final num value;
   final TextStyle style;
   final String suffix;
-  const AnimatedNumberCounter({super.key, required this.value, required this.style, this.suffix = ''});
+  const AnimatedNumberCounter(
+      {super.key, required this.value, required this.style, this.suffix = ''});
 
   @override
   Widget build(BuildContext context) {

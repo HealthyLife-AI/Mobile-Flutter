@@ -17,7 +17,12 @@ class ScrollEdgeFade extends StatelessWidget {
         return LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
-          colors: const [Colors.transparent, Colors.black, Colors.black, Colors.transparent],
+          colors: const [
+            Colors.transparent,
+            Colors.black,
+            Colors.black,
+            Colors.transparent
+          ],
           stops: [0.0, f, 1 - f, 1.0],
         ).createShader(rect);
       },

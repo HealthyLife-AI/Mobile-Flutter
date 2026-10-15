@@ -1,10 +1,12 @@
-import 'app_exception.dart' show NetworkFailureKind;
+import 'app_exception.dart' show NetworkFailureKind, fieldErrorsOf;
 
 /// User-facing failure model for the domain layer.
 ///
 /// Repositories return `Result<T>` carrying a [Failure] instead of throwing.
 /// Presentation maps [Failure] to localized strings — never show
 /// [debugMessage] to users.
+///
+/// `sealed`: every subtype lives in this file.
 sealed class Failure {
   const Failure({this.debugMessage});
 
@@ -13,7 +15,8 @@ sealed class Failure {
 }
 
 class NetworkFailure extends Failure {
-  const NetworkFailure({this.kind = NetworkFailureKind.unknown, super.debugMessage});
+  const NetworkFailure(
+      {this.kind = NetworkFailureKind.unknown, super.debugMessage});
 
   final NetworkFailureKind kind;
 }
@@ -36,6 +39,26 @@ class ValidationFailure extends Failure {
   const ValidationFailure({this.fieldErrors = const {}, super.debugMessage});
 
   final Map<String, String> fieldErrors;
+}
+
+/// A coded answer from the API. Presentation branches on [code] and
+/// [statusCode]; [body] carries extra data such as `locked_until`,
+/// `nutritionist`, `weeks_followed` or `current_version`.
+class ApiFailure extends Failure {
+  const ApiFailure({
+    this.statusCode,
+    this.code,
+    this.body = const {},
+    this.retryAfter,
+    super.debugMessage,
+  });
+
+  final int? statusCode;
+  final String? code;
+  final Map<String, dynamic> body;
+  final Duration? retryAfter;
+
+  Map<String, String> get fieldErrors => fieldErrorsOf(body);
 }
 
 class CacheFailure extends Failure {

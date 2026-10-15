@@ -15,11 +15,20 @@ class StickyBottomBar extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(18, 14, 18, 18),
       decoration: BoxDecoration(
         color: AppColors.surface,
-        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.06), blurRadius: 20, offset: const Offset(0, -6))],
+        boxShadow: [
+          BoxShadow(
+              color: Colors.black.withValues(alpha: 0.06),
+              blurRadius: 20,
+              offset: const Offset(0, -6))
+        ],
       ),
       child: SafeArea(
         top: false,
-        child: Row(children: [Expanded(child: right), const SizedBox(width: 16), left]),
+        child: Row(children: [
+          Expanded(child: right),
+          const SizedBox(width: 16),
+          left
+        ]),
       ),
     );
   }

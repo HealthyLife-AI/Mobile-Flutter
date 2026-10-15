@@ -6,5 +6,9 @@ class RecommendationItem {
   final String subtitle;
   final IconData icon;
   final Color color;
-  const RecommendationItem({required this.title, required this.subtitle, required this.icon, required this.color});
+  const RecommendationItem(
+      {required this.title,
+      required this.subtitle,
+      required this.icon,
+      required this.color});
 }

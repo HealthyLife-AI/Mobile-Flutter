@@ -7,6 +7,9 @@ import '../../core/theme/app_text_styles.dart';
 import '../widgets/app_header_bar.dart' show AppHeaderBar;
 import '../../core/navigation/logout_flow.dart';
 
+import '../widgets/directional_icon.dart';
+import '../../l10n/l10n.dart';
+
 /// حول التطبيق — هوية التطبيق، قائمة الشفافية والمعايير الطبية،
 /// وإجراء تسجيل الخروج (نفس إجراء شاشة الحساب).
 class AboutAppScreen extends StatefulWidget {
@@ -16,7 +19,8 @@ class AboutAppScreen extends StatefulWidget {
   State<AboutAppScreen> createState() => _AboutAppScreenState();
 }
 
-class _AboutAppScreenState extends State<AboutAppScreen> with TickerProviderStateMixin {
+class _AboutAppScreenState extends State<AboutAppScreen>
+    with TickerProviderStateMixin {
   late final AnimationController _enter;
   late final AnimationController _loop;
 
@@ -29,15 +33,21 @@ class _AboutAppScreenState extends State<AboutAppScreen> with TickerProviderStat
   late final Animation<double> _logout;
   late final Animation<double> _footer;
 
-  Animation<double> _iv(double begin, double end, [Curve curve = Curves.easeOutCubic]) {
-    return CurvedAnimation(parent: _enter, curve: Interval(begin, end, curve: curve));
+  Animation<double> _iv(double begin, double end,
+      [Curve curve = Curves.easeOutCubic]) {
+    return CurvedAnimation(
+        parent: _enter, curve: Interval(begin, end, curve: curve));
   }
 
   @override
   void initState() {
     super.initState();
-    _enter = AnimationController(vsync: this, duration: const Duration(milliseconds: 1250))..forward();
-    _loop = AnimationController(vsync: this, duration: const Duration(seconds: 5))..repeat();
+    _enter = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 1250))
+      ..forward();
+    _loop =
+        AnimationController(vsync: this, duration: const Duration(seconds: 5))
+          ..repeat();
 
     _hero = _iv(0.00, 0.42, Curves.easeOutBack);
     _medicalLabel = _iv(0.18, 0.46);
@@ -60,79 +70,80 @@ class _AboutAppScreenState extends State<AboutAppScreen> with TickerProviderStat
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
-      appBar: const AppHeaderBar(title: 'حول التطبيق'),
-      body: Directionality(
-        textDirection: TextDirection.rtl,
-        child: ListView(
-          padding: const EdgeInsets.fromLTRB(16, 8, 16, 28),
-          children: [
-            _AboutReveal(
-              animation: _hero,
-              dy: 0.10,
-              child: _IdentityHero(loop: _loop),
+      appBar: AppHeaderBar(title: context.l10n.aboutTitle),
+      body: ListView(
+        padding: const EdgeInsets.fromLTRB(16, 8, 16, 28),
+        children: [
+          _AboutReveal(
+            animation: _hero,
+            dy: 0.10,
+            child: _IdentityHero(loop: _loop),
+          ),
+          const SizedBox(height: 20),
+          _AboutReveal(
+            animation: _medicalLabel,
+            child: _SectionLabel(
+              title: context.l10n.aboutTransparencyTitle,
+              trailing: context.l10n.aboutCertifiedRegulations,
             ),
-            const SizedBox(height: 20),
-            _AboutReveal(
-              animation: _medicalLabel,
-              child: const _SectionLabel(
-                title: 'الشفافية والمعايير الطبية',
-                trailing: 'لوائح معتمدة',
-              ),
+          ),
+          const SizedBox(height: 10),
+          _AboutReveal(animation: _legal, dy: 0.12, child: const _LegalCard()),
+          const SizedBox(height: 14),
+          _AboutReveal(
+              animation: _protection,
+              dy: 0.12,
+              child: const _StandardProtectionCard()),
+          const SizedBox(height: 22),
+          _AboutReveal(
+            animation: _sessionLabel,
+            child: _SectionLabel(
+              title: context.l10n.aboutSessionAccountTitle,
+              titleColor: AppColors.danger,
             ),
-            const SizedBox(height: 10),
-            _AboutReveal(animation: _legal, dy: 0.12, child: const _LegalCard()),
-            const SizedBox(height: 14),
-            _AboutReveal(animation: _protection, dy: 0.12, child: const _StandardProtectionCard()),
-            const SizedBox(height: 22),
-            _AboutReveal(
-              animation: _sessionLabel,
-              child: const _SectionLabel(
-                title: 'منطقة الجلسة والحساب',
-                titleColor: AppColors.danger,
-              ),
-            ),
-            const SizedBox(height: 10),
-            _AboutReveal(animation: _sessionNote, dy: 0.12, child: const _SessionNote()),
-            const SizedBox(height: 10),
-            _AboutReveal(
-              animation: _logout,
-              dy: 0.14,
-              child: SizedBox(
-                width: double.infinity,
-                child: FilledButton(
-                  style: FilledButton.styleFrom(
-                    backgroundColor: AppColors.danger,
-                    foregroundColor: Colors.white,
-                    elevation: 0,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(14),
-                    ),
-                    padding: const EdgeInsets.symmetric(vertical: 14),
-                    textStyle: const TextStyle(
-                      fontFamily: AppTextStyles.fontFamily,
-                      fontSize: 13,
-                      fontWeight: FontWeight.w700,
-                    ),
+          ),
+          const SizedBox(height: 10),
+          _AboutReveal(
+              animation: _sessionNote, dy: 0.12, child: const _SessionNote()),
+          const SizedBox(height: 10),
+          _AboutReveal(
+            animation: _logout,
+            dy: 0.14,
+            child: SizedBox(
+              width: double.infinity,
+              child: FilledButton(
+                style: FilledButton.styleFrom(
+                  backgroundColor: AppColors.danger,
+                  foregroundColor: Colors.white,
+                  elevation: 0,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(14),
                   ),
-                  onPressed: () => performLogoutFlow(context),
-                  child: const Text('تسجيل الخروج'),
+                  padding: const EdgeInsets.symmetric(vertical: 14),
+                  textStyle: const TextStyle(
+                    fontFamily: AppTextStyles.fontFamily,
+                    fontSize: 13,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
+                onPressed: () => performLogoutFlow(context),
+                child: Text(context.l10n.commonLogout),
               ),
             ),
-            const SizedBox(height: 20),
-            _AboutReveal(
-              animation: _footer,
-              dy: 0.08,
-              child: const Center(
-                child: Text(
-                  'HealthyLife Clinical Suite © 2026 • جميع الحقوق محفوظة',
-                  textAlign: TextAlign.center,
-                  style: AppTextStyles.caption,
-                ),
+          ),
+          const SizedBox(height: 20),
+          _AboutReveal(
+            animation: _footer,
+            dy: 0.08,
+            child: Center(
+              child: Text(
+                context.l10n.aboutCopyright,
+                textAlign: TextAlign.center,
+                style: AppTextStyles.caption,
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -154,7 +165,8 @@ class _AboutReveal extends StatelessWidget {
     return FadeTransition(
       opacity: animation,
       child: SlideTransition(
-        position: Tween<Offset>(begin: Offset(0, dy), end: Offset.zero).animate(animation),
+        position: Tween<Offset>(begin: Offset(0, dy), end: Offset.zero)
+            .animate(animation),
         child: child,
       ),
     );
@@ -181,30 +193,30 @@ class _IdentityHero extends StatelessWidget {
         borderRadius: BorderRadius.circular(AppRadius.card),
         child: Stack(
           children: [
-            Positioned(
-              top: -70,
-              right: -70,
-              child: AnimatedBuilder(
-                animation: loop,
-                builder: (context, child) {
-                  final pulse = 0.92 + 0.08 * math.sin(loop.value * 2 * math.pi);
-                  return Transform.scale(scale: pulse, child: child);
-                },
-                child: const _GlowBlob(size: 200),
-              ),
-            ),
-            Positioned(
-              bottom: -80,
-              left: -70,
-              child: AnimatedBuilder(
-                animation: loop,
-                builder: (context, child) {
-                  final pulse = 0.94 + 0.06 * math.sin((loop.value * 2 * math.pi) + math.pi);
-                  return Transform.scale(scale: pulse, child: child);
-                },
-                child: const _GlowBlob(size: 190),
-              ),
-            ),
+            PositionedDirectional(
+                top: -70,
+                start: -70,
+                child: AnimatedBuilder(
+                  animation: loop,
+                  builder: (context, child) {
+                    final pulse =
+                        0.92 + 0.08 * math.sin(loop.value * 2 * math.pi);
+                    return Transform.scale(scale: pulse, child: child);
+                  },
+                  child: const _GlowBlob(size: 200),
+                )),
+            PositionedDirectional(
+                bottom: -80,
+                end: -70,
+                child: AnimatedBuilder(
+                  animation: loop,
+                  builder: (context, child) {
+                    final pulse = 0.94 +
+                        0.06 * math.sin((loop.value * 2 * math.pi) + math.pi);
+                    return Transform.scale(scale: pulse, child: child);
+                  },
+                  child: const _GlowBlob(size: 190),
+                )),
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 22, 16, 16),
               child: Column(
@@ -225,7 +237,7 @@ class _IdentityHero extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    'حياة صحية',
+                    context.l10n.aboutBrandName,
                     textAlign: TextAlign.center,
                     style: AppTextStyles.pillLabel.copyWith(
                       fontSize: 13,
@@ -234,8 +246,8 @@ class _IdentityHero extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 8),
-                  const Text(
-                    'منصة المتابعة والتغذية العلاجية للمرضى',
+                  Text(
+                    context.l10n.aboutTagline,
                     textAlign: TextAlign.center,
                     style: AppTextStyles.caption,
                   ),
@@ -264,7 +276,7 @@ class _IdentityHero extends StatelessWidget {
                         const SizedBox(width: 6),
                         Flexible(
                           child: Text(
-                            'الإصدار 1.0.0 (Build 240)',
+                            context.l10n.aboutVersion,
                             textAlign: TextAlign.center,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
@@ -288,8 +300,8 @@ class _IdentityHero extends StatelessWidget {
                       color: AppColors.primary.withValues(alpha: 0.06),
                       borderRadius: BorderRadius.circular(AppRadius.cardSmall),
                     ),
-                    child: const Text(
-                      'تطبيق معتمد ومصمم لدعمك بالتعاون المباشر مع أخصائيك المعتمدة لتحقيق أهدافك الصحية المستدامة.',
+                    child: Text(
+                      context.l10n.aboutDescription,
                       textAlign: TextAlign.center,
                       style: AppTextStyles.caption,
                     ),
@@ -356,7 +368,8 @@ class _LogoPlate extends StatelessWidget {
                     borderRadius: BorderRadius.circular(22),
                     boxShadow: [
                       BoxShadow(
-                        color: AppColors.primary.withValues(alpha: 0.05 + 0.05 * glow),
+                        color: AppColors.primary
+                            .withValues(alpha: 0.05 + 0.05 * glow),
                         blurRadius: 18 + 5 * glow,
                         offset: const Offset(0, 6),
                       ),
@@ -375,24 +388,23 @@ class _LogoPlate extends StatelessWidget {
                     ),
                   ),
                 ),
-                Positioned(
-                  left: -6,
-                  bottom: -6,
-                  child: Container(
-                    width: 24,
-                    height: 24,
-                    decoration: BoxDecoration(
-                      color: AppColors.primary,
-                      shape: BoxShape.circle,
-                      border: Border.all(color: Colors.white, width: 2),
-                    ),
-                    child: const Icon(
-                      Icons.verified_rounded,
-                      size: 12,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
+                PositionedDirectional(
+                    end: -6,
+                    bottom: -6,
+                    child: Container(
+                      width: 24,
+                      height: 24,
+                      decoration: BoxDecoration(
+                        color: AppColors.primary,
+                        shape: BoxShape.circle,
+                        border: Border.all(color: Colors.white, width: 2),
+                      ),
+                      child: const Icon(
+                        Icons.verified_rounded,
+                        size: 12,
+                        color: Colors.white,
+                      ),
+                    )),
               ],
             ),
           ),
@@ -421,7 +433,7 @@ class _SectionLabel extends StatelessWidget {
         Flexible(
           child: Text(
             title,
-            textAlign: TextAlign.right,
+            textAlign: TextAlign.start,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: AppTextStyles.sectionHeading.copyWith(
@@ -464,39 +476,40 @@ class _LegalItem {
 class _LegalCard extends StatelessWidget {
   const _LegalCard();
 
-  static const List<_LegalItem> _items = [
-    _LegalItem(
-      icon: Icons.health_and_safety_outlined,
-      iconColor: Color(0xFF0E7C86),
-      tint: Color(0xFFE3F5F7),
-      title: 'سياسة الخصوصية وأمان البيانات الصحية',
-      subtitle: 'تشفير سريري عالي المستوى لملفك الغذائي',
-    ),
-    _LegalItem(
-      icon: Icons.description_outlined,
-      iconColor: Color(0xFF3E5A8C),
-      tint: Color(0xFFE9EFFA),
-      title: 'الشروط والأحكام الطبية',
-      subtitle: 'إرشادات متابعة خطط الرعاية الصحية',
-    ),
-    _LegalItem(
-      icon: Icons.verified_outlined,
-      iconColor: Color(0xFF1E9E6A),
-      tint: Color(0xFFE0F6EC),
-      title: 'تراخيص الهيئة الطبية والاعتماد',
-      subtitle: 'سجل الامتثال الطبي الموثق رقم #A-8841',
-    ),
-    _LegalItem(
-      icon: Icons.headset_mic_outlined,
-      iconColor: Color(0xFF5B52B0),
-      tint: Color(0xFFECEAFA),
-      title: 'الدعم الفني ومساعدة التطبيق',
-      subtitle: 'مساعدة متواصلة للاستفسارات التقنية',
-    ),
-  ];
+  static List<_LegalItem> _items(AppLocalizations l10n) => [
+        _LegalItem(
+          icon: Icons.health_and_safety_outlined,
+          iconColor: const Color(0xFF0E7C86),
+          tint: const Color(0xFFE3F5F7),
+          title: l10n.aboutPrivacyPolicyTitle,
+          subtitle: l10n.aboutPrivacyPolicySubtitle,
+        ),
+        _LegalItem(
+          icon: Icons.description_outlined,
+          iconColor: const Color(0xFF3E5A8C),
+          tint: const Color(0xFFE9EFFA),
+          title: l10n.aboutMedicalTermsTitle,
+          subtitle: l10n.aboutMedicalTermsSubtitle,
+        ),
+        _LegalItem(
+          icon: Icons.verified_outlined,
+          iconColor: const Color(0xFF1E9E6A),
+          tint: const Color(0xFFE0F6EC),
+          title: l10n.aboutLicensesTitle,
+          subtitle: l10n.aboutLicensesSubtitle,
+        ),
+        _LegalItem(
+          icon: Icons.headset_mic_outlined,
+          iconColor: const Color(0xFF5B52B0),
+          tint: const Color(0xFFECEAFA),
+          title: l10n.aboutSupportTitle,
+          subtitle: l10n.aboutSupportSubtitle,
+        ),
+      ];
 
   @override
   Widget build(BuildContext context) {
+    final items = _items(context.l10n);
     return Container(
       decoration: BoxDecoration(
         color: AppColors.surface,
@@ -505,7 +518,7 @@ class _LegalCard extends StatelessWidget {
       ),
       child: Column(
         children: [
-          for (var i = 0; i < _items.length; i++) ...[
+          for (var i = 0; i < items.length; i++) ...[
             if (i > 0)
               const Divider(
                 height: 1,
@@ -514,7 +527,7 @@ class _LegalCard extends StatelessWidget {
                 endIndent: 14,
                 color: AppColors.hairline,
               ),
-            _LegalRow(item: _items[i]),
+            _LegalRow(item: items[i]),
           ],
         ],
       ),
@@ -550,7 +563,7 @@ class _LegalRow extends StatelessWidget {
               children: [
                 Text(
                   item.title,
-                  textAlign: TextAlign.right,
+                  textAlign: TextAlign.start,
                   style: AppTextStyles.body.copyWith(
                     fontSize: 12.5,
                     fontWeight: FontWeight.w700,
@@ -559,15 +572,17 @@ class _LegalRow extends StatelessWidget {
                 const SizedBox(height: 3),
                 Text(
                   item.subtitle,
-                  textAlign: TextAlign.right,
+                  textAlign: TextAlign.start,
                   style: AppTextStyles.caption,
                 ),
               ],
             ),
           ),
           const SizedBox(width: 8),
-          const Icon(
-            Icons.chevron_left_rounded,
+          Icon(
+            directionalIcon(context,
+                rtl: Icons.chevron_left_rounded,
+                ltr: Icons.chevron_right_rounded),
             color: AppColors.textSecondary,
             size: 20,
           ),
@@ -613,17 +628,17 @@ class _StandardProtectionCard extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  'حماية صحية قياسية',
-                  textAlign: TextAlign.right,
+                  context.l10n.aboutStandardHealthProtection,
+                  textAlign: TextAlign.start,
                   style: AppTextStyles.cardTitle.copyWith(
                     color: AppColors.primary,
                     fontSize: 13,
                   ),
                 ),
                 const SizedBox(height: 4),
-                const Text(
-                  'بياناتك مشفرة ومحمية وفق معايير الخصوصية الصحية المعتمدة لمزامنة آمنة مع ملفك السريري.',
-                  textAlign: TextAlign.right,
+                Text(
+                  context.l10n.aboutEncryptionNote,
+                  textAlign: TextAlign.start,
                   style: AppTextStyles.caption,
                 ),
               ],
@@ -666,10 +681,10 @@ class _SessionNote extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 12),
-          const Expanded(
+          Expanded(
             child: Text(
-              'سيتم إنهاء جلستك بأمان، مع الاحتفاظ بجميع سجلاتك وقياساتك في السجلات الطبية دون أي فقدان للبيانات.',
-              textAlign: TextAlign.right,
+              context.l10n.aboutLogoutNote,
+              textAlign: TextAlign.start,
               style: AppTextStyles.caption,
             ),
           ),

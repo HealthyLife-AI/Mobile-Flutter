@@ -1,34 +1,40 @@
 import '../../core/errors/failure.dart';
 import '../../core/errors/result.dart';
 import '../../core/validation/validators.dart';
+import '../entities/auth_entities.dart';
+import '../repositories/auth_repository.dart';
 
-/// Validates a password change request.
+/// Checks a password change on the device, then calls `PUT /me/password`.
 ///
-/// There is no backend yet, so the "current password" check and the actual
-/// update are simulated with a delay — the validation path (the part that
-/// must not rely on the UI) is real and unit-tested. Swap the simulated
-/// block for an API call when the backend exists.
+/// The device checks use the same server policy (8+ characters, upper case,
+/// lower case, a digit). The server is still the final judge and its 422 is
+/// shown when it disagrees.
 class ChangePasswordUseCase {
-  ChangePasswordUseCase({this.simulatedLatency = const Duration(milliseconds: 650)});
+  ChangePasswordUseCase(this._auth);
 
-  final Duration simulatedLatency;
+  final AuthRepository _auth;
 
-  Future<Result<void>> call({
+  Future<Result<PatientUser>> call({
     required String currentPassword,
     required String newPassword,
     required String confirmPassword,
   }) async {
-    if (currentPassword.trim().isEmpty) {
-      return const Failed(ValidationFailure(fieldErrors: {'current': 'validation.required'}));
+    if (currentPassword.isEmpty) {
+      return const Failed(ValidationFailure(
+          fieldErrors: {'current_password': 'validation.required'}));
     }
-    final failure = PasswordPolicy.firstFailure(newPassword, requireSpecial: true);
+    final failure = PasswordPolicy.firstFailure(newPassword);
     if (failure != null) {
-      return Failed(ValidationFailure(fieldErrors: {'new': 'validation.${failure.name}'}));
+      return Failed(ValidationFailure(
+          fieldErrors: {'password': 'validation.${failure.name}'}));
     }
     if (!PasswordPolicy.matchesConfirm(newPassword, confirmPassword)) {
-      return const Failed(ValidationFailure(fieldErrors: {'confirm': 'validation.mismatch'}));
+      return const Failed(
+          ValidationFailure(fieldErrors: {'confirm': 'validation.mismatch'}));
     }
-    await Future<void>.delayed(simulatedLatency);
-    return const Success(null);
+    return _auth.changePassword(
+      currentPassword: currentPassword,
+      newPassword: newPassword,
+    );
   }
 }

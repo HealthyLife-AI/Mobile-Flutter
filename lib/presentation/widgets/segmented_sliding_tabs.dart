@@ -55,8 +55,10 @@ class SegmentedSlidingTabs extends StatelessWidget {
                       child: AnimatedDefaultTextStyle(
                         duration: const Duration(milliseconds: 200),
                         style: AppTextStyles.caption.copyWith(
-                          color: active ? Colors.white : AppColors.textSecondary,
-                          fontWeight: active ? FontWeight.w700 : FontWeight.w500,
+                          color:
+                              active ? Colors.white : AppColors.textSecondary,
+                          fontWeight:
+                              active ? FontWeight.w700 : FontWeight.w500,
                         ),
                         child: Text(tabs[i]),
                       ),

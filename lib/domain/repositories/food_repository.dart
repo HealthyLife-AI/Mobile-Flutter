@@ -4,7 +4,8 @@ import '../entities/recommendation_entity.dart';
 
 /// Food database search + recommendation content.
 abstract interface class FoodRepository {
-  /// Empty/blank [query] returns the suggested (popular) foods.
+  /// Searches approved foods. The server takes queries of two characters or
+  /// more (guide 5.5). SearchFoodsUseCase keeps shorter ones from reaching it.
   Future<Result<List<SearchableFood>>> search(String query);
 
   /// Recommended recipe cards for the home/dashboard carousels.

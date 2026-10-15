@@ -12,9 +12,42 @@ abstract final class StorageKeys {
   static const themeMode = 'theme_mode.v1';
   static const locale = 'locale.v1';
   static const mealLogEntries = 'meal_log_entries.v1';
+
+  /// Legacy: readings kept on the device before the API read path. Removed
+  /// when the session ends.
   static const measurements = 'measurements.v1';
+
+  /// The last answer of `GET me/measurements`, kept for offline reads.
+  static const measurementReadings = 'measurement_readings.v2';
   static const notificationsRead = 'notifications_read.v1';
+
+  /// The last `GET` / `PUT /me/notification-preferences` answer. Cleared at
+  /// sign-out by `NotificationPreferencesRepositoryImpl`.
+  static const notificationPreferences = 'notification_preferences.v1';
+
+  /// The last `GET /me/health-profile` answer, kept for offline use. Cleared at
+  /// sign-out by `HealthProfileRepositoryImpl`.
   static const healthProfile = 'health_profile.v1';
+
+  /// The last `GET /me/meal-plan` answer, kept for offline use. Cleared at
+  /// sign-out by `MealPlanRepositoryImpl`.
+  static const mealPlan = 'meal_plan.v1';
+  static const nutritionist = 'nutritionist.v1';
+
+  /// The last `GET /me/reviews` answer, kept for offline reading. Cleared at
+  /// sign-out by `ReviewRepositoryImpl`.
+  static const reviews = 'reviews.v1';
+
+  /// The last `GET /me/progress` answer and the window it was read for. Cleared
+  /// at sign-out by `ProgressRepositoryImpl`.
+  static const progress = 'progress.v1';
+
+  /// The last `GET /me/appointments?scope=upcoming` and `scope=past` answers,
+  /// kept for offline reading. Cleared at sign-out by
+  /// `AppointmentRepositoryImpl`.
+  static const appointmentsUpcoming = 'appointments_upcoming.v1';
+  static const appointmentsPast = 'appointments_past.v1';
+  static const pendingWrites = 'pending_writes.v1';
 }
 
 /// Key-value persistence abstraction. UI and repositories depend on THIS
@@ -101,7 +134,6 @@ class SharedPrefsStorageService implements StorageService {
   }
 }
 
-
 /// In-memory [StorageService] for widget/unit tests and the no-setup
 /// default in [AppDependencies.inMemory]. Data resets on every run.
 class MemoryStorageService implements StorageService {
@@ -111,7 +143,8 @@ class MemoryStorageService implements StorageService {
   Future<String?> readString(String key) async => _data[key] as String?;
 
   @override
-  Future<void> writeString(String key, String value) async => _data[key] = value;
+  Future<void> writeString(String key, String value) async =>
+      _data[key] = value;
 
   @override
   Future<bool?> readBool(String key) async => _data[key] as bool?;
@@ -140,7 +173,8 @@ class MemoryStorageService implements StorageService {
   }
 
   @override
-  Future<void> writeMap(String key, Map<String, dynamic> value) async => _data[key] = jsonEncode(value);
+  Future<void> writeMap(String key, Map<String, dynamic> value) async =>
+      _data[key] = jsonEncode(value);
 
   @override
   Future<bool> containsKey(String key) async => _data.containsKey(key);

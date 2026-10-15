@@ -5,8 +5,10 @@ import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_radius.dart';
 import '../../core/theme/app_text_styles.dart';
 import '../../domain/entities/measurement_entities.dart';
-import '../../data/mock/measurement_mock_data.dart';
+import '../../data/static/measurement_guide_data.dart';
 import '../widgets/app_header_bar.dart';
+
+import '../../l10n/l10n.dart';
 
 /// دليل القياسات — illustrated step-by-step guide for each circumference
 /// measurement. All four guides are listed in one scroll; the chip row jumps
@@ -37,7 +39,8 @@ class _MeasurementGuideScreenState extends State<MeasurementGuideScreen> {
     super.initState();
     _scroll.addListener(_onScroll);
     if (widget.initialPart != MeasurementGuideData.parts.first.key) {
-      WidgetsBinding.instance.addPostFrameCallback((_) => _goTo(widget.initialPart));
+      WidgetsBinding.instance
+          .addPostFrameCallback((_) => _goTo(widget.initialPart));
     }
   }
 
@@ -67,7 +70,8 @@ class _MeasurementGuideScreenState extends State<MeasurementGuideScreen> {
     final limit = MediaQuery.of(context).padding.top + kToolbarHeight + 140;
     String current = MeasurementGuideData.parts.first.key;
     for (final p in MeasurementGuideData.parts) {
-      final box = _keys[p.key]?.currentContext?.findRenderObject() as RenderBox?;
+      final box =
+          _keys[p.key]?.currentContext?.findRenderObject() as RenderBox?;
       if (box == null || !box.attached) continue;
       if (box.localToGlobal(Offset.zero).dy <= limit) current = p.key;
     }
@@ -87,22 +91,15 @@ class _MeasurementGuideScreenState extends State<MeasurementGuideScreen> {
     }
   }
 
-  static String _arabicDigits(String s) {
-    const w = '0123456789';
-    const a = '٠١٢٣٤٥٦٧٨٩';
-    var out = s;
-    for (var i = 0; i < w.length; i++) {
-      out = out.replaceAll(w[i], a[i]);
-    }
-    return out;
-  }
-
   BoxDecoration _cardDecoration() => BoxDecoration(
         color: AppColors.surface,
         borderRadius: BorderRadius.circular(AppRadius.card),
         border: Border.all(color: AppColors.hairline),
         boxShadow: [
-          BoxShadow(color: Colors.black.withValues(alpha: 0.04), blurRadius: 12, offset: const Offset(0, 4)),
+          BoxShadow(
+              color: Colors.black.withValues(alpha: 0.04),
+              blurRadius: 12,
+              offset: const Offset(0, 4)),
         ],
       );
 
@@ -110,7 +107,7 @@ class _MeasurementGuideScreenState extends State<MeasurementGuideScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
-      appBar: const AppHeaderBar(title: 'دليل القياسات'),
+      appBar: AppHeaderBar(title: context.l10n.measurementGuideTitle),
       body: SingleChildScrollView(
         controller: _scroll,
         padding: const EdgeInsets.fromLTRB(18, 16, 18, 24),
@@ -133,11 +130,13 @@ class _MeasurementGuideScreenState extends State<MeasurementGuideScreen> {
               child: TextButton(
                 onPressed: () {},
                 child: Row(mainAxisSize: MainAxisSize.min, children: [
-                  const Icon(Icons.chat_bubble_outline_rounded, size: 18, color: AppColors.textPrimary),
+                  const Icon(Icons.chat_bubble_outline_rounded,
+                      size: 18, color: AppColors.textPrimary),
                   const SizedBox(width: 8),
                   Flexible(
-                    child: Text('هل تحتاجين مساعدة إضافية؟ تواصل مع أخصائيتك عبر المحادثة',
-                        style: AppTextStyles.caption.copyWith(color: AppColors.textPrimary, fontSize: 11.5)),
+                    child: Text(context.l10n.guideNeedHelp,
+                        style: AppTextStyles.caption.copyWith(
+                            color: AppColors.textPrimary, fontSize: 11.5)),
                   ),
                 ]),
               ),
@@ -158,18 +157,22 @@ class _MeasurementGuideScreenState extends State<MeasurementGuideScreen> {
           Container(
             width: 44,
             height: 44,
-            decoration: BoxDecoration(color: const Color(0xFFA6CCC6), borderRadius: BorderRadius.circular(12)),
-            child: const Icon(Icons.straighten_rounded, color: AppColors.primary),
+            decoration: BoxDecoration(
+                color: const Color(0xFFA6CCC6),
+                borderRadius: BorderRadius.circular(12)),
+            child:
+                const Icon(Icons.straighten_rounded, color: AppColors.primary),
           ),
           const SizedBox(width: 12),
           Expanded(
-            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               const SizedBox(height: 2),
-              const Text('إرشادات أخذ القياسات بدقة', style: AppTextStyles.cardTitle),
+              Text(context.l10n.guideHeadline, style: AppTextStyles.cardTitle),
               const SizedBox(height: 8),
               Text(
-                'الرسوم التوضيحية التالية توضح بدقة المكان الصحيح لوضع شريط القياس لضمان الحصول على قراءات دقيقة ومتسقة تساعد أخصائيتك.',
-                textAlign: TextAlign.right,
+                context.l10n.guideIntro,
+                textAlign: TextAlign.start,
                 style: AppTextStyles.caption.copyWith(height: 1.9),
               ),
             ]),
@@ -178,18 +181,23 @@ class _MeasurementGuideScreenState extends State<MeasurementGuideScreen> {
         const SizedBox(height: 12),
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-          decoration: BoxDecoration(color: _lavenderSoft, borderRadius: BorderRadius.circular(12)),
+          decoration: BoxDecoration(
+              color: _lavenderSoft, borderRadius: BorderRadius.circular(12)),
           child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
             const Padding(
               padding: EdgeInsets.only(top: 2),
-              child: Icon(Icons.lightbulb_outline_rounded, size: 16, color: AppColors.textSecondary),
+              child: Icon(Icons.lightbulb_outline_rounded,
+                  size: 16, color: AppColors.textSecondary),
             ),
             const SizedBox(width: 6),
             Expanded(
               child: Text(
-                'نصائح عامة: قف باسترخاء، تنفس طبيعياً، ولا تشد شريط القياس بقوة على الجلد',
-                textAlign: TextAlign.right,
-                style: AppTextStyles.caption.copyWith(color: AppColors.primary, fontWeight: FontWeight.w500, height: 1.8),
+                context.l10n.guideGeneralTips,
+                textAlign: TextAlign.start,
+                style: AppTextStyles.caption.copyWith(
+                    color: AppColors.primary,
+                    fontWeight: FontWeight.w500,
+                    height: 1.8),
               ),
             ),
           ]),
@@ -222,7 +230,9 @@ class _MeasurementGuideScreenState extends State<MeasurementGuideScreen> {
               ),
               child: Row(mainAxisSize: MainAxisSize.min, children: [
                 Icon(
-                  active ? Icons.radio_button_checked_rounded : _partIcon(p.key),
+                  active
+                      ? Icons.radio_button_checked_rounded
+                      : _partIcon(p.key),
                   size: 16,
                   color: active ? Colors.white : AppColors.textPrimary,
                 ),
@@ -247,49 +257,66 @@ class _MeasurementGuideScreenState extends State<MeasurementGuideScreen> {
       decoration: _cardDecoration(),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(AppRadius.card),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+        child:
+            Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
           _GuideIllustration(part: part),
           Padding(
             padding: const EdgeInsets.fromLTRB(18, 16, 18, 10),
-            child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-              Row(children: [
-                Text('${part.labelAr} (${part.labelEn})',
-                    style: AppTextStyles.sectionHeading.copyWith(fontSize: 14)),
-                const Spacer(),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
-                  decoration: BoxDecoration(
-                      color: const Color(0xFFB6D4D6), borderRadius: BorderRadius.circular(AppRadius.pill)),
-                  child: Text(part.positionBadge,
-                      style: const TextStyle(fontSize: 10.5, color: Colors.white, fontWeight: FontWeight.w500)),
-                ),
-              ]),
-              const SizedBox(height: 14),
-              for (int i = 0; i < part.steps.length; i++)
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 12),
-                  child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Row(children: [
+                    Text('${part.labelAr} (${part.labelEn})',
+                        style: AppTextStyles.sectionHeading
+                            .copyWith(fontSize: 14)),
+                    const Spacer(),
                     Container(
-                      width: 26,
-                      height: 26,
-                      decoration: const BoxDecoration(color: Color(0xFFE3EAFB), shape: BoxShape.circle),
-                      child: Center(
-                        child: Text(_arabicDigits('${i + 1}'),
-                            style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: Color(0xFF3E5A8C))),
-                      ),
-                    ),
-                    const SizedBox(width: 10),
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 1),
-                        child: Text(part.steps[i].text,
-                            textAlign: TextAlign.right,
-                            style: AppTextStyles.body.copyWith(fontSize: 12, height: 1.9)),
-                      ),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 12, vertical: 5),
+                      decoration: BoxDecoration(
+                          color: const Color(0xFFB6D4D6),
+                          borderRadius: BorderRadius.circular(AppRadius.pill)),
+                      child: Text(part.positionBadge,
+                          style: const TextStyle(
+                              fontSize: 10.5,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w500)),
                     ),
                   ]),
-                ),
-            ]),
+                  const SizedBox(height: 14),
+                  for (int i = 0; i < part.steps.length; i++)
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 12),
+                      child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              width: 26,
+                              height: 26,
+                              decoration: const BoxDecoration(
+                                  color: Color(0xFFE3EAFB),
+                                  shape: BoxShape.circle),
+                              child: Center(
+                                child: Text(context.localizeDigits(i + 1),
+                                    style: const TextStyle(
+                                        fontSize: 11,
+                                        fontWeight: FontWeight.w600,
+                                        color: Color(0xFF3E5A8C))),
+                              ),
+                            ),
+                            const SizedBox(width: 10),
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.only(top: 1),
+                                child: Text(part.steps[i].text,
+                                    textAlign: TextAlign.start,
+                                    style: AppTextStyles.body
+                                        .copyWith(fontSize: 12, height: 1.9)),
+                              ),
+                            ),
+                          ]),
+                    ),
+                ]),
           ),
         ]),
       ),
@@ -300,22 +327,30 @@ class _MeasurementGuideScreenState extends State<MeasurementGuideScreen> {
   Widget _upcomingFeatureCard() {
     return Container(
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(color: const Color(0xFFEEF2FF), borderRadius: BorderRadius.circular(AppRadius.card)),
+      decoration: BoxDecoration(
+          color: const Color(0xFFEEF2FF),
+          borderRadius: BorderRadius.circular(AppRadius.card)),
       child: Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
         Container(
           width: 44,
           height: 44,
-          decoration: BoxDecoration(color: const Color(0xFFDCE5FA), borderRadius: BorderRadius.circular(12)),
-          child: const Icon(Icons.smart_display_outlined, color: AppColors.primary),
+          decoration: BoxDecoration(
+              color: const Color(0xFFDCE5FA),
+              borderRadius: BorderRadius.circular(12)),
+          child: const Icon(Icons.smart_display_outlined,
+              color: AppColors.primary),
         ),
         const SizedBox(width: 12),
         Expanded(
-          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            const Text('ميزة قيد الإعداد',
-                style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700, color: _teal)),
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Text(context.l10n.guideComingFeature,
+                style: const TextStyle(
+                    fontSize: 13, fontWeight: FontWeight.w700, color: _teal)),
             const SizedBox(height: 4),
-            Text('🎬 قريباً: فيديو إرشادي قصير (١٠ ثوان) لكل قياس لتسهيل المتابعة العملية المباشرة.',
-                textAlign: TextAlign.right, style: AppTextStyles.caption.copyWith(height: 1.9)),
+            Text(context.l10n.guideVideoComingSoon,
+                textAlign: TextAlign.start,
+                style: AppTextStyles.caption.copyWith(height: 1.9)),
           ]),
         ),
       ]),
@@ -328,7 +363,10 @@ class _MeasurementGuideScreenState extends State<MeasurementGuideScreen> {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(14),
         boxShadow: [
-          BoxShadow(color: AppColors.primary.withValues(alpha: 0.25), blurRadius: 14, offset: const Offset(0, 6)),
+          BoxShadow(
+              color: AppColors.primary.withValues(alpha: 0.25),
+              blurRadius: 14,
+              offset: const Offset(0, 6)),
         ],
       ),
       child: SizedBox(
@@ -338,14 +376,16 @@ class _MeasurementGuideScreenState extends State<MeasurementGuideScreen> {
             backgroundColor: AppColors.primary,
             foregroundColor: Colors.white,
             elevation: 0,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-            textStyle: const TextStyle(fontSize: 13, fontWeight: FontWeight.w700),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+            textStyle:
+                const TextStyle(fontSize: 13, fontWeight: FontWeight.w700),
           ),
           onPressed: () => Navigator.of(context).pop(),
-          child: const Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-            Text('فهمت، العودة لتسجيل القياسات'),
-            SizedBox(width: 8),
-            Icon(Icons.check_circle_outline_rounded, size: 20),
+          child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            Text(context.l10n.guideDoneBack),
+            const SizedBox(width: 8),
+            const Icon(Icons.check_circle_outline_rounded, size: 20),
           ]),
         ),
       ),
@@ -365,12 +405,13 @@ class _GuideIllustration extends StatefulWidget {
 
 class _GuideIllustrationState extends State<_GuideIllustration>
     with TickerProviderStateMixin {
-  late final AnimationController _intro =
-      AnimationController(vsync: this, duration: const Duration(milliseconds: 1600));
-  late final AnimationController _loop =
-      AnimationController(vsync: this, duration: const Duration(milliseconds: 2200));
+  late final AnimationController _intro = AnimationController(
+      vsync: this, duration: const Duration(milliseconds: 1600));
+  late final AnimationController _loop = AnimationController(
+      vsync: this, duration: const Duration(milliseconds: 2200));
   late final Animation<double> _pillAnim = CurvedAnimation(
-      parent: _intro, curve: const Interval(0.55, 1.0, curve: Curves.easeOutCubic));
+      parent: _intro,
+      curve: const Interval(0.55, 1.0, curve: Curves.easeOutCubic));
 
   ScrollPosition? _pos;
   bool _played = false;
@@ -410,7 +451,8 @@ class _GuideIllustrationState extends State<_GuideIllustration>
     return FadeTransition(
       opacity: _pillAnim,
       child: SlideTransition(
-        position: Tween<Offset>(begin: from, end: Offset.zero).animate(_pillAnim),
+        position:
+            Tween<Offset>(begin: from, end: Offset.zero).animate(_pillAnim),
         child: child,
       ),
     );
@@ -435,39 +477,43 @@ class _GuideIllustrationState extends State<_GuideIllustration>
                 ),
               ),
             ),
-            Positioned(
-              top: 12,
-              left: 12,
-              child: _pill(
-                from: const Offset(-0.3, 0),
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
-                  decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha: 0.92),
-                      borderRadius: BorderRadius.circular(AppRadius.pill)),
-                  child: const Row(mainAxisSize: MainAxisSize.min, children: [
-                    Text('تكبير الرسم', style: TextStyle(fontSize: 11, color: AppColors.textPrimary)),
-                    SizedBox(width: 6),
-                    Icon(Icons.zoom_in_rounded, size: 16, color: AppColors.textPrimary),
-                  ]),
-                ),
-              ),
-            ),
-            Positioned(
-              bottom: 12,
-              right: 12,
-              child: _pill(
-                from: const Offset(0.3, 0),
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
-                  decoration: BoxDecoration(
-                      color: const Color(0xFF6B8C90).withValues(alpha: 0.92),
-                      borderRadius: BorderRadius.circular(AppRadius.pill)),
-                  child: Text(part.cornerHint,
-                      style: const TextStyle(fontSize: 11, color: Colors.white)),
-                ),
-              ),
-            ),
+            PositionedDirectional(
+                top: 12,
+                end: 12,
+                child: _pill(
+                  from: const Offset(-0.3, 0),
+                  child: Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
+                    decoration: BoxDecoration(
+                        color: Colors.white.withValues(alpha: 0.92),
+                        borderRadius: BorderRadius.circular(AppRadius.pill)),
+                    child: Row(mainAxisSize: MainAxisSize.min, children: [
+                      Text(context.l10n.guideZoom,
+                          style: const TextStyle(
+                              fontSize: 11, color: AppColors.textPrimary)),
+                      const SizedBox(width: 6),
+                      const Icon(Icons.zoom_in_rounded,
+                          size: 16, color: AppColors.textPrimary),
+                    ]),
+                  ),
+                )),
+            PositionedDirectional(
+                bottom: 12,
+                start: 12,
+                child: _pill(
+                  from: const Offset(0.3, 0),
+                  child: Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
+                    decoration: BoxDecoration(
+                        color: const Color(0xFF6B8C90).withValues(alpha: 0.92),
+                        borderRadius: BorderRadius.circular(AppRadius.pill)),
+                    child: Text(part.cornerHint,
+                        style:
+                            const TextStyle(fontSize: 11, color: Colors.white)),
+                  ),
+                )),
           ],
         ),
       ),
@@ -561,7 +607,12 @@ class _Figure {
     bool extensionLines = false,
   }) {
     final r = _Contour(half);
-    return _Figure(left: r.mirrored(), right: r, bandY: bandY, bandRy: bandRy, extensionLines: extensionLines);
+    return _Figure(
+        left: r.mirrored(),
+        right: r,
+        bandY: bandY,
+        bandRy: bandRy,
+        extensionLines: extensionLines);
   }
 }
 
@@ -569,8 +620,15 @@ final Map<String, _Figure> _figures = {
   // الجذع: أكتاف عريضة مقطوعة ← خصر ضيق ← تدرّج نحو الأسفل.
   'waist': _Figure.symmetric(
     const [
-      [36, 60], [58, 61], [84, 53], [104, 44], [121, 39],
-      [140, 44], [165, 54], [195, 62], [224, 66],
+      [36, 60],
+      [58, 61],
+      [84, 53],
+      [104, 44],
+      [121, 39],
+      [140, 44],
+      [165, 54],
+      [195, 62],
+      [224, 66],
     ],
     bandY: 121,
     bandRy: 10,
@@ -579,16 +637,34 @@ final Map<String, _Figure> _figures = {
   // الحوض: عنق ضيق ← خصر ← أعرض نقطة في الحوض ← ساقان.
   'hip': _Figure.symmetric(
     const [
-      [39, 46], [60, 40], [94, 30], [115, 40], [135, 58],
-      [152, 69], [170, 71], [224, 71],
+      [39, 46],
+      [60, 40],
+      [94, 30],
+      [115, 40],
+      [135, 58],
+      [152, 69],
+      [170, 71],
+      [224, 71],
     ],
     bandY: 156,
     bandRy: 14,
   ),
   // الفخذ: الحافة اليسرى مائلة للداخل، واليمنى شبه مستقيمة.
   'thigh': _Figure(
-    left: const _Contour([[29, -70], [60, -62], [95, -50], [122, -47.5], [165, -48], [210, -49.5]]),
-    right: const _Contour([[29, 26], [60, 27], [122, 28.5], [210, 28.5]]),
+    left: const _Contour([
+      [29, -70],
+      [60, -62],
+      [95, -50],
+      [122, -47.5],
+      [165, -48],
+      [210, -49.5]
+    ]),
+    right: const _Contour([
+      [29, 26],
+      [60, 27],
+      [122, 28.5],
+      [210, 28.5]
+    ]),
     bandY: 122,
     bandRy: 9,
     guideDx: 50.5,
@@ -597,8 +673,19 @@ final Map<String, _Figure> _figures = {
   ),
   // العضد: قطع علوي مائل، وأسطوانة مدبّبة قليلاً نحو الأسفل.
   'arm': _Figure(
-    left: const _Contour([[31, -25.5], [60, -30], [126, -32.5], [211, -32.5]]),
-    right: const _Contour([[41, 23.5], [60, 26], [126, 28.5], [160, 25], [211, 21]]),
+    left: const _Contour([
+      [31, -25.5],
+      [60, -30],
+      [126, -32.5],
+      [211, -32.5]
+    ]),
+    right: const _Contour([
+      [41, 23.5],
+      [60, 26],
+      [126, 28.5],
+      [160, 25],
+      [211, 21]
+    ]),
     bandY: 126,
     bandRy: 7,
     guideDx: -56.5,
@@ -636,7 +723,8 @@ class _SilhouettePainter extends CustomPainter {
 
     // ١) الجسم: ظهور تدريجي مع صعود خفيف.
     final bodyT = _seg(0.0, 0.4, Curves.easeOutCubic);
-    canvas.saveLayer(Offset.zero & size, Paint()..color = Colors.white.withValues(alpha: bodyT));
+    canvas.saveLayer(Offset.zero & size,
+        Paint()..color = Colors.white.withValues(alpha: bodyT));
     canvas.translate(0, (1 - bodyT) * 14 * u);
 
     const steps = 90;
@@ -676,7 +764,8 @@ class _SilhouettePainter extends CustomPainter {
   }
 
   /// علامات تشريحية خفيفة داخل الجسم.
-  void _drawLandmarks(Canvas canvas, Offset Function(double, double) at, double u) {
+  void _drawLandmarks(
+      Canvas canvas, Offset Function(double, double) at, double u) {
     final soft = Paint()
       ..color = _mark
       ..style = PaintingStyle.stroke
@@ -710,18 +799,27 @@ class _SilhouettePainter extends CustomPainter {
       case 'thigh':
         // قوس الركبة.
         final p0 = at(-24, 204), c = at(-2, 213), p1 = at(18, 204);
-        canvas.drawPath(Path()..moveTo(p0.dx, p0.dy)..quadraticBezierTo(c.dx, c.dy, p1.dx, p1.dy), soft);
+        canvas.drawPath(
+            Path()
+              ..moveTo(p0.dx, p0.dy)
+              ..quadraticBezierTo(c.dx, c.dy, p1.dx, p1.dy),
+            soft);
         break;
       case 'arm':
         // قوس العضلة الدالية.
         final p0 = at(-18, 45), c = at(0, 51), p1 = at(16, 47);
-        canvas.drawPath(Path()..moveTo(p0.dx, p0.dy)..quadraticBezierTo(c.dx, c.dy, p1.dx, p1.dy), soft);
+        canvas.drawPath(
+            Path()
+              ..moveTo(p0.dx, p0.dy)
+              ..quadraticBezierTo(c.dx, c.dy, p1.dx, p1.dy),
+            soft);
         break;
     }
   }
 
   /// خط الإرشاد العمودي: يرسم نفسه من الأعلى للأسفل ثم تظهر النقاط.
-  void _drawGuide(Canvas canvas, _Figure fig, Offset Function(double, double) at, double u) {
+  void _drawGuide(Canvas canvas, _Figure fig,
+      Offset Function(double, double) at, double u) {
     final t = _seg(0.15, 0.6, Curves.easeOutCubic);
     if (t <= 0) return;
     final top = at(fig.guideDx!, fig.guideTop);
@@ -741,9 +839,11 @@ class _SilhouettePainter extends CustomPainter {
       fraction: t,
     );
     final white = Paint()..color = Colors.white;
-    canvas.drawCircle(top, 3.4 * u * Curves.easeOutBack.transform(math.min(1, t * 4)), white);
+    canvas.drawCircle(
+        top, 3.4 * u * Curves.easeOutBack.transform(math.min(1, t * 4)), white);
     if (t > 0.9) {
-      canvas.drawCircle(bottom, 3.4 * u * Curves.easeOutBack.transform((t - 0.9) * 10), white);
+      canvas.drawCircle(bottom,
+          3.4 * u * Curves.easeOutBack.transform((t - 0.9) * 10), white);
     }
     _centerDot(canvas, at(fig.guideDx!, fig.bandY), u);
   }
@@ -757,7 +857,8 @@ class _SilhouettePainter extends CustomPainter {
       c,
       (5.6 + 11 * ripple) * u,
       Paint()
-        ..color = AppColors.primary.withValues(alpha: (1 - ripple) * 0.4 * s.clamp(0.0, 1.0))
+        ..color = AppColors.primary
+            .withValues(alpha: (1 - ripple) * 0.4 * s.clamp(0.0, 1.0))
         ..style = PaintingStyle.stroke
         ..strokeWidth = 1.6 * u,
     );
@@ -767,7 +868,8 @@ class _SilhouettePainter extends CustomPainter {
 
   /// الشريط: ينفرد حول الجسم من اليسار عبر الواجهة ثم الخلف، ومعه نقطة بيضاء
   /// تقود طرفه، وتظهر العلامات خلفه تباعاً.
-  void _drawBand(Canvas canvas, _Figure fig, Offset Function(double, double) at, double u) {
+  void _drawBand(Canvas canvas, _Figure fig, Offset Function(double, double) at,
+      double u) {
     final tapeT = _seg(0.3, 0.8, Curves.easeInOutCubic);
     if (tapeT <= 0) return;
 
@@ -836,7 +938,8 @@ class _SilhouettePainter extends CustomPainter {
     if (tapeT < 1) {
       final th = math.pi - sweep;
       final tip = center + Offset(math.cos(th) * hw, math.sin(th) * ry);
-      canvas.drawCircle(tip, 6 * u, Paint()..color = Colors.white.withValues(alpha: 0.35));
+      canvas.drawCircle(
+          tip, 6 * u, Paint()..color = Colors.white.withValues(alpha: 0.35));
       canvas.drawCircle(tip, 3.2 * u, Paint()..color = Colors.white);
     }
 
@@ -853,7 +956,8 @@ class _SilhouettePainter extends CustomPainter {
         final outer = edge + dir * 16 * u * grow;
         canvas.drawLine(Offset(edge, center.dy), Offset(outer, center.dy), ext);
         if (grow > 0.95) {
-          canvas.drawLine(Offset(outer, center.dy - 3 * u), Offset(outer, center.dy + 3 * u), ext);
+          canvas.drawLine(Offset(outer, center.dy - 3 * u),
+              Offset(outer, center.dy + 3 * u), ext);
         }
       }
     }

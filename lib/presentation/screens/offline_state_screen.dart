@@ -10,6 +10,8 @@ import 'weekly_plan_screen.dart';
 import 'error_state_screen.dart';
 import '../../core/navigation/app_page_route.dart';
 
+import '../../l10n/l10n.dart';
+
 /// The full-screen "no connection" state. Reached today from Profile →
 /// المزيد (a QA/demo entry point, matching how [PlanPreparingScreen] is
 /// wired) and, in a real build, would replace the Home tab's body whenever
@@ -20,17 +22,18 @@ class OfflineStateScreen extends StatelessWidget {
   const OfflineStateScreen({super.key});
 
   Future<void> _retry(BuildContext context) async {
-    await Navigator.of(context).push(AppPageRoute(builder: (_) => const ErrorStateScreen()));
+    await Navigator.of(context)
+        .push(AppPageRoute(builder: (_) => const ErrorStateScreen()));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
-      appBar: const AppHeaderBar(
-        title: 'لا يوجد اتصال',
+      appBar: AppHeaderBar(
+        title: context.l10n.offlineTitle,
         backIcon: Icons.close_rounded,
-        actions: [],
+        actions: const [],
       ),
       body: SafeArea(
         child: ListView(
@@ -41,26 +44,37 @@ class OfflineStateScreen extends StatelessWidget {
               child: const OfflineExplainerBody(),
             ),
             const SizedBox(height: 26),
-            GradientCtaButton(label: 'إعادة محاولة الاتصال', icon: Icons.refresh_rounded, onPressed: () => _retry(context)),
+            GradientCtaButton(
+                label: context.l10n.offlineRetry,
+                icon: Icons.refresh_rounded,
+                onPressed: () => _retry(context)),
             const SizedBox(height: 12),
             SizedBox(
               width: double.infinity,
               child: OutlinedButton.icon(
-                onPressed: () => Navigator.of(context).push(AppPageRoute(builder: (_) => const WeeklyPlanScreen())),
+                onPressed: () => Navigator.of(context).push(
+                    AppPageRoute(builder: (_) => const WeeklyPlanScreen())),
                 style: OutlinedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   side: const BorderSide(color: AppColors.border),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.pill)),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(AppRadius.pill)),
                 ),
-                icon: const Icon(Icons.restaurant_menu_rounded, size: 18, color: AppColors.textPrimary),
-                label: const Text('عرض الوجبات المحفوظة أوفلاين', style: AppTextStyles.body),
+                icon: const Icon(Icons.restaurant_menu_rounded,
+                    size: 18, color: AppColors.textPrimary),
+                label: Text(context.l10n.offlineSavedMeals,
+                    style: AppTextStyles.body),
               ),
             ),
             const SizedBox(height: 14),
-            const Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              Icon(Icons.info_outline_rounded, size: 14, color: AppColors.textSecondary),
-              SizedBox(width: 6),
-              Flexible(child: Text('تحقق من تفعيل Wi-Fi أو بيانات الهاتف من إعدادات جهازك', style: AppTextStyles.caption, textAlign: TextAlign.center)),
+            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+              const Icon(Icons.info_outline_rounded,
+                  size: 14, color: AppColors.textSecondary),
+              const SizedBox(width: 6),
+              Flexible(
+                  child: Text(context.l10n.offlineCheckWifi,
+                      style: AppTextStyles.caption,
+                      textAlign: TextAlign.center)),
             ]),
           ],
         ),

@@ -4,27 +4,56 @@ import 'package:healthylife_ai/presentation/screens/new_measurement_screen.dart'
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_radius.dart';
 import '../../core/theme/app_text_styles.dart';
+import '../../domain/entities/measurement_entities.dart';
+import '../../domain/measurement_schedule.dart';
 import '../widgets/gradient_cta_button.dart';
 import '../widgets/app_header_bar.dart';
 import '../../core/navigation/app_page_route.dart';
 import 'measurement_guide_screen.dart';
 
+import '../widgets/directional_icon.dart';
+import '../../l10n/l10n.dart';
+
 const _tintBox = Color(0xFFF3F6FC); // خلفية الصناديق الفاتحة في التصميم
 const _iconBlue = Color(0xFFE3ECFA);
 const _leafGreen = Color(0xFF1FB57A);
 
-/// Shown once, right after the very first weight measurement is saved.
+/// What the prompt asks for, from the readings the patient already has.
+enum MeasurementPrompt {
+  /// No reading yet: the first one sets the starting point.
+  first,
+
+  /// One reading, a week old: the second draws the first line.
+  second,
+
+  /// The weekly reading is due (API guide 10.6).
+  weekly;
+
+  static MeasurementPrompt of(MeasurementSnapshot? snapshot) {
+    if (snapshot == null || snapshot.isEmpty) return first;
+    return snapshot.weightTrend.length <= 1 ? second : weekly;
+  }
+}
+
+/// Asks for a measurement when one is due: the first one, or the weekly one a
+/// week after the latest (see `measurement_schedule.dart`). The latest
+/// reading and its date come from [snapshot].
 class FirstMeasurementScreen extends StatefulWidget {
-  final double weightKg;
+  final MeasurementSnapshot? snapshot;
   final VoidCallback? onMeasurementSaved;
+
+  /// Opens the progress dashboard without measuring now. Offered only when
+  /// there is progress to show.
+  final VoidCallback? onViewProgress;
   final bool showBack;
   final bool showExitAction;
   final bool replaceEntryRoute;
 
   const FirstMeasurementScreen({
     super.key,
-    this.weightKg = 78.4,
+    this.snapshot,
     this.onMeasurementSaved,
+    this.onViewProgress,
     this.showBack = true,
     this.showExitAction = true,
     this.replaceEntryRoute = true,
@@ -34,11 +63,14 @@ class FirstMeasurementScreen extends StatefulWidget {
   State<FirstMeasurementScreen> createState() => _FirstMeasurementScreenState();
 }
 
-class _FirstMeasurementScreenState extends State<FirstMeasurementScreen> with TickerProviderStateMixin {
-  late final AnimationController _enter =
-      AnimationController(vsync: this, duration: const Duration(milliseconds: 2600))..forward();
-  late final AnimationController _loop =
-      AnimationController(vsync: this, duration: const Duration(milliseconds: 3200))..repeat();
+class _FirstMeasurementScreenState extends State<FirstMeasurementScreen>
+    with TickerProviderStateMixin {
+  late final AnimationController _enter = AnimationController(
+      vsync: this, duration: const Duration(milliseconds: 2600))
+    ..forward();
+  late final AnimationController _loop = AnimationController(
+      vsync: this, duration: const Duration(milliseconds: 3200))
+    ..repeat();
 
   @override
   void dispose() {
@@ -47,7 +79,8 @@ class _FirstMeasurementScreenState extends State<FirstMeasurementScreen> with Ti
     super.dispose();
   }
 
-  static double _seg(double v, double b, double e, [Curve c = Curves.easeOutCubic]) =>
+  static double _seg(double v, double b, double e,
+          [Curve c = Curves.easeOutCubic]) =>
       Interval(b, e, curve: c).transform(v);
 
   /// دخول متتابع: تلاشي + انزلاق من الأسفل
@@ -66,35 +99,67 @@ class _FirstMeasurementScreenState extends State<FirstMeasurementScreen> with Ti
   }
 
   List<BoxShadow> get _shadow => [
-        BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 14, offset: const Offset(0, 4)),
+        BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 14,
+            offset: const Offset(0, 4)),
       ];
+
+  MeasurementPrompt get _prompt => MeasurementPrompt.of(widget.snapshot);
 
   @override
   Widget build(BuildContext context) {
     final bottomInset = MediaQuery.paddingOf(context).bottom;
     final bottomPadding = widget.showExitAction ? 28.0 : 132.0 + bottomInset;
+    final l10n = context.l10n;
+    final prompt = _prompt;
+    final latest =
+        widget.snapshot == null ? null : latestReading(widget.snapshot!);
+    final (headline, explanation, awaiting) = switch (prompt) {
+      MeasurementPrompt.first => (
+          l10n.measurementPromptFirstHeadline,
+          l10n.measurementPromptFirstBody,
+          l10n.measurementPromptAwaitingFirst,
+        ),
+      MeasurementPrompt.second => (
+          l10n.firstMeasurementHeadline,
+          l10n.firstMeasurementExplanation,
+          l10n.firstMeasurementAwaitingSecond,
+        ),
+      MeasurementPrompt.weekly => (
+          l10n.measurementPromptWeeklyHeadline,
+          l10n.measurementPromptWeeklyBody,
+          l10n.measurementPromptAwaitingNew,
+        ),
+    };
+    final onViewProgress =
+        prompt == MeasurementPrompt.first ? null : widget.onViewProgress;
 
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppHeaderBar(title: 'دليل القياسات', showBack: widget.showBack),
+      appBar: AppHeaderBar(
+          title: l10n.measurementGuideTitle, showBack: widget.showBack),
       body: ListView(
         padding: EdgeInsets.fromLTRB(18, 12, 18, bottomPadding),
         children: [
-          _reveal(0.00, 0.25, _buildBaselineCard()),
-          const SizedBox(height: 26),
-          _WaitingIllustration(enter: _enter, loop: _loop),
+          if (latest != null) ...[
+            _reveal(0.00, 0.25, _buildBaselineCard(latest, prompt)),
+            const SizedBox(height: 26),
+          ],
+          _WaitingIllustration(enter: _enter, loop: _loop, awaiting: awaiting),
           const SizedBox(height: 22),
           _reveal(
             0.50,
             0.70,
-            const Text('سجّل قياسك التالي لنرسم لك خط التقدم', textAlign: TextAlign.center, style: AppTextStyles.h1),
+            Text(headline,
+                textAlign: TextAlign.center, style: AppTextStyles.h1),
           ),
           const SizedBox(height: 12),
           _reveal(
             0.58,
             0.76,
-            const Text(
-              'يتطلب رسم منحنى التقدم قياسين على الأقل لإظهار اتجاه التغير الحقيقي بدقة وموضوعية. تسجيلك القادم سيفعّل المخطط البياني فوراً.',
+            Text(
+              explanation,
               textAlign: TextAlign.center,
               style: AppTextStyles.secondary,
             ),
@@ -116,11 +181,12 @@ class _FirstMeasurementScreenState extends State<FirstMeasurementScreen> with Ti
                 return Transform.scale(scale: pulse, child: child);
               },
               child: GradientCtaButton(
-                label: 'سجّل قياساً جديداً',
+                label: context.l10n.firstMeasurementLogNew,
                 icon: Icons.add_rounded,
                 onPressed: () {
                   final route = AppPageRoute(
-                    builder: (_) => MeasurementEntryScreen(onSaved: widget.onMeasurementSaved),
+                    builder: (_) => MeasurementEntryScreen(
+                        onSaved: widget.onMeasurementSaved),
                   );
                   if (widget.replaceEntryRoute) {
                     Navigator.of(context).pushReplacement(route);
@@ -132,14 +198,29 @@ class _FirstMeasurementScreenState extends State<FirstMeasurementScreen> with Ti
             ),
           ),
           const SizedBox(height: 10),
+          if (onViewProgress != null)
+            _reveal(
+              0.90,
+              1.0,
+              Center(
+                child: TextButton(
+                  onPressed: onViewProgress,
+                  child: Text(l10n.measurementPromptViewProgress,
+                      style: AppTextStyles.secondary
+                          .copyWith(color: AppColors.primary)),
+                ),
+              ),
+            ),
           if (widget.showExitAction)
             _reveal(
               0.90,
               1.0,
               Center(
                 child: TextButton(
-                  onPressed: () => Navigator.of(context).popUntil((r) => r.isFirst),
-                  child: const Text('العودة إلى خطتي اليومية', style: AppTextStyles.secondary),
+                  onPressed: () =>
+                      Navigator.of(context).popUntil((r) => r.isFirst),
+                  child: Text(context.l10n.firstMeasurementBackToPlan,
+                      style: AppTextStyles.secondary),
                 ),
               ),
             ),
@@ -149,7 +230,12 @@ class _FirstMeasurementScreenState extends State<FirstMeasurementScreen> with Ti
   }
 
   // ───────────────────────── الكرت العلوي ─────────────────────────
-  Widget _buildBaselineCard() {
+  /// The latest reading: the starting point while it is the only one, or the
+  /// reading the weekly one follows.
+  Widget _buildBaselineCard(MeasurementEntry latest, MeasurementPrompt prompt) {
+    final l10n = context.l10n;
+    final weekly = prompt == MeasurementPrompt.weekly;
+    final weightKg = widget.snapshot?.currentWeight ?? latest.weightKg;
     return Container(
       decoration: BoxDecoration(
         color: AppColors.surface,
@@ -192,8 +278,11 @@ class _FirstMeasurementScreenState extends State<FirstMeasurementScreen> with Ti
                 width: 46,
                 height: 46,
                 alignment: Alignment.center,
-                decoration: BoxDecoration(color: Colors.white.withOpacity(0.55), shape: BoxShape.circle),
-                child: const Icon(Icons.monitor_weight_outlined, color: AppColors.primary, size: 24),
+                decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.55),
+                    shape: BoxShape.circle),
+                child: const Icon(Icons.monitor_weight_outlined,
+                    color: AppColors.primary, size: 24),
               ),
             ),
             Padding(
@@ -205,45 +294,88 @@ class _FirstMeasurementScreenState extends State<FirstMeasurementScreen> with Ti
                     Container(
                         width: 8,
                         height: 8,
-                        decoration: const BoxDecoration(color: AppColors.primary, shape: BoxShape.circle)),
+                        decoration: const BoxDecoration(
+                            color: AppColors.primary, shape: BoxShape.circle)),
                     const SizedBox(width: 6),
-                    Text('نقطة البداية المعتمدة', style: AppTextStyles.caption.copyWith(color: AppColors.primary)),
+                    Text(
+                        weekly
+                            ? l10n.measurementPromptWeeklyBadge
+                            : l10n.firstMeasurementBaseline,
+                        style: AppTextStyles.caption
+                            .copyWith(color: AppColors.primary)),
                   ]),
                   const SizedBox(height: 8),
-                  const Text('القياس الأولي المسجل', style: AppTextStyles.cardTitle),
+                  Text(
+                      weekly
+                          ? l10n.measurementPromptLatest
+                          : l10n.firstMeasurementInitial,
+                      style: AppTextStyles.cardTitle),
                   const SizedBox(height: 16),
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                    decoration:
-                        BoxDecoration(color: _tintBox, borderRadius: BorderRadius.circular(AppRadius.cardSmall)),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16, vertical: 16),
+                    decoration: BoxDecoration(
+                        color: _tintBox,
+                        borderRadius:
+                            BorderRadius.circular(AppRadius.cardSmall)),
                     child: Row(children: [
                       // الوزن (يمين) مع عدّاد تصاعدي
-                      AnimatedBuilder(
-                        animation: _enter,
-                        builder: (_, __) {
-                          final v = _seg(_enter.value, 0.10, 0.45, Curves.easeOutQuart);
-                          return Text('${(widget.weightKg * v).toStringAsFixed(1)} كغ',
-                              style: AppTextStyles.body.copyWith(fontWeight: FontWeight.w700, fontSize: 18));
-                        },
-                      ),
-                      const Spacer(),
+                      if (weightKg != null)
+                        AnimatedBuilder(
+                          animation: _enter,
+                          builder: (_, __) {
+                            final v = _seg(
+                                _enter.value, 0.10, 0.45, Curves.easeOutQuart);
+                            return Text(
+                                l10n.commonKgValue(context.localizeDigits(
+                                    (weightKg * v).toStringAsFixed(1))),
+                                style: AppTextStyles.body.copyWith(
+                                    fontWeight: FontWeight.w700, fontSize: 18));
+                          },
+                        ),
+                      const SizedBox(width: 12),
                       // التاريخ (يسار)
-                      const Icon(Icons.calendar_today_outlined, size: 15, color: AppColors.textSecondary),
-                      const SizedBox(width: 6),
-                      const Text('الجمعة، ١٩ سبتمبر ٢٠٢٥', style: AppTextStyles.caption),
+                      Expanded(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            const Icon(Icons.calendar_today_outlined,
+                                size: 15, color: AppColors.textSecondary),
+                            const SizedBox(width: 6),
+                            // A full date can be long ("Wednesday, October
+                            // 8, 2026").
+                            Flexible(
+                              child: Text(
+                                  context.localizeDigits(
+                                      MaterialLocalizations.of(context)
+                                          .formatFullDate(latest.recordedAt)),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: AppTextStyles.caption),
+                            ),
+                          ],
+                        ),
+                      ),
                     ]),
                   ),
                   const SizedBox(height: 12),
                   Row(children: [
                     AnimatedBuilder(
                       animation: _enter,
-                      builder: (_, child) =>
-                          Transform.scale(scale: _seg(_enter.value, 0.22, 0.40, Curves.elasticOut), child: child),
-                      child: const Icon(Icons.check_circle_outline_rounded, size: 18, color: AppColors.primary),
+                      builder: (_, child) => Transform.scale(
+                          scale:
+                              _seg(_enter.value, 0.22, 0.40, Curves.elasticOut),
+                          child: child),
+                      child: const Icon(Icons.check_circle_outline_rounded,
+                          size: 18, color: AppColors.primary),
                     ),
                     const SizedBox(width: 6),
-                    const Expanded(
-                      child: Text('تم توثيق نقطة البداية بنجاح في ملفك الصحي.', style: AppTextStyles.caption),
+                    Expanded(
+                      child: Text(
+                          weekly
+                              ? l10n.measurementPromptWeeklyNote
+                              : l10n.firstMeasurementBaselineSaved,
+                          style: AppTextStyles.caption),
                     ),
                   ]),
                 ],
@@ -259,7 +391,8 @@ class _FirstMeasurementScreenState extends State<FirstMeasurementScreen> with Ti
   Widget _buildTipCard() {
     return Container(
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(color: _tintBox, borderRadius: BorderRadius.circular(AppRadius.card)),
+      decoration: BoxDecoration(
+          color: _tintBox, borderRadius: BorderRadius.circular(AppRadius.card)),
       child: Row(children: [
         AnimatedBuilder(
           animation: _loop,
@@ -273,18 +406,21 @@ class _FirstMeasurementScreenState extends State<FirstMeasurementScreen> with Ti
                 color: AppColors.primary.withOpacity(0.28),
                 shape: BoxShape.circle,
                 boxShadow: [
-                  BoxShadow(color: AppColors.primary.withOpacity(0.10 + 0.18 * glow), blurRadius: 6 + 8 * glow),
+                  BoxShadow(
+                      color: AppColors.primary.withOpacity(0.10 + 0.18 * glow),
+                      blurRadius: 6 + 8 * glow),
                 ],
               ),
               child: child,
             );
           },
-          child: const Icon(Icons.lightbulb_outline_rounded, color: AppColors.primary, size: 22),
+          child: const Icon(Icons.lightbulb_outline_rounded,
+              color: AppColors.primary, size: 22),
         ),
         const SizedBox(width: 12),
-        const Expanded(
+        Expanded(
           child: Text(
-            'قياس واحد يحدد نقطة انطلاقك، والقياس القادم هو ما يرسم رحلتك مع أخصائيتك خطوة بخطوة.',
+            context.l10n.firstMeasurementJourneyNote,
             style: AppTextStyles.caption,
           ),
         ),
@@ -305,17 +441,21 @@ class _FirstMeasurementScreenState extends State<FirstMeasurementScreen> with Ti
         Container(
           width: 46,
           height: 46,
-          decoration: const BoxDecoration(color: _iconBlue, shape: BoxShape.circle),
-          child: const Icon(Icons.access_time_rounded, color: AppColors.primary, size: 22),
+          decoration:
+              const BoxDecoration(color: _iconBlue, shape: BoxShape.circle),
+          child: const Icon(Icons.access_time_rounded,
+              color: AppColors.primary, size: 22),
         ),
         const SizedBox(width: 12),
-        const Expanded(
+        Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('توقيت القياس المقترح', style: AppTextStyles.cardTitle),
-              SizedBox(height: 2),
-              Text('صباحاً بعد الاستيقاظ مباشرة لقراءة مستقرة', style: AppTextStyles.caption),
+              Text(context.l10n.firstMeasurementSuggestedTime,
+                  style: AppTextStyles.cardTitle),
+              const SizedBox(height: 2),
+              Text(context.l10n.firstMeasurementMorningTip,
+                  style: AppTextStyles.caption),
             ],
           ),
         ),
@@ -331,25 +471,39 @@ class _FirstMeasurementScreenState extends State<FirstMeasurementScreen> with Ti
       elevation: 0,
       child: InkWell(
         borderRadius: BorderRadius.circular(AppRadius.card),
-        onTap: () => Navigator.of(context).push(AppPageRoute(builder: (_) => const MeasurementGuideScreen())),
+        onTap: () => Navigator.of(context)
+            .push(AppPageRoute(builder: (_) => const MeasurementGuideScreen())),
         child: Ink(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-          decoration: BoxDecoration(borderRadius: BorderRadius.circular(AppRadius.card), boxShadow: _shadow),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(AppRadius.card),
+              boxShadow: _shadow),
           child: Row(children: [
-            const Icon(Icons.straighten_rounded, color: AppColors.primary, size: 22),
+            const Icon(Icons.straighten_rounded,
+                color: AppColors.primary, size: 22),
             const SizedBox(width: 10),
             Expanded(
-              child: Text('دليل القياس المصوّر 📐',
-                  style: AppTextStyles.cardTitle.copyWith(color: AppColors.primary)),
+              child: Text(context.l10n.firstMeasurementIllustratedGuide,
+                  style: AppTextStyles.cardTitle
+                      .copyWith(color: AppColors.primary)),
             ),
             // سهم يتحرك نحو اتجاه الانتقال
             AnimatedBuilder(
               animation: _loop,
               builder: (_, child) => Transform.translate(
-                offset: Offset(-3 * (math.sin(_loop.value * 2 * math.pi) + 1) / 2, 0),
+                offset: Offset(
+                    -3 *
+                        rtlDesignSign(context) *
+                        (math.sin(_loop.value * 2 * math.pi) + 1) /
+                        2,
+                    0),
                 child: child,
               ),
-              child: const Icon(Icons.chevron_left_rounded, color: AppColors.textSecondary),
+              child: Icon(
+                  directionalIcon(context,
+                      rtl: Icons.chevron_left_rounded,
+                      ltr: Icons.chevron_right_rounded),
+                  color: AppColors.textSecondary),
             ),
           ]),
         ),
@@ -364,13 +518,18 @@ class _FirstMeasurementScreenState extends State<FirstMeasurementScreen> with Ti
 class _WaitingIllustration extends StatelessWidget {
   final Animation<double> enter;
   final Animation<double> loop;
-  const _WaitingIllustration({required this.enter, required this.loop});
+
+  /// The pill under the target: the reading the patient is waiting on.
+  final String awaiting;
+  const _WaitingIllustration(
+      {required this.enter, required this.loop, required this.awaiting});
 
   static const double _w = 240, _h = 190;
   static const Offset _startC = Offset(42, 108); // مركز نقطة البداية
   static const Offset _targetC = Offset(209, 45); // مركز الهدف
 
-  static double _seg(double v, double b, double e, [Curve c = Curves.easeOutCubic]) =>
+  static double _seg(double v, double b, double e,
+          [Curve c = Curves.easeOutCubic]) =>
       Interval(b, e, curve: c).transform(v);
 
   @override
@@ -405,7 +564,8 @@ class _WaitingIllustration extends StatelessWidget {
                       width: 170,
                       height: 170,
                       decoration: BoxDecoration(
-                          shape: BoxShape.circle, color: AppColors.primaryTint.withOpacity(0.35)),
+                          shape: BoxShape.circle,
+                          color: AppColors.primaryTint.withOpacity(0.35)),
                     ),
                   ),
                 ),
@@ -415,7 +575,9 @@ class _WaitingIllustration extends StatelessWidget {
                   child: CustomPaint(
                     painter: _PathPainter(
                       progress: pathProgress,
-                      travel: pathProgress >= 1 ? Curves.easeInOut.transform(l) : -1,
+                      travel: pathProgress >= 1
+                          ? Curves.easeInOut.transform(l)
+                          : -1,
                       start: _startC,
                       end: _targetC,
                     ),
@@ -432,17 +594,20 @@ class _WaitingIllustration extends StatelessWidget {
                       width: 84,
                       height: 84,
                       decoration: BoxDecoration(
-                          shape: BoxShape.circle, color: const Color(0xFFD2F4E6).withOpacity(0.85)),
+                          shape: BoxShape.circle,
+                          color: const Color(0xFFD2F4E6).withOpacity(0.85)),
                       alignment: Alignment.center,
                       child: Container(
                         width: 26,
                         height: 26,
-                        decoration: const BoxDecoration(color: AppColors.primary, shape: BoxShape.circle),
+                        decoration: const BoxDecoration(
+                            color: AppColors.primary, shape: BoxShape.circle),
                         alignment: Alignment.center,
                         child: Container(
                             width: 9,
                             height: 9,
-                            decoration: const BoxDecoration(color: Colors.white, shape: BoxShape.circle)),
+                            decoration: const BoxDecoration(
+                                color: Colors.white, shape: BoxShape.circle)),
                       ),
                     ),
                   ),
@@ -457,7 +622,8 @@ class _WaitingIllustration extends StatelessWidget {
                     child: Transform.rotate(
                       angle: sway,
                       alignment: Alignment.bottomCenter,
-                      child: const Icon(Icons.eco_rounded, color: _leafGreen, size: 26),
+                      child: const Icon(Icons.eco_rounded,
+                          color: _leafGreen, size: 26),
                     ),
                   ),
                 ),
@@ -467,7 +633,8 @@ class _WaitingIllustration extends StatelessWidget {
                   Positioned(
                     left: _targetC.dx - 23,
                     top: _targetC.dy - 23,
-                    child: _Ripple(t: ((l + offset) % 1.0), visible: targetScale > 0.9),
+                    child: _Ripple(
+                        t: ((l + offset) % 1.0), visible: targetScale > 0.9),
                   ),
 
                 // الهدف
@@ -480,26 +647,30 @@ class _WaitingIllustration extends StatelessWidget {
                       width: 46,
                       height: 46,
                       decoration: BoxDecoration(
-                          shape: BoxShape.circle, color: AppColors.primaryTint.withOpacity(0.9)),
+                          shape: BoxShape.circle,
+                          color: AppColors.primaryTint.withOpacity(0.9)),
                       alignment: Alignment.center,
                       child: Container(
                         width: 22,
                         height: 22,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          border: Border.all(color: AppColors.primary, width: 1.6),
+                          border:
+                              Border.all(color: AppColors.primary, width: 1.6),
                         ),
                         alignment: Alignment.center,
                         child: Container(
                             width: 5,
                             height: 5,
-                            decoration: const BoxDecoration(color: AppColors.primary, shape: BoxShape.circle)),
+                            decoration: const BoxDecoration(
+                                color: AppColors.primary,
+                                shape: BoxShape.circle)),
                       ),
                     ),
                   ),
                 ),
 
-                // حبة «بانتظار القياس الثاني»
+                // حبة «بانتظار القياس…»
                 Positioned(
                   left: 0,
                   right: 0,
@@ -510,18 +681,28 @@ class _WaitingIllustration extends StatelessWidget {
                       offset: Offset(0, (1 - pillT) * 14),
                       child: Center(
                         child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 14, vertical: 7),
                           decoration: BoxDecoration(
                             color: AppColors.primaryTint,
                             borderRadius: BorderRadius.circular(AppRadius.pill),
                           ),
+                          // The label shrinks and wraps rather than overflow
+                          // the illustration's fixed width.
                           child: Row(mainAxisSize: MainAxisSize.min, children: [
-                            const Text('بانتظار القياس الثاني',
-                                style: TextStyle(fontSize: 12, color: AppColors.primary)),
+                            Flexible(
+                              child: Text(awaiting,
+                                  textAlign: TextAlign.center,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(
+                                      fontSize: 12, color: AppColors.primary)),
+                            ),
                             const SizedBox(width: 6),
                             Transform.rotate(
                               angle: l * 2 * math.pi,
-                              child: const Icon(Icons.auto_awesome_rounded, size: 14, color: AppColors.primary),
+                              child: const Icon(Icons.auto_awesome_rounded,
+                                  size: 14, color: AppColors.primary),
                             ),
                           ]),
                         ),
@@ -554,7 +735,9 @@ class _Ripple extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            border: Border.all(color: AppColors.primary.withOpacity((1 - t) * 0.45), width: 1.5),
+            border: Border.all(
+                color: AppColors.primary.withOpacity((1 - t) * 0.45),
+                width: 1.5),
           ),
         ),
       ),
@@ -567,7 +750,11 @@ class _PathPainter extends CustomPainter {
   final double travel; // 0..1 موضع النقطة المسافرة، أو -1 لإخفائها
   final Offset start;
   final Offset end;
-  _PathPainter({required this.progress, required this.travel, required this.start, required this.end});
+  _PathPainter(
+      {required this.progress,
+      required this.travel,
+      required this.start,
+      required this.end});
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -593,7 +780,8 @@ class _PathPainter extends CustomPainter {
 
     if (travel >= 0) {
       final p = a + dir * (total * travel);
-      canvas.drawCircle(p, 7, Paint()..color = AppColors.primary.withOpacity(0.18));
+      canvas.drawCircle(
+          p, 7, Paint()..color = AppColors.primary.withOpacity(0.18));
       canvas.drawCircle(p, 3.6, Paint()..color = AppColors.primary);
     }
   }

@@ -2,14 +2,19 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_radius.dart';
 import '../../core/theme/app_text_styles.dart';
 import '../../domain/entities/meal_entities.dart';
-import '../../data/mock/meal_mock_data.dart';
+import '../bloc/meal_log/meal_log_cubit.dart';
+import '../bloc/meal_plan/meal_plan_cubit.dart';
+import '../meal_plan_view.dart';
 import 'meal_detail_screen.dart';
 import 'food_search_screen.dart';
 import '../../core/navigation/app_page_route.dart';
+
+import '../../l10n/l10n.dart';
 
 const Color _tipBg = Color(0xFFF3F5FC);
 const Color _lavender = Color(0xFFEFF2FC);
@@ -26,14 +31,17 @@ class LogMealIntroScreen extends StatefulWidget {
   State<LogMealIntroScreen> createState() => _LogMealIntroScreenState();
 }
 
-class _LogMealIntroScreenState extends State<LogMealIntroScreen> with TickerProviderStateMixin {
+class _LogMealIntroScreenState extends State<LogMealIntroScreen>
+    with TickerProviderStateMixin {
   /// حركة الدخول المتتابعة (مرة وحدة).
-  late final AnimationController _intro =
-      AnimationController(vsync: this, duration: const Duration(milliseconds: 1100))..forward();
+  late final AnimationController _intro = AnimationController(
+      vsync: this, duration: const Duration(milliseconds: 1100))
+    ..forward();
 
   /// حركة مستمرة هادئة (طفو الأيقونات، توهج المصباح، لمعة الشارات...).
-  late final AnimationController _loop =
-      AnimationController(vsync: this, duration: const Duration(milliseconds: 3600))..repeat();
+  late final AnimationController _loop = AnimationController(
+      vsync: this, duration: const Duration(milliseconds: 3600))
+    ..repeat();
 
   @override
   void didChangeDependencies() {
@@ -58,7 +66,8 @@ class _LogMealIntroScreenState extends State<LogMealIntroScreen> with TickerProv
       animation: _intro,
       child: child,
       builder: (_, c) {
-        final t = Interval(a, b, curve: Curves.easeOutCubic).transform(_intro.value);
+        final t =
+            Interval(a, b, curve: Curves.easeOutCubic).transform(_intro.value);
         return Opacity(
           opacity: t.clamp(0.0, 1.0).toDouble(),
           child: Transform.translate(offset: Offset(0, (1 - t) * dy), child: c),
@@ -67,16 +76,30 @@ class _LogMealIntroScreenState extends State<LogMealIntroScreen> with TickerProv
     );
   }
 
+  /// Opens today's current meal from the nutritionist's plan: the first one
+  /// not logged yet, or the first meal when all are logged.
   void _openPlannedMeal() {
-    // لو ما في وجبة "حالية" بنرجع لأول وجبة بدل ما الشاشة تنهار.
-    final meals = MockData.todayMeals;
-    if (meals.isEmpty) return;
-    final meal = meals.firstWhere((m) => m.status == MealStatus.current, orElse: () => meals.first);
-    Navigator.of(context).push(AppPageRoute(builder: (_) => MealDetailScreen(meal: meal)));
+    final plan = context.read<MealPlanCubit>().state.dataOrNull;
+    final meals = plan == null
+        ? const <Meal>[]
+        : planMealsFor(context, plan, DateTime.now(),
+            isLogged: context.read<MealLogCubit>().state.isPlannedLogged);
+    if (meals.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(plan == null
+              ? context.l10n.planEmptyTitle
+              : context.l10n.planNoMealToday)));
+      return;
+    }
+    final meal = meals.firstWhere((m) => m.status == MealStatus.current,
+        orElse: () => meals.first);
+    Navigator.of(context)
+        .push(AppPageRoute(builder: (_) => MealDetailScreen(meal: meal)));
   }
 
   void _openFoodSearch() {
-    Navigator.of(context).push(AppPageRoute(builder: (_) => const FoodSearchScreen()));
+    Navigator.of(context)
+        .push(AppPageRoute(builder: (_) => const FoodSearchScreen()));
   }
 
   @override
@@ -97,16 +120,20 @@ class _LogMealIntroScreenState extends State<LogMealIntroScreen> with TickerProv
                 if (canPop)
                   Semantics(
                     button: true,
-                    label: 'رجوع',
+                    label: context.l10n.commonBack,
                     child: _PressScale(
                       onTap: () => Navigator.of(context).maybePop(),
                       child: const Padding(
-                        padding: EdgeInsetsDirectional.only(end: 10, top: 4, bottom: 4),
-                        child: Icon(Icons.arrow_back_rounded, size: 26, color: AppColors.textPrimary),
+                        padding: EdgeInsetsDirectional.only(
+                            end: 10, top: 4, bottom: 4),
+                        child: Icon(Icons.arrow_back_rounded,
+                            size: 26, color: AppColors.textPrimary),
                       ),
                     ),
                   ),
-                const Expanded(child: Text('تسجيل وجبة', style: AppTextStyles.h1)),
+                Expanded(
+                    child: Text(context.l10n.logMealTitle,
+                        style: AppTextStyles.h1)),
               ]),
               dy: -12,
             ),
@@ -114,8 +141,8 @@ class _LogMealIntroScreenState extends State<LogMealIntroScreen> with TickerProv
             _reveal(
               .08,
               .42,
-              const Text(
-                'تسجيل ما تناولته بصدق هو خطوتك الأولى نحو نتائج مستدامة. أخصائيتك هنا لدعمك دائماً دون أي تقييم.',
+              Text(
+                context.l10n.logMealIntro,
                 style: AppTextStyles.body,
               ),
             ),
@@ -126,19 +153,19 @@ class _LogMealIntroScreenState extends State<LogMealIntroScreen> with TickerProv
               delayMs: 420,
               phase: 0,
               loop: _loop,
-              badge: 'الوجبات المعتمدة',
+              badge: context.l10n.logMealPlannedBadge,
               badgeColor: AppColors.primary,
               icon: Icons.restaurant_rounded,
               iconTint: _lavender,
               notesTint: _lavenderSoft,
               blobTint: _lavender,
-              title: 'سجّلت وجبة من خطتي',
-              description: 'تأكيد سريع لتناول إحدى وجباتك المجدولة في جدول اليوم (فطور، سناك، غداء، عشاء) مع إمكانية تعديل البدائل المعتمدة.',
-              note: 'مطابقة تلقائية للسعرات والمكونات المجدولة',
+              title: context.l10n.logMealFromPlanTitle,
+              description: context.l10n.logMealFromPlanDesc,
+              note: context.l10n.logMealFromPlanNote,
               noteIcon: Icons.check_circle_outline_rounded,
-              note2: 'استبدال ذكي للبدائل المتكافئة بنقرة واحدة',
+              note2: context.l10n.logMealFromPlanNote2,
               note2Icon: Icons.sync_alt_rounded,
-              footer: 'المتابعة لاختيار الوجبة (P-21)',
+              footer: context.l10n.logMealFromPlanFooter,
               onTap: _openPlannedMeal,
             ),
             const SizedBox(height: 16),
@@ -146,19 +173,19 @@ class _LogMealIntroScreenState extends State<LogMealIntroScreen> with TickerProv
               delayMs: 640,
               phase: .5,
               loop: _loop,
-              badge: 'بحث وتوثيق مرن',
+              badge: context.l10n.logMealFlexibleBadge,
               badgeColor: AppColors.accentGreen,
               icon: Icons.apple,
               iconTint: AppColors.accentGreenBg,
               notesTint: AppColors.accentGreenBg.withOpacity(.5),
               blobTint: AppColors.accentGreenBg,
-              title: 'أكلت شيئاً خارج الخطة',
-              description: 'تناولت طعاماً أو وجبة خفيفة لم تكن مدرجة في جدولك؟ سجّلها بسهولة بالبحث المباشر أو تحديد الغرامات التقريبية.',
-              note: 'قاعدة بيانات غنية بالأطعمة العربية والوجبات الشائعة',
+              title: context.l10n.foodSearchAteOffPlan,
+              description: context.l10n.logMealOffPlanDesc,
+              note: context.l10n.logMealOffPlanNote,
               noteIcon: Icons.storage_rounded,
-              note2: 'لا داعي للشعور بالذنب، المرونة جزء أساسي من النجاح',
+              note2: context.l10n.logMealOffPlanNote2,
               note2Icon: Icons.favorite_border_rounded,
-              footer: 'المتابعة للبحث وحساب الغرامات (P-22)',
+              footer: context.l10n.logMealOffPlanFooter,
               onTap: _openFoodSearch,
             ),
             const SizedBox(height: 20),
@@ -168,13 +195,22 @@ class _LogMealIntroScreenState extends State<LogMealIntroScreen> with TickerProv
               AnimatedBuilder(
                 animation: _loop,
                 builder: (_, __) {
-                  final s = 1 + .08 * math.pow(math.max(0, math.sin(_loop.value * 2 * math.pi)), 6);
+                  final s = 1 +
+                      .08 *
+                          math.pow(
+                              math.max(0, math.sin(_loop.value * 2 * math.pi)),
+                              6);
                   return Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Transform.scale(scale: s.toDouble(), child: const Icon(Icons.verified_user_outlined, size: 16, color: AppColors.primary)),
+                      Transform.scale(
+                          scale: s.toDouble(),
+                          child: const Icon(Icons.verified_user_outlined,
+                              size: 16, color: AppColors.primary)),
                       const SizedBox(width: 6),
-                      const Flexible(child: Text('بياناتك الغذائية مشفرة وتُعامل بخصوصية طبية تامة', style: AppTextStyles.caption)),
+                      Flexible(
+                          child: Text(context.l10n.logMealPrivacyNote,
+                              style: AppTextStyles.caption)),
                     ],
                   );
                 },
@@ -192,14 +228,17 @@ class _LogMealIntroScreenState extends State<LogMealIntroScreen> with TickerProv
   Widget _buildTipCard() {
     return Container(
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(color: _tipBg, borderRadius: BorderRadius.circular(AppRadius.card)),
+      decoration: BoxDecoration(
+          color: _tipBg, borderRadius: BorderRadius.circular(AppRadius.card)),
       child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
         // المصباح "ينوّر" بوميض عند الدخول، وبعدها يتنفّس بتوهج ناعم
         AnimatedBuilder(
           animation: Listenable.merge([_intro, _loop]),
           builder: (_, __) {
-            final on = Interval(.35, .62).transform(_intro.value);
-            final flicker = on >= 1 ? 1.0 : (on <= 0 ? 0.0 : math.sin(on * math.pi * 7).abs());
+            final on = const Interval(.35, .62).transform(_intro.value);
+            final flicker = on >= 1
+                ? 1.0
+                : (on <= 0 ? 0.0 : math.sin(on * math.pi * 7).abs());
             final breathe = .5 + .5 * math.sin(_loop.value * 2 * math.pi);
             final glow = flicker * (.18 + .3 * breathe);
             return Container(
@@ -208,9 +247,16 @@ class _LogMealIntroScreenState extends State<LogMealIntroScreen> with TickerProv
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: AppColors.primary.withOpacity(.3),
-                boxShadow: [BoxShadow(color: const Color(0xFFFFC15A).withOpacity(glow), blurRadius: 12 + 10 * breathe, spreadRadius: 1 + 2 * breathe)],
+                boxShadow: [
+                  BoxShadow(
+                      color: const Color(0xFFFFC15A).withOpacity(glow),
+                      blurRadius: 12 + 10 * breathe,
+                      spreadRadius: 1 + 2 * breathe)
+                ],
               ),
-              child: Icon(Icons.lightbulb_outline_rounded, color: AppColors.textPrimary.withOpacity(.55 + .45 * flicker), size: 22),
+              child: Icon(Icons.lightbulb_outline_rounded,
+                  color: AppColors.textPrimary.withOpacity(.55 + .45 * flicker),
+                  size: 22),
             );
           },
         ),
@@ -218,8 +264,12 @@ class _LogMealIntroScreenState extends State<LogMealIntroScreen> with TickerProv
         Expanded(
           child: Text.rich(
             TextSpan(children: [
-              TextSpan(text: 'إضاءة تشجيعية: ', style: AppTextStyles.caption.copyWith(fontWeight: FontWeight.w800, color: AppColors.textPrimary)),
-              const TextSpan(text: 'التسجيل الدقيق يساعد أخصائيتك على ضبط سعراتك وملاءمة الوجبات القادمة حسب استجابة جسمك الطبيعية وتفضيلاتك اليومية.'),
+              TextSpan(
+                  text: context.l10n.logMealEncouragementLabel,
+                  style: AppTextStyles.caption.copyWith(
+                      fontWeight: FontWeight.w800,
+                      color: AppColors.textPrimary)),
+              TextSpan(text: context.l10n.logMealEncouragementBody),
             ]),
             style: AppTextStyles.caption.copyWith(height: 1.7),
           ),
@@ -291,7 +341,9 @@ class _IntroOptionCardState extends State<_IntroOptionCard> {
       builder: (context, t, _) {
         // مقطع زمني بالميلي ثانية داخل حركة هذه البطاقة
         double seg(int a, int b, [Curve curve = Curves.easeOutCubic]) =>
-            Interval((widget.delayMs + a) / total, (widget.delayMs + b) / total, curve: curve).transform(t);
+            Interval((widget.delayMs + a) / total, (widget.delayMs + b) / total,
+                    curve: curve)
+                .transform(t);
 
         final enter = seg(0, 650);
         final iconPop = seg(150, 800, Curves.elasticOut);
@@ -314,7 +366,8 @@ class _IntroOptionCardState extends State<_IntroOptionCard> {
     );
   }
 
-  Widget _buildCard(BuildContext context, double Function(int, int, [Curve]) seg, double iconPop) {
+  Widget _buildCard(BuildContext context,
+      double Function(int, int, [Curve]) seg, double iconPop) {
     final w = widget;
 
     return Semantics(
@@ -351,23 +404,28 @@ class _IntroOptionCardState extends State<_IntroOptionCard> {
               child: Stack(
                 children: [
                   // بقعة الزاوية: تتنفّس وتنجرف ببطء
-                  Positioned(
-                    top: 0,
-                    left: 0,
-                    child: AnimatedBuilder(
-                      animation: w.loop,
-                      builder: (_, __) {
-                        final v = 2 * math.pi * (w.loop.value + w.phase);
-                        return Transform.translate(
-                          offset: Offset(-52 + 6 * math.sin(v), -52 + 6 * math.cos(v)),
-                          child: Transform.scale(
-                            scale: 1 + .06 * math.sin(v),
-                            child: Container(width: 150, height: 150, decoration: BoxDecoration(color: w.blobTint, shape: BoxShape.circle)),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
+                  PositionedDirectional(
+                      top: 0,
+                      end: 0,
+                      child: AnimatedBuilder(
+                        animation: w.loop,
+                        builder: (_, __) {
+                          final v = 2 * math.pi * (w.loop.value + w.phase);
+                          return Transform.translate(
+                            offset: Offset(
+                                -52 + 6 * math.sin(v), -52 + 6 * math.cos(v)),
+                            child: Transform.scale(
+                              scale: 1 + .06 * math.sin(v),
+                              child: Container(
+                                  width: 150,
+                                  height: 150,
+                                  decoration: BoxDecoration(
+                                      color: w.blobTint,
+                                      shape: BoxShape.circle)),
+                            ),
+                          );
+                        },
+                      )),
                   Padding(
                     padding: const EdgeInsets.all(18),
                     child: Column(
@@ -375,17 +433,26 @@ class _IntroOptionCardState extends State<_IntroOptionCard> {
                       children: [
                         _buildTopRow(seg, iconPop),
                         const SizedBox(height: 16),
-                        _fade(seg(350, 800), Text(w.description, style: AppTextStyles.caption.copyWith(height: 1.8))),
+                        _fade(
+                            seg(350, 800),
+                            Text(w.description,
+                                style: AppTextStyles.caption
+                                    .copyWith(height: 1.8))),
                         const SizedBox(height: 14),
                         _fade(
                           seg(450, 900),
                           Container(
                             padding: const EdgeInsets.all(12),
-                            decoration: BoxDecoration(color: w.notesTint, borderRadius: BorderRadius.circular(16)),
+                            decoration: BoxDecoration(
+                                color: w.notesTint,
+                                borderRadius: BorderRadius.circular(16)),
                             child: Column(children: [
-                              _fade(seg(560, 960), _noteRow(w.noteIcon, w.note), dx: 10),
+                              _fade(seg(560, 960), _noteRow(w.noteIcon, w.note),
+                                  dx: 10),
                               const SizedBox(height: 8),
-                              _fade(seg(680, 1080), _noteRow(w.note2Icon, w.note2), dx: 10),
+                              _fade(seg(680, 1080),
+                                  _noteRow(w.note2Icon, w.note2),
+                                  dx: 10),
                             ]),
                           ),
                         ),
@@ -406,7 +473,8 @@ class _IntroOptionCardState extends State<_IntroOptionCard> {
   Widget _fade(double t, Widget child, {double dx = 0}) {
     return Opacity(
       opacity: t.clamp(0.0, 1.0).toDouble(),
-      child: Transform.translate(offset: Offset(dx * (1 - t), 10 * (1 - t)), child: child),
+      child: Transform.translate(
+          offset: Offset(dx * (1 - t), 10 * (1 - t)), child: child),
     );
   }
 
@@ -430,7 +498,8 @@ class _IntroOptionCardState extends State<_IntroOptionCard> {
             child: Container(
               width: 62,
               height: 62,
-              decoration: BoxDecoration(color: w.iconTint, borderRadius: BorderRadius.circular(18)),
+              decoration: BoxDecoration(
+                  color: w.iconTint, borderRadius: BorderRadius.circular(18)),
               child: Icon(w.icon, color: AppColors.primary, size: 30),
             ),
           ),
@@ -442,7 +511,10 @@ class _IntroOptionCardState extends State<_IntroOptionCard> {
             children: [
               _fade(seg(200, 650), _buildBadge()),
               const SizedBox(height: 8),
-              _fade(seg(260, 710), Text(w.title, style: AppTextStyles.h1.copyWith(fontSize: 19))),
+              _fade(
+                  seg(260, 710),
+                  Text(w.title,
+                      style: AppTextStyles.h1.copyWith(fontSize: 19))),
             ],
           ),
         ),
@@ -461,8 +533,12 @@ class _IntroOptionCardState extends State<_IntroOptionCard> {
         children: [
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
-            decoration: BoxDecoration(color: w.badgeColor.withValues(alpha: 0.12), borderRadius: BorderRadius.circular(AppRadius.pill)),
-            child: Text(w.badge, style: AppTextStyles.caption.copyWith(color: w.badgeColor, fontWeight: FontWeight.w700)),
+            decoration: BoxDecoration(
+                color: w.badgeColor.withValues(alpha: 0.12),
+                borderRadius: BorderRadius.circular(AppRadius.pill)),
+            child: Text(w.badge,
+                style: AppTextStyles.caption.copyWith(
+                    color: w.badgeColor, fontWeight: FontWeight.w700)),
           ),
           Positioned.fill(
             child: IgnorePointer(
@@ -477,7 +553,11 @@ class _IntroOptionCardState extends State<_IntroOptionCard> {
                       widthFactor: .35,
                       child: DecoratedBox(
                         decoration: BoxDecoration(
-                          gradient: LinearGradient(colors: [Colors.white.withOpacity(0), Colors.white.withOpacity(.55), Colors.white.withOpacity(0)]),
+                          gradient: LinearGradient(colors: [
+                            Colors.white.withOpacity(0),
+                            Colors.white.withOpacity(.55),
+                            Colors.white.withOpacity(0)
+                          ]),
                         ),
                       ),
                     ),
@@ -497,7 +577,10 @@ class _IntroOptionCardState extends State<_IntroOptionCard> {
     return AnimatedBuilder(
       animation: w.loop,
       builder: (_, __) {
-        final n = math.pow(math.max(0, math.sin(2 * math.pi * (w.loop.value + w.phase))), 8).toDouble();
+        final n = math
+            .pow(math.max(0, math.sin(2 * math.pi * (w.loop.value + w.phase))),
+                8)
+            .toDouble();
         final dx = -5 * n + (_down ? -4 : 0);
         return Transform.translate(
           offset: Offset(dx, 0),
@@ -506,9 +589,12 @@ class _IntroOptionCardState extends State<_IntroOptionCard> {
             curve: Curves.easeOut,
             width: 46,
             height: 46,
-            decoration: BoxDecoration(color: _down ? AppColors.primary : w.iconTint, shape: BoxShape.circle),
+            decoration: BoxDecoration(
+                color: _down ? AppColors.primary : w.iconTint,
+                shape: BoxShape.circle),
             // chevron_right بينعكس تلقائياً في RTL ويشاور لليسار (اتجاه التقدّم)
-            child: Icon(Icons.chevron_right_rounded, color: _down ? Colors.white : AppColors.textPrimary, size: 24),
+            child: Icon(Icons.chevron_right_rounded,
+                color: _down ? Colors.white : AppColors.textPrimary, size: 24),
           ),
         );
       },
@@ -519,7 +605,10 @@ class _IntroOptionCardState extends State<_IntroOptionCard> {
     return Row(children: [
       Icon(icon, size: 17, color: AppColors.primary),
       const SizedBox(width: 8),
-      Expanded(child: Text(text, style: AppTextStyles.caption.copyWith(color: AppColors.textPrimary))),
+      Expanded(
+          child: Text(text,
+              style: AppTextStyles.caption
+                  .copyWith(color: AppColors.textPrimary))),
     ]);
   }
 
@@ -528,15 +617,21 @@ class _IntroOptionCardState extends State<_IntroOptionCard> {
     return AnimatedBuilder(
       animation: w.loop,
       builder: (_, __) {
-        final n = math.pow(math.max(0, math.sin(2 * math.pi * (w.loop.value + w.phase))), 8).toDouble();
+        final n = math
+            .pow(math.max(0, math.sin(2 * math.pi * (w.loop.value + w.phase))),
+                8)
+            .toDouble();
         return Row(children: [
           Expanded(
-            child: Text(w.footer, style: AppTextStyles.caption.copyWith(color: AppColors.primary, fontWeight: FontWeight.w600)),
+            child: Text(w.footer,
+                style: AppTextStyles.caption.copyWith(
+                    color: AppColors.primary, fontWeight: FontWeight.w600)),
           ),
           Transform.translate(
             offset: Offset(-6 * n + (_down ? -6 : 0), 0),
             // arrow_forward بينعكس في RTL ويشاور لليسار
-            child: const Icon(Icons.arrow_forward_rounded, size: 20, color: AppColors.primary),
+            child: const Icon(Icons.arrow_forward_rounded,
+                size: 20, color: AppColors.primary),
           ),
         ]);
       },
@@ -566,7 +661,10 @@ class _PressScaleState extends State<_PressScale> {
       onTapUp: (_) => setState(() => _down = false),
       onTapCancel: () => setState(() => _down = false),
       onTap: widget.onTap,
-      child: AnimatedScale(scale: _down ? .9 : 1, duration: const Duration(milliseconds: 110), child: widget.child),
+      child: AnimatedScale(
+          scale: _down ? .9 : 1,
+          duration: const Duration(milliseconds: 110),
+          child: widget.child),
     );
   }
 }

@@ -24,10 +24,13 @@ class OnboardingReveal extends StatelessWidget {
       curve: Curves.linear,
       builder: (context, value, child) {
         final delayed = (delay == Duration.zero
-            ? value
-            : ((value - delay.inMilliseconds / (duration + delay).inMilliseconds) /
-                    (duration.inMilliseconds / (duration + delay).inMilliseconds))
-                .clamp(0.0, 1.0))
+                ? value
+                : ((value -
+                            delay.inMilliseconds /
+                                (duration + delay).inMilliseconds) /
+                        (duration.inMilliseconds /
+                            (duration + delay).inMilliseconds))
+                    .clamp(0.0, 1.0))
             .toDouble();
         final eased = curve.transform(delayed);
         return Opacity(

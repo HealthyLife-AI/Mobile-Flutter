@@ -3,11 +3,15 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../core/di/app_dependencies.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_radius.dart';
 import '../../core/theme/app_text_styles.dart';
-import '../app_shell.dart';
-import '../../core/navigation/app_page_route.dart';
+import '../bloc/auth/auth_cubit.dart';
+import '../bloc/nutritionist/nutritionist_cubit.dart';
+
+import '../../l10n/l10n.dart';
 
 // ───────────────────────── ألوان إضافية مأخوذة من التصميم ─────────────────────────
 const Color _kMint = Color(0xFF5EE0B0);
@@ -19,13 +23,9 @@ const Color _kLavender = Color(0xFFF4F6FC);
 const Color _kIconBg = Color(0xFFBFD6D4);
 const Color _kLine = Color(0xFFDCE3EC);
 
-String _ar(int n) {
-  const d = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
-  return n.toString().split('').map((c) => d[int.parse(c)]).join();
-}
-
 /// اهتزاز مخمَّد في أول [span] من الدورة.
-double _swing(double t, {double span = 0.22, double amp = 0.45, int waves = 5}) {
+double _swing(double t,
+    {double span = 0.22, double amp = 0.45, int waves = 5}) {
   if (t >= span) return 0;
   final u = t / span;
   return amp * (1 - u) * math.sin(u * math.pi * waves);
@@ -48,11 +48,20 @@ class PlanPreparingScreen extends StatefulWidget {
   State<PlanPreparingScreen> createState() => _PlanPreparingScreenState();
 }
 
-class _PlanPreparingScreenState extends State<PlanPreparingScreen> with TickerProviderStateMixin {
+class _PlanPreparingScreenState extends State<PlanPreparingScreen>
+    with TickerProviderStateMixin {
   late final AnimationController _enter;
   late final AnimationController _loop;
 
-  late final Animation<double> _header, _badgePop, _hero, _heroScale, _title, _desc, _card1, _card2, _count;
+  late final Animation<double> _header,
+      _badgePop,
+      _hero,
+      _heroScale,
+      _title,
+      _desc,
+      _card1,
+      _card2,
+      _count;
 
   Timer? _timer;
 
@@ -62,8 +71,12 @@ class _PlanPreparingScreenState extends State<PlanPreparingScreen> with TickerPr
   @override
   void initState() {
     super.initState();
-    _enter = AnimationController(vsync: this, duration: const Duration(milliseconds: 2000))..forward();
-    _loop = AnimationController(vsync: this, duration: const Duration(seconds: 6))..repeat();
+    _enter = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 2000))
+      ..forward();
+    _loop =
+        AnimationController(vsync: this, duration: const Duration(seconds: 6))
+          ..repeat();
 
     _header = _iv(0.00, 0.25);
     _badgePop = _iv(0.10, 0.40, Curves.elasticOut);
@@ -88,16 +101,16 @@ class _PlanPreparingScreenState extends State<PlanPreparingScreen> with TickerPr
 
   void _goNext() {
     if (!mounted) return;
-    Navigator.of(context).pushAndRemoveUntil(
-      AppPageRoute(builder: (_) => const AppShell()),
-      (route) => false,
-    );
+    // The wizard ends here. The auth listener replaces the stack with the shell.
+    unawaited(context.read<AuthCubit>().completeOnboarding());
   }
 
   @override
   Widget build(BuildContext context) {
-    return Directionality(
-      textDirection: TextDirection.rtl,
+    return BlocProvider<NutritionistCubit>(
+      create: (context) =>
+          NutritionistCubit(context.read<AppDependencies>().nutritionist)
+            ..load(),
       child: Scaffold(
         backgroundColor: Colors.white,
         body: SafeArea(
@@ -117,8 +130,10 @@ class _PlanPreparingScreenState extends State<PlanPreparingScreen> with TickerPr
                       child: Container(
                         width: 36,
                         height: 36,
-                        decoration: const BoxDecoration(color: _kLavender, shape: BoxShape.circle),
-                        child: const Icon(Icons.verified_outlined, color: AppColors.primary, size: 19),
+                        decoration: const BoxDecoration(
+                            color: _kLavender, shape: BoxShape.circle),
+                        child: const Icon(Icons.verified_outlined,
+                            color: AppColors.primary, size: 19),
                       ),
                     ),
                   ],
@@ -129,20 +144,23 @@ class _PlanPreparingScreenState extends State<PlanPreparingScreen> with TickerPr
               // ───────── المشهد الرئيسي ─────────
               FadeTransition(
                 opacity: _hero,
-                child: ScaleTransition(scale: _heroScale, child: Center(child: _PlanHero(loop: _loop))),
+                child: ScaleTransition(
+                    scale: _heroScale,
+                    child: Center(child: _PlanHero(loop: _loop))),
               ),
               const SizedBox(height: 26),
 
               // ───────── العنوان والوصف ─────────
               _Reveal(
                 animation: _title,
-                child: const Text('خطتكِ قيد التحضير بعناية', textAlign: TextAlign.center, style: AppTextStyles.h1),
+                child: Text(context.l10n.planPreparingTitle,
+                    textAlign: TextAlign.center, style: AppTextStyles.h1),
               ),
               const SizedBox(height: 12),
               _Reveal(
                 animation: _desc,
                 child: Text(
-                  'أخصائية التغذية العلاجية تُعدّ الآن جدولك الغذائي المخصص بدقة ليلائم أهدافك الصحية ونتائج قياساتك الأولية. سنرسل لك إشعاراً فور اعتماد الخطة لتجديها هنا.',
+                  context.l10n.planPreparingBody,
                   textAlign: TextAlign.center,
                   style: AppTextStyles.secondary.copyWith(height: 1.7),
                 ),
@@ -161,13 +179,15 @@ class _PlanPreparingScreenState extends State<PlanPreparingScreen> with TickerPr
                         children: [
                           _FlippingHourglass(loop: _loop),
                           const SizedBox(width: 12),
-                          const Expanded(
+                          Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text('الوقت المتوقع للاعتماد', style: AppTextStyles.cardTitle),
-                                SizedBox(height: 4),
-                                Text('خلال ٢٤ ساعة عمل من تسجيل قياساتك الأولية', style: AppTextStyles.caption),
+                                Text(context.l10n.planPreparingExpectedTime,
+                                    style: AppTextStyles.cardTitle),
+                                const SizedBox(height: 4),
+                                Text(context.l10n.planPreparingWithin24h,
+                                    style: AppTextStyles.caption),
                               ],
                             ),
                           ),
@@ -177,22 +197,29 @@ class _PlanPreparingScreenState extends State<PlanPreparingScreen> with TickerPr
                       ),
                       const SizedBox(height: 14),
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 11),
-                        decoration: BoxDecoration(color: _kLavender, borderRadius: BorderRadius.circular(14)),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 12, vertical: 11),
+                        decoration: BoxDecoration(
+                            color: _kLavender,
+                            borderRadius: BorderRadius.circular(14)),
                         child: Row(
                           children: [
-                            const Icon(Icons.verified_user_outlined, color: AppColors.primary, size: 17),
+                            const Icon(Icons.verified_user_outlined,
+                                color: AppColors.primary, size: 17),
                             const SizedBox(width: 6),
                             Text(
-                              'مراجعة طبية سريرية موثقة',
+                              context.l10n.planPreparingReview,
                               style: AppTextStyles.caption.copyWith(
-                                  color: AppColors.primary, fontWeight: FontWeight.w700),
+                                  color: AppColors.primary,
+                                  fontWeight: FontWeight.w700),
                             ),
                             const Spacer(),
                             AnimatedBuilder(
                               animation: _count,
                               builder: (_, __) => Text(
-                                '${_ar((100 * _count.value).round())}٪ يدوي ومخصص',
+                                context.l10n.planPreparingManualPercent(
+                                    context.localizeDigits(
+                                        (100 * _count.value).round())),
                                 style: AppTextStyles.caption,
                               ),
                             ),
@@ -217,13 +244,15 @@ class _PlanPreparingScreenState extends State<PlanPreparingScreen> with TickerPr
                         children: [
                           _PulsingChatIcon(loop: _loop),
                           const SizedBox(width: 12),
-                          const Expanded(
+                          Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text('استفسار أو تفضيل غذائي طارئ؟', style: AppTextStyles.cardTitle),
-                                SizedBox(height: 4),
-                                Text('فريقنا وأخصائيتك متاحون للمساعدة الفورية', style: AppTextStyles.caption),
+                                Text(context.l10n.planPreparingUrgentQuestion,
+                                    style: AppTextStyles.cardTitle),
+                                const SizedBox(height: 4),
+                                Text(context.l10n.planPreparingTeamAvailable,
+                                    style: AppTextStyles.caption),
                               ],
                             ),
                           ),
@@ -231,7 +260,7 @@ class _PlanPreparingScreenState extends State<PlanPreparingScreen> with TickerPr
                       ),
                       const SizedBox(height: 14),
                       _ShimmerButton(
-                        label: 'تواصل مع الأخصائية عبر واتساب',
+                        label: context.l10n.planPreparingContactWhatsApp,
                         icon: Icons.support_agent_rounded,
                         loop: _loop,
                         onPressed: () {
@@ -239,9 +268,9 @@ class _PlanPreparingScreenState extends State<PlanPreparingScreen> with TickerPr
                         },
                       ),
                       const SizedBox(height: 12),
-                      const Center(
+                      Center(
                         child: Text(
-                          'متاح طوال أيام العمل الرسمية من ٩:٠٠ ص حتى ٦:٠٠ م',
+                          context.l10n.planPreparingHours,
                           textAlign: TextAlign.center,
                           style: AppTextStyles.caption,
                         ),
@@ -272,7 +301,8 @@ class _Reveal extends StatelessWidget {
     return FadeTransition(
       opacity: animation,
       child: SlideTransition(
-        position: Tween<Offset>(begin: Offset(0, dy), end: Offset.zero).animate(animation),
+        position: Tween<Offset>(begin: Offset(0, dy), end: Offset.zero)
+            .animate(animation),
         child: child,
       ),
     );
@@ -291,7 +321,10 @@ class _CardShell extends StatelessWidget {
         color: Colors.white,
         borderRadius: BorderRadius.circular(AppRadius.card),
         boxShadow: [
-          BoxShadow(color: Colors.black.withAlpha(16), blurRadius: 16, offset: const Offset(0, 4)),
+          BoxShadow(
+              color: Colors.black.withAlpha(16),
+              blurRadius: 16,
+              offset: const Offset(0, 4)),
         ],
       ),
       child: child,
@@ -307,13 +340,17 @@ class _ClinicPill extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final nutritionist = context.watch<NutritionistCubit>().state.dataOrNull;
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 11),
       decoration: BoxDecoration(
         gradient: AppColors.brandGradient,
         borderRadius: BorderRadius.circular(AppRadius.card),
         boxShadow: [
-          BoxShadow(color: AppColors.primary.withValues(alpha: 0.20), blurRadius: 18, offset: const Offset(0, 8)),
+          BoxShadow(
+              color: AppColors.primary.withValues(alpha: 0.20),
+              blurRadius: 18,
+              offset: const Offset(0, 8)),
         ],
       ),
       child: Row(
@@ -329,21 +366,31 @@ class _ClinicPill extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   shape: BoxShape.circle,
-                  boxShadow: [BoxShadow(color: Colors.white.withAlpha((120 * p).toInt()), blurRadius: 6, spreadRadius: 2 * p)],
+                  boxShadow: [
+                    BoxShadow(
+                        color: Colors.white.withAlpha((120 * p).toInt()),
+                        blurRadius: 6,
+                        spreadRadius: 2 * p)
+                  ],
                 ),
               );
             },
           ),
           const SizedBox(width: 10),
-          const Flexible(
+          Flexible(
             child: FittedBox(
               fit: BoxFit.scaleDown,
               alignment: AlignmentDirectional.centerStart,
               child: Text(
-                'عيادة التغذية العلاجية • أ. خلود العربي',
+                context.l10n.planPreparingClinic(
+                    nutritionist?.gender ?? 'unknown',
+                    nutritionist?.name ?? ''),
                 maxLines: 1,
                 softWrap: false,
-                style: TextStyle(color: Colors.white, fontSize: 15.5, fontWeight: FontWeight.w800),
+                style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 15.5,
+                    fontWeight: FontWeight.w800),
               ),
             ),
           ),
@@ -396,7 +443,8 @@ class _PlanHero extends StatelessWidget {
                 child: Container(
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    gradient: RadialGradient(colors: [_kMint.withAlpha(95), _kMint.withAlpha(0)]),
+                    gradient: RadialGradient(
+                        colors: [_kMint.withAlpha(95), _kMint.withAlpha(0)]),
                   ),
                 ),
               ),
@@ -415,7 +463,9 @@ class _PlanHero extends StatelessWidget {
               0,
               Transform.rotate(
                 angle: -t * tau,
-                child: CustomPaint(painter: _DashedCirclePainter(color: AppColors.primary.withAlpha(60))),
+                child: CustomPaint(
+                    painter: _DashedCirclePainter(
+                        color: AppColors.primary.withAlpha(60))),
               ),
             ),
 
@@ -425,7 +475,9 @@ class _PlanHero extends StatelessWidget {
               0,
               -8 + float,
               Center(
-                child: Transform.rotate(angle: -0.06 + 0.02 * math.sin(t * tau), child: _DocCard(t: t)),
+                child: Transform.rotate(
+                    angle: -0.06 + 0.02 * math.sin(t * tau),
+                    child: _DocCard(t: t)),
               ),
             ),
 
@@ -438,7 +490,8 @@ class _PlanHero extends StatelessWidget {
                 opacity: (0.35 + 0.65 * twinkle).clamp(0.0, 1.0),
                 child: Transform.scale(
                   scale: 0.75 + 0.5 * twinkle,
-                  child: const Icon(Icons.auto_awesome_rounded, size: 18, color: _kMint),
+                  child: const Icon(Icons.auto_awesome_rounded,
+                      size: 18, color: _kMint),
                 ),
               ),
             ),
@@ -453,7 +506,12 @@ class _PlanHero extends StatelessWidget {
                   color: AppColors.primary,
                   shape: BoxShape.circle,
                   border: Border.all(color: Colors.white, width: 2),
-                  boxShadow: [BoxShadow(color: Colors.black.withAlpha(30), blurRadius: 8, offset: const Offset(0, 2))],
+                  boxShadow: [
+                    BoxShadow(
+                        color: Colors.black.withAlpha(30),
+                        blurRadius: 8,
+                        offset: const Offset(0, 2))
+                  ],
                 ),
                 child: CustomPaint(painter: _ClockPainter(t * tau * 3)),
               ),
@@ -467,7 +525,9 @@ class _PlanHero extends StatelessWidget {
               DecoratedBox(
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  border: Border.all(color: _kMint.withAlpha((120 * (1 - pulse)).toInt()), width: 1.5),
+                  border: Border.all(
+                      color: _kMint.withAlpha((120 * (1 - pulse)).toInt()),
+                      width: 1.5),
                 ),
               ),
             ),
@@ -484,7 +544,8 @@ class _PlanHero extends StatelessWidget {
                     shape: BoxShape.circle,
                     border: Border.all(color: Colors.white, width: 2),
                   ),
-                  child: const Icon(Icons.check_rounded, color: AppColors.primary, size: 19),
+                  child: const Icon(Icons.check_rounded,
+                      color: AppColors.primary, size: 19),
                 ),
               ),
             ),
@@ -496,12 +557,18 @@ class _PlanHero extends StatelessWidget {
               right: 0,
               child: Center(
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(AppRadius.pill),
                     border: Border.all(color: _kMint.withAlpha(90)),
-                    boxShadow: [BoxShadow(color: Colors.black.withAlpha(14), blurRadius: 10, offset: const Offset(0, 3))],
+                    boxShadow: [
+                      BoxShadow(
+                          color: Colors.black.withAlpha(14),
+                          blurRadius: 10,
+                          offset: const Offset(0, 3))
+                    ],
                   ),
                   child: Row(mainAxisSize: MainAxisSize.min, children: [
                     Container(
@@ -510,11 +577,17 @@ class _PlanHero extends StatelessWidget {
                       decoration: BoxDecoration(
                         color: _kMint,
                         shape: BoxShape.circle,
-                        boxShadow: [BoxShadow(color: _kMint.withAlpha((140 * twinkle).toInt()), blurRadius: 6, spreadRadius: 1.5 * twinkle)],
+                        boxShadow: [
+                          BoxShadow(
+                              color: _kMint.withAlpha((140 * twinkle).toInt()),
+                              blurRadius: 6,
+                              spreadRadius: 1.5 * twinkle)
+                        ],
                       ),
                     ),
                     const SizedBox(width: 7),
-                    const Text('تخصيص متقدم', style: AppTextStyles.caption),
+                    Text(context.l10n.planPreparingAdvanced,
+                        style: AppTextStyles.caption),
                   ]),
                 ),
               ),
@@ -532,7 +605,8 @@ class _PlanHero extends StatelessWidget {
         DecoratedBox(
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            border: Border.all(color: _kMint.withAlpha((90 * (1 - p)).toInt()), width: 1.4),
+            border: Border.all(
+                color: _kMint.withAlpha((90 * (1 - p)).toInt()), width: 1.4),
           ),
         ),
       );
@@ -554,7 +628,12 @@ class _DocCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(10),
-        boxShadow: [BoxShadow(color: Colors.black.withAlpha(26), blurRadius: 12, offset: const Offset(0, 4))],
+        boxShadow: [
+          BoxShadow(
+              color: Colors.black.withAlpha(26),
+              blurRadius: 12,
+              offset: const Offset(0, 4))
+        ],
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(10),
@@ -567,7 +646,9 @@ class _DocCard extends StatelessWidget {
               child: Container(
                 width: 14,
                 height: 3,
-                decoration: BoxDecoration(color: Colors.white.withAlpha(180), borderRadius: BorderRadius.circular(2)),
+                decoration: BoxDecoration(
+                    color: Colors.white.withAlpha(180),
+                    borderRadius: BorderRadius.circular(2)),
               ),
             ),
             Expanded(
@@ -580,9 +661,15 @@ class _DocCard extends StatelessWidget {
                       Container(
                         height: 5,
                         alignment: AlignmentDirectional.centerStart,
-                        decoration: BoxDecoration(color: _kLine.withAlpha(110), borderRadius: BorderRadius.circular(3)),
+                        decoration: BoxDecoration(
+                            color: _kLine.withAlpha(110),
+                            borderRadius: BorderRadius.circular(3)),
                         child: FractionallySizedBox(
-                          widthFactor: (maxW[i] * ((t - (0.04 + i * 0.16)) / 0.16).clamp(0.0, 1.0) * fade).clamp(0.0, 1.0),
+                          widthFactor: (maxW[i] *
+                                  ((t - (0.04 + i * 0.16)) / 0.16)
+                                      .clamp(0.0, 1.0) *
+                                  fade)
+                              .clamp(0.0, 1.0),
                           child: Container(
                             decoration: BoxDecoration(
                               color: i == 0 ? _kMint : _kLine,
@@ -665,14 +752,17 @@ class _ClockPainter extends CustomPainter {
     canvas.drawCircle(c, size.width * 0.3, p);
     // عقرب الساعات (ثابت)
     const h = -math.pi / 2 + math.pi / 3;
-    canvas.drawLine(c, c + Offset(math.cos(h), math.sin(h)) * (size.width * 0.15), p);
+    canvas.drawLine(
+        c, c + Offset(math.cos(h), math.sin(h)) * (size.width * 0.15), p);
     // عقرب الدقائق (يدور)
     final m = -math.pi / 2 + minuteAngle;
-    canvas.drawLine(c, c + Offset(math.cos(m), math.sin(m)) * (size.width * 0.22), p);
+    canvas.drawLine(
+        c, c + Offset(math.cos(m), math.sin(m)) * (size.width * 0.22), p);
   }
 
   @override
-  bool shouldRepaint(covariant _ClockPainter old) => old.minuteAngle != minuteAngle;
+  bool shouldRepaint(covariant _ClockPainter old) =>
+      old.minuteAngle != minuteAngle;
 }
 
 // ───────────────────────────── عناصر البطاقات ─────────────────────────────
@@ -690,14 +780,17 @@ class _FlippingHourglass extends StatelessWidget {
         final x = loop.value * 2;
         final k = x.floor();
         final u = x - k;
-        final f = Curves.easeInOutCubic.transform(((u - 0.8) / 0.2).clamp(0.0, 1.0));
+        final f =
+            Curves.easeInOutCubic.transform(((u - 0.8) / 0.2).clamp(0.0, 1.0));
         return Container(
           width: 46,
           height: 46,
-          decoration: const BoxDecoration(color: _kIconBg, shape: BoxShape.circle),
+          decoration:
+              const BoxDecoration(color: _kIconBg, shape: BoxShape.circle),
           child: Transform.rotate(
             angle: math.pi * (k + f),
-            child: const Icon(Icons.hourglass_bottom_rounded, color: AppColors.primary, size: 22),
+            child: const Icon(Icons.hourglass_bottom_rounded,
+                color: AppColors.primary, size: 22),
           ),
         );
       },
@@ -713,18 +806,25 @@ class _ActiveBadge extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-      decoration: BoxDecoration(color: _kMintSoft, borderRadius: BorderRadius.circular(AppRadius.pill)),
+      decoration: BoxDecoration(
+          color: _kMintSoft,
+          borderRadius: BorderRadius.circular(AppRadius.pill)),
       child: Row(mainAxisSize: MainAxisSize.min, children: [
         AnimatedBuilder(
           animation: loop,
           builder: (_, __) => Transform.rotate(
             angle: _swing(loop.value, span: 0.18),
             alignment: Alignment.topCenter,
-            child: const Icon(Icons.notifications_active_rounded, size: 13, color: AppColors.primary),
+            child: const Icon(Icons.notifications_active_rounded,
+                size: 13, color: AppColors.primary),
           ),
         ),
         const SizedBox(width: 4),
-        const Text('مفعّل', style: TextStyle(fontSize: 11, fontWeight: FontWeight.w700, color: AppColors.primary)),
+        Text(context.l10n.commonEnabled,
+            style: const TextStyle(
+                fontSize: 11,
+                fontWeight: FontWeight.w700,
+                color: AppColors.primary)),
       ]),
     );
   }
@@ -740,19 +840,26 @@ class _PulsingChatIcon extends StatelessWidget {
       animation: loop,
       builder: (_, __) {
         final p = 0.5 + 0.5 * math.sin(loop.value * 2 * math.pi * 2);
-        return Stack(alignment: Alignment.center, clipBehavior: Clip.none, children: [
-          Container(
-            width: 42 + 10 * p,
-            height: 42 + 10 * p,
-            decoration: BoxDecoration(shape: BoxShape.circle, color: _kIconBg.withAlpha((70 * (1 - p)).toInt())),
-          ),
-          Container(
-            width: 42,
-            height: 42,
-            decoration: const BoxDecoration(color: _kIconBg, shape: BoxShape.circle),
-            child: const Icon(Icons.chat_bubble_outline_rounded, color: AppColors.primary, size: 20),
-          ),
-        ]);
+        return Stack(
+            alignment: Alignment.center,
+            clipBehavior: Clip.none,
+            children: [
+              Container(
+                width: 42 + 10 * p,
+                height: 42 + 10 * p,
+                decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: _kIconBg.withAlpha((70 * (1 - p)).toInt())),
+              ),
+              Container(
+                width: 42,
+                height: 42,
+                decoration: const BoxDecoration(
+                    color: _kIconBg, shape: BoxShape.circle),
+                child: const Icon(Icons.chat_bubble_outline_rounded,
+                    color: AppColors.primary, size: 20),
+              ),
+            ]);
       },
     );
   }
@@ -766,7 +873,11 @@ class _ShimmerButton extends StatefulWidget {
   final Animation<double> loop;
   final VoidCallback onPressed;
 
-  const _ShimmerButton({required this.label, required this.icon, required this.loop, required this.onPressed});
+  const _ShimmerButton(
+      {required this.label,
+      required this.icon,
+      required this.loop,
+      required this.onPressed});
 
   @override
   State<_ShimmerButton> createState() => _ShimmerButtonState();
@@ -803,7 +914,8 @@ class _ShimmerButtonState extends State<_ShimmerButton> {
                 borderRadius: BorderRadius.circular(16),
                 boxShadow: [
                   BoxShadow(
-                    color: AppColors.primary.withAlpha(40 + (40 * glow).toInt()),
+                    color:
+                        AppColors.primary.withAlpha(40 + (40 * glow).toInt()),
                     blurRadius: 12 + 8 * glow,
                     offset: const Offset(0, 5),
                   ),
@@ -814,27 +926,27 @@ class _ShimmerButtonState extends State<_ShimmerButton> {
                 child: LayoutBuilder(builder: (context, c) {
                   final w = c.maxWidth;
                   return Stack(alignment: Alignment.center, children: [
-                    Positioned(
-                      left: -w * 0.3 + s * w * 1.6,
-                      top: 0,
-                      bottom: 0,
-                      width: w * 0.3,
-                      child: Transform(
-                        transform: Matrix4.skewX(-0.35),
-                        child: DecoratedBox(
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(colors: [
-                              Colors.white.withAlpha(0),
-                              Colors.white.withAlpha(60),
-                              Colors.white.withAlpha(0),
-                            ]),
+                    PositionedDirectional(
+                        end: -w * 0.3 + s * w * 1.6,
+                        top: 0,
+                        bottom: 0,
+                        width: w * 0.3,
+                        child: Transform(
+                          transform: Matrix4.skewX(-0.35),
+                          child: DecoratedBox(
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(colors: [
+                                Colors.white.withAlpha(0),
+                                Colors.white.withAlpha(60),
+                                Colors.white.withAlpha(0),
+                              ]),
+                            ),
                           ),
-                        ),
-                      ),
-                    ),
+                        )),
                     Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                       Text(widget.label,
-                          style: AppTextStyles.cardTitle.copyWith(color: Colors.white, fontSize: 15)),
+                          style: AppTextStyles.cardTitle
+                              .copyWith(color: Colors.white, fontSize: 15)),
                       const SizedBox(width: 8),
                       Icon(widget.icon, color: Colors.white, size: 20),
                     ]),

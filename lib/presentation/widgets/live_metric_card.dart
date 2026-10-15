@@ -3,19 +3,28 @@ import 'dart:math';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_radius.dart';
 
+import '../../l10n/l10n.dart';
+
 /// LiveMetricCard — liveCardBg pattern + M7 continuous glowing chart loop + LIVE badge.
 class LiveMetricCard extends StatefulWidget {
   final String title;
   final String value;
   final String unit;
-  const LiveMetricCard({super.key, required this.title, required this.value, required this.unit});
+  const LiveMetricCard(
+      {super.key,
+      required this.title,
+      required this.value,
+      required this.unit});
 
   @override
   State<LiveMetricCard> createState() => _LiveMetricCardState();
 }
 
-class _LiveMetricCardState extends State<LiveMetricCard> with SingleTickerProviderStateMixin {
-  late final AnimationController _c = AnimationController(vsync: this, duration: const Duration(seconds: 3))..repeat();
+class _LiveMetricCardState extends State<LiveMetricCard>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _c =
+      AnimationController(vsync: this, duration: const Duration(seconds: 3))
+        ..repeat();
 
   @override
   void dispose() {
@@ -27,37 +36,61 @@ class _LiveMetricCardState extends State<LiveMetricCard> with SingleTickerProvid
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(18),
-      decoration: BoxDecoration(gradient: AppColors.liveCardGradient, borderRadius: BorderRadius.circular(AppRadius.card)),
+      decoration: BoxDecoration(
+          gradient: AppColors.liveCardGradient,
+          borderRadius: BorderRadius.circular(AppRadius.card)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                decoration: BoxDecoration(color: AppColors.liveLineGlow.withValues(alpha: 0.15), borderRadius: BorderRadius.circular(AppRadius.pill)),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                decoration: BoxDecoration(
+                    color: AppColors.liveLineGlow.withValues(alpha: 0.15),
+                    borderRadius: BorderRadius.circular(AppRadius.pill)),
                 child: Row(mainAxisSize: MainAxisSize.min, children: [
-                  Container(width: 6, height: 6, decoration: const BoxDecoration(color: AppColors.liveLineGlow, shape: BoxShape.circle)),
+                  Container(
+                      width: 6,
+                      height: 6,
+                      decoration: const BoxDecoration(
+                          color: AppColors.liveLineGlow,
+                          shape: BoxShape.circle)),
                   const SizedBox(width: 5),
-                  const Text('مباشر', style: TextStyle(color: AppColors.liveLineGlow, fontSize: 11, fontWeight: FontWeight.w700)),
+                  Text(context.l10n.liveBadge,
+                      style: const TextStyle(
+                          color: AppColors.liveLineGlow,
+                          fontSize: 11,
+                          fontWeight: FontWeight.w700)),
                 ]),
               ),
               const Spacer(),
-              Text(widget.title, style: const TextStyle(color: Colors.white70, fontSize: 13)),
+              Text(widget.title,
+                  style: const TextStyle(color: Colors.white70, fontSize: 13)),
             ],
           ),
           const SizedBox(height: 8),
           Row(children: [
-            Text(widget.value, style: const TextStyle(color: Colors.white, fontSize: 28, fontWeight: FontWeight.w800)),
+            Text(widget.value,
+                style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 28,
+                    fontWeight: FontWeight.w800)),
             const SizedBox(width: 6),
-            Padding(padding: const EdgeInsets.only(top: 8), child: Text(widget.unit, style: const TextStyle(color: Colors.white54, fontSize: 12))),
+            Padding(
+                padding: const EdgeInsets.only(top: 8),
+                child: Text(widget.unit,
+                    style:
+                        const TextStyle(color: Colors.white54, fontSize: 12))),
           ]),
           const SizedBox(height: 10),
           SizedBox(
             height: 46,
             child: AnimatedBuilder(
               animation: _c,
-              builder: (context, _) => CustomPaint(size: Size.infinite, painter: _LiveLinePainter(_c.value)),
+              builder: (context, _) => CustomPaint(
+                  size: Size.infinite, painter: _LiveLinePainter(_c.value)),
             ),
           ),
         ],

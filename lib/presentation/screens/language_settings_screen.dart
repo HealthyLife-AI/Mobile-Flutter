@@ -1,13 +1,21 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_radius.dart';
 import '../../core/theme/app_text_styles.dart';
 import '../widgets/gradient_cta_button.dart';
 import '../widgets/app_header_bar.dart';
+import '../../core/di/app_dependencies.dart';
+import '../bloc/settings/settings_cubit.dart';
 
-/// اللغة — AR/EN selector. Purely a UI mock: this build does not wire real
-/// app-wide localization (see the Directionality wrapper in main.dart);
-/// picking English here does not actually change the running app's text.
+import '../../l10n/l10n.dart';
+
+/// اللغة — AR/EN selector. Tapping a card only selects it; "save" applies
+/// the choice through [SettingsCubit] (the app's single language state),
+/// which persists it and re-renders the whole app — text and direction —
+/// without a restart.
 class LanguageSettingsScreen extends StatefulWidget {
   const LanguageSettingsScreen({super.key});
 
@@ -16,60 +24,82 @@ class LanguageSettingsScreen extends StatefulWidget {
 }
 
 class _LanguageSettingsScreenState extends State<LanguageSettingsScreen> {
-  String _selected = 'ar';
+  /// The card tapped on this screen, applied only on save. Until the user
+  /// taps one, the selection is the app's current language.
+  String? _picked;
+
+  Future<void> _save() async {
+    final navigator = Navigator.of(context);
+    final settings = context.read<SettingsCubit>();
+    final preferences = context.read<AppDependencies>().preferences;
+    final code = _picked ?? settings.state.effectiveLocale.languageCode;
+    await settings.setLocale(Locale(code));
+    // The server needs the new language for push text (API guide 10.5).
+    unawaited(preferences.sync());
+    if (mounted) navigator.pop();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final current = context.select<SettingsCubit, String>(
+        (cubit) => cubit.state.effectiveLocale.languageCode);
+    final selected = _picked ?? current;
+    // Each card names its language in its own script, with the other
+    // language's name for it underneath — the same in both app languages.
+    // Only the "current app language" marker is UI text and follows the
+    // language the app is actually in.
+    String subtitle(String code, String otherName) => code == current
+        ? context.l10n.languageSubtitleCurrent(otherName)
+        : otherName;
     return Scaffold(
       backgroundColor: AppColors.background,
-      appBar: const AppHeaderBar(title: 'اللغة'),
-      body: Directionality(
-        textDirection: TextDirection.rtl,
-        child: ListView(
-          padding: const EdgeInsets.fromLTRB(18, 8, 18, 24),
-          children: [
-            const _LanguageHero(),
-            const SizedBox(height: 22),
-            _LanguageCard(
-              code: 'ar',
-              name: 'العربية',
-              subtitle: '(اللغة الحالية للتطبيق) Arabic',
-              flowLabel: 'اتجاه القراءة',
-              directionTag: 'RTL',
-              directionText: 'من اليمين إلى اليسار',
-              isRtl: true,
-              selected: _selected == 'ar',
-              onTap: () => setState(() => _selected = 'ar'),
+      appBar: AppHeaderBar(title: context.l10n.languageTitle),
+      body: ListView(
+        padding: const EdgeInsets.fromLTRB(18, 8, 18, 24),
+        children: [
+          const _LanguageHero(),
+          const SizedBox(height: 22),
+          _LanguageCard(
+            code: 'ar',
+            name: 'العربية',
+            subtitle: subtitle('ar', 'Arabic'),
+            flowLabel: 'اتجاه القراءة',
+            directionTag: 'RTL',
+            directionText: 'من اليمين إلى اليسار',
+            isRtl: true,
+            selected: selected == 'ar',
+            isCurrent: current == 'ar',
+            onTap: () => setState(() => _picked = 'ar'),
+          ),
+          const SizedBox(height: 14),
+          _LanguageCard(
+            code: 'en',
+            name: 'English',
+            subtitle: subtitle('en', 'الإنجليزية'),
+            flowLabel: 'Text Flow:',
+            directionTag: 'LTR',
+            directionText: '(Left-to-Right)',
+            isRtl: false,
+            selected: selected == 'en',
+            isCurrent: current == 'en',
+            onTap: () => setState(() => _picked = 'en'),
+          ),
+          const SizedBox(height: 20),
+          const _DirectionEffectNote(),
+          const SizedBox(height: 22),
+          GradientCtaButton(
+            label: context.l10n.languageSave,
+            icon: Icons.check_circle_outline_rounded,
+            onPressed: _save,
+          ),
+          const SizedBox(height: 14),
+          Center(
+            child: Text(
+              context.l10n.languageFooter,
+              style: AppTextStyles.caption,
             ),
-            const SizedBox(height: 14),
-            _LanguageCard(
-              code: 'en',
-              name: 'English',
-              subtitle: 'الإنجليزية',
-              flowLabel: 'Text Flow:',
-              directionTag: 'LTR',
-              directionText: '(Left-to-Right)',
-              isRtl: false,
-              selected: _selected == 'en',
-              onTap: () => setState(() => _selected = 'en'),
-            ),
-            const SizedBox(height: 20),
-            const _DirectionEffectNote(),
-            const SizedBox(height: 22),
-            GradientCtaButton(
-              label: 'حفظ اللغة المختارة',
-              icon: Icons.check_circle_outline_rounded,
-              onPressed: () => Navigator.of(context).pop(),
-            ),
-            const SizedBox(height: 14),
-            const Center(
-              child: Text(
-                'HealthyLife Care Portal — النسخة 2.4.0',
-                style: AppTextStyles.caption,
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -88,20 +118,20 @@ class _LanguageHero extends StatelessWidget {
         Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const Expanded(
+            Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    'تخصيص الواجهة',
-                    textAlign: TextAlign.right,
+                    context.l10n.languageCustomizeInterface,
+                    textAlign: TextAlign.start,
                     style: AppTextStyles.pillLabel,
                   ),
-                  SizedBox(height: 2),
+                  const SizedBox(height: 2),
                   Text(
-                    'اختر لغة التطبيق',
-                    textAlign: TextAlign.right,
+                    context.l10n.languageChooseTitle,
+                    textAlign: TextAlign.start,
                     style: AppTextStyles.h1,
                   ),
                 ],
@@ -124,9 +154,9 @@ class _LanguageHero extends StatelessWidget {
           ],
         ),
         const SizedBox(height: 14),
-        const Text(
-          'اختر لغة العرض المفضلة لمتابعة خطتك الغذائية، مواعيد الاستشارات، وسجلاتك الصحية بكل وضوح وسهولة.',
-          textAlign: TextAlign.right,
+        Text(
+          context.l10n.languageChooseBody,
+          textAlign: TextAlign.start,
           style: AppTextStyles.secondary,
         ),
       ],
@@ -148,6 +178,9 @@ class _LanguageCard extends StatelessWidget {
   final String directionText;
   final bool isRtl;
   final bool selected;
+
+  /// The language the app is in right now (shows the badge).
+  final bool isCurrent;
   final VoidCallback onTap;
 
   const _LanguageCard({
@@ -159,6 +192,7 @@ class _LanguageCard extends StatelessWidget {
     required this.directionText,
     required this.isRtl,
     required this.selected,
+    required this.isCurrent,
     required this.onTap,
   });
 
@@ -205,7 +239,7 @@ class _LanguageCard extends StatelessWidget {
                       Row(
                         children: [
                           Text(name, style: AppTextStyles.cardTitle),
-                          if (selected) ...[
+                          if (isCurrent) ...[
                             const SizedBox(width: 8),
                             Flexible(
                               child: Container(
@@ -216,11 +250,11 @@ class _LanguageCard extends StatelessWidget {
                                   borderRadius:
                                       BorderRadius.circular(AppRadius.pill),
                                 ),
-                                child: const Text(
-                                  'اللغة الحالية',
+                                child: Text(
+                                  context.l10n.languageCurrentBadge,
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontSize: 10,
                                     color: AppColors.primary,
                                     fontWeight: FontWeight.w700,
@@ -423,20 +457,20 @@ class _DirectionEffectNote extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 12),
-          const Expanded(
+          Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  'تأثير التغيير على تجربة الاستخدام',
-                  textAlign: TextAlign.right,
+                  context.l10n.languageEffectTitle,
+                  textAlign: TextAlign.start,
                   style: AppTextStyles.cardTitle,
                 ),
-                SizedBox(height: 4),
+                const SizedBox(height: 4),
                 Text(
-                  'عند تغيير اللغة، سيتم تحديث اتجاه واجهة التطبيق بالكامل تلقائياً (RTL للغة العربية و LTR للغة الإنجليزية) لضمان تجربة تصفح طبيعية ومريحة.',
-                  textAlign: TextAlign.right,
+                  context.l10n.languageEffectBody,
+                  textAlign: TextAlign.start,
                   style: AppTextStyles.caption,
                 ),
               ],

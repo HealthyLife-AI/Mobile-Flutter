@@ -3,6 +3,9 @@ import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_radius.dart';
 import '../../core/theme/app_text_styles.dart';
 
+import '../../l10n/l10n.dart';
+import 'directional_icon.dart';
+
 /// Shared header for the post-activation onboarding wizard (Health Data →
 /// Initial Measurements → Notifications): back arrow, screen title,
 /// "الملف الصحي • HealthyLife" eyebrow, step counter and a sliding
@@ -28,15 +31,25 @@ class OnboardingStepHeader extends StatelessWidget {
       children: [
         Row(
           children: [
-            const Icon(Icons.arrow_forward_rounded, color: AppColors.textSecondary, size: 18),
+            Icon(
+                directionalIcon(context,
+                    rtl: Icons.arrow_forward_rounded,
+                    ltr: Icons.arrow_back_rounded),
+                color: AppColors.textSecondary,
+                size: 18),
             const SizedBox(width: 8),
-            Expanded(child: Text(title, textAlign: TextAlign.right, style: AppTextStyles.sectionHeading)),
+            Expanded(
+                child: Text(title,
+                    textAlign: TextAlign.start,
+                    style: AppTextStyles.sectionHeading)),
             const SizedBox(width: 12),
             Container(
               width: 40,
               height: 40,
-              decoration: const BoxDecoration(color: AppColors.primaryTint, shape: BoxShape.circle),
-              child: const Icon(Icons.person_rounded, color: AppColors.primary, size: 20),
+              decoration: const BoxDecoration(
+                  color: AppColors.primaryTint, shape: BoxShape.circle),
+              child: const Icon(Icons.person_rounded,
+                  color: AppColors.primary, size: 20),
             ),
           ],
         ),
@@ -45,16 +58,17 @@ class OnboardingStepHeader extends StatelessWidget {
           children: [
             Expanded(
               child: Text(
-                'خطوة $step من $totalSteps (${(progress * 100).round()}%)',
+                context.l10n.onboardingStepOf(
+                    step, totalSteps, (progress * 100).round()),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: AppTextStyles.caption,
               ),
             ),
             const SizedBox(width: 8),
-            const Flexible(
+            Flexible(
               child: Text(
-                'HealthyLife • الملف الصحي',
+                context.l10n.onboardingStepBrand,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.end,

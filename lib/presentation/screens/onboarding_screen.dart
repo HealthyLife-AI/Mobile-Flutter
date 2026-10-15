@@ -5,8 +5,11 @@ import 'package:flutter/services.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_text_styles.dart';
 import '../widgets/gradient_cta_button.dart';
-import 'activation_screen.dart';
+import 'login_screen.dart';
 import '../../core/navigation/app_page_route.dart';
+
+import '../widgets/directional_icon.dart';
+import '../../l10n/l10n.dart';
 
 class _BadgeItem {
   final IconData icon;
@@ -55,7 +58,7 @@ class _DomeClipper extends CustomClipper<Path> {
 /// their clinic invite. Large full-bleed hero image with a dome bottom,
 /// parallax on swipe, a floating info badge that overlaps the dome edge,
 /// animated page dots and a pill CTA ("التالي" → "ابدأ الآن").
-/// "تخطي" and the last CTA both continue to [ActivationScreen].
+/// "تخطي" and the last CTA both continue to [LoginScreen].
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
 
@@ -67,30 +70,30 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   final PageController _controller = PageController();
   int _index = 0;
 
-  static const _pages = <_OnboardPage>[
-    _OnboardPage(
-      image: 'assets/images/onboarding_track.jpg',
-      imageAlignment: Alignment(0, 0.2),
-      title: 'تتبع وجباتك ووزنك بلمسة واحدة',
-      description:
-          'سجّل وجباتك اليومية ووزنك بدقة بالغرامات، واستفد من البدائل المتاحة لتسهيل التزامك بالنظام الغذائي دون حرمان.',
-      badge: [
-        _BadgeItem(Icons.auto_awesome_rounded, 'مسح ذكي فوري'),
-        _BadgeItem(Icons.bar_chart_rounded, 'دقة تفصيلية'),
-      ],
-    ),
-    _OnboardPage(
-      image: 'assets/images/onboarding_plan.jpg',
-      title: 'خطتك الغذائية بإشراف أخصائيك',
-      description:
-          'احصل على نظام غذائي مخصص بالكامل يناسب طبيعة جسمك وحالتك الصحية، ومصمم مباشرة من أخصائي التغذية المتابع لك.',
-      badge: [
-        _BadgeItem(Icons.verified_rounded, '١٠٠٪ معتمد طبياً ومبني على التحاليل'),
-      ],
-    ),
-  ];
+  static List<_OnboardPage> _pages(AppLocalizations l10n) => <_OnboardPage>[
+        _OnboardPage(
+          image: 'assets/images/onboarding_track.jpg',
+          imageAlignment: const Alignment(0, 0.2),
+          title: l10n.onboardingTrackTitle,
+          description: l10n.onboardingTrackDescription,
+          badge: [
+            _BadgeItem(
+                Icons.auto_awesome_rounded, l10n.onboardingBadgeSmartScan),
+            _BadgeItem(
+                Icons.bar_chart_rounded, l10n.onboardingBadgeDetailedAccuracy),
+          ],
+        ),
+        _OnboardPage(
+          image: 'assets/images/onboarding_plan.jpg',
+          title: l10n.onboardingPlanTitle,
+          description: l10n.onboardingPlanDescription,
+          badge: [
+            _BadgeItem(Icons.verified_rounded, l10n.onboardingBadgeApproved),
+          ],
+        ),
+      ];
 
-  bool get _isLast => _index == _pages.length - 1;
+  bool get _isLast => _index == _pages(context.l10n).length - 1;
 
   @override
   void dispose() {
@@ -99,20 +102,24 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   }
 
   void _finish() {
-    Navigator.of(context).pushReplacement(AppPageRoute(builder: (_) => const ActivationScreen()));
+    Navigator.of(context)
+        .pushReplacement(AppPageRoute(builder: (_) => const LoginScreen()));
   }
 
   void _next() {
     if (_isLast) {
       _finish();
     } else {
-      _controller.nextPage(duration: const Duration(milliseconds: 450), curve: Curves.easeOutCubic);
+      _controller.nextPage(
+          duration: const Duration(milliseconds: 450),
+          curve: Curves.easeOutCubic);
     }
   }
 
   @override
   Widget build(BuildContext context) {
     final media = MediaQuery.of(context);
+    final pages = _pages(context.l10n);
     // Big hero, but always leave room for text + dots + button.
     final heroHeight = (media.size.height * 0.56)
         .clamp(220.0, math.max(220.0, media.size.height - 340))
@@ -127,10 +134,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               Expanded(
                 child: PageView.builder(
                   controller: _controller,
-                  itemCount: _pages.length,
+                  itemCount: pages.length,
                   onPageChanged: (i) => setState(() => _index = i),
                   itemBuilder: (context, i) => _PageContent(
-                    page: _pages[i],
+                    page: pages[i],
                     index: i,
                     controller: _controller,
                     heroHeight: heroHeight,
@@ -140,7 +147,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               // Page dots
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: List.generate(_pages.length, (i) {
+                children: List.generate(pages.length, (i) {
                   final active = i == _index;
                   return AnimatedContainer(
                     duration: const Duration(milliseconds: 300),
@@ -149,16 +156,21 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     width: active ? 24 : 7,
                     height: 7,
                     decoration: BoxDecoration(
-                      color: active ? AppColors.primary : AppColors.primary.withValues(alpha: 0.18),
+                      color: active
+                          ? AppColors.primary
+                          : AppColors.primary.withValues(alpha: 0.18),
                       borderRadius: BorderRadius.circular(100),
                     ),
                   );
                 }),
               ),
               Padding(
-                padding: EdgeInsets.fromLTRB(24, 16, 24, 20 + media.padding.bottom),
+                padding:
+                    EdgeInsets.fromLTRB(24, 16, 24, 20 + media.padding.bottom),
                 child: _PillButton(
-                  label: _isLast ? 'ابدأ الآن' : 'التالي',
+                  label: _isLast
+                      ? context.l10n.onboardingStartNow
+                      : context.l10n.commonNext,
                   showArrow: _isLast,
                   onPressed: _next,
                 ),
@@ -166,29 +178,29 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             ],
           ),
           // Skip — top-left, floating over the image
-          Positioned(
-            top: media.padding.top + 10,
-            left: 20,
-            child: Material(
-              color: Colors.white.withValues(alpha: 0.6),
-              shape: const StadiumBorder(),
-              child: InkWell(
-                customBorder: const StadiumBorder(),
-                onTap: _finish,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 7),
-                  child: Text(
-                    'تخطي',
-                    style: AppTextStyles.secondary.copyWith(
-                      color: AppColors.textPrimary,
-                      fontSize: 13,
-                      fontWeight: FontWeight.w600,
+          PositionedDirectional(
+              top: media.padding.top + 10,
+              end: 20,
+              child: Material(
+                color: Colors.white.withValues(alpha: 0.6),
+                shape: const StadiumBorder(),
+                child: InkWell(
+                  customBorder: const StadiumBorder(),
+                  onTap: _finish,
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 7),
+                    child: Text(
+                      context.l10n.onboardingSkip,
+                      style: AppTextStyles.secondary.copyWith(
+                        color: AppColors.textPrimary,
+                        fontSize: 13,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ),
-          ),
+              )),
         ],
       ),
     );
@@ -241,7 +253,9 @@ class _PageContent extends StatelessWidget {
                           offset: Offset(dir * delta * width * 0.07, 0),
                           child: Transform.scale(
                             scale: 1.15,
-                            child: Image.asset(page.image, fit: BoxFit.cover, alignment: page.imageAlignment),
+                            child: Image.asset(page.image,
+                                fit: BoxFit.cover,
+                                alignment: page.imageAlignment),
                           ),
                         ),
                         // Soft top shade so the status bar / skip stay readable
@@ -365,7 +379,9 @@ class _InfoBadge extends StatelessWidget {
         child: Icon(items[i].icon, size: 13, color: AppColors.primary),
       ));
       children.add(const SizedBox(width: 7));
-      children.add(Flexible(child: Text(items[i].label, style: style, maxLines: 1, overflow: TextOverflow.ellipsis)));
+      children.add(Flexible(
+          child: Text(items[i].label,
+              style: style, maxLines: 1, overflow: TextOverflow.ellipsis)));
     }
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
@@ -390,7 +406,8 @@ class _PillButton extends StatefulWidget {
   final String label;
   final bool showArrow;
   final VoidCallback onPressed;
-  const _PillButton({required this.label, required this.onPressed, this.showArrow = false});
+  const _PillButton(
+      {required this.label, required this.onPressed, this.showArrow = false});
 
   @override
   State<_PillButton> createState() => _PillButtonState();
@@ -427,7 +444,10 @@ class _PillButtonState extends State<_PillButton> {
               gradient: LinearGradient(
                 begin: Alignment.centerRight,
                 end: Alignment.centerLeft,
-                colors: [AppColors.primary, AppColors.primary.withValues(alpha: 0.86)],
+                colors: [
+                  AppColors.primary,
+                  AppColors.primary.withValues(alpha: 0.86)
+                ],
               ),
               boxShadow: [
                 BoxShadow(
@@ -452,7 +472,12 @@ class _PillButtonState extends State<_PillButton> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         if (widget.showArrow) ...[
-                          const Icon(Icons.arrow_back_rounded, color: Colors.white, size: 18),
+                          Icon(
+                              directionalIcon(context,
+                                  rtl: Icons.arrow_back_rounded,
+                                  ltr: Icons.arrow_forward_rounded),
+                              color: Colors.white,
+                              size: 18),
                           const SizedBox(width: 8),
                         ],
                         Text(

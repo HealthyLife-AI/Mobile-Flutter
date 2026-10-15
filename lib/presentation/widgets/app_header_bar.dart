@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_text_styles.dart';
+import 'directional_icon.dart';
 
 /// The one header every pushed screen in the app uses.
 ///
@@ -32,9 +33,9 @@ class AppHeaderBar extends StatelessWidget implements PreferredSizeWidget {
   /// False only for a root tab destination (nothing to go back to).
   final bool showBack;
 
-  /// In RTL the "back" affordance sits on the START edge (the right) and points
-  /// forward, because forward in RTL reading order is leftward.
-  final IconData backIcon;
+  /// The back affordance sits on the START edge. Defaults to the design's
+  /// arrow, which points ← in both languages (see [directionalIcon]).
+  final IconData? backIcon;
   final VoidCallback? onBack;
 
   /// Hairline under the header. Off by default: the background and the surface
@@ -49,7 +50,7 @@ class AppHeaderBar extends StatelessWidget implements PreferredSizeWidget {
     this.subtitle,
     this.actions = const [],
     this.showBack = true,
-    this.backIcon = Icons.arrow_forward_rounded,
+    this.backIcon,
     this.onBack,
     this.showDivider = false,
   });
@@ -92,56 +93,56 @@ class AppHeaderBar extends StatelessWidget implements PreferredSizeWidget {
             ),
           );
         },
-        child: Directionality(
-          textDirection: TextDirection.rtl,
-          child: Row(
-            children: [
-              SizedBox(
-                width: edgeWidth,
-                child: showBack
-                    ? _EdgeButton(
-                        icon: backIcon,
-                        onTap: onBack ?? () => Navigator.of(context).maybePop(),
-                      )
-                    : null,
-              ),
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
+        child: Row(
+          children: [
+            SizedBox(
+              width: edgeWidth,
+              child: showBack
+                  ? _EdgeButton(
+                      icon: backIcon ??
+                          directionalIcon(context,
+                              rtl: Icons.arrow_forward_rounded,
+                              ltr: Icons.arrow_back_rounded),
+                      onTap: onBack ?? () => Navigator.of(context).maybePop(),
+                    )
+                  : null,
+            ),
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    title,
+                    textAlign: TextAlign.center,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: AppTextStyles.cardTitle,
+                  ),
+                  if (subtitle != null) ...[
+                    const SizedBox(height: 2),
                     Text(
-                      title,
+                      subtitle!,
                       textAlign: TextAlign.center,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: AppTextStyles.cardTitle,
+                      style: AppTextStyles.caption,
                     ),
-                    if (subtitle != null) ...[
-                      const SizedBox(height: 2),
-                      Text(
-                        subtitle!,
-                        textAlign: TextAlign.center,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: AppTextStyles.caption,
-                      ),
-                    ],
                   ],
-                ),
+                ],
               ),
-              SizedBox(
-                width: edgeWidth,
-                child: actions.isEmpty
-                    ? null
-                    : Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: actions,
-                      ),
-              ),
-            ],
-          ),
+            ),
+            SizedBox(
+              width: edgeWidth,
+              child: actions.isEmpty
+                  ? null
+                  : Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: actions,
+                    ),
+            ),
+          ],
         ),
       ),
     );
@@ -166,14 +167,16 @@ class _EdgeButton extends StatelessWidget {
         tween: Tween(begin: 0.92, end: 1),
         duration: const Duration(milliseconds: 520),
         curve: Curves.easeOutBack,
-        builder: (context, value, child) => Transform.scale(scale: value, child: child),
+        builder: (context, value, child) =>
+            Transform.scale(scale: value, child: child),
         child: Material(
           color: Colors.transparent,
           borderRadius: BorderRadius.circular(12),
           child: InkWell(
             borderRadius: BorderRadius.circular(12),
             onTap: onTap,
-            child: SizedBox(width: 40, height: 40, child: Center(child: content)),
+            child:
+                SizedBox(width: 40, height: 40, child: Center(child: content)),
           ),
         ),
       ),
@@ -216,7 +219,8 @@ class HeaderActionIcon extends StatelessWidget {
   final String? tooltip;
   final VoidCallback? onTap;
 
-  const HeaderActionIcon({super.key, required this.icon, this.tooltip, this.onTap});
+  const HeaderActionIcon(
+      {super.key, required this.icon, this.tooltip, this.onTap});
 
   @override
   Widget build(BuildContext context) {

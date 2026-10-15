@@ -2,10 +2,13 @@ import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'onboarding_screen.dart';
+import '../bloc/auth/auth_cubit.dart';
 import '../../core/theme/app_colors.dart';
-import '../../core/navigation/app_page_route.dart';
+import '../../core/navigation/app_router.dart';
+
+import '../../l10n/l10n.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -29,8 +32,6 @@ class _SplashScreenState extends State<SplashScreen>
   late final Animation<double> _brandOffset;
   late final Animation<double> _taglineOpacity;
   late final Animation<double> _footerOpacity;
-
-  Timer? _navigationTimer;
 
   @override
   void initState() {
@@ -117,25 +118,25 @@ class _SplashScreenState extends State<SplashScreen>
 
     _introController.forward();
 
-    _navigationTimer = Timer(
-      _minimumSplashDuration,
-      _openOnboarding,
-    );
+    unawaited(_boot());
   }
 
-  void _openOnboarding() {
+  /// Runs start-up (restores the session, rotates the tokens, checks consent)
+  /// while the splash animation plays. Then the splash opens the screen for the
+  /// resulting status. The auth listener does not navigate during launch.
+  Future<void> _boot() async {
+    final auth = context.read<AuthCubit>();
+    await Future.wait<void>([
+      auth.start(),
+      Future<void>.delayed(_minimumSplashDuration),
+    ]);
     if (!mounted) return;
-
-    Navigator.of(context).pushReplacement(
-      AppPageRoute(
-        builder: (_) => const OnboardingScreen(),
-      ),
-    );
+    auth.finishLaunch();
+    AppRouter.showFor(auth.state);
   }
 
   @override
   void dispose() {
-    _navigationTimer?.cancel();
     _introController.dispose();
     _ambientController.dispose();
     _progressController.dispose();
@@ -209,12 +210,14 @@ class _SplashScreenState extends State<SplashScreen>
                             ),
                           );
                         },
-                          child: ScaleTransition(
-                            scale: Tween<double>(begin: 0.97, end: 1).animate(
-                              CurvedAnimation(parent: _introController, curve: Curves.easeOutCubic),
-                            ),
-                            child: const _BrandName(),
+                        child: ScaleTransition(
+                          scale: Tween<double>(begin: 0.97, end: 1).animate(
+                            CurvedAnimation(
+                                parent: _introController,
+                                curve: Curves.easeOutCubic),
                           ),
+                          child: const _BrandName(),
+                        ),
                       ),
 
                       const SizedBox(height: 10),
@@ -222,10 +225,10 @@ class _SplashScreenState extends State<SplashScreen>
                       // Tagline
                       FadeTransition(
                         opacity: _taglineOpacity,
-                        child: const Text(
-                          'خطوة صغيرة نحو صحة أفضل',
+                        child: Text(
+                          context.l10n.splashTagline,
                           textAlign: TextAlign.center,
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: AppColors.textPrimary,
                             fontSize: 21,
                             fontWeight: FontWeight.w700,
@@ -236,10 +239,13 @@ class _SplashScreenState extends State<SplashScreen>
                       const SizedBox(height: 8),
                       FadeTransition(
                         opacity: _taglineOpacity,
-                        child: const Text(
-                          'نرافقك نحو حياة أكثر توازنًا، يومًا بعد يوم.',
+                        child: Text(
+                          context.l10n.splashSubtitle,
                           textAlign: TextAlign.center,
-                          style: TextStyle(color: AppColors.textSecondary, fontSize: 14, height: 1.5),
+                          style: const TextStyle(
+                              color: AppColors.textSecondary,
+                              fontSize: 14,
+                              height: 1.5),
                         ),
                       ),
 
@@ -344,7 +350,8 @@ class _AmbientPainter extends CustomPainter {
     for (var index = 0; index < 7; index++) {
       final travel = (progress + index / 7) % 1;
       final x = size.width * (0.08 + travel * 0.84);
-      final y = size.height * (0.12 + (index % 3) * 0.37) + math.sin(phase + index) * 5;
+      final y = size.height * (0.12 + (index % 3) * 0.37) +
+          math.sin(phase + index) * 5;
       final leaf = Path()
         ..moveTo(x, y)
         ..quadraticBezierTo(x + 3, y - 8, x + 10, y - 6)
@@ -395,10 +402,10 @@ class _BrandName extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Text(
-      'نعتني بصحتك، كل يوم',
+    return Text(
+      context.l10n.splashCaringEveryDay,
       textAlign: TextAlign.center,
-      style: TextStyle(
+      style: const TextStyle(
         color: AppColors.primary,
         fontSize: 23,
         fontWeight: FontWeight.w700,
@@ -431,7 +438,8 @@ class _Footer extends StatelessWidget {
                 value: progress.value,
                 minHeight: 3,
                 backgroundColor: AppColors.primary.withValues(alpha: 0.10),
-                valueColor: const AlwaysStoppedAnimation<Color>(AppColors.primary),
+                valueColor:
+                    const AlwaysStoppedAnimation<Color>(AppColors.primary),
               ),
             ),
           ),
@@ -440,7 +448,7 @@ class _Footer extends StatelessWidget {
         const SizedBox(height: 15),
 
         Text(
-          'جاري تجهيز تجربتك الصحية',
+          context.l10n.splashPreparing,
           style: TextStyle(
             color: AppColors.textSecondary.withValues(alpha: 0.72),
             fontSize: 11,

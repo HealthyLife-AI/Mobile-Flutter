@@ -1,134 +1,142 @@
-import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
+import 'package:dio/dio.dart';
 
-import 'package:http/http.dart' as http;
-
-import '../config/app_config.dart';
 import '../errors/app_exception.dart';
-import '../logging/app_logger.dart';
 
-/// Abstraction over HTTP so screens/repositories never depend on a concrete
-/// transport. `HttpApiClient` is the real implementation; tests inject a
-/// fake through the same interface.
+/// `RequestOptions.extra` key. `false` marks a request that must not carry a
+/// bearer token: login, refresh and logout (API guide section 1.1).
+const String kAuthRequiredKey = 'auth_required';
+
+/// Set on a request once it has been replayed after a token refresh, so a
+/// second 401 is surfaced instead of looping.
+const String kAuthRetriedKey = 'auth_retried';
+
+/// Number of automatic retries already made for a GET request.
+const String kRetryAttemptKey = 'retry_attempt';
+
+/// Transport-independent HTTP surface. Repositories and data sources depend on
+/// this interface only, so tests can substitute a fake.
 ///
-/// Endpoints are deliberately NOT hardcoded here: the base URL comes from
-/// [AppConfig.apiBaseUrl] and paths are supplied by the data sources that
-/// own them. No real backend is wired yet — see `lib/data/`.
+/// [path] is relative to `AppConfig.apiBaseUrl`, with no leading slash
+/// (for example `auth/login`).
 abstract interface class ApiClient {
-  Future<dynamic> get(String path, {Map<String, String>? queryParameters});
-  Future<dynamic> post(String path, {Object? body});
-  Future<dynamic> put(String path, {Object? body});
-  Future<dynamic> delete(String path);
+  Future<dynamic> get(String path,
+      {Map<String, dynamic>? query, bool auth = true});
+
+  Future<dynamic> post(String path, {Object? body, bool auth = true});
+
+  Future<dynamic> put(String path, {Object? body, bool auth = true});
+
+  Future<dynamic> patch(String path, {Object? body, bool auth = true});
+
+  Future<dynamic> delete(String path, {Object? body, bool auth = true});
 }
 
-typedef TokenProvider = Future<String?> Function();
+/// [ApiClient] backed by Dio. Interceptors (auth, retry, logging) are attached
+/// by `createApiClient`; this class only sends requests and maps failures.
+class DioApiClient implements ApiClient {
+  DioApiClient(this._dio);
 
-class HttpApiClient implements ApiClient {
-  HttpApiClient({
-    Uri? baseUri,
-    http.Client? client,
-    this.timeout = AppConfig.connectTimeout,
-    TokenProvider? tokenProvider,
-    AppLogger? logger,
-  })  : _baseUri = baseUri ?? Uri.parse(AppConfig.apiBaseUrl),
-        _client = client ?? http.Client(),
-        _tokenProvider = tokenProvider,
-        _logger = logger ?? const DefaultAppLogger();
-
-  final Uri _baseUri;
-  final http.Client _client;
-  final Duration timeout;
-  final TokenProvider? _tokenProvider;
-  final AppLogger _logger;
+  final Dio _dio;
 
   @override
-  Future<dynamic> get(String path, {Map<String, String>? queryParameters}) =>
-      _send('GET', path, queryParameters: queryParameters);
+  Future<dynamic> get(String path,
+          {Map<String, dynamic>? query, bool auth = true}) =>
+      _run(() => _dio.get<dynamic>(path,
+          queryParameters: query, options: _options(auth)));
 
   @override
-  Future<dynamic> post(String path, {Object? body}) => _send('POST', path, body: body);
+  Future<dynamic> post(String path, {Object? body, bool auth = true}) =>
+      _run(() => _dio.post<dynamic>(path, data: body, options: _options(auth)));
 
   @override
-  Future<dynamic> put(String path, {Object? body}) => _send('PUT', path, body: body);
+  Future<dynamic> put(String path, {Object? body, bool auth = true}) =>
+      _run(() => _dio.put<dynamic>(path, data: body, options: _options(auth)));
 
   @override
-  Future<dynamic> delete(String path) => _send('DELETE', path);
+  Future<dynamic> patch(String path, {Object? body, bool auth = true}) => _run(
+      () => _dio.patch<dynamic>(path, data: body, options: _options(auth)));
 
-  Uri _resolve(String path, Map<String, String>? queryParameters) {
-    final uri = _baseUri.replace(
-      path: '${_baseUri.path}${path.startsWith('/') ? path : '/$path'}',
-      queryParameters: queryParameters,
-    );
-    return uri;
-  }
+  @override
+  Future<dynamic> delete(String path, {Object? body, bool auth = true}) => _run(
+      () => _dio.delete<dynamic>(path, data: body, options: _options(auth)));
 
-  Future<dynamic> _send(
-    String method,
-    String path, {
-    Map<String, String>? queryParameters,
-    Object? body,
-  }) async {
-    final uri = _resolve(path, queryParameters);
-    final headers = <String, String>{
-      'Accept': 'application/json',
-      if (body != null) 'Content-Type': 'application/json',
-    };
-    final token = await _tokenProvider?.call();
-    if (token != null && token.isNotEmpty) headers['Authorization'] = 'Bearer $token';
+  Options _options(bool auth) => Options(extra: {kAuthRequiredKey: auth});
 
-    final request = http.Request(method, uri)
-      ..headers.addAll(headers)
-      ..body = body == null ? '' : jsonEncode(body);
-
-    http.StreamedResponse response;
+  Future<dynamic> _run(Future<Response<dynamic>> Function() send) async {
     try {
-      final streamed = await _client.send(request).timeout(timeout);
-      response = streamed;
-    } on TimeoutException {
-      _logger.warn('API timeout: $method $uri');
-      throw const NetworkException('Request timed out', kind: NetworkFailureKind.timeout);
-    } on SocketException catch (e) {
-      _logger.warn('API socket error: $method $uri', error: e);
-      throw NetworkException('Network unreachable', kind: NetworkFailureKind.offline, cause: e);
-    } on http.ClientException catch (e) {
-      _logger.warn('API client error: $method $uri', error: e);
-      throw NetworkException('Connection failed', kind: NetworkFailureKind.offline, cause: e);
-    }
-
-    final raw = await response.stream.bytesToString().timeout(timeout);
-    final status = response.statusCode;
-
-    if (status == 401 || status == 403) {
-      throw UnauthorizedException('Unauthorized ($status)', statusCode: status);
-    }
-    if (status == 404) {
-      throw NotFoundException('Not found', statusCode: status);
-    }
-    if (status == 400 || status == 422) {
-      var fields = const <String, String>{};
-      try {
-        final decoded = jsonDecode(raw);
-        if (decoded is Map<String, dynamic> && decoded['errors'] is Map) {
-          fields = (decoded['errors'] as Map).map((k, v) => MapEntry('$k', '$v'));
-        }
-      } catch (_) {} // ignore malformed validation body
-      throw ValidationException('Validation failed', statusCode: status, fieldErrors: fields);
-    }
-    if (status >= 500) {
-      throw ServerException('Server error ($status)', statusCode: status);
-    }
-    if (status < 200 || status >= 300) {
-      throw ServerException('Unexpected status ($status)', statusCode: status);
-    }
-
-    if (raw.isEmpty) return null;
-    try {
-      return jsonDecode(raw);
-    } on FormatException catch (e) {
-      throw ParseException('Invalid JSON in response', cause: e);
+      final response = await send();
+      // 204 No Content arrives as null or an empty string: both mean "no body".
+      return response.data;
+    } on DioException catch (e) {
+      throw mapDioException(e);
     }
   }
 
-  void dispose() => _client.close();
+  /// Closes the underlying Dio client. Call only when the app is shutting down.
+  void dispose() => _dio.close(force: true);
+}
+
+/// Converts a [DioException] into the app's exception hierarchy.
+///
+/// An [AppException] already carried in `error` (for example a refresh failure
+/// raised inside the auth interceptor) is passed through unchanged.
+AppException mapDioException(DioException e) {
+  final inner = e.error;
+  if (inner is AppException) return inner;
+
+  return switch (e.type) {
+    DioExceptionType.connectionTimeout ||
+    DioExceptionType.sendTimeout ||
+    DioExceptionType.receiveTimeout =>
+      NetworkException('Request timed out',
+          kind: NetworkFailureKind.timeout, cause: e),
+    DioExceptionType.connectionError ||
+    DioExceptionType.connectionTimeout ||
+    DioExceptionType.receiveTimeout ||
+    DioExceptionType.sendTimeout ||
+    DioExceptionType.unknown =>
+      NetworkException(
+        'Network unreachable',
+        kind: NetworkFailureKind.offline,
+        cause: e,
+      ),
+    DioExceptionType.badResponse => _fromResponse(e),
+    DioExceptionType.cancel ||
+    DioExceptionType.badCertificate ||
+    DioExceptionType.transformTimeout =>
+      NetworkException(e.message ?? 'Request failed', cause: e),
+  };
+}
+
+AppException _fromResponse(DioException e) {
+  final response = e.response;
+  final status = response?.statusCode ?? 0;
+  final data = response?.data;
+  final body =
+      data is Map ? Map<String, dynamic>.from(data) : const <String, dynamic>{};
+  final message =
+      body['message'] is String ? body['message'] as String : 'HTTP $status';
+
+  if (status >= 500) {
+    return ServerException(message, statusCode: status);
+  }
+  final code = body['code'] is String ? body['code'] as String : null;
+  // An uncoded 404 is the resource missing, or not this patient's (guide 15).
+  // A coded 404 stays an [ApiException], because the consumer branches on code.
+  if (status == 404 && code == null) {
+    return NotFoundException(message);
+  }
+  return ApiException(
+    message,
+    statusCode: status,
+    code: code,
+    body: body,
+    retryAfter: retryAfterOf(response),
+  );
+}
+
+/// Parses the `Retry-After` header as whole seconds (the form the API uses).
+Duration? retryAfterOf(Response<dynamic>? response) {
+  final seconds = int.tryParse(response?.headers.value('retry-after') ?? '');
+  return seconds == null ? null : Duration(seconds: seconds);
 }

@@ -7,7 +7,8 @@ import '../../domain/entities/meal_entities.dart';
 /// a drop-in change: parse `fromJson`, map `toEntity()`, done. JSON shapes
 /// mirror the "Mobile API Reference" (meal-plan §3.1, foods §3.2).
 class MealItemDto {
-  const MealItemDto({required this.name, required this.grams, required this.checked});
+  const MealItemDto(
+      {required this.name, required this.grams, required this.checked});
 
   final String name;
   final int grams;
@@ -19,11 +20,13 @@ class MealItemDto {
         checked: json['checked'] as bool? ?? false,
       );
 
-  Map<String, dynamic> toJson() => {'name': name, 'grams': grams, 'checked': checked};
+  Map<String, dynamic> toJson() =>
+      {'name': name, 'grams': grams, 'checked': checked};
 
   MealItem toEntity() => MealItem(name: name, grams: grams, checked: checked);
 
-  factory MealItemDto.fromEntity(MealItem e) => MealItemDto(name: e.name, grams: e.grams, checked: e.checked);
+  factory MealItemDto.fromEntity(MealItem e) =>
+      MealItemDto(name: e.name, grams: e.grams, checked: e.checked);
 }
 
 class MealDto {
@@ -99,44 +102,6 @@ class MealDto {
       );
 }
 
-class SearchableFoodDto {
-  const SearchableFoodDto({
-    required this.name,
-    required this.caloriesPer100g,
-    required this.macro,
-    required this.category,
-  });
-
-  final String name;
-  final int caloriesPer100g;
-  final String macro;
-  final String category;
-
-  factory SearchableFoodDto.fromJson(Map<String, dynamic> json) => SearchableFoodDto(
-        name: json['name'] as String? ?? '',
-        caloriesPer100g: (json['caloriesPer100g'] as num?)?.toInt() ?? 0,
-        macro: json['macro'] as String? ?? 'default',
-        category: json['category'] as String? ?? 'default',
-      );
-
-  Map<String, dynamic> toJson() => {
-        'name': name,
-        'caloriesPer100g': caloriesPer100g,
-        'macro': macro,
-        'category': category,
-      };
-
-  SearchableFood toEntity() =>
-      SearchableFood(name: name, caloriesPer100g: caloriesPer100g, macro: macro, category: category);
-
-  factory SearchableFoodDto.fromEntity(SearchableFood e) => SearchableFoodDto(
-        name: e.name,
-        caloriesPer100g: e.caloriesPer100g,
-        macro: e.macro,
-        category: e.category,
-      );
-}
-
 class FoodOptionDto {
   const FoodOptionDto({
     required this.name,
@@ -203,7 +168,8 @@ class FoodCategoryGroupDto {
   final String title;
   final List<FoodOptionDto> options;
 
-  factory FoodCategoryGroupDto.fromJson(Map<String, dynamic> json) => FoodCategoryGroupDto(
+  factory FoodCategoryGroupDto.fromJson(Map<String, dynamic> json) =>
+      FoodCategoryGroupDto(
         title: json['title'] as String? ?? '',
         options: (json['options'] as List<dynamic>? ?? [])
             .whereType<Map<String, dynamic>>()
@@ -211,10 +177,14 @@ class FoodCategoryGroupDto {
             .toList(),
       );
 
-  Map<String, dynamic> toJson() => {'title': title, 'options': options.map((o) => o.toJson()).toList()};
+  Map<String, dynamic> toJson() =>
+      {'title': title, 'options': options.map((o) => o.toJson()).toList()};
 
-  FoodCategoryGroup toEntity() => FoodCategoryGroup(title: title, options: options.map((o) => o.toEntity()).toList());
+  FoodCategoryGroup toEntity() => FoodCategoryGroup(
+      title: title, options: options.map((o) => o.toEntity()).toList());
 
   factory FoodCategoryGroupDto.fromEntity(FoodCategoryGroup e) =>
-      FoodCategoryGroupDto(title: e.title, options: e.options.map(FoodOptionDto.fromEntity).toList());
+      FoodCategoryGroupDto(
+          title: e.title,
+          options: e.options.map(FoodOptionDto.fromEntity).toList());
 }

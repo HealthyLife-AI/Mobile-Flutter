@@ -10,14 +10,19 @@ import '../../domain/entities/recommendation_entity.dart';
 class HorizontalRecommendationCard extends StatefulWidget {
   final RecommendationItem item;
   final Duration delay;
-  const HorizontalRecommendationCard({super.key, required this.item, required this.delay});
+  const HorizontalRecommendationCard(
+      {super.key, required this.item, required this.delay});
 
   @override
-  State<HorizontalRecommendationCard> createState() => _HorizontalRecommendationCardState();
+  State<HorizontalRecommendationCard> createState() =>
+      _HorizontalRecommendationCardState();
 }
 
-class _HorizontalRecommendationCardState extends State<HorizontalRecommendationCard> with SingleTickerProviderStateMixin {
-  late final AnimationController _c = AnimationController(vsync: this, duration: const Duration(milliseconds: 380));
+class _HorizontalRecommendationCardState
+    extends State<HorizontalRecommendationCard>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _c = AnimationController(
+      vsync: this, duration: const Duration(milliseconds: 380));
 
   @override
   void initState() {
@@ -38,25 +43,37 @@ class _HorizontalRecommendationCardState extends State<HorizontalRecommendationC
     return FadeTransition(
       opacity: _c,
       child: SlideTransition(
-        position: Tween(begin: const Offset(0, 0.25), end: Offset.zero).animate(CurvedAnimation(parent: _c, curve: Curves.easeOutCubic)),
+        position: Tween(begin: const Offset(0, 0.25), end: Offset.zero)
+            .animate(CurvedAnimation(parent: _c, curve: Curves.easeOutCubic)),
         child: Container(
           width: 150,
-          margin: const EdgeInsets.only(left: 12),
+          margin: const EdgeInsetsDirectional.only(end: 12),
           padding: const EdgeInsets.all(14),
-          decoration: BoxDecoration(color: AppColors.surface, borderRadius: BorderRadius.circular(AppRadius.cardSmall)),
+          decoration: BoxDecoration(
+              color: AppColors.surface,
+              borderRadius: BorderRadius.circular(AppRadius.cardSmall)),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
                 width: 42,
                 height: 42,
-                decoration: BoxDecoration(color: widget.item.color.withValues(alpha: 0.12), shape: BoxShape.circle),
-                child: Icon(widget.item.icon, color: widget.item.color, size: 20),
+                decoration: BoxDecoration(
+                    color: widget.item.color.withValues(alpha: 0.12),
+                    shape: BoxShape.circle),
+                child:
+                    Icon(widget.item.icon, color: widget.item.color, size: 20),
               ),
               const SizedBox(height: 10),
-              Text(widget.item.title, style: AppTextStyles.body, maxLines: 1, overflow: TextOverflow.ellipsis),
+              Text(widget.item.title,
+                  style: AppTextStyles.body,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis),
               const SizedBox(height: 4),
-              Text(widget.item.subtitle, style: AppTextStyles.caption, maxLines: 1, overflow: TextOverflow.ellipsis),
+              Text(widget.item.subtitle,
+                  style: AppTextStyles.caption,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis),
             ],
           ),
         ),

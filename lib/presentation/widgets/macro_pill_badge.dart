@@ -23,10 +23,12 @@ class MacroPillBadge extends StatefulWidget {
   State<MacroPillBadge> createState() => _MacroPillBadgeState();
 }
 
-class _MacroPillBadgeState extends State<MacroPillBadge> with SingleTickerProviderStateMixin {
-  late final AnimationController _c =
-      AnimationController(vsync: this, duration: const Duration(milliseconds: 300));
-  late final Animation<double> _scale = CurvedAnimation(parent: _c, curve: Curves.elasticOut);
+class _MacroPillBadgeState extends State<MacroPillBadge>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _c = AnimationController(
+      vsync: this, duration: const Duration(milliseconds: 300));
+  late final Animation<double> _scale =
+      CurvedAnimation(parent: _c, curve: Curves.elasticOut);
 
   @override
   void initState() {
@@ -50,12 +52,16 @@ class _MacroPillBadgeState extends State<MacroPillBadge> with SingleTickerProvid
       scale: _scale,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-        decoration: BoxDecoration(color: bg, borderRadius: BorderRadius.circular(AppRadius.pill)),
+        decoration: BoxDecoration(
+            color: bg, borderRadius: BorderRadius.circular(AppRadius.pill)),
         child: Column(
           children: [
-            Text(widget.value, style: AppTextStyles.body.copyWith(color: color, fontWeight: FontWeight.w800)),
+            Text(widget.value,
+                style: AppTextStyles.body
+                    .copyWith(color: color, fontWeight: FontWeight.w800)),
             const SizedBox(height: 2),
-            Text(widget.label, style: AppTextStyles.caption.copyWith(color: color)),
+            Text(widget.label,
+                style: AppTextStyles.caption.copyWith(color: color)),
           ],
         ),
       ),

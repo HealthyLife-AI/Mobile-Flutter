@@ -45,8 +45,16 @@ String formatNumber(num value, {required bool useArabicDigits}) {
 
 /// Plural-ish helper for Arabic counting nouns (1 → singular, 2 → dual,
 /// 3–10 → plural, matching the phrasing the screens already use).
-String arabicCountLabel(int count, {required String one, required String two, required String many}) {
+String arabicCountLabel(int count,
+    {required String one, required String two, required String many}) {
   if (count == 1) return one;
   if (count == 2) return two;
   return many;
+}
+
+/// [date] as day/month/year with Western digits. Pass the result through
+/// `context.localizeDigits` to show it in the active language's digits.
+String numericDate(DateTime date) {
+  String two(int n) => n.toString().padLeft(2, '0');
+  return '${two(date.day)}/${two(date.month)}/${date.year}';
 }

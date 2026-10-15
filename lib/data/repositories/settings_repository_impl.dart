@@ -14,12 +14,14 @@ class SettingsRepositoryImpl implements SettingsRepository {
   Future<Result<ThemeMode>> getThemeMode() => guard(
         () async {
           switch (await _storage.readString(StorageKeys.themeMode)) {
-            case 'light':
-              return ThemeMode.light;
             case 'dark':
               return ThemeMode.dark;
-            default:
+            case 'system':
               return ThemeMode.system;
+            default:
+              // Not chosen yet (or unreadable): the app's designed light look,
+              // never the device setting — dark mode is opt-in.
+              return ThemeMode.light;
           }
         },
         context: 'SettingsRepository.getThemeMode',

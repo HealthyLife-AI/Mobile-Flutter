@@ -3,6 +3,8 @@ import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_radius.dart';
 import '../../core/theme/app_text_styles.dart';
 
+import '../../l10n/l10n.dart';
+
 class DayItem {
   final String weekday;
   final int dayNumber;
@@ -41,7 +43,8 @@ class DateChipPicker extends StatefulWidget {
 }
 
 class _DateChipPickerState extends State<DateChipPicker> {
-  late List<GlobalKey> _keys = List.generate(widget.days.length, (_) => GlobalKey());
+  late List<GlobalKey> _keys =
+      List.generate(widget.days.length, (_) => GlobalKey());
 
   @override
   void didUpdateWidget(covariant DateChipPicker old) {
@@ -83,26 +86,51 @@ class _DateChipPickerState extends State<DateChipPicker> {
             child: AnimatedContainer(
               duration: const Duration(milliseconds: 200),
               width: 72,
-              padding: const EdgeInsets.symmetric(vertical: 12),
+              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 4),
               decoration: BoxDecoration(
                 gradient: selected ? AppColors.primaryGradient : null,
-                color: selected ? null : (d.completed ? AppColors.primarySoftBg : AppColors.chipInactiveBg),
+                color: selected
+                    ? null
+                    : (d.completed
+                        ? AppColors.primarySoftBg
+                        : AppColors.chipInactiveBg),
                 borderRadius: BorderRadius.circular(AppRadius.cardSmall),
-                border: d.isToday && !selected ? Border.all(color: AppColors.primary, width: 1.6) : null,
+                border: d.isToday && !selected
+                    ? Border.all(color: AppColors.primary, width: 1.6)
+                    : null,
               ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(d.weekday,
-                      style: AppTextStyles.caption.copyWith(color: selected ? Colors.white70 : AppColors.textSecondary)),
-                  const SizedBox(height: 6),
-                  Text('${d.dayNumber}',
-                      style: AppTextStyles.body.copyWith(
-                          color: selected ? Colors.white : AppColors.textPrimary, fontWeight: FontWeight.w800)),
-                  const SizedBox(height: 4),
-                  Text('${d.calories} س',
-                      style: AppTextStyles.caption.copyWith(color: selected ? Colors.white70 : AppColors.textSecondary)),
-                ],
+              // Three lines in a fixed-size chip: with a larger system font
+              // or a long day name they shrink together instead of
+              // overflowing the chip.
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(d.weekday,
+                        maxLines: 1,
+                        style: AppTextStyles.caption.copyWith(
+                            color: selected
+                                ? Colors.white70
+                                : AppColors.textSecondary)),
+                    const SizedBox(height: 6),
+                    Text(context.localizeDigits(d.dayNumber),
+                        maxLines: 1,
+                        style: AppTextStyles.body.copyWith(
+                            color:
+                                selected ? Colors.white : AppColors.textPrimary,
+                            fontWeight: FontWeight.w800)),
+                    const SizedBox(height: 4),
+                    Text(
+                        context.l10n
+                            .datePickerKcal(context.localizeDigits(d.calories)),
+                        maxLines: 1,
+                        style: AppTextStyles.caption.copyWith(
+                            color: selected
+                                ? Colors.white70
+                                : AppColors.textSecondary)),
+                  ],
+                ),
               ),
             ),
           );
