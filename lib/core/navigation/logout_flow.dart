@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../widgets/confirm_action_sheet.dart';
+import '../data/meal_plan_repository.dart';
 import 'app_page_route.dart';
 import '../../screens/onboarding_screen.dart';
 
@@ -18,6 +19,8 @@ Future<void> performLogoutFlow(BuildContext context) async {
     confirmLabel: 'تسجيل الخروج',
   );
   if (confirmed == true && context.mounted) {
+    // The cached plan holds the specialist's notes for this patient.
+    MealPlanRepository.instance.clear();
     Navigator.of(context).pushAndRemoveUntil(AppPageRoute(builder: (_) => const OnboardingScreen()), (route) => false);
   }
 }
