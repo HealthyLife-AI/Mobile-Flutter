@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:healthylife_ai/widgets/gradient_cta_button.dart';
+import 'package:healthylife_ai/presentation/widgets/gradient_cta_button.dart';
 
 void main() {
   Future<void> pumpOutlinedCta(WidgetTester tester) async {

@@ -19,6 +19,20 @@ class AppConfig {
     defaultValue: 'https://healthylife.apps.taqat.academy/api/v1',
   );
 
+  /// The public website, such as `https://example.com`. Optional: it is the
+  /// last fallback for the privacy policy when the server has never sent a
+  /// `policy_url` (API guide 4). Empty when not set.
+  static const String websiteUrl = String.fromEnvironment('WEBSITE_URL');
+
+  /// The privacy policy on the website in [languageCode] (`/ar/privacy` or
+  /// `/en/privacy`), or null when [websiteUrl] is not set.
+  static Uri? websitePrivacyUrl(String languageCode) {
+    if (websiteUrl.isEmpty) return null;
+    final site = Uri.tryParse(websiteUrl);
+    if (site == null || !site.hasScheme) return null;
+    return site.replace(path: '/${languageCode == 'en' ? 'en' : 'ar'}/privacy');
+  }
+
   static const Duration connectTimeout = Duration(seconds: 12);
   static const Duration sendTimeout = Duration(seconds: 20);
   static const Duration receiveTimeout = Duration(seconds: 20);

@@ -202,7 +202,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get aboutPrivacyPolicySubtitle =>
-      'High-grade clinical encryption for your nutrition profile';
+      'Read the policy published on our website';
 
   @override
   String get aboutMedicalTermsTitle => 'Medical terms & conditions';
@@ -212,24 +212,27 @@ class AppLocalizationsEn extends AppLocalizations {
       'Guidelines for following health care plans';
 
   @override
-  String get aboutLicensesTitle => 'Medical authority licenses & accreditation';
+  String get aboutLicensesTitle => 'Software licences';
 
   @override
-  String get aboutLicensesSubtitle =>
-      'Documented medical compliance record #A-8841';
+  String get aboutLicensesSubtitle => 'Open-source libraries used in the app';
 
   @override
   String get aboutSupportTitle => 'Technical support & app help';
 
   @override
-  String get aboutSupportSubtitle => 'Ongoing help with technical questions';
+  String get aboutSupportSubtitle => 'Contact your nutritionist on WhatsApp';
 
   @override
-  String get aboutStandardHealthProtection => 'Standard health protection';
+  String get aboutSupportNoNumber =>
+      'Your nutritionist has no WhatsApp number yet.';
+
+  @override
+  String get aboutStandardHealthProtection => 'Protecting your data';
 
   @override
   String get aboutEncryptionNote =>
-      'Your data is encrypted and protected under certified health-privacy standards for secure syncing with your clinical record.';
+      'The connection between the app and our servers is encrypted, and we take an encrypted backup every day.';
 
   @override
   String get aboutLogoutNote =>
@@ -302,7 +305,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get activationEncryptedNote =>
-      'Your health data is encrypted and protected under medical compliance regulations';
+      'The connection between the app and our servers is encrypted.';
 
   @override
   String get activationLinkValid => 'Link valid and active';
@@ -351,6 +354,43 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get dailyLogMealDeleted => 'Meal removed from today\'s log';
+
+  @override
+  String get entryEditLocked =>
+      'This entry was logged more than 7 days ago, so it can\'t be changed.';
+
+  @override
+  String get dailyLogDeleteOffline =>
+      'The meal wasn\'t deleted: deleting needs an internet connection. Try again once you\'re online.';
+
+  @override
+  String get dailyLogDeleteFailed =>
+      'The meal couldn\'t be deleted. Please try again.';
+
+  @override
+  String get dailyLogEditGramsTitle => 'Change the amount';
+
+  @override
+  String get dailyLogEditGramsLabel => 'Amount (grams)';
+
+  @override
+  String get dailyLogEditGramsRange =>
+      'Enter an amount between 1 and 5000 grams.';
+
+  @override
+  String get dailyLogGramsChanged => 'Amount changed';
+
+  @override
+  String get dailyLogEditOffline =>
+      'The amount wasn\'t saved: changing it needs an internet connection. Try again once you\'re online.';
+
+  @override
+  String get dailyLogEditGone =>
+      'This entry no longer exists, so it was removed from your log.';
+
+  @override
+  String get dailyLogEditFailed =>
+      'The amount couldn\'t be saved. Please try again.';
 
   @override
   String get commonUndo => 'Undo';
@@ -701,25 +741,29 @@ class AppLocalizationsEn extends AppLocalizations {
   String get commonOpenWhatsApp => 'Open WhatsApp';
 
   @override
-  String get consentClauseStorageTitle => 'How is your health data stored?';
+  String get consentClauseStorageTitle => 'How do we protect your data?';
 
   @override
   String get consentClauseStorageBody =>
-      'Full encryption to the highest clinical health-privacy standards (HIPAA standards). Records are stored on isolated medical servers that no third party or advertising company can access under any circumstances.';
+      'The connection between the app and our servers is encrypted, and we take an encrypted backup every day.';
 
   @override
   String get consentClauseAccessTitle => 'Who can see it?';
 
   @override
   String get consentClauseAccessBody =>
-      'Only the certified clinical nutrition specialist assigned to your account, through an encrypted clinical review system. Your data is not shared with anyone else and is never used for marketing.';
+      'Only your nutritionist sees your health data. We don\'t sell it or use it for advertising.';
 
   @override
-  String get consentClauseRevokeTitle => 'Your full right to withdraw consent';
+  String get consentClauseRevokeTitle => 'Your right to delete your data';
 
   @override
   String get consentClauseRevokeBody =>
-      'You can withdraw your consent at any time from Account → Privacy. This automatically pauses meal plan personalization until you renew your consent, without affecting your saved records.';
+      'You can delete your data or your account from the app at any time.';
+
+  @override
+  String get privacyOnWebsite =>
+      'The privacy policy is available on our website.';
 
   @override
   String get consentExitTitle => 'Leave your health profile setup?';
@@ -767,14 +811,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Your data (meal log, measurements and health status) reaches only your specialist and is used to build your meal plan and follow your clinical progress safely.';
 
   @override
-  String get consentEncryptionShort =>
-      'Encrypted with 256-bit encryption and compliant with clinical health standards (HIPAA).';
-
-  @override
   String get consentTitle => 'Consent to health data use';
-
-  @override
-  String get consentProtectionSystem => 'Smart clinical protection system';
 
   @override
   String get consentBeforeWeStart => 'Before we start your health journey';
@@ -782,10 +819,6 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get consentCommitment =>
       'We are committed to protecting the privacy of your health and clinical data with the utmost transparency and security.';
-
-  @override
-  String get consentAesNote =>
-      'Your medical data is encrypted with AES-256 from the moment it is entered';
 
   @override
   String get consentCheckbox =>
@@ -1132,8 +1165,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Continue to search and calculate grams (P-22)';
 
   @override
-  String get logMealPrivacyNote =>
-      'Your nutrition data is encrypted and handled with full medical confidentiality';
+  String get logMealPrivacyNote => 'Only your nutritionist sees your meal log.';
 
   @override
   String get logMealEncouragementLabel => 'A note of encouragement:';
@@ -1344,6 +1376,34 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get measurementsHomeReading => 'Home measurement';
+
+  @override
+  String get measurementsHistoryTitle => 'Your readings';
+
+  @override
+  String get measurementsDeleteReading => 'Delete reading';
+
+  @override
+  String get measurementsDeleteConfirmTitle => 'Delete this reading?';
+
+  @override
+  String get measurementsDeleteConfirmBody =>
+      'It will be removed from your log, and your nutritionist will no longer see it.';
+
+  @override
+  String get measurementsDeleted => 'Reading deleted';
+
+  @override
+  String get measurementsDeleteClinic =>
+      'Your nutritionist recorded this reading at the clinic, so it can\'t be deleted from the app.';
+
+  @override
+  String get measurementsDeleteOffline =>
+      'The reading wasn\'t deleted: deleting needs an internet connection. Try again once you\'re online.';
+
+  @override
+  String get measurementsDeleteFailed =>
+      'The reading couldn\'t be deleted. Please try again.';
 
   @override
   String get measurementsSyncNote =>
@@ -1643,9 +1703,6 @@ class AppLocalizationsEn extends AppLocalizations {
       'Check that Wi-Fi or mobile data is turned on in your device settings';
 
   @override
-  String get onboardingHealthAsPrescribed => 'As prescribed';
-
-  @override
   String get onboardingHealthTitle => 'Health data';
 
   @override
@@ -1653,18 +1710,18 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get onboardingHealthConditionsNote =>
-      'Select any health conditions you\'ve been diagnosed with, so your nutrition program, its ingredients and suggested meals are adapted to respond fully and safely to your body.';
+      'Choose any conditions you have been diagnosed with. They go to your nutritionist, who takes them into account in your plan.';
 
   @override
   String get onboardingHealthConfidentialNote =>
-      'Encrypted, medically certified clinical confidentiality — these details help your specialist exclude any ingredients that might conflict with your vital indicators or prescribed medications.';
+      'Only your nutritionist sees these details. They help rule out ingredients that may not suit your condition or your medications.';
 
   @override
   String get onboardingHealthAllergies => 'Food allergies & preferences';
 
   @override
   String get onboardingHealthAllergiesNote =>
-      'Select confirmed allergens so the system automatically excludes them from meal schedules and suggested recipes.';
+      'Choose what you are allergic to. Your nutritionist reviews it and adds it to your profile; once approved, foods that may contain it are flagged.';
 
   @override
   String get onboardingHealthMedications => 'Regular medications & supplements';
@@ -1674,7 +1731,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get onboardingHealthMedicationsNote =>
-      'Enter any prescribed medications or vitamins you take, so they don\'t interact chemically with meal timing and ingredients.';
+      'Write the medications or vitamins you take, so your nutritionist can take them into account in your meals.';
 
   @override
   String get commonAdd => 'Add';
@@ -1685,7 +1742,20 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get onboardingHealthReviewNote =>
-      'All notes and medications undergo careful automated and advisory review to fit your diet and rule out any food interactions with your prescribed medications.';
+      'Your nutritionist reviews medications and allergies before adding them to your profile.';
+
+  @override
+  String get onboardingHealthAllergyClass => 'How do these foods affect you?';
+
+  @override
+  String onboardingHealthRequestConditions(String list) {
+    return 'Chronic conditions: $list';
+  }
+
+  @override
+  String onboardingHealthRequestNotes(String notes) {
+    return 'Notes: $notes';
+  }
 
   @override
   String get onboardingHealthOtherNotes =>
@@ -1759,7 +1829,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get onboardingMeasurementsPrivacyNote =>
-      'Your data and measurements are fully encrypted to certified health security standards, and shown only to your certified specialist to design your individual meal plan.';
+      'Only your nutritionist sees your measurements, to build your meal plan on them.';
 
   @override
   String get onboardingMeasurementsSaveContinue => 'Save and continue';
@@ -1992,48 +2062,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get commonEnabled => 'Enabled';
-
-  @override
-  String get privacyScopeTitle => '1. Scope of data collected';
-
-  @override
-  String get privacyScopeBody =>
-      'We collect only what\'s needed to build your therapeutic meal plan: your vital measurements (weight, body circumference), your daily meal logs, your diagnosed health conditions, your food allergies, and the medications and supplements you tell us about. We never request or store financial data or permanent location data.';
-
-  @override
-  String get privacyEncryptionTitle => '2. Encryption and storage locations';
-
-  @override
-  String get privacyEncryptionBody =>
-      'All health data is encrypted in transit and at rest with AES-256 and stored on isolated medical servers that comply with HIPAA standards. Your data is never used to train general models and is never shared with any advertising company under any circumstances.';
-
-  @override
-  String get privacyAccessTitle => '3. Who can see your record';
-
-  @override
-  String get privacyAccessBody =>
-      'Only your dedicated care team — the certified clinical dietitian on your account — can see your full record. Every update or change to your plan is recorded with its author and time in an audit log that cannot be deleted.';
-
-  @override
-  String get privacyRightsTitle => '4. Your right to change and withdraw';
-
-  @override
-  String get privacyRightsBody =>
-      'You can withdraw your consent at any time from Account → Privacy, which automatically pauses plan personalization until you renew your consent. You can also request a full copy of your data, or its permanent deletion, by contacting your specialist.';
-
-  @override
-  String get privacyRetentionTitle => '5. Data retention after follow-up ends';
-
-  @override
-  String get privacyRetentionBody =>
-      'When your clinical follow-up period ends, your logs and measurements stay safely stored so the plan can resume as soon as you renew, and they are only deleted at your explicit request.';
-
-  @override
-  String get privacyTitle => 'Full clinical privacy';
-
-  @override
-  String get privacyLastUpdated =>
-      'Last updated: January 2026 — compliant with clinical HIPAA standards';
 
   @override
   String get profileMeasurementsSubtitle =>
@@ -2632,7 +2660,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get offlinePanelLogMeasurementsDesc =>
-      'Changes are saved in the phone\'s encrypted database';
+      'Changes are kept on your phone and sent when you\'re back online.';
 
   @override
   String get offlinePanelNotes => 'Jot down notes and quick meals';
@@ -2796,7 +2824,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String loginErrorLocked(String time) {
-    return 'Sign-in is paused after several wrong attempts. Try again at $time.';
+    return 'Sign-in is paused after several wrong attempts. Try again in $time.';
   }
 
   @override
@@ -3365,6 +3393,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get weighInReminderChannel => 'Weekly weigh-in reminder';
+
+  @override
+  String get pushChannelName => 'Updates from your nutritionist and plan';
 
   @override
   String get weighInReminderTitle => 'Time for your weekly weigh-in';
@@ -4267,13 +4298,167 @@ class AppLocalizationsEn extends AppLocalizations {
       'Worked out from the meals logged on this device, your measurements and your goal.';
 
   @override
-  String get callsAskForAppointment => 'Ask your dietitian for an appointment';
-
-  @override
   String get callsNextTitle => 'Your next appointment';
 
   @override
   String get callsLaterTitle => 'Later appointments';
+
+  @override
+  String get shoppingListTitle => 'Shopping list';
+
+  @override
+  String get shoppingDayTab => 'This day';
+
+  @override
+  String get shoppingWeekTab => 'Whole week';
+
+  @override
+  String get shoppingWeekNote =>
+      'Daily meals for seven days, and day-specific meals once.';
+
+  @override
+  String get shoppingNote =>
+      'Amounts come from your plan; alternatives are listed under each item.';
+
+  @override
+  String get shoppingEmpty => 'Nothing to buy for this period.';
+
+  @override
+  String shoppingAlternatives(String names) {
+    return 'Or: $names';
+  }
+
+  @override
+  String get shoppingSectionProduce => 'Fruit and vegetables';
+
+  @override
+  String get shoppingSectionMeat => 'Meat, poultry and fish';
+
+  @override
+  String get shoppingSectionDairy => 'Dairy and eggs';
+
+  @override
+  String get shoppingSectionGrains => 'Grains and starches';
+
+  @override
+  String get shoppingSectionLegumes => 'Legumes and nuts';
+
+  @override
+  String get shoppingSectionOils => 'Oils and spices';
+
+  @override
+  String get shoppingSectionOther => 'Other';
+
+  @override
+  String get callsBookTitle => 'Book an appointment';
+
+  @override
+  String get callsChangeTitle => 'Change appointment';
+
+  @override
+  String get callsCancelAction => 'Cancel appointment';
+
+  @override
+  String get callsJoinCall => 'Join the call';
+
+  @override
+  String get callsTypeSection => 'Appointment type';
+
+  @override
+  String callsMinutes(String minutes) {
+    return '$minutes min';
+  }
+
+  @override
+  String get callsTimeSection => 'Choose a time';
+
+  @override
+  String get callsTimesLocal => 'Times are in your phone\'s time zone.';
+
+  @override
+  String get callsNoSlots => 'No free times right now.';
+
+  @override
+  String get callsNoSlotsBody =>
+      'Contact your nutritionist to arrange an appointment.';
+
+  @override
+  String get callsChannelSection => 'How to meet';
+
+  @override
+  String get callsTopicsSection => 'What would you like to discuss? (optional)';
+
+  @override
+  String get callsTopicWeight => 'Weight';
+
+  @override
+  String get callsTopicMeals => 'Meals';
+
+  @override
+  String get callsTopicPlanChange => 'Plan change';
+
+  @override
+  String get callsTopicResults => 'Results';
+
+  @override
+  String get callsTopicMedications => 'Medications';
+
+  @override
+  String get callsTopicOther => 'Other';
+
+  @override
+  String get callsNoteSection => 'A note for your nutritionist (optional)';
+
+  @override
+  String get callsConfirmBooking => 'Confirm booking';
+
+  @override
+  String get callsConfirmChange => 'Confirm new time';
+
+  @override
+  String get callsCurrentAppointment => 'Current appointment';
+
+  @override
+  String get callsBooked => 'Your appointment is booked';
+
+  @override
+  String get callsRescheduled => 'Your appointment was moved';
+
+  @override
+  String get callsCancelled => 'Your appointment was cancelled';
+
+  @override
+  String get callsCancelConfirmTitle => 'Cancel this appointment?';
+
+  @override
+  String get callsCancelConfirmBody =>
+      'The appointment will be cancelled. You can book a new one later.';
+
+  @override
+  String get callsKeep => 'Keep it';
+
+  @override
+  String get callsErrorExists =>
+      'You already have an upcoming appointment. You can change or cancel it.';
+
+  @override
+  String get callsErrorSlotTaken =>
+      'This time is no longer free. Please choose another.';
+
+  @override
+  String get callsErrorVideo =>
+      'Video calls aren\'t available with your nutritionist right now.';
+
+  @override
+  String get callsErrorClosed => 'This appointment is no longer on.';
+
+  @override
+  String callsErrorLocked(String hours) {
+    return 'An appointment can\'t be changed or cancelled less than $hours hours before it starts. Please contact your nutritionist.';
+  }
+
+  @override
+  String get callsErrorGeneric => 'That didn\'t go through. Please try again.';
 
   @override
   String get healthSyncHeroApple => 'Connect with Apple Health';

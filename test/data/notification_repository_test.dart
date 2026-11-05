@@ -23,6 +23,9 @@ class _FakeSource implements NotificationDataSource {
 
   @override
   Future<void> markAllRead() async => readAllCalls++;
+
+  @override
+  Future<int?> unreadCount() async => null;
 }
 
 NotificationEntry _entry(String id,

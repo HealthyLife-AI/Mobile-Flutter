@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../core/errors/failure.dart';
 import '../../../core/state/async_state.dart';
 import '../../../domain/entities/appointment_entities.dart';
 import '../../../domain/repositories/appointment_repository.dart';
@@ -33,5 +34,14 @@ class AppointmentsCubit extends Cubit<AsyncState<List<Appointment>>> {
       success: (items) => emit(AsyncSuccess(items)),
       failure: (failure) => emit(AsyncError(failure, previous: previous)),
     );
+  }
+
+  /// Cancels [appointment] (12.3) and reads the list again. Returns why it
+  /// failed, or null.
+  Future<Failure?> cancel(Appointment appointment) async {
+    final result = await _repository.cancel(appointment);
+    final failure = result.failureOrNull;
+    if (failure == null) await load();
+    return failure;
   }
 }

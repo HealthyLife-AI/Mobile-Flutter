@@ -51,12 +51,14 @@ class OfflineQueue implements PatientCache {
     DateTime Function()? clock,
     Future<void> Function(Duration delay)? pause,
     void Function(DroppedWrite write)? onDropped,
+    Future<void> Function(PendingWrite write, Object? response)? onSaved,
     this.minGap = const Duration(milliseconds: 500),
   })  : _storage = storage,
         _api = api,
         _clock = clock ?? DateTime.now,
         _pause = pause ?? _delay,
-        _onDropped = onDropped;
+        _onDropped = onDropped,
+        _onSaved = onSaved;
 
   final StorageService _storage;
   final ApiClient _api;
@@ -67,6 +69,11 @@ class OfflineQueue implements PatientCache {
   /// it (API guide 14.2).
   final void Function(DroppedWrite write)? _onDropped;
 
+  /// Told about each write the server saved, with its answer (the saved
+  /// object), before the write leaves the queue. A meal log keeps the
+  /// server's id this way, so it can be deleted later (6.4).
+  final Future<void> Function(PendingWrite write, Object? response)? _onSaved;
+
   /// Gap between two sends in one flush. The limit is 120 requests a minute
   /// (1.4).
   final Duration minGap;
@@ -75,6 +82,9 @@ class OfflineQueue implements PatientCache {
 
   Future<void> _storageLock = Future<void>.value();
   Future<OfflineQueueReport>? _flushing;
+
+  /// Set while [paused] runs. A flush asked for meanwhile starts after it.
+  Future<void>? _hold;
   int _sequence = 0;
 
   static Future<void> _delay(Duration delay) => Future<void>.delayed(delay);
@@ -104,6 +114,39 @@ class OfflineQueue implements PatientCache {
   /// Forgets every queued write. Called when the session ends.
   Future<void> clear() => _edit((_) => const []);
 
+  /// Takes the writes that match [test] out of the queue, unsent, and returns
+  /// them. Use it inside [paused], so none of them is being sent meanwhile.
+  Future<List<PendingWrite>> removeWhere(
+      bool Function(PendingWrite write) test) async {
+    final removed = <PendingWrite>[];
+    await _edit((items) {
+      final kept = <PendingWrite>[];
+      for (final item in items) {
+        (test(item) ? removed : kept).add(item);
+      }
+      return kept;
+    });
+    return removed;
+  }
+
+  /// Runs [action] while no write is being sent. A flush in progress is
+  /// waited for first, and a flush asked for during [action] starts after it.
+  Future<T> paused<T>(Future<T> Function() action) async {
+    while (true) {
+      final running = _flushing ?? _hold;
+      if (running == null) break;
+      await running.then((_) {}, onError: (Object _) {});
+    }
+    final done = Completer<void>();
+    _hold = done.future;
+    try {
+      return await action();
+    } finally {
+      _hold = null;
+      done.complete();
+    }
+  }
+
   @override
   Future<void> forgetPatientData() => clear();
 
@@ -119,6 +162,9 @@ class OfflineQueue implements PatientCache {
 
   Future<OfflineQueueReport> _runSafely() async {
     try {
+      for (var hold = _hold; hold != null; hold = _hold) {
+        await hold;
+      }
       return await _run();
     } on StorageException catch (error) {
       _log.warn('Queued writes could not be updated', error: error);
@@ -150,8 +196,9 @@ class OfflineQueue implements PatientCache {
       if (paced) await _pause(minGap);
       paced = true;
 
-      final decision = await _trySend(head);
+      final (:decision, :response) = await _trySend(head);
       if (decision == null) {
+        await _notifySaved(head, response);
         await _replace(head.id, null);
         sent++;
         continue;
@@ -186,17 +233,33 @@ class OfflineQueue implements PatientCache {
     }
   }
 
-  /// Sends one write. Returns null when the server saved it, or the decision
-  /// about what to do next when it did not.
-  Future<SyncDecision?> _trySend(PendingWrite write) async {
+  /// Sends one write. The decision is null when the server saved it, and the
+  /// response is its answer; otherwise the decision says what to do next.
+  Future<({SyncDecision? decision, Object? response})> _trySend(
+      PendingWrite write) async {
     try {
-      await _api.post(write.path, body: write.body);
-      return null;
+      final response = await _api.post(write.path, body: write.body);
+      return (decision: null, response: response);
     } on AppException catch (error) {
-      return decideSync(write: write, error: error, now: _clock());
+      return (
+        decision: decideSync(write: write, error: error, now: _clock()),
+        response: null,
+      );
     } on Object catch (error) {
       _log.warn('Unexpected error while sending a queued write', error: error);
-      return SyncWait(backoffFor(write.attempts));
+      return (decision: SyncWait(backoffFor(write.attempts)), response: null);
+    }
+  }
+
+  /// Tells the caller about a saved write. A failure there is logged and does
+  /// not stop the queue: the write was saved either way.
+  Future<void> _notifySaved(PendingWrite write, Object? response) async {
+    final notify = _onSaved;
+    if (notify == null) return;
+    try {
+      await notify(write, response);
+    } catch (error) {
+      _log.warn('A saved write could not be reported', error: error);
     }
   }
 

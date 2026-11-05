@@ -27,6 +27,10 @@ class _Repository implements MeasurementRepository {
     saved.add(entry);
     return Success(_snapshot);
   }
+
+  @override
+  Future<Result<MeasurementSnapshot>> deleteEntry(MeasurementEntry entry) =>
+      throw UnimplementedError();
 }
 
 MeasurementEntry _entry({

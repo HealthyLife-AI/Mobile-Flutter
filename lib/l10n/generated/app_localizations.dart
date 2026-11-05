@@ -455,7 +455,7 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/about_app_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'تشفير سريري عالي المستوى لملفك الغذائي'**
+  /// **'اقرأ السياسة المنشورة على موقعنا'**
   String get aboutPrivacyPolicySubtitle;
 
   /// UI text in presentation/screens/about_app_screen.dart
@@ -473,13 +473,13 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/about_app_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'تراخيص الهيئة الطبية والاعتماد'**
+  /// **'تراخيص البرمجيات'**
   String get aboutLicensesTitle;
 
   /// UI text in presentation/screens/about_app_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'سجل الامتثال الطبي الموثق رقم #A-8841'**
+  /// **'المكتبات مفتوحة المصدر المستخدمة في التطبيق'**
   String get aboutLicensesSubtitle;
 
   /// UI text in presentation/screens/about_app_screen.dart
@@ -491,19 +491,25 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/about_app_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'مساعدة متواصلة للاستفسارات التقنية'**
+  /// **'تواصل مع أخصائيك عبر واتساب'**
   String get aboutSupportSubtitle;
+
+  /// The support row opens the nutritionist's WhatsApp; shown when the profile has no number (API guide 9.1).
+  ///
+  /// In ar, this message translates to:
+  /// **'لا يوجد رقم واتساب لأخصائيك بعد.'**
+  String get aboutSupportNoNumber;
 
   /// UI text in presentation/screens/about_app_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'حماية صحية قياسية'**
+  /// **'حماية بياناتك'**
   String get aboutStandardHealthProtection;
 
   /// UI text in presentation/screens/about_app_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'بياناتك مشفرة ومحمية وفق معايير الخصوصية الصحية المعتمدة لمزامنة آمنة مع ملفك السريري.'**
+  /// **'الاتصال بين التطبيق وخوادمنا مشفّر، ونأخذ نسخة احتياطية مشفّرة يوميًا.'**
   String get aboutEncryptionNote;
 
   /// UI text in presentation/screens/about_app_screen.dart
@@ -635,7 +641,7 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/activation_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'بياناتك الصحية مشفرة ومحمية وفق لوائح الامتثال الطبي'**
+  /// **'الاتصال بين التطبيق وخوادمنا مشفّر.'**
   String get activationEncryptedNote;
 
   /// UI text in presentation/screens/activation_screen.dart
@@ -709,6 +715,66 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'تم حذف الوجبة من سجل اليوم'**
   String get dailyLogMealDeleted;
+
+  /// A meal delete refused with 403 log_locked: the 7-day edit window has passed (API guide 6.4, 15).
+  ///
+  /// In ar, this message translates to:
+  /// **'مرّ أكثر من 7 أيام على تسجيل هذا الإدخال، فلا يمكن تعديله.'**
+  String get entryEditLocked;
+
+  /// A meal delete that failed for lack of a connection. Deletes are never queued offline (API guide 14).
+  ///
+  /// In ar, this message translates to:
+  /// **'لم تُحذف الوجبة: الحذف يحتاج اتصالًا بالإنترنت. حاول مجددًا عند الاتصال.'**
+  String get dailyLogDeleteOffline;
+
+  /// A meal delete that failed for any other reason.
+  ///
+  /// In ar, this message translates to:
+  /// **'تعذّر حذف الوجبة. حاول مرة أخرى.'**
+  String get dailyLogDeleteFailed;
+
+  /// Title of the sheet that changes the grams of a logged food (API guide 6.3).
+  ///
+  /// In ar, this message translates to:
+  /// **'تعديل الكمية'**
+  String get dailyLogEditGramsTitle;
+
+  /// Label of the grams field.
+  ///
+  /// In ar, this message translates to:
+  /// **'الكمية (غرام)'**
+  String get dailyLogEditGramsLabel;
+
+  /// The grams are outside 1 to 5000 (API guide 6.3).
+  ///
+  /// In ar, this message translates to:
+  /// **'أدخل كمية بين 1 و5000 غرام.'**
+  String get dailyLogEditGramsRange;
+
+  /// Shown after the grams were saved.
+  ///
+  /// In ar, this message translates to:
+  /// **'تم تعديل الكمية'**
+  String get dailyLogGramsChanged;
+
+  /// An edit that failed for lack of a connection. Edits are never queued offline (API guide 14).
+  ///
+  /// In ar, this message translates to:
+  /// **'لم تُحفظ الكمية: التعديل يحتاج اتصالًا بالإنترنت. حاول مجددًا عند الاتصال.'**
+  String get dailyLogEditOffline;
+
+  /// The log was deleted on another device (404), so it left the log here too.
+  ///
+  /// In ar, this message translates to:
+  /// **'لم يعد هذا الإدخال موجودًا، فأُزيل من سجلك.'**
+  String get dailyLogEditGone;
+
+  /// An edit that failed for any other reason.
+  ///
+  /// In ar, this message translates to:
+  /// **'تعذّر حفظ الكمية. حاول مرة أخرى.'**
+  String get dailyLogEditFailed;
 
   /// UI text in presentation/screens/daily_log_screen.dart
   ///
@@ -1307,13 +1373,13 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/health_data_consent_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'كيف تُحفظ بياناتك الصحية؟'**
+  /// **'كيف نحمي بياناتك؟'**
   String get consentClauseStorageTitle;
 
   /// UI text in presentation/screens/health_data_consent_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'تشفير كامل وفق أعلى معايير الخصوصية الصحية السريرية (HIPAA standards). تُخزَّن السجلات على خوادم طبية معزولة لا يمكن لأي طرف ثالث أو شركة إعلانات الوصول إليها تحت أي ظرف.'**
+  /// **'الاتصال بين التطبيق وخوادمنا مشفّر، ونأخذ نسخة احتياطية مشفّرة يوميًا.'**
   String get consentClauseStorageBody;
 
   /// UI text in presentation/screens/health_data_consent_screen.dart
@@ -1325,20 +1391,26 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/health_data_consent_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'أخصائي التغذية العلاجية المعتمد على حسابك فقط، عبر نظام مراجعة سريري مشفر. لا تُشارك بياناتك مع أي جهة أخرى، ولا تُستخدم لأي غرض تسويقي.'**
+  /// **'بياناتك الصحية يطّلع عليها أخصائيك فقط، ولا نبيعها ولا نستخدمها للإعلانات.'**
   String get consentClauseAccessBody;
 
   /// UI text in presentation/screens/health_data_consent_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'حقك الكامل في إلغاء الموافقة'**
+  /// **'حقك في حذف بياناتك'**
   String get consentClauseRevokeTitle;
 
   /// UI text in presentation/screens/health_data_consent_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'يمكنك سحب موافقتك في أي وقت من الحساب ← الخصوصية. سيؤدي ذلك إلى إيقاف تخصيص الخطة الغذائية تلقائياً حتى تجديد الموافقة، دون التأثير على سجلاتك المحفوظة.'**
+  /// **'يمكنك حذف بياناتك أو حسابك من التطبيق في أي وقت.'**
   String get consentClauseRevokeBody;
+
+  /// Shown when no address of the published privacy policy is known yet (API guide 4). The app carries no policy text of its own.
+  ///
+  /// In ar, this message translates to:
+  /// **'سياسة الخصوصية متوفرة على موقعنا.'**
+  String get privacyOnWebsite;
 
   /// UI text in presentation/screens/health_data_consent_screen.dart
   ///
@@ -1421,20 +1493,8 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/health_data_consent_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'مشفّرة بنظام bit-256 ومتوافقة مع المعايير الصحية السريرية (HIPAA).'**
-  String get consentEncryptionShort;
-
-  /// UI text in presentation/screens/health_data_consent_screen.dart
-  ///
-  /// In ar, this message translates to:
   /// **'الموافقة على استخدام البيانات الصحية'**
   String get consentTitle;
-
-  /// UI text in presentation/screens/health_data_consent_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'منظومة الحماية السريرية الذكية'**
-  String get consentProtectionSystem;
 
   /// UI text in presentation/screens/health_data_consent_screen.dart
   ///
@@ -1447,12 +1507,6 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'نحن نلتزم بحماية خصوصية بياناتك الصحية والسريرية بأقصى درجات الشفافية والأمان.'**
   String get consentCommitment;
-
-  /// UI text in presentation/screens/health_data_consent_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'بياناتك الطبية مشفرة بنظام bit AES-256 من لحظة إدخالها'**
-  String get consentAesNote;
 
   /// UI text in presentation/screens/health_data_consent_screen.dart
   ///
@@ -2051,7 +2105,7 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/log_meal_intro_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'بياناتك الغذائية مشفرة وتُعامل بخصوصية طبية تامة'**
+  /// **'سجل وجباتك يطّلع عليه أخصائيك فقط.'**
   String get logMealPrivacyNote;
 
   /// UI text in presentation/screens/log_meal_intro_screen.dart
@@ -2389,6 +2443,54 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'قياس منزلي'**
   String get measurementsHomeReading;
+
+  /// Heading of the readings list on the measurements screen, newest first (API guide 7.2).
+  ///
+  /// In ar, this message translates to:
+  /// **'سجل القراءات'**
+  String get measurementsHistoryTitle;
+
+  /// Delete button and its confirmation for one of the patient's own readings (API guide 7.3).
+  ///
+  /// In ar, this message translates to:
+  /// **'حذف القراءة'**
+  String get measurementsDeleteReading;
+
+  /// Title of the sheet that confirms deleting a reading.
+  ///
+  /// In ar, this message translates to:
+  /// **'حذف هذه القراءة؟'**
+  String get measurementsDeleteConfirmTitle;
+
+  /// Body of the sheet that confirms deleting a reading.
+  ///
+  /// In ar, this message translates to:
+  /// **'ستُحذف من سجلّك، ولن يراها أخصائيك بعد الآن.'**
+  String get measurementsDeleteConfirmBody;
+
+  /// Shown after a reading was deleted.
+  ///
+  /// In ar, this message translates to:
+  /// **'تم حذف القراءة'**
+  String get measurementsDeleted;
+
+  /// A delete refused with 403 reading_not_deletable: a clinic reading (API guide 7.3, 15).
+  ///
+  /// In ar, this message translates to:
+  /// **'سجّل أخصائيك هذه القراءة في العيادة، فلا يمكن حذفها من التطبيق.'**
+  String get measurementsDeleteClinic;
+
+  /// A reading delete that failed for lack of a connection. Deletes are never queued offline (API guide 14).
+  ///
+  /// In ar, this message translates to:
+  /// **'لم تُحذف القراءة: الحذف يحتاج اتصالًا بالإنترنت. حاول مجددًا عند الاتصال.'**
+  String get measurementsDeleteOffline;
+
+  /// A reading delete that failed for any other reason.
+  ///
+  /// In ar, this message translates to:
+  /// **'تعذّر حذف القراءة. حاول مرة أخرى.'**
+  String get measurementsDeleteFailed;
 
   /// UI text in presentation/screens/measurements_screen.dart
   ///
@@ -2891,12 +2993,6 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/onboarding_health_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'حسب الوصفة'**
-  String get onboardingHealthAsPrescribed;
-
-  /// UI text in presentation/screens/onboarding_health_screen.dart
-  ///
-  /// In ar, this message translates to:
   /// **'البيانات الصحية'**
   String get onboardingHealthTitle;
 
@@ -2909,13 +3005,13 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/onboarding_health_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'حدد أي حالات صحية تم تشخيصك بها لتكييف برنامجك الغذائي ومكوناته والوجبات المقترحة وفق استجابة تامة وآمنة لجسمك.'**
+  /// **'حدّد أي حالات صحية تم تشخيصك بها، لتصل إلى أخصائيك ويراعيها في خطتك.'**
   String get onboardingHealthConditionsNote;
 
   /// UI text in presentation/screens/onboarding_health_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'سرية سريرية مشفرة ومعتمدة طبياً — تساعد هذه التفاصيل أخصائي التغذية في استبعاد أي مكونات قد تتعارض مع مؤشراتك الحيوية أو أدويتك الموصوفة.'**
+  /// **'يطّلع على هذه التفاصيل أخصائيك فقط، وتساعده في استبعاد أي مكونات قد تتعارض مع حالتك أو أدويتك.'**
   String get onboardingHealthConfidentialNote;
 
   /// UI text in presentation/screens/onboarding_health_screen.dart
@@ -2927,7 +3023,7 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/onboarding_health_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'حدد مسببات الحساسية المعتمدة ليقوم النظام باستبعادها تلقائياً من جداول الوجبات والوصفات المقترحة.'**
+  /// **'حدّد ما يسبب لك حساسية، ليراجعه أخصائيك ويضيفه إلى ملفك. بعد اعتماده تظهر علامة تنبيه على الأطعمة التي قد تحتويه.'**
   String get onboardingHealthAllergiesNote;
 
   /// UI text in presentation/screens/onboarding_health_screen.dart
@@ -2945,7 +3041,7 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/onboarding_health_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'اكتب أي أدوية موصوفة أو فيتامينات تتناولها لضمان عدم حدوث تداخلات كيميائية مع توقيت ومكونات الوجبات.'**
+  /// **'اكتب الأدوية أو الفيتامينات التي تتناولها، ليراعيها أخصائيك في توقيت وجباتك ومكوناتها.'**
   String get onboardingHealthMedicationsNote;
 
   /// UI text in presentation/screens/onboarding_health_screen.dart
@@ -2963,8 +3059,26 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/onboarding_health_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'تخضع كافة الملاحظات والأدوية لمراجعة برمجية واستشارية دقيقة لملاءمة النظام الغذائي واستبعاد أي تداخلات غذائية مع أدويتك الموصوفة.'**
+  /// **'يراجع أخصائيك الأدوية والحساسيات قبل إضافتها إلى ملفك.'**
   String get onboardingHealthReviewNote;
+
+  /// Above the allergy class chips (API guide 11.2: class is required). One class for every allergy chosen in onboarding.
+  ///
+  /// In ar, this message translates to:
+  /// **'كيف تؤثر عليك هذه الأطعمة؟'**
+  String get onboardingHealthAllergyClass;
+
+  /// Line of the quick request that carries the chronic conditions chosen in onboarding to the nutritionist (the API has no field for them).
+  ///
+  /// In ar, this message translates to:
+  /// **'الأمراض المزمنة: {list}'**
+  String onboardingHealthRequestConditions(String list);
+
+  /// Line of the same quick request with the notes typed in onboarding.
+  ///
+  /// In ar, this message translates to:
+  /// **'ملاحظات: {notes}'**
+  String onboardingHealthRequestNotes(String notes);
 
   /// UI text in presentation/screens/onboarding_health_screen.dart
   ///
@@ -3095,7 +3209,7 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/onboarding_measurements_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'بياناتك وقياساتك مشفرة بالكامل بمعايير أمان صحية معتمدة، وتُعرض حصرياً لأخصائي التغذية المعتمد لتصميم خطتك الغذائية الفردية.'**
+  /// **'قياساتك يطّلع عليها أخصائيك فقط، ليصمّم خطتك الغذائية بناءً عليها.'**
   String get onboardingMeasurementsPrivacyNote;
 
   /// UI text in presentation/screens/onboarding_measurements_screen.dart
@@ -3487,78 +3601,6 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'مفعّل'**
   String get commonEnabled;
-
-  /// UI text in presentation/screens/privacy_document_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'١. نطاق البيانات المجمّعة'**
-  String get privacyScopeTitle;
-
-  /// UI text in presentation/screens/privacy_document_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'نجمع فقط ما يلزم لبناء خطتك الغذائية العلاجية: قياساتك الحيوية (الوزن، محيط الجسم)، سجلات وجباتك اليومية، حالاتك الصحية المشخصة، حساسياتك الغذائية، والأدوية والمكملات التي تخبرينا بها. لا نطلب أو نُخزّن أي بيانات مالية أو بيانات موقع دائم.'**
-  String get privacyScopeBody;
-
-  /// UI text in presentation/screens/privacy_document_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'٢. التشفير وأماكن التخزين'**
-  String get privacyEncryptionTitle;
-
-  /// UI text in presentation/screens/privacy_document_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'تُشفّر جميع البيانات الصحية أثناء النقل والتخزين بنظام bit AES-256، وتُحفظ على خوادم طبية معزولة متوافقة مع معايير HIPAA. لا تُستخدم بياناتك في تدريب نماذج عامة ولا تُشارك مع أي شركة إعلانات تحت أي ظرف.'**
-  String get privacyEncryptionBody;
-
-  /// UI text in presentation/screens/privacy_document_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'٣. من يستطيع الاطلاع على ملفك'**
-  String get privacyAccessTitle;
-
-  /// UI text in presentation/screens/privacy_document_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'فريق الرعاية المخصص لك فقط — أخصائي التغذية العلاجية المعتمد على حسابك — يستطيع الاطلاع على سجلك الكامل. أي تحديث أو تعديل على خطتك يُسجَّل باسم صاحبه ووقته في سجل تدقيق لا يمكن حذفه.'**
-  String get privacyAccessBody;
-
-  /// UI text in presentation/screens/privacy_document_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'٤. حقك في التعديل والإلغاء'**
-  String get privacyRightsTitle;
-
-  /// UI text in presentation/screens/privacy_document_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'يمكنك سحب موافقتك في أي وقت من الحساب ← الخصوصية، وسيؤدي ذلك إلى إيقاف تخصيص الخطة تلقائياً حتى تجديد الموافقة. يمكنك أيضاً طلب نسخة كاملة من بياناتك أو حذفها نهائياً بالتواصل مع أخصائي التغذية.'**
-  String get privacyRightsBody;
-
-  /// UI text in presentation/screens/privacy_document_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'٥. الاحتفاظ بالبيانات بعد انتهاء المتابعة'**
-  String get privacyRetentionTitle;
-
-  /// UI text in presentation/screens/privacy_document_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'عند انتهاء فترة المتابعة السريرية، تبقى سجلاتك وقياساتك محفوظة بأمان لاستئناف الخطة فور التجديد، ولا تُحذف تلقائياً إلا بطلب صريح منك.'**
-  String get privacyRetentionBody;
-
-  /// UI text in presentation/screens/privacy_document_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'الخصوصية السريرية الكاملة'**
-  String get privacyTitle;
-
-  /// UI text in presentation/screens/privacy_document_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'آخر تحديث لهذه الوثيقة: يناير 2026 — متوافقة مع معايير HIPAA السريرية'**
-  String get privacyLastUpdated;
 
   /// UI text in presentation/screens/profile_screen.dart
   ///
@@ -4601,7 +4643,7 @@ abstract class AppLocalizations {
   /// UI text in presentation/widgets/offline_capability_panel.dart
   ///
   /// In ar, this message translates to:
-  /// **'يتم حفظ التغييرات بقاعدة بيانات الهاتف المشفرة'**
+  /// **'تُحفظ التغييرات على هاتفك، وتُرسل عند عودة الاتصال.'**
   String get offlinePanelLogMeasurementsDesc;
 
   /// UI text in presentation/widgets/offline_capability_panel.dart
@@ -4808,7 +4850,7 @@ abstract class AppLocalizations {
   /// **'اسم المستخدم أو كلمة المرور غير صحيحة.'**
   String get loginErrorInvalid;
 
-  /// No description provided for @loginErrorLocked.
+  /// Shown while sign-in is locked after 5 wrong passwords (423). {time} is the wait left, counting down as minutes:seconds (API guide 3.1).
   ///
   /// In ar, this message translates to:
   /// **'تم إيقاف الدخول مؤقتًا بعد عدة محاولات خاطئة. حاول بعد {time}.'**
@@ -5815,6 +5857,12 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'تذكير القياس الأسبوعي'**
   String get weighInReminderChannel;
+
+  /// Android notification channel name for the server's pushes: plan, notes, appointments and reminders (API guide 10.4).
+  ///
+  /// In ar, this message translates to:
+  /// **'إشعارات أخصائيك وخطتك'**
+  String get pushChannelName;
 
   /// Title of the local weekly weigh-in reminder.
   ///
@@ -7295,12 +7343,6 @@ abstract class AppLocalizations {
   /// Patient app design spec
   ///
   /// In ar, this message translates to:
-  /// **'اطلب موعدًا من أخصائيتك'**
-  String get callsAskForAppointment;
-
-  /// Patient app design spec
-  ///
-  /// In ar, this message translates to:
   /// **'موعدك القادم'**
   String get callsNextTitle;
 
@@ -7309,6 +7351,294 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'المواعيد الجاية'**
   String get callsLaterTitle;
+
+  /// Title of the shopping list built from the plan (API guide 5.4), and the button on the weekly plan that opens it.
+  ///
+  /// In ar, this message translates to:
+  /// **'قائمة التسوق'**
+  String get shoppingListTitle;
+
+  /// Shopping list tab: the day chosen on the weekly plan.
+  ///
+  /// In ar, this message translates to:
+  /// **'هذا اليوم'**
+  String get shoppingDayTab;
+
+  /// Shopping list tab: a whole week.
+  ///
+  /// In ar, this message translates to:
+  /// **'الأسبوع كاملًا'**
+  String get shoppingWeekTab;
+
+  /// How the week is counted (API guide 5.4).
+  ///
+  /// In ar, this message translates to:
+  /// **'الوجبات اليومية لسبعة أيام، ووجبات الأيام المحددة مرة واحدة.'**
+  String get shoppingWeekNote;
+
+  /// Under the tabs: amounts are the planned items; alternatives are listed, not added (API guide 5.4).
+  ///
+  /// In ar, this message translates to:
+  /// **'الكميات من خطتك، والبدائل مذكورة تحت كل صنف.'**
+  String get shoppingNote;
+
+  /// The chosen day or week has no planned items.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا يوجد ما تشتريه في هذه الفترة.'**
+  String get shoppingEmpty;
+
+  /// Under an item: the foods the plan allows instead (API guide 5.4).
+  ///
+  /// In ar, this message translates to:
+  /// **'أو: {names}'**
+  String shoppingAlternatives(String names);
+
+  /// Shopping section produce (API guide 5.4).
+  ///
+  /// In ar, this message translates to:
+  /// **'خضار وفواكه'**
+  String get shoppingSectionProduce;
+
+  /// Shopping section meat_poultry_fish (API guide 5.4).
+  ///
+  /// In ar, this message translates to:
+  /// **'لحوم ودواجن وأسماك'**
+  String get shoppingSectionMeat;
+
+  /// Shopping section dairy_eggs (API guide 5.4).
+  ///
+  /// In ar, this message translates to:
+  /// **'ألبان وبيض'**
+  String get shoppingSectionDairy;
+
+  /// Shopping section grains_starches (API guide 5.4).
+  ///
+  /// In ar, this message translates to:
+  /// **'حبوب ونشويات'**
+  String get shoppingSectionGrains;
+
+  /// Shopping section legumes_nuts (API guide 5.4).
+  ///
+  /// In ar, this message translates to:
+  /// **'بقوليات ومكسرات'**
+  String get shoppingSectionLegumes;
+
+  /// Shopping section oils_spices (API guide 5.4).
+  ///
+  /// In ar, this message translates to:
+  /// **'زيوت وتوابل'**
+  String get shoppingSectionOils;
+
+  /// Shopping section other (API guide 5.4).
+  ///
+  /// In ar, this message translates to:
+  /// **'أخرى'**
+  String get shoppingSectionOther;
+
+  /// Title of the booking screen (API guide 12.1, 12.2).
+  ///
+  /// In ar, this message translates to:
+  /// **'حجز موعد'**
+  String get callsBookTitle;
+
+  /// Button on the next appointment, and title of the screen that moves it (API guide 12.3).
+  ///
+  /// In ar, this message translates to:
+  /// **'تغيير الموعد'**
+  String get callsChangeTitle;
+
+  /// Button on the next appointment, and the confirm button of its sheet (API guide 12.3).
+  ///
+  /// In ar, this message translates to:
+  /// **'إلغاء الموعد'**
+  String get callsCancelAction;
+
+  /// Opens meeting_link of a video appointment (API guide 12.4).
+  ///
+  /// In ar, this message translates to:
+  /// **'الانضمام إلى المكالمة'**
+  String get callsJoinCall;
+
+  /// Section heading on the booking screen.
+  ///
+  /// In ar, this message translates to:
+  /// **'نوع الموعد'**
+  String get callsTypeSection;
+
+  /// How long a kind of appointment lasts (API guide 12.1).
+  ///
+  /// In ar, this message translates to:
+  /// **'{minutes} دقيقة'**
+  String callsMinutes(String minutes);
+
+  /// Section heading above the free times.
+  ///
+  /// In ar, this message translates to:
+  /// **'اختر الوقت'**
+  String get callsTimeSection;
+
+  /// Under the free times: they are shown in the device's time zone (API guide 12).
+  ///
+  /// In ar, this message translates to:
+  /// **'الأوقات بتوقيت جهازك.'**
+  String get callsTimesLocal;
+
+  /// The nutritionist has no free time set (API guide 12.1: empty days).
+  ///
+  /// In ar, this message translates to:
+  /// **'لا توجد أوقات متاحة حاليًا.'**
+  String get callsNoSlots;
+
+  /// Under callsNoSlots.
+  ///
+  /// In ar, this message translates to:
+  /// **'تواصل مع أخصائيك لتحديد موعد.'**
+  String get callsNoSlotsBody;
+
+  /// Section heading for WhatsApp, phone or video.
+  ///
+  /// In ar, this message translates to:
+  /// **'طريقة التواصل'**
+  String get callsChannelSection;
+
+  /// Section heading for the topics, up to 6 (API guide 12.2).
+  ///
+  /// In ar, this message translates to:
+  /// **'ما الذي تودّ مناقشته؟ (اختياري)'**
+  String get callsTopicsSection;
+
+  /// Appointment topic weight (API guide 16).
+  ///
+  /// In ar, this message translates to:
+  /// **'الوزن'**
+  String get callsTopicWeight;
+
+  /// Appointment topic meals (API guide 16).
+  ///
+  /// In ar, this message translates to:
+  /// **'الوجبات'**
+  String get callsTopicMeals;
+
+  /// Appointment topic plan_change (API guide 16).
+  ///
+  /// In ar, this message translates to:
+  /// **'تعديل الخطة'**
+  String get callsTopicPlanChange;
+
+  /// Appointment topic results (API guide 16).
+  ///
+  /// In ar, this message translates to:
+  /// **'النتائج'**
+  String get callsTopicResults;
+
+  /// Appointment topic medications (API guide 16).
+  ///
+  /// In ar, this message translates to:
+  /// **'الأدوية'**
+  String get callsTopicMedications;
+
+  /// Appointment topic other (API guide 16).
+  ///
+  /// In ar, this message translates to:
+  /// **'أخرى'**
+  String get callsTopicOther;
+
+  /// Label of the note field, up to 300 characters (API guide 12.2).
+  ///
+  /// In ar, this message translates to:
+  /// **'ملاحظة لأخصائيك (اختياري)'**
+  String get callsNoteSection;
+
+  /// Books the chosen time.
+  ///
+  /// In ar, this message translates to:
+  /// **'تأكيد الحجز'**
+  String get callsConfirmBooking;
+
+  /// Moves the appointment to the chosen time.
+  ///
+  /// In ar, this message translates to:
+  /// **'تأكيد الموعد الجديد'**
+  String get callsConfirmChange;
+
+  /// Heading above the appointment being moved.
+  ///
+  /// In ar, this message translates to:
+  /// **'الموعد الحالي'**
+  String get callsCurrentAppointment;
+
+  /// Shown after a booking.
+  ///
+  /// In ar, this message translates to:
+  /// **'تم حجز موعدك'**
+  String get callsBooked;
+
+  /// Shown after the appointment was moved.
+  ///
+  /// In ar, this message translates to:
+  /// **'تم تغيير موعدك'**
+  String get callsRescheduled;
+
+  /// Shown after the appointment was cancelled.
+  ///
+  /// In ar, this message translates to:
+  /// **'تم إلغاء موعدك'**
+  String get callsCancelled;
+
+  /// Title of the sheet that confirms cancelling.
+  ///
+  /// In ar, this message translates to:
+  /// **'إلغاء هذا الموعد؟'**
+  String get callsCancelConfirmTitle;
+
+  /// Body of the sheet that confirms cancelling.
+  ///
+  /// In ar, this message translates to:
+  /// **'سيُلغى الموعد، ويمكنك حجز موعد جديد لاحقًا.'**
+  String get callsCancelConfirmBody;
+
+  /// Closes the cancel sheet without cancelling.
+  ///
+  /// In ar, this message translates to:
+  /// **'إبقاء الموعد'**
+  String get callsKeep;
+
+  /// 409 appointment_exists (API guide 15).
+  ///
+  /// In ar, this message translates to:
+  /// **'لديك موعد قادم بالفعل. يمكنك تعديله أو إلغاؤه.'**
+  String get callsErrorExists;
+
+  /// 422 slot_unavailable or 409 slot_taken (API guide 15).
+  ///
+  /// In ar, this message translates to:
+  /// **'هذا الوقت لم يعد متاحًا، اختر وقتًا آخر.'**
+  String get callsErrorSlotTaken;
+
+  /// 422 video_unavailable (API guide 15).
+  ///
+  /// In ar, this message translates to:
+  /// **'مكالمات الفيديو غير متاحة مع أخصائيك حاليًا.'**
+  String get callsErrorVideo;
+
+  /// 409 appointment_closed, or 404 (API guide 15).
+  ///
+  /// In ar, this message translates to:
+  /// **'هذا الموعد لم يعد قائمًا.'**
+  String get callsErrorClosed;
+
+  /// 422 appointment_locked; {hours} is lock_hours, 12 (API guide 15).
+  ///
+  /// In ar, this message translates to:
+  /// **'لا يمكن تعديل الموعد أو إلغاؤه قبل أقل من {hours} ساعة. تواصل مع أخصائيك.'**
+  String callsErrorLocked(String hours);
+
+  /// An appointment write that failed for any other reason.
+  ///
+  /// In ar, this message translates to:
+  /// **'تعذّر إتمام الطلب. حاول مرة أخرى.'**
+  String get callsErrorGeneric;
 
   /// Patient app design spec
   ///

@@ -1,9 +1,10 @@
 import '../../domain/entities/meal_entities.dart';
 import 'meal_dto.dart';
 
-/// Wire-format persistence for a logged meal entry (local storage today,
-/// backend sync later). Planned meals are embedded so the daily log can
-/// render them after a restart without refetching the plan.
+/// Wire-format persistence for a logged meal entry (local storage). Planned
+/// meals are embedded so the daily log can render them after a restart
+/// without refetching the plan. The logs sent to the server are kept too, so
+/// the entry can be deleted there (API guide 6.4).
 class MealLogEntryDto {
   const MealLogEntryDto({
     required this.id,
@@ -13,6 +14,7 @@ class MealLogEntryDto {
     required this.loggedAt,
     required this.isOffPlan,
     this.plannedMeal,
+    this.sentLogs = const [],
   });
 
   final String id;
@@ -22,6 +24,7 @@ class MealLogEntryDto {
   final DateTime loggedAt;
   final bool isOffPlan;
   final MealDto? plannedMeal;
+  final List<SentMealLog> sentLogs;
 
   factory MealLogEntryDto.fromJson(Map<String, dynamic> json) =>
       MealLogEntryDto(
@@ -35,6 +38,17 @@ class MealLogEntryDto {
         plannedMeal: json['plannedMeal'] is Map<String, dynamic>
             ? MealDto.fromJson(json['plannedMeal'] as Map<String, dynamic>)
             : null,
+        sentLogs: [
+          if (json['sentLogs'] case final List<dynamic> logs)
+            for (final log in logs)
+              if (log case {'key': final String key})
+                SentMealLog(
+                  key: key,
+                  serverId: (log['id'] as num?)?.toInt(),
+                  editableUntil:
+                      DateTime.tryParse(log['editableUntil'] as String? ?? ''),
+                ),
+        ],
       );
 
   Map<String, dynamic> toJson() => {
@@ -45,6 +59,16 @@ class MealLogEntryDto {
         'loggedAt': loggedAt.toIso8601String(),
         'isOffPlan': isOffPlan,
         if (plannedMeal != null) 'plannedMeal': plannedMeal!.toJson(),
+        if (sentLogs.isNotEmpty)
+          'sentLogs': [
+            for (final log in sentLogs)
+              {
+                'key': log.key,
+                if (log.serverId != null) 'id': log.serverId,
+                if (log.editableUntil != null)
+                  'editableUntil': log.editableUntil!.toIso8601String(),
+              },
+          ],
       };
 
   MealLogEntry toEntity() => MealLogEntry(
@@ -55,6 +79,7 @@ class MealLogEntryDto {
         loggedAt: loggedAt,
         isOffPlan: isOffPlan,
         plannedMeal: plannedMeal?.toEntity(),
+        sentLogs: sentLogs,
       );
 
   factory MealLogEntryDto.fromEntity(MealLogEntry e) => MealLogEntryDto(
@@ -66,5 +91,6 @@ class MealLogEntryDto {
         isOffPlan: e.isOffPlan,
         plannedMeal:
             e.plannedMeal == null ? null : MealDto.fromEntity(e.plannedMeal!),
+        sentLogs: e.sentLogs,
       );
 }

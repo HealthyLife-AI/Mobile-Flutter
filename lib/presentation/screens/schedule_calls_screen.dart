@@ -1,9 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../../core/di/app_dependencies.dart';
+import '../../core/navigation/app_page_route.dart';
 import '../../core/state/async_state.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_radius.dart';
@@ -14,19 +16,22 @@ import '../bloc/appointments/appointments_cubit.dart';
 import '../bloc/nutritionist/nutritionist_cubit.dart';
 import '../date_labels.dart';
 import '../widgets/app_header_bar.dart';
+import '../widgets/confirm_action_sheet.dart';
+import '../widgets/external_link.dart';
 import '../widgets/load_error_view.dart';
 import '../widgets/segmented_sliding_tabs.dart';
 import '../widgets/spec_ui.dart';
+import 'book_appointment_screen.dart';
 
 import '../../l10n/l10n.dart';
 
 /// "مواعيدي": the patient's upcoming or past appointments from
 /// `GET /me/appointments` (API guide 12.4). The next one gets its own card
-/// with the date, the time and how soon it is.
+/// with the date, the time and how soon it is, and the buttons that change,
+/// cancel or join it (12.3).
 ///
-/// Booking in the app is not on the API yet (12.1 to 12.3), so the bottom
-/// button asks the nutritionist for a time on WhatsApp, and is left out when
-/// the profile has no number.
+/// One upcoming appointment is allowed at a time (12.2), so the bottom button
+/// books one only while the upcoming list has none.
 class ScheduleCallsScreen extends StatelessWidget {
   const ScheduleCallsScreen({super.key});
 
@@ -50,15 +55,42 @@ class ScheduleCallsScreen extends StatelessWidget {
 class _ScheduleCallsView extends StatelessWidget {
   const _ScheduleCallsView();
 
-  Future<void> _ask(BuildContext context, Uri uri) async {
-    var opened = false;
-    try {
-      opened = await launchUrl(uri, mode: LaunchMode.externalApplication);
-    } catch (_) {
-      opened = false;
+  /// Opens the booking screen, or the one that moves [moving]. A saved
+  /// appointment reads the list again.
+  Future<void> _book(BuildContext context, {Appointment? moving}) async {
+    final l10n = context.l10n;
+    final cubit = context.read<AppointmentsCubit>();
+    final saved = await Navigator.of(context).push<Appointment>(AppPageRoute(
+      builder: (_) => BookAppointmentScreen(reschedule: moving),
+    ));
+    if (!context.mounted) return;
+    await cubit.load(scope: AppointmentScope.upcoming);
+    if (saved != null && context.mounted) {
+      showSpecSnack(
+          context, moving == null ? l10n.callsBooked : l10n.callsRescheduled);
     }
-    if (!opened && context.mounted) {
-      showSpecSnack(context, context.l10n.linkCouldNotOpen, error: true);
+  }
+
+  Future<void> _cancel(BuildContext context, Appointment item) async {
+    final l10n = context.l10n;
+    final cubit = context.read<AppointmentsCubit>();
+    final confirmed = await ConfirmActionSheet.show(
+      context,
+      icon: Icons.event_busy_outlined,
+      title: l10n.callsCancelConfirmTitle,
+      message: l10n.callsCancelConfirmBody,
+      confirmLabel: l10n.callsCancelAction,
+      cancelLabel: l10n.callsKeep,
+    );
+    if (confirmed != true || !context.mounted) return;
+    final failure = await cubit.cancel(item);
+    if (!context.mounted) return;
+    if (failure == null) {
+      showSpecSnack(context, l10n.callsCancelled);
+    } else {
+      await showAppointmentFailure(context, failure);
+      // A closed appointment is out of date on screen.
+      if (context.mounted) unawaited(cubit.load());
     }
   }
 
@@ -67,7 +99,12 @@ class _ScheduleCallsView extends StatelessWidget {
     final l10n = context.l10n;
     final cubit = context.read<AppointmentsCubit>();
     final nutritionist = context.watch<NutritionistCubit>().state.dataOrNull;
-    final whatsapp = nutritionist?.whatsappUri;
+    final upcoming = cubit.scope == AppointmentScope.upcoming
+        ? context.watch<AppointmentsCubit>().state
+        : null;
+    final now = DateTime.now();
+    final canBook = upcoming is AsyncSuccess<List<Appointment>> &&
+        !upcoming.data.any((item) => item.isOpenAt(now));
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppHeaderBar(title: l10n.profileAppointments),
@@ -103,7 +140,11 @@ class _ScheduleCallsView extends StatelessWidget {
                   ),
                   const SizedBox(height: 16),
                   if (next != null) ...[
-                    _NextAppointmentCard(item: next),
+                    _NextAppointmentCard(
+                      item: next,
+                      onChange: () => _book(context, moving: next),
+                      onCancel: () => _cancel(context, next),
+                    ),
                     const SizedBox(height: 16),
                   ],
                   _AppointmentsBody(
@@ -117,14 +158,14 @@ class _ScheduleCallsView extends StatelessWidget {
           },
         ),
       ),
-      bottomNavigationBar: whatsapp == null
+      bottomNavigationBar: !canBook
           ? null
           : SafeArea(
               minimum: const EdgeInsets.fromLTRB(16, 8, 16, 12),
               child: SpecPrimaryButton(
-                label: l10n.callsAskForAppointment,
-                icon: Icons.chat_outlined,
-                onPressed: () => _ask(context, whatsapp),
+                label: l10n.callsBookNew,
+                icon: Icons.add_rounded,
+                onPressed: () => _book(context),
               ),
             ),
     );
@@ -150,16 +191,32 @@ class _NutritionistRow extends StatelessWidget {
   }
 }
 
-/// The soonest upcoming appointment: date, time, channel and how soon.
+/// The soonest upcoming appointment: date, time, channel and how soon, and
+/// while it is still on, the buttons that change or cancel it (12.3) and join
+/// a video call (12.4).
 class _NextAppointmentCard extends StatelessWidget {
-  const _NextAppointmentCard({required this.item});
+  const _NextAppointmentCard(
+      {required this.item, required this.onChange, required this.onCancel});
 
   final Appointment item;
+  final VoidCallback onChange;
+  final VoidCallback onCancel;
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final start = item.startsAt.toLocal();
+    final open = item.isOpenAt(DateTime.now());
+    final link = item.meetingLink == null
+        ? null
+        : Uri.tryParse(item.meetingLink!);
+    final buttonStyle = OutlinedButton.styleFrom(
+      foregroundColor: Colors.white,
+      side: BorderSide(color: Colors.white.withValues(alpha: 0.6)),
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppRadius.pill)),
+      visualDensity: VisualDensity.compact,
+    );
     final days = calendarDaysBetween(DateTime.now(), start);
     final when = days <= 0
         ? l10n.commonToday
@@ -215,11 +272,44 @@ class _NextAppointmentCard extends StatelessWidget {
               _HeroFact(icon: Icons.schedule_rounded, text: time),
               _HeroFact(
                   icon: Icons.medical_services_outlined,
-                  text: _typeTitle(l10n, item.type)),
+                  text: appointmentTypeTitle(l10n, item.type)),
               if (channel != null)
-                _HeroFact(icon: _channelIcon(item.channel), text: channel),
+                _HeroFact(
+                    icon: appointmentChannelIcon(item.channel), text: channel),
             ],
           ),
+          if (open) ...[
+            const SizedBox(height: 14),
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: [
+                if (link != null && item.channel == AppointmentChannel.video)
+                  FilledButton.icon(
+                    style: FilledButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      foregroundColor: AppColors.primary,
+                      visualDensity: VisualDensity.compact,
+                    ),
+                    onPressed: () => openExternalLink(context, link),
+                    icon: const Icon(Icons.videocam_outlined, size: 18),
+                    label: Text(l10n.callsJoinCall),
+                  ),
+                // A kind this version does not know has no times to move to.
+                if (item.type != AppointmentType.unknown)
+                  OutlinedButton(
+                    style: buttonStyle,
+                    onPressed: onChange,
+                    child: Text(l10n.callsChangeTitle),
+                  ),
+                OutlinedButton(
+                  style: buttonStyle,
+                  onPressed: onCancel,
+                  child: Text(l10n.callsCancelAction),
+                ),
+              ],
+            ),
+          ],
         ],
       ),
     );
@@ -353,7 +443,7 @@ class _AppointmentCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(_typeTitle(l10n, item.type),
+                Text(appointmentTypeTitle(l10n, item.type),
                     style: AppTextStyles.cardTitle),
                 const SizedBox(height: 2),
                 Text(caption,
@@ -373,29 +463,11 @@ class _AppointmentCard extends StatelessWidget {
   }
 }
 
-String _typeTitle(AppLocalizations l10n, AppointmentType type) =>
-    switch (type) {
-      AppointmentType.followUp => l10n.callsTypeFollowUp,
-      AppointmentType.resultsReview => l10n.callsResultsReview,
-      AppointmentType.quickConsult => l10n.callsTypeQuickConsult,
-      AppointmentType.unknown => l10n.callsTypeOther,
-    };
-
 /// Null for a channel this version does not know: it is then left out.
 String? _channelLabel(AppLocalizations l10n, AppointmentChannel channel) =>
-    switch (channel) {
-      AppointmentChannel.whatsapp => l10n.callsChannelWhatsapp,
-      AppointmentChannel.phone => l10n.callsChannelPhone,
-      AppointmentChannel.video => l10n.callsChannelVideo,
-      AppointmentChannel.unknown => null,
-    };
-
-IconData _channelIcon(AppointmentChannel channel) => switch (channel) {
-      AppointmentChannel.whatsapp => Icons.chat_outlined,
-      AppointmentChannel.phone => Icons.call_outlined,
-      AppointmentChannel.video => Icons.videocam_outlined,
-      AppointmentChannel.unknown => Icons.event_outlined,
-    };
+    channel == AppointmentChannel.unknown
+        ? null
+        : appointmentChannelLabel(l10n, channel);
 
 /// The pill's label and tone. Null for a status this version does not know,
 /// so no pill is shown.

@@ -3,7 +3,9 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../core/errors/failure.dart';
 import '../../core/navigation/app_page_route.dart';
+import '../../core/state/async_state.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_radius.dart';
 import '../../core/theme/app_text_styles.dart';
@@ -50,6 +52,9 @@ class _DailyLogScreenState extends State<DailyLogScreen> {
   /// أي وجبة بتنضاف بعدين بتظهر فوراً بدون تأخير.
   Set<String>? _initialIds;
 
+  /// The plan and day the server's logs were last read for.
+  String? _syncedFor;
+
   void _openWeeklyPlan() {
     Navigator.of(context)
         .push(AppPageRoute(builder: (_) => const WeeklyPlanScreen()));
@@ -65,23 +70,49 @@ class _DailyLogScreenState extends State<DailyLogScreen> {
         .push(AppPageRoute(builder: (_) => const LogMealIntroScreen()));
   }
 
+  /// Hides the row at once, and deletes the entry for real (here and on the
+  /// server, API guide 6.4) when the undo notice closes without an undo. A
+  /// delete that fails brings the row back and says why.
   void _delete(_LogItem item) {
     HapticFeedback.lightImpact();
     setState(() => _removed.add(item.id));
-    ScaffoldMessenger.of(context)
-      ..hideCurrentSnackBar()
-      ..showSnackBar(
-        SnackBar(
-          content: Text(context.l10n.dailyLogMealDeleted),
-          behavior: SnackBarBehavior.floating,
-          margin: const EdgeInsets.fromLTRB(18, 0, 18, 100),
-          duration: const Duration(seconds: 4),
-          action: SnackBarAction(
-            label: context.l10n.commonUndo,
-            onPressed: () => setState(() => _removed.remove(item.id)),
-          ),
+    final cubit = context.read<MealLogCubit>();
+    final messenger = ScaffoldMessenger.of(context);
+    final l10n = context.l10n;
+    messenger.hideCurrentSnackBar();
+    final notice = messenger.showSnackBar(
+      SnackBar(
+        content: Text(l10n.dailyLogMealDeleted),
+        behavior: SnackBarBehavior.floating,
+        margin: const EdgeInsets.fromLTRB(18, 0, 18, 100),
+        duration: const Duration(seconds: 4),
+        // With an action it would stay until dismissed, and the delete would
+        // wait with it.
+        persist: false,
+        action: SnackBarAction(
+          label: l10n.commonUndo,
+          onPressed: () {
+            if (mounted) setState(() => _removed.remove(item.id));
+          },
         ),
-      );
+      ),
+    );
+    notice.closed.then((reason) async {
+      if (reason == SnackBarClosedReason.action) return;
+      final failure = (await cubit.delete(item.id)).failureOrNull;
+      if (failure == null) return;
+      if (mounted) setState(() => _removed.remove(item.id));
+      messenger.showSnackBar(SnackBar(
+        content: Text(switch (failure) {
+          ApiFailure(code: 'log_locked') => l10n.entryEditLocked,
+          NetworkFailure() => l10n.dailyLogDeleteOffline,
+          _ => l10n.dailyLogDeleteFailed,
+        }),
+        behavior: SnackBarBehavior.floating,
+        margin: const EdgeInsets.fromLTRB(18, 0, 18, 100),
+        backgroundColor: AppColors.danger,
+      ));
+    });
   }
 
   /// Today's items: the plan's meals logged today (in the plan's order), then
@@ -102,11 +133,12 @@ class _DailyLogScreenState extends State<DailyLogScreen> {
       for (final m in todayMeals)
         if (byPlanMeal[m.id] case final entry?)
           _LogItem(
-              id: m.id,
+              id: entry.id,
               name: m.name,
               calories: entry.calories,
               time: m.timeRange,
-              meal: m),
+              meal: m,
+              deletable: entry.canDeleteAt(now)),
     ];
 
     final added = entries
@@ -114,26 +146,82 @@ class _DailyLogScreenState extends State<DailyLogScreen> {
             e.plannedMeal != null &&
             !todayMeals.any((m) => m.id == e.plannedMeal!.id))
         .map((e) => _LogItem(
-            id: e.plannedMeal!.id,
+            id: e.id,
             name: e.plannedMeal!.name,
             calories: e.calories,
             time: e.plannedMeal!.timeRange,
-            meal: e.plannedMeal!));
+            meal: e.plannedMeal!,
+            deletable: e.canDeleteAt(now)));
 
-    final offPlanList =
-        entries.where((e) => e.isOffPlan).toList().reversed.toList();
+    // Planned foods read from the server that match none of today's plan
+    // meals (logged on another device under an older plan, say).
+    final loose = [
+      for (final e in entries)
+        if (e.plannedMeal == null && !e.isOffPlan)
+          _LogItem(
+            id: e.id,
+            name: e.name,
+            calories: e.calories,
+            grams: e.grams,
+            deletable: e.canDeleteAt(now),
+            editable: e.canEditGramsAt(now),
+          ),
+    ];
+
     final off = <_LogItem>[
-      for (var i = 0; i < offPlanList.length; i++)
+      for (final e in entries.where((e) => e.isOffPlan).toList().reversed)
         _LogItem(
-          id: 'off-$i-${offPlanList[i].name}',
-          name: offPlanList[i].name,
-          calories: offPlanList[i].calories,
-          grams: offPlanList[i].grams,
+          id: e.id,
+          name: e.name,
+          calories: e.calories,
+          grams: e.grams,
           offPlan: true,
+          deletable: e.canDeleteAt(now),
+          editable: e.canEditGramsAt(now),
         ),
     ];
 
-    return [...planned, ...added, ...off];
+    return [...planned, ...added, ...loose, ...off];
+  }
+
+  /// Reads today's logs from the server once the plan is known, so a planned
+  /// log joins its meal (6.2). Read again on each new day and plan.
+  void _syncWhenReady(AsyncState<MealPlan?> planState, List<Meal> todayMeals) {
+    if (planState is! AsyncSuccess<MealPlan?> &&
+        planState is! AsyncError<MealPlan?>) {
+      return;
+    }
+    final key = '${planState.dataOrNull?.id}|${dateOnly(DateTime.now())}';
+    if (key == _syncedFor) return;
+    _syncedFor = key;
+    final cubit = context.read<MealLogCubit>();
+    WidgetsBinding.instance
+        .addPostFrameCallback((_) => cubit.syncToday(todayMeals));
+  }
+
+  /// Asks for the new grams of a one-food entry and saves them (6.3).
+  Future<void> _editGrams(_LogItem item) async {
+    final l10n = context.l10n;
+    final cubit = context.read<MealLogCubit>();
+    final messenger = ScaffoldMessenger.of(context);
+    final grams = await _GramsSheet.show(context,
+        name: item.name, grams: item.grams ?? 100);
+    if (grams == null || grams == item.grams) return;
+    final failure = (await cubit.updateGrams(item.id, grams)).failureOrNull;
+    messenger
+      ..hideCurrentSnackBar()
+      ..showSnackBar(SnackBar(
+        content: Text(switch (failure) {
+          null => l10n.dailyLogGramsChanged,
+          ApiFailure(code: 'log_locked') => l10n.entryEditLocked,
+          NetworkFailure() => l10n.dailyLogEditOffline,
+          NotFoundFailure() => l10n.dailyLogEditGone,
+          _ => l10n.dailyLogEditFailed,
+        }),
+        behavior: SnackBarBehavior.floating,
+        margin: const EdgeInsets.fromLTRB(18, 0, 18, 100),
+        backgroundColor: failure == null ? null : AppColors.danger,
+      ));
   }
 
   @override
@@ -145,13 +233,14 @@ class _DailyLogScreenState extends State<DailyLogScreen> {
         child: BlocBuilder<MealLogCubit, MealLogState>(
           builder: (context, mealLog) {
             // Today's meals and calorie target, from the nutritionist's plan.
-            final MealPlan? plan =
-                context.watch<MealPlanCubit>().state.dataOrNull;
+            final planState = context.watch<MealPlanCubit>().state;
+            final MealPlan? plan = planState.dataOrNull;
             final now = DateTime.now();
             final todayMeals = plan == null
                 ? const <Meal>[]
                 : planMealsFor(context, plan, now,
                     isLogged: mealLog.isPlannedLogged);
+            _syncWhenReady(planState, todayMeals);
             final goal = plan?.totalOn(now).calories.round() ?? 0;
             final items = _collectItems(mealLog.entries, todayMeals);
             _initialIds ??= items.map((i) => i.id).toSet();
@@ -163,80 +252,90 @@ class _DailyLogScreenState extends State<DailyLogScreen> {
             final showEmpty = _previewEmpty || count == 0;
             final latestId = active.isEmpty ? null : active.last.id;
 
-            return ListView(
-              padding: const EdgeInsets.fromLTRB(18, 12, 18, 120),
-              children: [
-                _FadeSlide(
-                    delayMs: 0,
-                    dy: -16,
-                    child: _Header(onCalendar: _openWeeklyPlan)),
-                const SizedBox(height: 16),
-                _FadeSlide(
-                  delayMs: 120,
-                  child: _SummaryCard(
-                      count: count, calories: calories, goal: goal),
-                ),
-                const SizedBox(height: 22),
-                _FadeSlide(
-                  delayMs: 240,
-                  child: _SectionHeader(
-                    previewEmpty: _previewEmpty,
-                    onTogglePreview: () {
-                      HapticFeedback.selectionClick();
-                      setState(() => _previewEmpty = !_previewEmpty);
-                    },
+            return RefreshIndicator(
+              color: AppColors.primary,
+              onRefresh: () =>
+                  context.read<MealLogCubit>().syncToday(todayMeals),
+              child: ListView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                padding: const EdgeInsets.fromLTRB(18, 12, 18, 120),
+                children: [
+                  _FadeSlide(
+                      delayMs: 0,
+                      dy: -16,
+                      child: _Header(onCalendar: _openWeeklyPlan)),
+                  const SizedBox(height: 16),
+                  _FadeSlide(
+                    delayMs: 120,
+                    child: _SummaryCard(
+                        count: count, calories: calories, goal: goal),
                   ),
-                ),
-                const SizedBox(height: 12),
-                AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 380),
-                  switchInCurve: Curves.easeOutCubic,
-                  switchOutCurve: Curves.easeIn,
-                  transitionBuilder: (child, anim) => FadeTransition(
-                    opacity: anim,
-                    child: SlideTransition(
-                      position: Tween<Offset>(
-                              begin: const Offset(0, .06), end: Offset.zero)
-                          .animate(anim),
-                      child: child,
+                  const SizedBox(height: 22),
+                  _FadeSlide(
+                    delayMs: 240,
+                    child: _SectionHeader(
+                      previewEmpty: _previewEmpty,
+                      onTogglePreview: () {
+                        HapticFeedback.selectionClick();
+                        setState(() => _previewEmpty = !_previewEmpty);
+                      },
                     ),
                   ),
-                  child: showEmpty
-                      ? const _EmptyState(key: ValueKey('empty'))
-                      : Column(
-                          key: const ValueKey('list'),
-                          children: [
-                            for (var i = 0; i < items.length; i++)
-                              _FadeSlide(
-                                key: ValueKey(items[i].id),
-                                delayMs: _initialIds!.contains(items[i].id)
-                                    ? 340 + math.min(i, 5) * 100
-                                    : 0,
-                                child: _CollapsibleCard(
-                                  removed: _removed.contains(items[i].id),
-                                  child: _TimelineCard(
-                                    item: items[i],
-                                    isLatest: items[i].id == latestId,
-                                    onTap: items[i].meal == null
-                                        ? null
-                                        : () => _openMeal(items[i].meal!),
-                                    onDelete: () => _delete(items[i]),
+                  const SizedBox(height: 12),
+                  AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 380),
+                    switchInCurve: Curves.easeOutCubic,
+                    switchOutCurve: Curves.easeIn,
+                    transitionBuilder: (child, anim) => FadeTransition(
+                      opacity: anim,
+                      child: SlideTransition(
+                        position: Tween<Offset>(
+                                begin: const Offset(0, .06), end: Offset.zero)
+                            .animate(anim),
+                        child: child,
+                      ),
+                    ),
+                    child: showEmpty
+                        ? const _EmptyState(key: ValueKey('empty'))
+                        : Column(
+                            key: const ValueKey('list'),
+                            children: [
+                              for (var i = 0; i < items.length; i++)
+                                _FadeSlide(
+                                  key: ValueKey(items[i].id),
+                                  delayMs: _initialIds!.contains(items[i].id)
+                                      ? 340 + math.min(i, 5) * 100
+                                      : 0,
+                                  child: _CollapsibleCard(
+                                    removed: _removed.contains(items[i].id),
+                                    child: _TimelineCard(
+                                      item: items[i],
+                                      isLatest: items[i].id == latestId,
+                                      onTap: items[i].meal != null
+                                          ? () => _openMeal(items[i].meal!)
+                                          : items[i].editable
+                                              ? () => _editGrams(items[i])
+                                              : null,
+                                      onDelete: items[i].deletable
+                                          ? () => _delete(items[i])
+                                          : null,
+                                    ),
                                   ),
                                 ),
-                              ),
-                          ],
-                        ),
-                ),
-                const SizedBox(height: 4),
-                const _FadeSlide(delayMs: 700, child: _ReminderCard()),
-                const SizedBox(height: 16),
-                _FadeSlide(
-                    delayMs: 820, child: _AddMealButton(onTap: _onAddMeal)),
-                const SizedBox(height: 12),
-                _FadeSlide(
-                    delayMs: 900,
-                    child: _WeeklyPlanButton(onTap: _openWeeklyPlan)),
-              ],
+                            ],
+                          ),
+                  ),
+                  const SizedBox(height: 4),
+                  const _FadeSlide(delayMs: 700, child: _ReminderCard()),
+                  const SizedBox(height: 16),
+                  _FadeSlide(
+                      delayMs: 820, child: _AddMealButton(onTap: _onAddMeal)),
+                  const SizedBox(height: 12),
+                  _FadeSlide(
+                      delayMs: 900,
+                      child: _WeeklyPlanButton(onTap: _openWeeklyPlan)),
+                ],
+              ),
             );
           },
         ),
@@ -248,6 +347,7 @@ class _DailyLogScreenState extends State<DailyLogScreen> {
 // ───────────────────────────── Data ─────────────────────────────
 
 class _LogItem {
+  /// The [MealLogEntry.id] the row shows.
   final String id;
   final String name;
   final int calories;
@@ -255,6 +355,12 @@ class _LogItem {
   final String? time;
   final bool offPlan;
   final Meal? meal;
+
+  /// False once the server's edit window has passed (6.1).
+  final bool deletable;
+
+  /// One food the server has saved: its grams can be changed (6.3).
+  final bool editable;
 
   const _LogItem({
     required this.id,
@@ -264,7 +370,95 @@ class _LogItem {
     this.time,
     this.offPlan = false,
     this.meal,
+    this.deletable = true,
+    this.editable = false,
   });
+}
+
+/// Asks for a food's new grams, 1 to 5000 (6.3). Pops with the grams, or
+/// with nothing when the patient leaves.
+class _GramsSheet extends StatefulWidget {
+  const _GramsSheet({required this.name, required this.grams});
+
+  final String name;
+  final int grams;
+
+  static Future<int?> show(BuildContext context,
+          {required String name, required int grams}) =>
+      showModalBottomSheet<int>(
+        context: context,
+        isScrollControlled: true,
+        backgroundColor: AppColors.surface,
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(24))),
+        builder: (_) => _GramsSheet(name: name, grams: grams),
+      );
+
+  @override
+  State<_GramsSheet> createState() => _GramsSheetState();
+}
+
+class _GramsSheetState extends State<_GramsSheet> {
+  late final TextEditingController _grams =
+      TextEditingController(text: '${widget.grams}');
+  bool _invalid = false;
+
+  @override
+  void dispose() {
+    _grams.dispose();
+    super.dispose();
+  }
+
+  void _save() {
+    final grams = int.tryParse(_grams.text.trim());
+    if (grams == null || grams < 1 || grams > 5000) {
+      setState(() => _invalid = true);
+      return;
+    }
+    Navigator.of(context).pop(grams);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    return Padding(
+      padding: EdgeInsets.fromLTRB(
+          20, 20, 20, 20 + MediaQuery.viewInsetsOf(context).bottom),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text(l10n.dailyLogEditGramsTitle, style: AppTextStyles.cardTitle),
+          const SizedBox(height: 4),
+          Text(widget.name, style: AppTextStyles.caption),
+          const SizedBox(height: 16),
+          TextField(
+            controller: _grams,
+            autofocus: true,
+            keyboardType: TextInputType.number,
+            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+            textInputAction: TextInputAction.done,
+            onSubmitted: (_) => _save(),
+            decoration: InputDecoration(
+              labelText: l10n.dailyLogEditGramsLabel,
+              errorText: _invalid ? l10n.dailyLogEditGramsRange : null,
+              border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(AppRadius.cardSmall)),
+            ),
+          ),
+          const SizedBox(height: 16),
+          FilledButton(
+            style: FilledButton.styleFrom(
+              backgroundColor: AppColors.primary,
+              minimumSize: const Size.fromHeight(48),
+            ),
+            onPressed: _save,
+            child: Text(l10n.commonSave),
+          ),
+        ],
+      ),
+    );
+  }
 }
 
 // ───────────────────────────── Header ─────────────────────────────
@@ -686,7 +880,9 @@ class _TimelineCard extends StatelessWidget {
   final _LogItem item;
   final bool isLatest;
   final VoidCallback? onTap;
-  final VoidCallback onDelete;
+
+  /// Null hides the delete button: the server's edit window has passed (6.1).
+  final VoidCallback? onDelete;
   const _TimelineCard(
       {required this.item,
       required this.isLatest,
@@ -807,21 +1003,22 @@ class _TimelineCard extends StatelessWidget {
                 ],
               ),
             ),
-            Semantics(
-              button: true,
-              label: context.l10n.dailyLogDeleteMeal,
-              child: Tooltip(
-                message: context.l10n.dailyLogDeleteMeal,
-                child: _PressableScale(
-                  onTap: onDelete,
-                  child: const Padding(
-                    padding: EdgeInsets.all(11),
-                    child: Icon(Icons.delete_outline_rounded,
-                        size: 22, color: _mutedIcon),
+            if (onDelete != null)
+              Semantics(
+                button: true,
+                label: context.l10n.dailyLogDeleteMeal,
+                child: Tooltip(
+                  message: context.l10n.dailyLogDeleteMeal,
+                  child: _PressableScale(
+                    onTap: onDelete,
+                    child: const Padding(
+                      padding: EdgeInsets.all(11),
+                      child: Icon(Icons.delete_outline_rounded,
+                          size: 22, color: _mutedIcon),
+                    ),
                   ),
                 ),
               ),
-            ),
           ],
         ),
       ),

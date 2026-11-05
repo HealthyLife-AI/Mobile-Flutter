@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:healthylife_ai/core/errors/app_exception.dart';
 import 'package:healthylife_ai/core/network/api_client.dart';
@@ -359,5 +361,52 @@ void main() {
     expect(back.nextAttemptAt, write.nextAttemptAt);
     expect(back.retriedWithout, {'meal_item_id'});
     expect(PendingWrite.fromJson({'id': 'x'}), isNull);
+  });
+
+  test('a saved write is reported before it leaves the queue', () async {
+    late OfflineQueue queue;
+    final pendingWhenSaved = <int>[];
+    queue = OfflineQueue(
+      storage: storage,
+      api: api,
+      clock: () => now,
+      pause: (_) async {},
+      onSaved: (write, response) async =>
+          pendingWhenSaved.add(await queue.pendingCount()),
+    );
+    await queue.enqueue(path: 'me/meal-logs', body: {'idempotency_key': 'a'});
+
+    await queue.flush();
+
+    expect(pendingWhenSaved, [1]);
+    expect(await queue.pendingCount(), 0);
+  });
+
+  test('removeWhere takes out only the matching writes, unsent', () async {
+    final queue = queueFor();
+    await queue.enqueue(path: 'me/meal-logs', body: {'idempotency_key': 'a'});
+    await queue.enqueue(path: 'me/measurements', body: {'weight_kg': 80});
+
+    final removed = await queue.removeWhere(
+        (write) => write.body['idempotency_key'] == 'a');
+
+    expect(removed.single.path, 'me/meal-logs');
+    await queue.flush();
+    expect(api.posts.map((p) => p.path), ['me/measurements']);
+  });
+
+  test('a flush asked for while paused waits until the pause ends', () async {
+    final queue = queueFor();
+    await queue.enqueue(path: 'me/measurements', body: {'weight_kg': 80});
+    final release = Completer<void>();
+
+    final pause = queue.paused(() => release.future);
+    final flush = queue.flush();
+    await Future<void>.delayed(Duration.zero);
+    expect(api.posts, isEmpty);
+
+    release.complete();
+    await pause;
+    expect((await flush).sent, 1);
   });
 }

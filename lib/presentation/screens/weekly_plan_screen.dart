@@ -16,6 +16,7 @@ import '../widgets/metric_stat_box.dart';
 import '../widgets/patient_instructions_card.dart';
 import '../widgets/spec_ui.dart';
 import 'meal_detail_screen.dart';
+import 'shopping_list_screen.dart';
 import '../../core/navigation/app_page_route.dart';
 import '../widgets/app_header_bar.dart';
 
@@ -91,7 +92,20 @@ class _WeeklyPlanScreenState extends State<WeeklyPlanScreen> {
 
     return Scaffold(
       backgroundColor: AppColors.background,
-      appBar: AppHeaderBar(title: context.l10n.dailyLogWeeklyPlanTooltip),
+      appBar: AppHeaderBar(
+        title: context.l10n.dailyLogWeeklyPlanTooltip,
+        actions: [
+          // The shopping list is built from the plan (5.4), so it needs one.
+          if (plan != null)
+            HeaderActionIcon(
+              icon: Icons.shopping_cart_outlined,
+              tooltip: context.l10n.shoppingListTitle,
+              onTap: () => Navigator.of(context).push(AppPageRoute(
+                builder: (_) => ShoppingListScreen(day: _week[_selectedDay]),
+              )),
+            ),
+        ],
+      ),
       body: SafeArea(child: body),
     );
   }

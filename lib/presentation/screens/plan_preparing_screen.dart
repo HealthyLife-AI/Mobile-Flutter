@@ -4,12 +4,14 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../core/di/app_dependencies.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_radius.dart';
 import '../../core/theme/app_text_styles.dart';
 import '../bloc/auth/auth_cubit.dart';
 import '../bloc/nutritionist/nutritionist_cubit.dart';
+import '../widgets/spec_ui.dart';
 
 import '../../l10n/l10n.dart';
 
@@ -97,6 +99,18 @@ class _PlanPreparingScreenState extends State<PlanPreparingScreen>
     _enter.dispose();
     _loop.dispose();
     super.dispose();
+  }
+
+  Future<void> _openWhatsApp(Uri uri) async {
+    var opened = false;
+    try {
+      opened = await launchUrl(uri, mode: LaunchMode.externalApplication);
+    } catch (_) {
+      opened = false;
+    }
+    if (!opened && mounted) {
+      showSpecSnack(context, context.l10n.linkCouldNotOpen, error: true);
+    }
   }
 
   void _goNext() {
@@ -258,15 +272,25 @@ class _PlanPreparingScreenState extends State<PlanPreparingScreen>
                           ),
                         ],
                       ),
-                      const SizedBox(height: 14),
-                      _ShimmerButton(
-                        label: context.l10n.planPreparingContactWhatsApp,
-                        icon: Icons.support_agent_rounded,
-                        loop: _loop,
-                        onPressed: () {
-                          // TODO: افتحي واتساب عبر url_launcher (wa.me/<number>)
-                        },
-                      ),
+                      // The nutritionist's WhatsApp (9.1). Left out until
+                      // the profile has a number.
+                      Builder(builder: (context) {
+                        final whatsapp = context
+                            .watch<NutritionistCubit>()
+                            .state
+                            .dataOrNull
+                            ?.whatsappUri;
+                        if (whatsapp == null) return const SizedBox.shrink();
+                        return Padding(
+                          padding: const EdgeInsets.only(top: 14),
+                          child: _ShimmerButton(
+                            label: context.l10n.planPreparingContactWhatsApp,
+                            icon: Icons.support_agent_rounded,
+                            loop: _loop,
+                            onPressed: () => _openWhatsApp(whatsapp),
+                          ),
+                        );
+                      }),
                       const SizedBox(height: 12),
                       Center(
                         child: Text(

@@ -8,6 +8,8 @@ import '../widgets/app_header_bar.dart' show AppHeaderBar;
 import '../../core/navigation/logout_flow.dart';
 
 import '../widgets/directional_icon.dart';
+import '../widgets/external_link.dart';
+import '../widgets/privacy_policy.dart';
 import '../../l10n/l10n.dart';
 
 /// حول التطبيق — هوية التطبيق، قائمة الشفافية والمعايير الطبية،
@@ -463,18 +465,23 @@ class _LegalItem {
   final String title;
   final String subtitle;
 
+  /// What the row opens. Null: nothing yet, so the row shows no arrow.
+  final void Function(BuildContext context)? open;
+
   const _LegalItem({
     required this.icon,
     required this.iconColor,
     required this.tint,
     required this.title,
     required this.subtitle,
+    this.open,
   });
 }
 
 /// بطاقة واحدة تضم صفوف الشفافية والخصوصية بينها فواصل.
 class _LegalCard extends StatelessWidget {
   const _LegalCard();
+
 
   static List<_LegalItem> _items(AppLocalizations l10n) => [
         _LegalItem(
@@ -483,6 +490,8 @@ class _LegalCard extends StatelessWidget {
           tint: const Color(0xFFE3F5F7),
           title: l10n.aboutPrivacyPolicyTitle,
           subtitle: l10n.aboutPrivacyPolicySubtitle,
+          // `policy_url` from GET /me/consent (API guide 4).
+          open: openPrivacyPolicy,
         ),
         _LegalItem(
           icon: Icons.description_outlined,
@@ -497,6 +506,7 @@ class _LegalCard extends StatelessWidget {
           tint: const Color(0xFFE0F6EC),
           title: l10n.aboutLicensesTitle,
           subtitle: l10n.aboutLicensesSubtitle,
+          open: (context) => showLicensePage(context: context),
         ),
         _LegalItem(
           icon: Icons.headset_mic_outlined,
@@ -504,6 +514,8 @@ class _LegalCard extends StatelessWidget {
           tint: const Color(0xFFECEAFA),
           title: l10n.aboutSupportTitle,
           subtitle: l10n.aboutSupportSubtitle,
+          // Support is the nutritionist, on WhatsApp (9.1).
+          open: openNutritionistWhatsApp,
         ),
       ];
 
@@ -541,7 +553,8 @@ class _LegalRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    final open = item.open;
+    final row = Padding(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 13),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -578,21 +591,25 @@ class _LegalRow extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(width: 8),
-          Icon(
-            directionalIcon(context,
-                rtl: Icons.chevron_left_rounded,
-                ltr: Icons.chevron_right_rounded),
-            color: AppColors.textSecondary,
-            size: 20,
-          ),
+          if (open != null) ...[
+            const SizedBox(width: 8),
+            Icon(
+              directionalIcon(context,
+                  rtl: Icons.chevron_left_rounded,
+                  ltr: Icons.chevron_right_rounded),
+              color: AppColors.textSecondary,
+              size: 20,
+            ),
+          ],
         ],
       ),
     );
+    if (open == null) return row;
+    return InkWell(onTap: () => open(context), child: row);
   }
 }
 
-/// بطاقة "حماية صحية قياسية" بخلفية لافندر فاتحة.
+/// بطاقة "حماية بياناتك" بخلفية لافندر فاتحة.
 class _StandardProtectionCard extends StatelessWidget {
   const _StandardProtectionCard();
 

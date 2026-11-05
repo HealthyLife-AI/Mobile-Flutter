@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../core/di/app_dependencies.dart';
+import '../../core/errors/failure.dart';
 import '../../core/navigation/app_page_route.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_radius.dart';
@@ -14,6 +15,7 @@ import '../../l10n/l10n.dart';
 import '../bloc/measurements/measurements_cubit.dart';
 import '../bloc/nutritionist/nutritionist_cubit.dart';
 import '../widgets/app_header_bar.dart';
+import '../widgets/confirm_action_sheet.dart';
 import '../widgets/gradient_cta_button.dart';
 import '../widgets/load_error_view.dart';
 import '../widgets/segmented_sliding_tabs.dart';
@@ -332,6 +334,10 @@ class _MeasurementsViewState extends State<_MeasurementsView> {
             ],
           ),
         ),
+        if (snapshot.savedEntries.isNotEmpty) ...[
+          const SizedBox(height: 18),
+          _ReadingsHistory(readings: snapshot.savedEntries),
+        ],
         const SizedBox(height: 20),
         GradientCtaButton(
           label: l10n.measurementsLogDaily,
@@ -345,6 +351,104 @@ class _MeasurementsViewState extends State<_MeasurementsView> {
           ),
         ),
       ],
+    );
+  }
+}
+
+/// The newest readings, clinic and the patient's own (7.2). The patient's own
+/// can be deleted while the server allows it (7.3); a clinic reading cannot.
+class _ReadingsHistory extends StatelessWidget {
+  const _ReadingsHistory({required this.readings});
+
+  /// How many of the newest readings are listed.
+  static const int _shown = 10;
+
+  /// Oldest first, as the snapshot keeps them.
+  final List<MeasurementEntry> readings;
+
+  Future<void> _delete(BuildContext context, MeasurementEntry entry) async {
+    final l10n = context.l10n;
+    final cubit = context.read<MeasurementsCubit>();
+    final changes = context.read<AppDependencies>().measurementChanges;
+    final messenger = ScaffoldMessenger.of(context);
+    final confirmed = await ConfirmActionSheet.show(
+      context,
+      icon: Icons.delete_outline_rounded,
+      title: l10n.measurementsDeleteConfirmTitle,
+      message: l10n.measurementsDeleteConfirmBody,
+      confirmLabel: l10n.measurementsDeleteReading,
+    );
+    if (confirmed != true) return;
+    final failure = await cubit.delete(entry);
+    // The measurement schedule and the reminders follow the readings.
+    if (failure == null) changes.notify();
+    messenger
+      ..hideCurrentSnackBar()
+      ..showSnackBar(SnackBar(
+        behavior: SnackBarBehavior.floating,
+        backgroundColor: failure == null ? null : AppColors.danger,
+        content: Text(switch (failure) {
+          null => l10n.measurementsDeleted,
+          ApiFailure(code: 'reading_not_deletable') =>
+            l10n.measurementsDeleteClinic,
+          ApiFailure(code: 'log_locked') => l10n.entryEditLocked,
+          NetworkFailure() => l10n.measurementsDeleteOffline,
+          _ => l10n.measurementsDeleteFailed,
+        }),
+      ));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    final now = DateTime.now();
+    final newest = readings.reversed.take(_shown);
+    return Container(
+      padding: const EdgeInsets.fromLTRB(18, 18, 8, 10),
+      decoration: BoxDecoration(
+          color: AppColors.surface,
+          borderRadius: BorderRadius.circular(AppRadius.card)),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text(l10n.measurementsHistoryTitle, style: AppTextStyles.cardTitle),
+          const SizedBox(height: 6),
+          for (final entry in newest)
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 4),
+              child: Row(children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        entry.weightKg == null
+                            ? '—'
+                            : l10n.commonKgValue(context.localizeDigits(
+                                entry.weightKg!.toStringAsFixed(1))),
+                        style: AppTextStyles.body,
+                      ),
+                      Text(
+                        '${context.localizeDigits(numericDate(entry.recordedAt))}'
+                        ' · ${entry.pending ? l10n.homeAwaitingSync : entry.source == ReadingSource.clinicAnalyser ? l10n.measurementsClinicReading : l10n.measurementsHomeReading}',
+                        style: AppTextStyles.caption,
+                      ),
+                    ],
+                  ),
+                ),
+                if (entry.canDeleteAt(now))
+                  IconButton(
+                    tooltip: l10n.measurementsDeleteReading,
+                    onPressed: () => _delete(context, entry),
+                    icon: const Icon(Icons.delete_outline_rounded,
+                        size: 22, color: AppColors.textSecondary),
+                  )
+                else
+                  const SizedBox(height: 48),
+              ]),
+            ),
+        ],
+      ),
     );
   }
 }

@@ -77,6 +77,26 @@ class MeasurementRepositoryImpl implements MeasurementRepository, PatientCache {
   }
 
   @override
+  Future<Result<MeasurementSnapshot>> deleteEntry(
+      MeasurementEntry entry) async {
+    final deleted = await guard(() async {
+      if (entry.pending) {
+        // Not on the server yet: it leaves the queue unsent (14).
+        await _queue.paused(() => _queue.removeWhere(
+            (write) => MeasurementDto.waitingId(write) == entry.id));
+        return;
+      }
+      try {
+        await _remote.delete(entry.id);
+      } on NotFoundException {
+        // The server no longer has it: deleted already.
+      }
+    });
+    if (deleted case Failed(:final failure)) return Failed(failure);
+    return getSnapshot();
+  }
+
+  @override
   Future<void> forgetPatientData() async {
     _cache = null;
     await _storage.remove(StorageKeys.measurementReadings);

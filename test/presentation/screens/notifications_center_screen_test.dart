@@ -44,6 +44,9 @@ class _FakeRepository implements NotificationRepository {
     bulk.add(ids);
     return const Success(null);
   }
+
+  @override
+  Future<Result<int?>> unreadCount() async => const Success(null);
 }
 
 void main() {

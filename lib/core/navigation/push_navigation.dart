@@ -106,6 +106,8 @@ void showPushNotice({
         content: Text(text),
         behavior: SnackBarBehavior.floating,
         duration: const Duration(seconds: 6),
+        // A notice with an action stays until dismissed unless told not to.
+        persist: false,
         action: SnackBarAction(
           label: context.l10n.commonViewDetails,
           onPressed: onOpen,

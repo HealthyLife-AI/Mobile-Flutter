@@ -64,4 +64,90 @@ class Appointment {
 
   /// Set for a video appointment only, and may be null even then.
   final String? meetingLink;
+
+  /// Still on: booked and not started. Only then can it be changed or
+  /// cancelled (12.3).
+  bool isOpenAt(DateTime now) =>
+      status == AppointmentStatus.booked && startsAt.isAfter(now);
+}
+
+/// The kinds a patient can book (12.1), in the order the screen offers them.
+const List<AppointmentType> bookableAppointmentTypes = [
+  AppointmentType.followUp,
+  AppointmentType.resultsReview,
+  AppointmentType.quickConsult,
+];
+
+/// The topics a booking can name, as the server names them (12.2).
+const List<String> appointmentTopics = [
+  'weight',
+  'meals',
+  'plan_change',
+  'results',
+  'medications',
+  'other',
+];
+
+/// At most this many topics, and this long a note (12.2).
+const int maxAppointmentTopics = 6;
+const int maxAppointmentNoteLength = 300;
+
+/// The free times for one kind of appointment, from 12 hours to 30 days ahead
+/// (12.1). No days means the nutritionist has set no availability.
+class AppointmentSlots {
+  const AppointmentSlots({
+    required this.type,
+    required this.durationMinutes,
+    required this.days,
+    this.videoAvailable = false,
+  });
+
+  final AppointmentType type;
+  final int durationMinutes;
+  final List<SlotDay> days;
+
+  /// False hides the video channel.
+  final bool videoAvailable;
+
+  bool get isEmpty => days.every((day) => day.times.isEmpty);
+}
+
+/// One day of free times, as the clinic counts days.
+class SlotDay {
+  const SlotDay({required this.date, required this.times});
+
+  /// The clinic's calendar day, at local midnight.
+  final DateTime date;
+  final List<AppointmentSlot> times;
+}
+
+/// One free start time.
+class AppointmentSlot {
+  const AppointmentSlot({required this.startsAt, required this.value});
+
+  /// The start, in the device's own time.
+  final DateTime startsAt;
+
+  /// The time exactly as the server sent it. Booking sends this string back
+  /// (12.2), so the clinic's offset is kept.
+  final String value;
+}
+
+/// What the patient asks for when booking (12.2).
+class AppointmentRequest {
+  const AppointmentRequest({
+    required this.type,
+    required this.slot,
+    required this.channel,
+    this.topics = const [],
+    this.note,
+  });
+
+  final AppointmentType type;
+  final AppointmentSlot slot;
+  final AppointmentChannel channel;
+
+  /// Server names from [appointmentTopics], at most [maxAppointmentTopics].
+  final List<String> topics;
+  final String? note;
 }

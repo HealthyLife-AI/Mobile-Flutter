@@ -1,0 +1,159 @@
+﻿Analyzing healthylife...                                        
+
+   info - Dangling library doc comment - lib\domain\entities\appointment_entities.dart:3:1 - dangling_library_doc_comments
+   info - Dangling library doc comment - lib\domain\entities\progress_entities.dart:1:1 - dangling_library_doc_comments
+warning - A value for optional parameter 'key' isn't ever given - lib\presentation\screens\change_request_forms.dart:482:11 - unused_element_parameter
+warning - A value for optional parameter 'key' isn't ever given - lib\presentation\screens\change_request_forms.dart:528:31 - unused_element_parameter
+warning - A value for optional parameter 'key' isn't ever given - lib\presentation\screens\change_request_forms.dart:561:11 - unused_element_parameter
+warning - A value for optional parameter 'key' isn't ever given - lib\presentation\screens\change_request_forms.dart:591:11 - unused_element_parameter
+   info - 'value' is deprecated and shouldn't be used. Use initialValue instead. This will set the initial value for the form field. This feature was deprecated after v3.33.0-1.0.pre - lib\presentation\screens\change_request_forms.dart:610:9 - deprecated_member_use
+warning - A value for optional parameter 'key' isn't ever given - lib\presentation\screens\change_request_forms.dart:625:11 - unused_element_parameter
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\screens\daily_log_screen.dart:588:52 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\screens\daily_log_screen.dart:589:52 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\screens\daily_log_screen.dart:590:52 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\screens\daily_log_screen.dart:1037:44 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\screens\daily_log_screen.dart:1117:33 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\screens\first_measurement_screen.dart:103:33 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\screens\first_measurement_screen.dart:266:49 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\screens\first_measurement_screen.dart:282:41 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\screens\first_measurement_screen.dart:406:42 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\screens\first_measurement_screen.dart:410:48 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\screens\first_measurement_screen.dart:568:56 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\screens\first_measurement_screen.dart:598:58 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\screens\first_measurement_screen.dart:651:56 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\screens\first_measurement_screen.dart:739:42 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\screens\first_measurement_screen.dart:784:52 - deprecated_member_use
+warning - A value for optional parameter 'key' isn't ever given - lib\presentation\screens\food_search_screen.dart:76:32 - unused_element_parameter
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\screens\food_search_screen.dart:345:42 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\screens\food_search_screen.dart:381:53 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\screens\food_search_screen.dart:407:50 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\screens\food_search_screen.dart:478:39 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\screens\food_search_screen.dart:587:54 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\screens\food_search_screen.dart:744:47 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\screens\food_search_screen.dart:924:53 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\screens\food_search_screen.dart:961:42 - deprecated_member_use
+   info - Use 'const' with the constructor to improve performance - lib\presentation\screens\health_sync_screen.dart:43:23 - prefer_const_constructors
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\screens\log_meal_intro_screen.dart:180:50 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\screens\log_meal_intro_screen.dart:249:42 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\screens\log_meal_intro_screen.dart:252:54 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\screens\log_meal_intro_screen.dart:258:48 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\screens\log_meal_intro_screen.dart:396:39 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\screens\log_meal_intro_screen.dart:557:42 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\screens\log_meal_intro_screen.dart:558:42 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\screens\log_meal_intro_screen.dart:559:42 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\screens\meal_log_success_screen.dart:257:40 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\screens\meal_log_success_screen.dart:333:48 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\screens\meal_log_success_screen.dart:402:35 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\screens\meal_log_success_screen.dart:415:59 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\screens\meal_log_success_screen.dart:699:14 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\screens\meal_log_success_screen.dart:737:16 - deprecated_member_use
+   info - Statements in an if should be enclosed in a block - lib\presentation\screens\medical_reports_screens.dart:565:9 - curly_braces_in_flow_control_structures
+   info - Statements in an if should be enclosed in a block - lib\presentation\screens\medical_reports_screens.dart:587:9 - curly_braces_in_flow_control_structures
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\screens\quantity_selector_screen.dart:142:35 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\screens\quantity_selector_screen.dart:246:51 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\screens\quantity_selector_screen.dart:340:35 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\screens\quantity_selector_screen.dart:485:56 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\screens\quantity_selector_screen.dart:568:47 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\screens\quantity_selector_screen.dart:598:40 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\screens\quantity_selector_screen.dart:610:42 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\screens\quantity_selector_screen.dart:614:54 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\screens\quantity_selector_screen.dart:734:56 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\screens\quantity_selector_screen.dart:799:50 - deprecated_member_use
+warning - Unused import: 'package:healthylife_ai/core/navigation/push_destination.dart' - test\core\navigation\foreground_push_test.dart:3:8 - unused_import
+warning - Unused import: 'package:healthylife_ai/core/navigation/push_destination.dart' - test\core\navigation\push_tap_router_test.dart:4:8 - unused_import
+   info - Use 'const' with the constructor to improve performance - test\core\network\auth_interceptor_test.dart:182:19 - prefer_const_constructors
+   info - Use 'const' with the constructor to improve performance - test\core\network\token_refresh_coordinator_test.dart:100:15 - prefer_const_constructors
+   info - Use 'const' with the constructor to improve performance - test\core\network\token_refresh_coordinator_test.dart:115:26 - prefer_const_constructors
+   info - Use 'const' with the constructor to improve performance - test\core\network\token_refresh_coordinator_test.dart:136:26 - prefer_const_constructors
+   info - Use 'const' with the constructor to improve performance - test\core\network\token_refresh_coordinator_test.dart:157:17 - prefer_const_constructors
+   info - Use 'const' with the constructor to improve performance - test\core\sync\offline_queue_test.dart:83:14 - prefer_const_constructors
+   info - Use 'const' with the constructor to improve performance - test\core\sync\offline_queue_test.dart:109:7 - prefer_const_constructors
+   info - Use 'const' with the constructor to improve performance - test\core\sync\offline_queue_test.dart:130:7 - prefer_const_constructors
+   info - Use 'const' with the constructor to improve performance - test\core\sync\offline_queue_test.dart:152:21 - prefer_const_constructors
+   info - Use 'const' with the constructor to improve performance - test\core\sync\offline_queue_test.dart:175:7 - prefer_const_constructors
+   info - Use 'const' with the constructor to improve performance - test\core\sync\offline_queue_test.dart:196:20 - prefer_const_constructors
+   info - Use 'const' with the constructor to improve performance - test\core\sync\offline_queue_test.dart:212:20 - prefer_const_constructors
+   info - Use 'const' with the constructor to improve performance - test\core\sync\offline_queue_test.dart:225:7 - prefer_const_constructors
+   info - Use 'const' with the constructor to improve performance - test\core\sync\offline_queue_test.dart:239:9 - prefer_const_constructors
+   info - Use 'const' with the constructor to improve performance - test\core\sync\offline_queue_test.dart:252:14 - prefer_const_constructors
+   info - Use 'const' with the constructor to improve performance - test\core\sync\offline_queue_test.dart:263:20 - prefer_const_constructors
+   info - Use 'const' with the constructor to improve performance - test\core\sync\offline_queue_test.dart:274:20 - prefer_const_constructors
+   info - Use 'const' with the constructor to improve performance - test\core\sync\offline_queue_test.dart:286:20 - prefer_const_constructors
+   info - Use 'const' with the constructor to improve performance - test\core\sync\offline_queue_test.dart:290:20 - prefer_const_constructors
+   info - Use 'const' with the constructor to improve performance - test\core\sync\sync_policy_test.dart:46:9 - prefer_const_constructors
+   info - Use 'const' with the constructor to improve performance - test\core\sync\sync_policy_test.dart:58:9 - prefer_const_constructors
+   info - Use 'const' with the constructor to improve performance - test\data\food_repository_test.dart:100:18 - prefer_const_constructors
+   info - Use 'const' with the constructor to improve performance - test\data\services\notification_preferences_sync_test.dart:63:7 - prefer_const_constructors
+   info - Use 'const' with the constructor to improve performance - test\data\services\notification_preferences_sync_test.dart:66:59 - prefer_const_constructors
+   info - Use 'const' with the constructor to improve performance - test\data\services\notification_preferences_sync_test.dart:180:7 - prefer_const_constructors
+   info - Use 'const' with the constructor to improve performance - test\data\services\notification_preferences_sync_test.dart:214:7 - prefer_const_constructors
+   info - Use 'const' with the constructor to improve performance - test\data\services\notification_preferences_sync_test.dart:281:9 - prefer_const_constructors
+   info - Use 'const' with the constructor to improve performance - test\domain\save_measurement_use_case_test.dart:28:12 - prefer_const_constructors
+   info - Use 'const' with the constructor to improve performance - test\presentation\bloc\appointments_cubit_test.dart:97:22 - prefer_const_constructors
+   info - Use 'const' with the constructor to improve performance - test\presentation\bloc\auth\auth_cubit_test.dart:16:36 - prefer_const_constructors
+   info - Use 'const' with the constructor to improve performance - test\presentation\bloc\auth\auth_cubit_test.dart:17:26 - prefer_const_constructors
+   info - Use 'const' with the constructor to improve performance - test\presentation\bloc\auth\auth_cubit_test.dart:18:28 - prefer_const_constructors
+   info - Use 'const' with the constructor to improve performance - test\presentation\bloc\auth\auth_cubit_test.dart:19:35 - prefer_const_constructors
+   info - Use 'const' with the constructor to improve performance - test\presentation\bloc\auth\auth_cubit_test.dart:19:43 - prefer_const_constructors
+   info - Use 'const' with the constructor to improve performance - test\presentation\bloc\auth\auth_cubit_test.dart:20:40 - prefer_const_constructors
+   info - Use 'const' with the constructor to improve performance - test\presentation\bloc\auth\auth_cubit_test.dart:22:7 - prefer_const_constructors
+   info - Use 'const' with the constructor to improve performance - test\presentation\bloc\auth\auth_cubit_test.dart:22:15 - prefer_const_constructors
+   info - Use 'const' with the constructor to improve performance - test\presentation\bloc\auth\auth_cubit_test.dart:23:46 - prefer_const_constructors
+   info - Use 'const' with the constructor to improve performance - test\presentation\bloc\auth\auth_cubit_test.dart:24:31 - prefer_const_constructors
+   info - Use 'const' with the constructor to improve performance - test\presentation\bloc\auth\auth_cubit_test.dart:25:32 - prefer_const_constructors
+   info - Use 'const' with the constructor to improve performance - test\presentation\bloc\auth\auth_cubit_test.dart:26:29 - prefer_const_constructors
+   info - Invalid use of a private type in a public API - test\presentation\bloc\auth\auth_cubit_test.dart:158:28 - library_private_types_in_public_api
+   info - Use 'const' with the constructor to improve performance - test\presentation\bloc\auth\auth_cubit_test.dart:186:24 - prefer_const_constructors
+   info - Use 'const' with the constructor to improve performance - test\presentation\bloc\auth\auth_cubit_test.dart:198:24 - prefer_const_constructors
+   info - Use 'const' with the constructor to improve performance - test\presentation\bloc\auth\auth_cubit_test.dart:263:24 - prefer_const_constructors
+   info - Use 'const' with the constructor to improve performance - test\presentation\bloc\auth\auth_cubit_test.dart:263:31 - prefer_const_constructors
+   info - Use 'const' with the constructor to improve performance - test\presentation\bloc\auth\auth_cubit_test.dart:289:29 - prefer_const_constructors
+   info - Use 'const' with the constructor to improve performance - test\presentation\bloc\auth\auth_cubit_test.dart:375:21 - prefer_const_constructors
+   info - Use 'const' literals as arguments to constructors of '@immutable' classes - test\presentation\bloc\auth\auth_cubit_test.dart:377:15 - prefer_const_literals_to_create_immutables
+   info - Use 'const' with the constructor to improve performance - test\presentation\bloc\auth\auth_cubit_test.dart:388:21 - prefer_const_constructors
+   info - Use 'const' literals as arguments to constructors of '@immutable' classes - test\presentation\bloc\auth\auth_cubit_test.dart:390:15 - prefer_const_literals_to_create_immutables
+   info - Use 'const' with the constructor to improve performance - test\presentation\bloc\auth\auth_cubit_test.dart:400:21 - prefer_const_constructors
+   info - Use 'const' literals as arguments to constructors of '@immutable' classes - test\presentation\bloc\auth\auth_cubit_test.dart:402:15 - prefer_const_literals_to_create_immutables
+   info - Use 'const' with the constructor to improve performance - test\presentation\bloc\auth\auth_cubit_test.dart:470:29 - prefer_const_constructors
+   info - Use 'const' with the constructor to improve performance - test\presentation\bloc\auth\auth_cubit_test.dart:480:30 - prefer_const_constructors
+   info - Use 'const' with the constructor to improve performance - test\presentation\bloc\auth\auth_cubit_test.dart:495:29 - prefer_const_constructors
+   info - Use 'const' with the constructor to improve performance - test\presentation\bloc\auth\auth_cubit_test.dart:495:37 - prefer_const_constructors
+   info - Use 'const' with the constructor to improve performance - test\presentation\bloc\auth\auth_cubit_test.dart:512:29 - prefer_const_constructors
+   info - Use 'const' with the constructor to improve performance - test\presentation\bloc\auth\auth_cubit_test.dart:512:36 - prefer_const_constructors
+   info - Use 'const' with the constructor to improve performance - test\presentation\bloc\food_search_cubit_test.dart:69:38 - prefer_const_constructors
+   info - Use 'const' with the constructor to improve performance - test\presentation\bloc\food_search_cubit_test.dart:69:46 - prefer_const_constructors
+   info - Use 'const' with the constructor to improve performance - test\presentation\bloc\food_search_cubit_test.dart:96:49 - prefer_const_constructors
+   info - Use 'const' with the constructor to improve performance - test\presentation\bloc\food_search_cubit_test.dart:100:9 - prefer_const_constructors
+   info - Use 'const' with the constructor to improve performance - test\presentation\bloc\food_search_cubit_test.dart:118:49 - prefer_const_constructors
+   info - Use 'const' with the constructor to improve performance - test\presentation\bloc\food_search_cubit_test.dart:136:21 - prefer_const_constructors
+   info - Use 'const' with the constructor to improve performance - test\presentation\bloc\health_profile_cubit_test.dart:42:59 - prefer_const_constructors
+   info - Use 'const' with the constructor to improve performance - test\presentation\bloc\health_profile_cubit_test.dart:54:21 - prefer_const_constructors
+   info - Use 'const' with the constructor to improve performance - test\presentation\bloc\health_profile_cubit_test.dart:55:21 - prefer_const_constructors
+   info - Use 'const' with the constructor to improve performance - test\presentation\bloc\health_profile_cubit_test.dart:69:21 - prefer_const_constructors
+   info - Use 'const' with the constructor to improve performance - test\presentation\bloc\health_profile_cubit_test.dart:81:21 - prefer_const_constructors
+   info - Use 'const' with the constructor to improve performance - test\presentation\bloc\health_profile_cubit_test.dart:82:21 - prefer_const_constructors
+   info - Use 'const' with the constructor to improve performance - test\presentation\bloc\health_profile_cubit_test.dart:101:21 - prefer_const_constructors
+   info - Use 'const' with the constructor to improve performance - test\presentation\bloc\health_profile_cubit_test.dart:121:21 - prefer_const_constructors
+   info - Use 'const' with the constructor to improve performance - test\presentation\bloc\health_profile_cubit_test.dart:122:21 - prefer_const_constructors
+   info - Use 'const' with the constructor to improve performance - test\presentation\bloc\nutritionist_cubit_test.dart:21:59 - prefer_const_constructors
+   info - Use 'const' with the constructor to improve performance - test\presentation\bloc\nutritionist_cubit_test.dart:33:21 - prefer_const_constructors
+   info - Use 'const' with the constructor to improve performance - test\presentation\bloc\nutritionist_cubit_test.dart:34:21 - prefer_const_constructors
+   info - Use 'const' with the constructor to improve performance - test\presentation\bloc\nutritionist_cubit_test.dart:48:21 - prefer_const_constructors
+   info - Use 'const' with the constructor to improve performance - test\presentation\bloc\progress_cubit_test.dart:73:22 - prefer_const_constructors
+   info - Use 'const' with the constructor to improve performance - test\presentation\bloc\reviews_cubit_test.dart:57:19 - prefer_const_constructors
+   info - Use 'const' with the constructor to improve performance - test\presentation\bloc\reviews_cubit_test.dart:120:9 - prefer_const_constructors
+   info - Use 'const' with the constructor to improve performance - test\presentation\screens\delete_account_screen_test.dart:23:31 - prefer_const_constructors
+   info - Invalid use of a private type in a public API - test\presentation\screens\delete_account_screen_test.dart:94:51 - library_private_types_in_public_api
+   info - Use 'const' with the constructor to improve performance - test\presentation\screens\delete_account_screen_test.dart:174:24 - prefer_const_constructors
+   info - Use 'const' with the constructor to improve performance - test\presentation\screens\delete_account_screen_test.dart:190:24 - prefer_const_constructors
+   info - Use 'const' with the constructor to improve performance - test\presentation\screens\delete_account_screen_test.dart:199:46 - prefer_const_constructors
+   info - Use 'const' with the constructor to improve performance - test\presentation\screens\delete_account_screen_test.dart:209:24 - prefer_const_constructors
+   info - The import of 'package:flutter/services.dart' is unnecessary because all of the used elements are also provided by the import of 'package:flutter/material.dart' - test\screen_layout_test.dart:2:8 - unnecessary_import
+
+flutter : 149 issues found. (ran in 85.6s)
+At line:1 char:1
++ flutter analyze 2>&1 | Out-File -Encoding utf8 analyze_current.txt; " ...
++ ~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (149 issues found. (ran in 85.6s):String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 

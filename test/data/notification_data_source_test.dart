@@ -76,6 +76,8 @@ NotificationEntry _at(String id, DateTime? at) => NotificationEntry(
     );
 
 void main() {
+  _unreadCountTests();
+
   group('NotificationDto', () {
     test('reads a server row', () {
       final entry = NotificationDto.fromJson(_row(41))!;
@@ -237,5 +239,21 @@ void main() {
         ['c'],
       ]);
     });
+  });
+}
+
+void _unreadCountTests() {
+  test('the unread count is read from its own endpoint (10.2)', () async {
+    final api = _InboxApi({'unread': 3});
+
+    expect(await HttpNotificationDataSource(api).unreadCount(), 3);
+    expect(api.gets.single, 'me/notifications/unread-count');
+  });
+
+  test('an unread count that is not a number fails the read', () async {
+    final api = _InboxApi({'unread': 'many'});
+
+    expect(HttpNotificationDataSource(api).unreadCount(),
+        throwsA(isA<ParseException>()));
   });
 }

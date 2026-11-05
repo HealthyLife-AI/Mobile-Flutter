@@ -3,7 +3,9 @@ import 'package:healthylife_ai/core/errors/app_exception.dart';
 import 'package:healthylife_ai/core/network/api_client.dart';
 import 'package:healthylife_ai/core/storage/storage_service.dart';
 import 'package:healthylife_ai/core/sync/offline_queue.dart';
+import 'package:healthylife_ai/core/errors/failure.dart';
 import 'package:healthylife_ai/data/datasources/measurement_remote_data_source.dart';
+import 'package:healthylife_ai/data/models/measurement_dto.dart';
 import 'package:healthylife_ai/data/repositories/measurement_repository_impl.dart';
 import 'package:healthylife_ai/domain/entities/measurement_entities.dart';
 
@@ -43,9 +45,17 @@ class _ScriptedApi implements ApiClient {
   Future<dynamic> patch(String path, {Object? body, bool auth = true}) =>
       throw UnimplementedError(path);
 
+  /// Each DELETE takes the next scripted failure, or succeeds.
+  final List<AppException?> deleteAnswers = [];
+  final List<String> deletes = [];
+
   @override
-  Future<dynamic> delete(String path, {Object? body, bool auth = true}) =>
-      throw UnimplementedError(path);
+  Future<dynamic> delete(String path, {Object? body, bool auth = true}) async {
+    deletes.add(path);
+    final next = deleteAnswers.isEmpty ? null : deleteAnswers.removeAt(0);
+    if (next != null) throw next;
+    return null;
+  }
 }
 
 /// One reading as the API returns it (7.1, 7.2).
@@ -218,5 +228,69 @@ void main() {
     expect(await storage.containsKey(StorageKeys.measurementReadings), isFalse);
     api.gets.add(_offline);
     expect((await repository.getSnapshot()).isSuccess, isFalse);
+  });
+
+  group('deleting a reading (7.3)', () {
+    MeasurementEntry own(String id, {DateTime? until}) => MeasurementEntry(
+        id: id, recordedAt: DateTime(2026, 10, 6), weightKg: 80,
+        deletableUntil: until);
+
+    test('deletable_until is read, and only the patient\'s own can go', () {
+      final read = MeasurementDto.readingFromJson({
+        ..._reading(9, '2026-10-06', weight: 80),
+        'deletable_until': '2026-10-13T08:00:12+00:00',
+      });
+      expect(read.deletableUntil, DateTime.utc(2026, 10, 13, 8, 0, 12));
+      expect(read.canDeleteAt(DateTime.utc(2026, 10, 13, 8)), isTrue);
+      expect(read.canDeleteAt(DateTime.utc(2026, 10, 13, 9)), isFalse);
+
+      final clinic = MeasurementDto.readingFromJson(
+          _reading(10, '2026-10-06', source: 'clinic-analyser', weight: 80));
+      expect(clinic.canDeleteAt(now), isFalse);
+    });
+
+    test('a saved reading is deleted on the server and read again', () async {
+      api.gets.add(<Object>[]);
+
+      final result = await repository.deleteEntry(own('9'));
+
+      expect(api.deletes, ['me/measurements/9']);
+      expect(result.valueOrNull?.isEmpty, isTrue);
+    });
+
+    test('a reading still waiting is taken out of the queue, unsent',
+        () async {
+      api.posts.add(_offline);
+      api.gets.add(_offline);
+      final saved = await repository.saveEntry(own('local'));
+      final waiting = saved.valueOrNull!.savedEntries.single;
+      expect(waiting.pending, isTrue);
+
+      api.gets.add(_offline);
+      await repository.deleteEntry(waiting);
+
+      expect(api.deletes, isEmpty);
+      expect(await queue.pendingCount(), 0);
+    });
+
+    test('a reading the server no longer has counts as deleted', () async {
+      api.deleteAnswers.add(const NotFoundException('gone'));
+      api.gets.add(<Object>[]);
+
+      final result = await repository.deleteEntry(own('9'));
+
+      expect(result.isSuccess, isTrue);
+    });
+
+    test('a refusal is returned, and nothing is read again', () async {
+      api.deleteAnswers.add(const ApiException('clinic',
+          statusCode: 403, code: 'reading_not_deletable'));
+
+      final result = await repository.deleteEntry(own('9'));
+
+      expect((result.failureOrNull as ApiFailure?)?.code,
+          'reading_not_deletable');
+      expect(api.gets, isEmpty, reason: 'no GET was scripted or needed');
+    });
   });
 }

@@ -23,15 +23,28 @@ class AuthRepositoryImpl implements AuthRepository {
     required SessionLocalDataSource local,
     required TokenRefreshCoordinator coordinator,
     required PushRegistrar push,
+    Future<void> Function()? onAccountDeleted,
+    Future<void> Function(ConsentStatus consent)? onConsent,
   })  : _remote = remote,
         _local = local,
         _coordinator = coordinator,
-        _push = push;
+        _push = push,
+        _onAccountDeleted = onAccountDeleted,
+        _onConsent = onConsent;
 
   final AuthRemoteDataSource _remote;
   final SessionLocalDataSource _local;
   final TokenRefreshCoordinator _coordinator;
   final PushRegistrar _push;
+
+  /// Removes what the device keeps after a session ends, such as the
+  /// forgot-password contact (3.6). Runs only once the server has deleted the
+  /// account, and must not throw.
+  final Future<void> Function()? _onAccountDeleted;
+
+  /// Told each consent status the server sends, so the policy's address is
+  /// kept (API guide 4). Must not throw.
+  final Future<void> Function(ConsentStatus consent)? _onConsent;
 
   @override
   Future<Result<StoredSession?>> readSession() =>
@@ -78,16 +91,21 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<Result<ConsentStatus>> getConsent() => guard(
-        () async => AuthMapper.consentFromJson(await _remote.consent()),
+        () async => _told(AuthMapper.consentFromJson(await _remote.consent())),
         context: 'AuthRepository.getConsent',
       );
 
   @override
   Future<Result<ConsentStatus>> acceptConsent(String version) => guard(
-        () async =>
-            AuthMapper.consentFromJson(await _remote.acceptConsent(version)),
+        () async => _told(
+            AuthMapper.consentFromJson(await _remote.acceptConsent(version))),
         context: 'AuthRepository.acceptConsent',
       );
+
+  Future<ConsentStatus> _told(ConsentStatus consent) async {
+    await _onConsent?.call(consent);
+    return consent;
+  }
 
   @override
   Future<Result<PatientUser>> changePassword({
@@ -116,6 +134,7 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<Result<void>> deleteAccount({required String password}) =>
       guard(() async {
         await _remote.deleteAccount(password);
+        await _onAccountDeleted?.call();
         // The account is gone on the server. A local clear that fails must not
         // turn a finished deletion into an error; the cleared memory copy
         // already signs the patient out.

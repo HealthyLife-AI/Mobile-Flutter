@@ -69,6 +69,26 @@ class MeasurementsCubit extends Cubit<MeasurementsState> {
     );
   }
 
+  /// Deletes one of the patient's own readings (7.3). On success the screen
+  /// shows the readings left; a failure is returned, and what is on screen
+  /// stays.
+  Future<Failure?> delete(MeasurementEntry entry) async {
+    final result = await _repository.deleteEntry(entry);
+    if (isClosed) return result.failureOrNull;
+    final snapshot = result.valueOrNull;
+    if (snapshot != null) {
+      emit(state.copyWith(
+        status: snapshot.isEmpty
+            ? MeasurementsStatus.empty
+            : MeasurementsStatus.loaded,
+        snapshot: snapshot,
+        measurementDue:
+            !snapshot.isEmpty && isMeasurementDue(snapshot, now: _clock()),
+      ));
+    }
+    return result.failureOrNull;
+  }
+
   /// Drops what is on screen. Called when the session ends, so the next
   /// patient never sees the previous one's measurements.
   void reset() => emit(const MeasurementsState());

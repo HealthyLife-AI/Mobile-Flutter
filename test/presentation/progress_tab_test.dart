@@ -34,6 +34,10 @@ class _Repository implements MeasurementRepository {
   @override
   Future<Result<MeasurementSnapshot>> saveEntry(MeasurementEntry entry) =>
       throw UnimplementedError();
+
+  @override
+  Future<Result<MeasurementSnapshot>> deleteEntry(MeasurementEntry entry) =>
+      throw UnimplementedError();
 }
 
 MeasurementEntry _reading(String id, DateTime day) =>

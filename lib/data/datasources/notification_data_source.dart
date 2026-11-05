@@ -3,6 +3,7 @@ import '../../core/errors/app_exception.dart';
 import '../../core/network/api_client.dart';
 import '../../domain/entities/notification_entities.dart';
 import '../mock/notification_mock_data.dart';
+import '../models/json_read.dart';
 import '../models/notification_dto.dart';
 
 /// The notification inbox (API guide 10.2).
@@ -16,6 +17,10 @@ abstract interface class NotificationDataSource {
 
   /// `POST /me/notifications/read-all`.
   Future<void> markAllRead();
+
+  /// `GET /me/notifications/unread-count`: unread rows on every page. Null
+  /// when the source cannot tell.
+  Future<int?> unreadCount();
 }
 
 /// The inbox from the server: `GET /me/notifications?page=` (20 per page,
@@ -53,6 +58,17 @@ class HttpNotificationDataSource implements NotificationDataSource {
 
   @override
   Future<void> markAllRead() => _api.post('me/notifications/read-all');
+
+  /// `{"unread": 3}` (10.2).
+  @override
+  Future<int?> unreadCount() async {
+    final raw = await _api.get('me/notifications/unread-count');
+    final count = jsonInt(raw is Map ? raw['unread'] : null);
+    if (count == null) {
+      throw const ParseException('The unread count is not a number');
+    }
+    return count < 0 ? 0 : count;
+  }
 
   /// Rows in order, one group per local day. A row without a time joins the
   /// group before it.
@@ -105,4 +121,8 @@ class MockNotificationDataSource implements NotificationDataSource {
 
   @override
   Future<void> markAllRead() async {}
+
+  /// The demo feed is one page, so its own rows are the count.
+  @override
+  Future<int?> unreadCount() async => null;
 }

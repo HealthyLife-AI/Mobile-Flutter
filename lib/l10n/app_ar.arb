@@ -155,7 +155,7 @@
   "@aboutPrivacyPolicyTitle": {
     "description": "UI text in presentation/screens/about_app_screen.dart"
   },
-  "aboutPrivacyPolicySubtitle": "تشفير سريري عالي المستوى لملفك الغذائي",
+  "aboutPrivacyPolicySubtitle": "اقرأ السياسة المنشورة على موقعنا",
   "@aboutPrivacyPolicySubtitle": {
     "description": "UI text in presentation/screens/about_app_screen.dart"
   },
@@ -167,11 +167,11 @@
   "@aboutMedicalTermsSubtitle": {
     "description": "UI text in presentation/screens/about_app_screen.dart"
   },
-  "aboutLicensesTitle": "تراخيص الهيئة الطبية والاعتماد",
+  "aboutLicensesTitle": "تراخيص البرمجيات",
   "@aboutLicensesTitle": {
     "description": "UI text in presentation/screens/about_app_screen.dart"
   },
-  "aboutLicensesSubtitle": "سجل الامتثال الطبي الموثق رقم #A-8841",
+  "aboutLicensesSubtitle": "المكتبات مفتوحة المصدر المستخدمة في التطبيق",
   "@aboutLicensesSubtitle": {
     "description": "UI text in presentation/screens/about_app_screen.dart"
   },
@@ -179,15 +179,19 @@
   "@aboutSupportTitle": {
     "description": "UI text in presentation/screens/about_app_screen.dart"
   },
-  "aboutSupportSubtitle": "مساعدة متواصلة للاستفسارات التقنية",
+  "aboutSupportSubtitle": "تواصل مع أخصائيك عبر واتساب",
   "@aboutSupportSubtitle": {
     "description": "UI text in presentation/screens/about_app_screen.dart"
   },
-  "aboutStandardHealthProtection": "حماية صحية قياسية",
+  "aboutSupportNoNumber": "لا يوجد رقم واتساب لأخصائيك بعد.",
+  "@aboutSupportNoNumber": {
+    "description": "The support row opens the nutritionist's WhatsApp; shown when the profile has no number (API guide 9.1)."
+  },
+  "aboutStandardHealthProtection": "حماية بياناتك",
   "@aboutStandardHealthProtection": {
     "description": "UI text in presentation/screens/about_app_screen.dart"
   },
-  "aboutEncryptionNote": "بياناتك مشفرة ومحمية وفق معايير الخصوصية الصحية المعتمدة لمزامنة آمنة مع ملفك السريري.",
+  "aboutEncryptionNote": "الاتصال بين التطبيق وخوادمنا مشفّر، ونأخذ نسخة احتياطية مشفّرة يوميًا.",
   "@aboutEncryptionNote": {
     "description": "UI text in presentation/screens/about_app_screen.dart"
   },
@@ -275,7 +279,7 @@
   "@activationCta": {
     "description": "UI text in presentation/screens/activation_screen.dart"
   },
-  "activationEncryptedNote": "بياناتك الصحية مشفرة ومحمية وفق لوائح الامتثال الطبي",
+  "activationEncryptedNote": "الاتصال بين التطبيق وخوادمنا مشفّر.",
   "@activationEncryptedNote": {
     "description": "UI text in presentation/screens/activation_screen.dart"
   },
@@ -334,6 +338,46 @@
   "dailyLogMealDeleted": "تم حذف الوجبة من سجل اليوم",
   "@dailyLogMealDeleted": {
     "description": "UI text in presentation/screens/daily_log_screen.dart"
+  },
+  "entryEditLocked": "مرّ أكثر من 7 أيام على تسجيل هذا الإدخال، فلا يمكن تعديله.",
+  "@entryEditLocked": {
+    "description": "A meal delete refused with 403 log_locked: the 7-day edit window has passed (API guide 6.4, 15)."
+  },
+  "dailyLogDeleteOffline": "لم تُحذف الوجبة: الحذف يحتاج اتصالًا بالإنترنت. حاول مجددًا عند الاتصال.",
+  "@dailyLogDeleteOffline": {
+    "description": "A meal delete that failed for lack of a connection. Deletes are never queued offline (API guide 14)."
+  },
+  "dailyLogDeleteFailed": "تعذّر حذف الوجبة. حاول مرة أخرى.",
+  "@dailyLogDeleteFailed": {
+    "description": "A meal delete that failed for any other reason."
+  },
+  "dailyLogEditGramsTitle": "تعديل الكمية",
+  "@dailyLogEditGramsTitle": {
+    "description": "Title of the sheet that changes the grams of a logged food (API guide 6.3)."
+  },
+  "dailyLogEditGramsLabel": "الكمية (غرام)",
+  "@dailyLogEditGramsLabel": {
+    "description": "Label of the grams field."
+  },
+  "dailyLogEditGramsRange": "أدخل كمية بين 1 و5000 غرام.",
+  "@dailyLogEditGramsRange": {
+    "description": "The grams are outside 1 to 5000 (API guide 6.3)."
+  },
+  "dailyLogGramsChanged": "تم تعديل الكمية",
+  "@dailyLogGramsChanged": {
+    "description": "Shown after the grams were saved."
+  },
+  "dailyLogEditOffline": "لم تُحفظ الكمية: التعديل يحتاج اتصالًا بالإنترنت. حاول مجددًا عند الاتصال.",
+  "@dailyLogEditOffline": {
+    "description": "An edit that failed for lack of a connection. Edits are never queued offline (API guide 14)."
+  },
+  "dailyLogEditGone": "لم يعد هذا الإدخال موجودًا، فأُزيل من سجلك.",
+  "@dailyLogEditGone": {
+    "description": "The log was deleted on another device (404), so it left the log here too."
+  },
+  "dailyLogEditFailed": "تعذّر حفظ الكمية. حاول مرة أخرى.",
+  "@dailyLogEditFailed": {
+    "description": "An edit that failed for any other reason."
   },
   "commonUndo": "تراجع",
   "@commonUndo": {
@@ -774,11 +818,11 @@
   "@commonOpenWhatsApp": {
     "description": "UI text in presentation/screens/food_search_screen.dart"
   },
-  "consentClauseStorageTitle": "كيف تُحفظ بياناتك الصحية؟",
+  "consentClauseStorageTitle": "كيف نحمي بياناتك؟",
   "@consentClauseStorageTitle": {
     "description": "UI text in presentation/screens/health_data_consent_screen.dart"
   },
-  "consentClauseStorageBody": "تشفير كامل وفق أعلى معايير الخصوصية الصحية السريرية (HIPAA standards). تُخزَّن السجلات على خوادم طبية معزولة لا يمكن لأي طرف ثالث أو شركة إعلانات الوصول إليها تحت أي ظرف.",
+  "consentClauseStorageBody": "الاتصال بين التطبيق وخوادمنا مشفّر، ونأخذ نسخة احتياطية مشفّرة يوميًا.",
   "@consentClauseStorageBody": {
     "description": "UI text in presentation/screens/health_data_consent_screen.dart"
   },
@@ -786,17 +830,21 @@
   "@consentClauseAccessTitle": {
     "description": "UI text in presentation/screens/health_data_consent_screen.dart"
   },
-  "consentClauseAccessBody": "أخصائي التغذية العلاجية المعتمد على حسابك فقط، عبر نظام مراجعة سريري مشفر. لا تُشارك بياناتك مع أي جهة أخرى، ولا تُستخدم لأي غرض تسويقي.",
+  "consentClauseAccessBody": "بياناتك الصحية يطّلع عليها أخصائيك فقط، ولا نبيعها ولا نستخدمها للإعلانات.",
   "@consentClauseAccessBody": {
     "description": "UI text in presentation/screens/health_data_consent_screen.dart"
   },
-  "consentClauseRevokeTitle": "حقك الكامل في إلغاء الموافقة",
+  "consentClauseRevokeTitle": "حقك في حذف بياناتك",
   "@consentClauseRevokeTitle": {
     "description": "UI text in presentation/screens/health_data_consent_screen.dart"
   },
-  "consentClauseRevokeBody": "يمكنك سحب موافقتك في أي وقت من الحساب ← الخصوصية. سيؤدي ذلك إلى إيقاف تخصيص الخطة الغذائية تلقائياً حتى تجديد الموافقة، دون التأثير على سجلاتك المحفوظة.",
+  "consentClauseRevokeBody": "يمكنك حذف بياناتك أو حسابك من التطبيق في أي وقت.",
   "@consentClauseRevokeBody": {
     "description": "UI text in presentation/screens/health_data_consent_screen.dart"
+  },
+  "privacyOnWebsite": "سياسة الخصوصية متوفرة على موقعنا.",
+  "@privacyOnWebsite": {
+    "description": "Shown when no address of the published privacy policy is known yet (API guide 4). The app carries no policy text of its own."
   },
   "consentExitTitle": "الخروج من إعداد ملفك الصحي؟",
   "@consentExitTitle": {
@@ -855,16 +903,8 @@
   "@consentDataUseNote": {
     "description": "UI text in presentation/screens/health_data_consent_screen.dart"
   },
-  "consentEncryptionShort": "مشفّرة بنظام bit-256 ومتوافقة مع المعايير الصحية السريرية (HIPAA).",
-  "@consentEncryptionShort": {
-    "description": "UI text in presentation/screens/health_data_consent_screen.dart"
-  },
   "consentTitle": "الموافقة على استخدام البيانات الصحية",
   "@consentTitle": {
-    "description": "UI text in presentation/screens/health_data_consent_screen.dart"
-  },
-  "consentProtectionSystem": "منظومة الحماية السريرية الذكية",
-  "@consentProtectionSystem": {
     "description": "UI text in presentation/screens/health_data_consent_screen.dart"
   },
   "consentBeforeWeStart": "قبل أن نبدأ رحلتك الصحية",
@@ -873,10 +913,6 @@
   },
   "consentCommitment": "نحن نلتزم بحماية خصوصية بياناتك الصحية والسريرية بأقصى درجات الشفافية والأمان.",
   "@consentCommitment": {
-    "description": "UI text in presentation/screens/health_data_consent_screen.dart"
-  },
-  "consentAesNote": "بياناتك الطبية مشفرة بنظام bit AES-256 من لحظة إدخالها",
-  "@consentAesNote": {
     "description": "UI text in presentation/screens/health_data_consent_screen.dart"
   },
   "consentCheckbox": "قرأت ووافقت على شروط مشاركة البيانات بسياسة الخصوصية الصحية.",
@@ -1321,7 +1357,7 @@
   "@logMealOffPlanFooter": {
     "description": "UI text in presentation/screens/log_meal_intro_screen.dart"
   },
-  "logMealPrivacyNote": "بياناتك الغذائية مشفرة وتُعامل بخصوصية طبية تامة",
+  "logMealPrivacyNote": "سجل وجباتك يطّلع عليه أخصائيك فقط.",
   "@logMealPrivacyNote": {
     "description": "UI text in presentation/screens/log_meal_intro_screen.dart"
   },
@@ -1608,6 +1644,38 @@
   "measurementsHomeReading": "قياس منزلي",
   "@measurementsHomeReading": {
     "description": "UI text in presentation/screens/measurements_screen.dart"
+  },
+  "measurementsHistoryTitle": "سجل القراءات",
+  "@measurementsHistoryTitle": {
+    "description": "Heading of the readings list on the measurements screen, newest first (API guide 7.2)."
+  },
+  "measurementsDeleteReading": "حذف القراءة",
+  "@measurementsDeleteReading": {
+    "description": "Delete button and its confirmation for one of the patient's own readings (API guide 7.3)."
+  },
+  "measurementsDeleteConfirmTitle": "حذف هذه القراءة؟",
+  "@measurementsDeleteConfirmTitle": {
+    "description": "Title of the sheet that confirms deleting a reading."
+  },
+  "measurementsDeleteConfirmBody": "ستُحذف من سجلّك، ولن يراها أخصائيك بعد الآن.",
+  "@measurementsDeleteConfirmBody": {
+    "description": "Body of the sheet that confirms deleting a reading."
+  },
+  "measurementsDeleted": "تم حذف القراءة",
+  "@measurementsDeleted": {
+    "description": "Shown after a reading was deleted."
+  },
+  "measurementsDeleteClinic": "سجّل أخصائيك هذه القراءة في العيادة، فلا يمكن حذفها من التطبيق.",
+  "@measurementsDeleteClinic": {
+    "description": "A delete refused with 403 reading_not_deletable: a clinic reading (API guide 7.3, 15)."
+  },
+  "measurementsDeleteOffline": "لم تُحذف القراءة: الحذف يحتاج اتصالًا بالإنترنت. حاول مجددًا عند الاتصال.",
+  "@measurementsDeleteOffline": {
+    "description": "A reading delete that failed for lack of a connection. Deletes are never queued offline (API guide 14)."
+  },
+  "measurementsDeleteFailed": "تعذّر حذف القراءة. حاول مرة أخرى.",
+  "@measurementsDeleteFailed": {
+    "description": "A reading delete that failed for any other reason."
   },
   "measurementsSyncNote": "تحديث البيانات متزامن مع قياسات العيادة وسجلك الشخصي بكل موثوقية.",
   "@measurementsSyncNote": {
@@ -1993,10 +2061,6 @@
   "@offlineCheckWifi": {
     "description": "UI text in presentation/screens/offline_state_screen.dart"
   },
-  "onboardingHealthAsPrescribed": "حسب الوصفة",
-  "@onboardingHealthAsPrescribed": {
-    "description": "UI text in presentation/screens/onboarding_health_screen.dart"
-  },
   "onboardingHealthTitle": "البيانات الصحية",
   "@onboardingHealthTitle": {
     "description": "UI text in presentation/screens/onboarding_health_screen.dart"
@@ -2005,11 +2069,11 @@
   "@onboardingHealthConditions": {
     "description": "UI text in presentation/screens/onboarding_health_screen.dart"
   },
-  "onboardingHealthConditionsNote": "حدد أي حالات صحية تم تشخيصك بها لتكييف برنامجك الغذائي ومكوناته والوجبات المقترحة وفق استجابة تامة وآمنة لجسمك.",
+  "onboardingHealthConditionsNote": "حدّد أي حالات صحية تم تشخيصك بها، لتصل إلى أخصائيك ويراعيها في خطتك.",
   "@onboardingHealthConditionsNote": {
     "description": "UI text in presentation/screens/onboarding_health_screen.dart"
   },
-  "onboardingHealthConfidentialNote": "سرية سريرية مشفرة ومعتمدة طبياً — تساعد هذه التفاصيل أخصائي التغذية في استبعاد أي مكونات قد تتعارض مع مؤشراتك الحيوية أو أدويتك الموصوفة.",
+  "onboardingHealthConfidentialNote": "يطّلع على هذه التفاصيل أخصائيك فقط، وتساعده في استبعاد أي مكونات قد تتعارض مع حالتك أو أدويتك.",
   "@onboardingHealthConfidentialNote": {
     "description": "UI text in presentation/screens/onboarding_health_screen.dart"
   },
@@ -2017,7 +2081,7 @@
   "@onboardingHealthAllergies": {
     "description": "UI text in presentation/screens/onboarding_health_screen.dart"
   },
-  "onboardingHealthAllergiesNote": "حدد مسببات الحساسية المعتمدة ليقوم النظام باستبعادها تلقائياً من جداول الوجبات والوصفات المقترحة.",
+  "onboardingHealthAllergiesNote": "حدّد ما يسبب لك حساسية، ليراجعه أخصائيك ويضيفه إلى ملفك. بعد اعتماده تظهر علامة تنبيه على الأطعمة التي قد تحتويه.",
   "@onboardingHealthAllergiesNote": {
     "description": "UI text in presentation/screens/onboarding_health_screen.dart"
   },
@@ -2029,7 +2093,7 @@
   "@onboardingHealthDoseAccuracy": {
     "description": "UI text in presentation/screens/onboarding_health_screen.dart"
   },
-  "onboardingHealthMedicationsNote": "اكتب أي أدوية موصوفة أو فيتامينات تتناولها لضمان عدم حدوث تداخلات كيميائية مع توقيت ومكونات الوجبات.",
+  "onboardingHealthMedicationsNote": "اكتب الأدوية أو الفيتامينات التي تتناولها، ليراعيها أخصائيك في توقيت وجباتك ومكوناتها.",
   "@onboardingHealthMedicationsNote": {
     "description": "UI text in presentation/screens/onboarding_health_screen.dart"
   },
@@ -2041,9 +2105,31 @@
   "@onboardingHealthMedicationHint": {
     "description": "UI text in presentation/screens/onboarding_health_screen.dart"
   },
-  "onboardingHealthReviewNote": "تخضع كافة الملاحظات والأدوية لمراجعة برمجية واستشارية دقيقة لملاءمة النظام الغذائي واستبعاد أي تداخلات غذائية مع أدويتك الموصوفة.",
+  "onboardingHealthReviewNote": "يراجع أخصائيك الأدوية والحساسيات قبل إضافتها إلى ملفك.",
   "@onboardingHealthReviewNote": {
     "description": "UI text in presentation/screens/onboarding_health_screen.dart"
+  },
+  "onboardingHealthAllergyClass": "كيف تؤثر عليك هذه الأطعمة؟",
+  "@onboardingHealthAllergyClass": {
+    "description": "Above the allergy class chips (API guide 11.2: class is required). One class for every allergy chosen in onboarding."
+  },
+  "onboardingHealthRequestConditions": "الأمراض المزمنة: {list}",
+  "@onboardingHealthRequestConditions": {
+    "description": "Line of the quick request that carries the chronic conditions chosen in onboarding to the nutritionist (the API has no field for them).",
+    "placeholders": {
+      "list": {
+        "type": "String"
+      }
+    }
+  },
+  "onboardingHealthRequestNotes": "ملاحظات: {notes}",
+  "@onboardingHealthRequestNotes": {
+    "description": "Line of the same quick request with the notes typed in onboarding.",
+    "placeholders": {
+      "notes": {
+        "type": "String"
+      }
+    }
   },
   "onboardingHealthOtherNotes": "ملاحظات صحية أخرى للأخصائي (اختياري)",
   "@onboardingHealthOtherNotes": {
@@ -2134,7 +2220,7 @@
   "@onboardingMeasurementsThighHint": {
     "description": "UI text in presentation/screens/onboarding_measurements_screen.dart"
   },
-  "onboardingMeasurementsPrivacyNote": "بياناتك وقياساتك مشفرة بالكامل بمعايير أمان صحية معتمدة، وتُعرض حصرياً لأخصائي التغذية المعتمد لتصميم خطتك الغذائية الفردية.",
+  "onboardingMeasurementsPrivacyNote": "قياساتك يطّلع عليها أخصائيك فقط، ليصمّم خطتك الغذائية بناءً عليها.",
   "@onboardingMeasurementsPrivacyNote": {
     "description": "UI text in presentation/screens/onboarding_measurements_screen.dart"
   },
@@ -2415,54 +2501,6 @@
   "commonEnabled": "مفعّل",
   "@commonEnabled": {
     "description": "UI text in presentation/screens/plan_preparing_screen.dart"
-  },
-  "privacyScopeTitle": "١. نطاق البيانات المجمّعة",
-  "@privacyScopeTitle": {
-    "description": "UI text in presentation/screens/privacy_document_screen.dart"
-  },
-  "privacyScopeBody": "نجمع فقط ما يلزم لبناء خطتك الغذائية العلاجية: قياساتك الحيوية (الوزن، محيط الجسم)، سجلات وجباتك اليومية، حالاتك الصحية المشخصة، حساسياتك الغذائية، والأدوية والمكملات التي تخبرينا بها. لا نطلب أو نُخزّن أي بيانات مالية أو بيانات موقع دائم.",
-  "@privacyScopeBody": {
-    "description": "UI text in presentation/screens/privacy_document_screen.dart"
-  },
-  "privacyEncryptionTitle": "٢. التشفير وأماكن التخزين",
-  "@privacyEncryptionTitle": {
-    "description": "UI text in presentation/screens/privacy_document_screen.dart"
-  },
-  "privacyEncryptionBody": "تُشفّر جميع البيانات الصحية أثناء النقل والتخزين بنظام bit AES-256، وتُحفظ على خوادم طبية معزولة متوافقة مع معايير HIPAA. لا تُستخدم بياناتك في تدريب نماذج عامة ولا تُشارك مع أي شركة إعلانات تحت أي ظرف.",
-  "@privacyEncryptionBody": {
-    "description": "UI text in presentation/screens/privacy_document_screen.dart"
-  },
-  "privacyAccessTitle": "٣. من يستطيع الاطلاع على ملفك",
-  "@privacyAccessTitle": {
-    "description": "UI text in presentation/screens/privacy_document_screen.dart"
-  },
-  "privacyAccessBody": "فريق الرعاية المخصص لك فقط — أخصائي التغذية العلاجية المعتمد على حسابك — يستطيع الاطلاع على سجلك الكامل. أي تحديث أو تعديل على خطتك يُسجَّل باسم صاحبه ووقته في سجل تدقيق لا يمكن حذفه.",
-  "@privacyAccessBody": {
-    "description": "UI text in presentation/screens/privacy_document_screen.dart"
-  },
-  "privacyRightsTitle": "٤. حقك في التعديل والإلغاء",
-  "@privacyRightsTitle": {
-    "description": "UI text in presentation/screens/privacy_document_screen.dart"
-  },
-  "privacyRightsBody": "يمكنك سحب موافقتك في أي وقت من الحساب ← الخصوصية، وسيؤدي ذلك إلى إيقاف تخصيص الخطة تلقائياً حتى تجديد الموافقة. يمكنك أيضاً طلب نسخة كاملة من بياناتك أو حذفها نهائياً بالتواصل مع أخصائي التغذية.",
-  "@privacyRightsBody": {
-    "description": "UI text in presentation/screens/privacy_document_screen.dart"
-  },
-  "privacyRetentionTitle": "٥. الاحتفاظ بالبيانات بعد انتهاء المتابعة",
-  "@privacyRetentionTitle": {
-    "description": "UI text in presentation/screens/privacy_document_screen.dart"
-  },
-  "privacyRetentionBody": "عند انتهاء فترة المتابعة السريرية، تبقى سجلاتك وقياساتك محفوظة بأمان لاستئناف الخطة فور التجديد، ولا تُحذف تلقائياً إلا بطلب صريح منك.",
-  "@privacyRetentionBody": {
-    "description": "UI text in presentation/screens/privacy_document_screen.dart"
-  },
-  "privacyTitle": "الخصوصية السريرية الكاملة",
-  "@privacyTitle": {
-    "description": "UI text in presentation/screens/privacy_document_screen.dart"
-  },
-  "privacyLastUpdated": "آخر تحديث لهذه الوثيقة: يناير 2026 — متوافقة مع معايير HIPAA السريرية",
-  "@privacyLastUpdated": {
-    "description": "UI text in presentation/screens/privacy_document_screen.dart"
   },
   "profileMeasurementsSubtitle": "سجّل قياساتك وتابع مسار تغيّرك",
   "@profileMeasurementsSubtitle": {
@@ -3258,7 +3296,7 @@
   "@offlinePanelLogMeasurements": {
     "description": "UI text in presentation/widgets/offline_capability_panel.dart"
   },
-  "offlinePanelLogMeasurementsDesc": "يتم حفظ التغييرات بقاعدة بيانات الهاتف المشفرة",
+  "offlinePanelLogMeasurementsDesc": "تُحفظ التغييرات على هاتفك، وتُرسل عند عودة الاتصال.",
   "@offlinePanelLogMeasurementsDesc": {
     "description": "UI text in presentation/widgets/offline_capability_panel.dart"
   },
@@ -3442,6 +3480,7 @@
   "loginErrorInvalid": "اسم المستخدم أو كلمة المرور غير صحيحة.",
   "loginErrorLocked": "تم إيقاف الدخول مؤقتًا بعد عدة محاولات خاطئة. حاول بعد {time}.",
   "@loginErrorLocked": {
+    "description": "Shown while sign-in is locked after 5 wrong passwords (423). {time} is the wait left, counting down as minutes:seconds (API guide 3.1).",
     "placeholders": {
       "time": {
         "type": "String"
@@ -3777,6 +3816,10 @@
   "weighInReminderChannel": "تذكير القياس الأسبوعي",
   "@weighInReminderChannel": {
     "description": "Android notification channel name for the weekly weigh-in reminder (API guide 10.6)."
+  },
+  "pushChannelName": "إشعارات أخصائيك وخطتك",
+  "@pushChannelName": {
+    "description": "Android notification channel name for the server's pushes: plan, notes, appointments and reminders (API guide 10.4)."
   },
   "weighInReminderTitle": "حان موعد قياسك الأسبوعي",
   "@weighInReminderTitle": {
@@ -4986,10 +5029,6 @@
   "@achvFootnote": {
     "description": "Patient app design spec"
   },
-  "callsAskForAppointment": "اطلب موعدًا من أخصائيتك",
-  "@callsAskForAppointment": {
-    "description": "Patient app design spec"
-  },
   "callsNextTitle": "موعدك القادم",
   "@callsNextTitle": {
     "description": "Patient app design spec"
@@ -4997,6 +5036,213 @@
   "callsLaterTitle": "المواعيد الجاية",
   "@callsLaterTitle": {
     "description": "Patient app design spec"
+  },
+  "shoppingListTitle": "قائمة التسوق",
+  "@shoppingListTitle": {
+    "description": "Title of the shopping list built from the plan (API guide 5.4), and the button on the weekly plan that opens it."
+  },
+  "shoppingDayTab": "هذا اليوم",
+  "@shoppingDayTab": {
+    "description": "Shopping list tab: the day chosen on the weekly plan."
+  },
+  "shoppingWeekTab": "الأسبوع كاملًا",
+  "@shoppingWeekTab": {
+    "description": "Shopping list tab: a whole week."
+  },
+  "shoppingWeekNote": "الوجبات اليومية لسبعة أيام، ووجبات الأيام المحددة مرة واحدة.",
+  "@shoppingWeekNote": {
+    "description": "How the week is counted (API guide 5.4)."
+  },
+  "shoppingNote": "الكميات من خطتك، والبدائل مذكورة تحت كل صنف.",
+  "@shoppingNote": {
+    "description": "Under the tabs: amounts are the planned items; alternatives are listed, not added (API guide 5.4)."
+  },
+  "shoppingEmpty": "لا يوجد ما تشتريه في هذه الفترة.",
+  "@shoppingEmpty": {
+    "description": "The chosen day or week has no planned items."
+  },
+  "shoppingAlternatives": "أو: {names}",
+  "@shoppingAlternatives": {
+    "description": "Under an item: the foods the plan allows instead (API guide 5.4).",
+    "placeholders": {
+      "names": {
+        "type": "String"
+      }
+    }
+  },
+  "shoppingSectionProduce": "خضار وفواكه",
+  "@shoppingSectionProduce": {
+    "description": "Shopping section produce (API guide 5.4)."
+  },
+  "shoppingSectionMeat": "لحوم ودواجن وأسماك",
+  "@shoppingSectionMeat": {
+    "description": "Shopping section meat_poultry_fish (API guide 5.4)."
+  },
+  "shoppingSectionDairy": "ألبان وبيض",
+  "@shoppingSectionDairy": {
+    "description": "Shopping section dairy_eggs (API guide 5.4)."
+  },
+  "shoppingSectionGrains": "حبوب ونشويات",
+  "@shoppingSectionGrains": {
+    "description": "Shopping section grains_starches (API guide 5.4)."
+  },
+  "shoppingSectionLegumes": "بقوليات ومكسرات",
+  "@shoppingSectionLegumes": {
+    "description": "Shopping section legumes_nuts (API guide 5.4)."
+  },
+  "shoppingSectionOils": "زيوت وتوابل",
+  "@shoppingSectionOils": {
+    "description": "Shopping section oils_spices (API guide 5.4)."
+  },
+  "shoppingSectionOther": "أخرى",
+  "@shoppingSectionOther": {
+    "description": "Shopping section other (API guide 5.4)."
+  },
+  "callsBookTitle": "حجز موعد",
+  "@callsBookTitle": {
+    "description": "Title of the booking screen (API guide 12.1, 12.2)."
+  },
+  "callsChangeTitle": "تغيير الموعد",
+  "@callsChangeTitle": {
+    "description": "Button on the next appointment, and title of the screen that moves it (API guide 12.3)."
+  },
+  "callsCancelAction": "إلغاء الموعد",
+  "@callsCancelAction": {
+    "description": "Button on the next appointment, and the confirm button of its sheet (API guide 12.3)."
+  },
+  "callsJoinCall": "الانضمام إلى المكالمة",
+  "@callsJoinCall": {
+    "description": "Opens meeting_link of a video appointment (API guide 12.4)."
+  },
+  "callsTypeSection": "نوع الموعد",
+  "@callsTypeSection": {
+    "description": "Section heading on the booking screen."
+  },
+  "callsMinutes": "{minutes} دقيقة",
+  "@callsMinutes": {
+    "description": "How long a kind of appointment lasts (API guide 12.1).",
+    "placeholders": {
+      "minutes": {
+        "type": "String"
+      }
+    }
+  },
+  "callsTimeSection": "اختر الوقت",
+  "@callsTimeSection": {
+    "description": "Section heading above the free times."
+  },
+  "callsTimesLocal": "الأوقات بتوقيت جهازك.",
+  "@callsTimesLocal": {
+    "description": "Under the free times: they are shown in the device's time zone (API guide 12)."
+  },
+  "callsNoSlots": "لا توجد أوقات متاحة حاليًا.",
+  "@callsNoSlots": {
+    "description": "The nutritionist has no free time set (API guide 12.1: empty days)."
+  },
+  "callsNoSlotsBody": "تواصل مع أخصائيك لتحديد موعد.",
+  "@callsNoSlotsBody": {
+    "description": "Under callsNoSlots."
+  },
+  "callsChannelSection": "طريقة التواصل",
+  "@callsChannelSection": {
+    "description": "Section heading for WhatsApp, phone or video."
+  },
+  "callsTopicsSection": "ما الذي تودّ مناقشته؟ (اختياري)",
+  "@callsTopicsSection": {
+    "description": "Section heading for the topics, up to 6 (API guide 12.2)."
+  },
+  "callsTopicWeight": "الوزن",
+  "@callsTopicWeight": {
+    "description": "Appointment topic weight (API guide 16)."
+  },
+  "callsTopicMeals": "الوجبات",
+  "@callsTopicMeals": {
+    "description": "Appointment topic meals (API guide 16)."
+  },
+  "callsTopicPlanChange": "تعديل الخطة",
+  "@callsTopicPlanChange": {
+    "description": "Appointment topic plan_change (API guide 16)."
+  },
+  "callsTopicResults": "النتائج",
+  "@callsTopicResults": {
+    "description": "Appointment topic results (API guide 16)."
+  },
+  "callsTopicMedications": "الأدوية",
+  "@callsTopicMedications": {
+    "description": "Appointment topic medications (API guide 16)."
+  },
+  "callsTopicOther": "أخرى",
+  "@callsTopicOther": {
+    "description": "Appointment topic other (API guide 16)."
+  },
+  "callsNoteSection": "ملاحظة لأخصائيك (اختياري)",
+  "@callsNoteSection": {
+    "description": "Label of the note field, up to 300 characters (API guide 12.2)."
+  },
+  "callsConfirmBooking": "تأكيد الحجز",
+  "@callsConfirmBooking": {
+    "description": "Books the chosen time."
+  },
+  "callsConfirmChange": "تأكيد الموعد الجديد",
+  "@callsConfirmChange": {
+    "description": "Moves the appointment to the chosen time."
+  },
+  "callsCurrentAppointment": "الموعد الحالي",
+  "@callsCurrentAppointment": {
+    "description": "Heading above the appointment being moved."
+  },
+  "callsBooked": "تم حجز موعدك",
+  "@callsBooked": {
+    "description": "Shown after a booking."
+  },
+  "callsRescheduled": "تم تغيير موعدك",
+  "@callsRescheduled": {
+    "description": "Shown after the appointment was moved."
+  },
+  "callsCancelled": "تم إلغاء موعدك",
+  "@callsCancelled": {
+    "description": "Shown after the appointment was cancelled."
+  },
+  "callsCancelConfirmTitle": "إلغاء هذا الموعد؟",
+  "@callsCancelConfirmTitle": {
+    "description": "Title of the sheet that confirms cancelling."
+  },
+  "callsCancelConfirmBody": "سيُلغى الموعد، ويمكنك حجز موعد جديد لاحقًا.",
+  "@callsCancelConfirmBody": {
+    "description": "Body of the sheet that confirms cancelling."
+  },
+  "callsKeep": "إبقاء الموعد",
+  "@callsKeep": {
+    "description": "Closes the cancel sheet without cancelling."
+  },
+  "callsErrorExists": "لديك موعد قادم بالفعل. يمكنك تعديله أو إلغاؤه.",
+  "@callsErrorExists": {
+    "description": "409 appointment_exists (API guide 15)."
+  },
+  "callsErrorSlotTaken": "هذا الوقت لم يعد متاحًا، اختر وقتًا آخر.",
+  "@callsErrorSlotTaken": {
+    "description": "422 slot_unavailable or 409 slot_taken (API guide 15)."
+  },
+  "callsErrorVideo": "مكالمات الفيديو غير متاحة مع أخصائيك حاليًا.",
+  "@callsErrorVideo": {
+    "description": "422 video_unavailable (API guide 15)."
+  },
+  "callsErrorClosed": "هذا الموعد لم يعد قائمًا.",
+  "@callsErrorClosed": {
+    "description": "409 appointment_closed, or 404 (API guide 15)."
+  },
+  "callsErrorLocked": "لا يمكن تعديل الموعد أو إلغاؤه قبل أقل من {hours} ساعة. تواصل مع أخصائيك.",
+  "@callsErrorLocked": {
+    "description": "422 appointment_locked; {hours} is lock_hours, 12 (API guide 15).",
+    "placeholders": {
+      "hours": {
+        "type": "String"
+      }
+    }
+  },
+  "callsErrorGeneric": "تعذّر إتمام الطلب. حاول مرة أخرى.",
+  "@callsErrorGeneric": {
+    "description": "An appointment write that failed for any other reason."
   },
   "healthSyncHeroApple": "ربط التطبيق مع Apple Health",
   "@healthSyncHeroApple": {

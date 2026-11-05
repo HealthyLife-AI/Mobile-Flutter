@@ -7,6 +7,7 @@ import '../../core/theme/app_text_styles.dart';
 import '../../domain/entities/measurement_entities.dart';
 import '../../data/static/measurement_guide_data.dart';
 import '../widgets/app_header_bar.dart';
+import '../widgets/external_link.dart';
 
 import '../../l10n/l10n.dart';
 
@@ -128,7 +129,7 @@ class _MeasurementGuideScreenState extends State<MeasurementGuideScreen> {
             const SizedBox(height: 12),
             Center(
               child: TextButton(
-                onPressed: () {},
+                onPressed: () => openNutritionistWhatsApp(context),
                 child: Row(mainAxisSize: MainAxisSize.min, children: [
                   const Icon(Icons.chat_bubble_outline_rounded,
                       size: 18, color: AppColors.textPrimary),

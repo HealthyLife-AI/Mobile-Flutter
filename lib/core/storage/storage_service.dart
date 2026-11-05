@@ -34,6 +34,15 @@ abstract final class StorageKeys {
   static const mealPlan = 'meal_plan.v1';
   static const nutritionist = 'nutritionist.v1';
 
+  /// The nutritionist's WhatsApp number for the forgot-password message
+  /// (3.6). Kept after the session ends; removed when the account is deleted
+  /// by `PasswordHelpContact`.
+  static const passwordHelpContact = 'password_help_contact.v1';
+
+  /// The last `policy_url` the server sent (API guide 4). A public address,
+  /// kept after the session ends by `PrivacyPolicyLink`.
+  static const privacyPolicyUrl = 'privacy_policy_url.v1';
+
   /// The last `GET /me/reviews` answer, kept for offline reading. Cleared at
   /// sign-out by `ReviewRepositoryImpl`.
   static const reviews = 'reviews.v1';

@@ -31,6 +31,20 @@ class _FakeMealLog implements MealLogRepository {
       throw UnimplementedError();
 
   @override
+  Future<Result<void>> delete(String entryId) async {
+    entries.removeWhere((e) => e.id == entryId);
+    return const Success(null);
+  }
+
+  @override
+  Future<Result<void>> syncDay(DateTime day, {List<Meal> planMeals = const []}) =>
+      throw UnimplementedError();
+
+  @override
+  Future<Result<MealLogEntry>> updateGrams(String entryId, int grams) =>
+      throw UnimplementedError();
+
+  @override
   Future<Result<void>> clear() => throw UnimplementedError();
 }
 

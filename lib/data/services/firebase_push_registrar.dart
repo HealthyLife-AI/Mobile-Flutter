@@ -8,10 +8,11 @@ import '../../domain/repositories/push_registrar.dart';
 
 /// Registers this device's FCM token with the API (API guide 10.1 and 2.5).
 ///
-/// * `start`: sends the token with `PUT /me/fcm-token`. The token is sent
-///   again whenever FCM rotates it. It does **not** ask for the notification
-///   permission: the OS prompt is shown only when the person asks for it (the
-///   onboarding or notification-settings screen), never automatically.
+/// * `start`: prepares the Android push channel (10.4), then sends the token
+///   with `PUT /me/fcm-token`. The token is sent again whenever FCM rotates
+///   it. It does **not** ask for the notification permission: the OS prompt
+///   is shown only when the person asks for it (the onboarding or
+///   notification-settings screen), never automatically.
 /// * `stop`: sends `{"fcm_token": null}` while the access token still works,
 ///   then deletes the local token, so pushes stop after sign-out.
 ///
@@ -21,11 +22,17 @@ class FirebasePushRegistrar implements PushRegistrar {
   FirebasePushRegistrar({
     required ApiClient api,
     FirebaseMessaging Function()? messaging,
+    Future<void> Function()? prepareChannel,
   })  : _api = api,
-        _messaging = messaging ?? _defaultMessaging;
+        _messaging = messaging ?? _defaultMessaging,
+        _prepareChannel = prepareChannel;
 
   final ApiClient _api;
   final FirebaseMessaging Function() _messaging;
+
+  /// Creates the channel Android shows pushes in. It runs before the token is
+  /// sent, so the first push already finds it.
+  final Future<void> Function()? _prepareChannel;
   StreamSubscription<String>? _tokenRefreshes;
 
   static FirebaseMessaging _defaultMessaging() => FirebaseMessaging.instance;
@@ -34,6 +41,11 @@ class FirebasePushRegistrar implements PushRegistrar {
 
   @override
   Future<void> start() async {
+    try {
+      await _prepareChannel?.call();
+    } catch (error) {
+      _log.warn('The push channel could not be prepared', error: error);
+    }
     try {
       final messaging = _messaging();
       // No requestPermission() here: registering the token is independent of

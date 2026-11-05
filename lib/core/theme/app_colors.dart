@@ -14,26 +14,51 @@ import 'package:flutter/material.dart';
 /// `primaryGradient` is kept as a two-stop gradient of the SAME color purely
 /// so existing `gradient:` call sites keep compiling; it renders visually
 /// identical to a flat fill. New screens should prefer `color:`.
+///
+/// These constants are the LIGHT palette. Dark counterparts live in
+/// [AppDarkColors]; widgets that should follow the active theme read
+/// `context.appColors` (see `app_theme_colors.dart`) instead of these
+/// constants directly.
 class AppColors {
   AppColors._();
 
   // ---- Brand core tokens ----
-  static const Color primary = Color(0xFF028090); // brand Primary Teal/Blue
-  static const Color primaryTint = Color(0xFFE3F3F5); // light badge/icon backgrounds
-  static const Color neutralTrack = Color(0xFFE7EDF1); // progress-bar UNFILLED track only
-  static const Color background = Color(0xFFF8FAFC); // ultra-light clean canvas tint
+  static const Color primary = Color(0xFF006572); // design spec Primary
+  static const Color primaryTint =
+      Color(0xFFE6F4F5); // spec "Selected": badge, icon and selected backgrounds
+  static const Color neutralTrack =
+      Color(0xFFDEE8FF); // progress-bar UNFILLED track only
+  static const Color background = Color(0xFFF6F9FF); // spec Background
   static const Color surface = Color(0xFFFFFFFF); // pure-white card canvas
-  static const Color textPrimary = Color(0xFF0F172A);
-  static const Color textSecondary = Color(0xFF64748B);
-  static const Color border = Color(0xFFE8EDF2);
-  static const Color iconMuted = Color(0xFFCBD5E1);
-  static const Color danger = Color(0xFFEF4444); // standard extension, no error screenshots exist yet
+  static const Color textPrimary = Color(0xFF111C2D); // spec Ink
+  static const Color textSecondary = Color(0xFF3E494B); // spec Body
+
+  /// Spec "Muted": hints, timestamps and the smallest text.
+  static const Color textMuted = Color(0xFF6E797B);
+  static const Color border = Color(0xFFDEE8FF); // spec Border
+  static const Color iconMuted = Color(0xFFBDC8CB);
+  static const Color danger = Color(0xFFB91C1C); // spec Danger
+
+  // ---- Status pairs from the design spec: text/icon on its own tint ----
+  static const Color dangerBg = Color(0xFFFDECEC);
+  static const Color success = Color(0xFF006B54);
+  static const Color successBg = Color(0xFFE3F7EF);
+  static const Color warning = Color(0xFF92400E);
+  static const Color warningBg = Color(0xFFFEF3C7);
+
+  /// The due-reminder card: a warm wash with an amber outline.
+  static const Color warningCardBg = Color(0xFFFFF7E6);
+  static const Color warningCardBorder = Color(0xFFF5C26B);
+
+  /// Spec "Panel": inner panels inside a card, used at 60-70% opacity.
+  static const Color panel = Color(0xFFF0F3FF);
 
   // Legacy aliases kept so earlier-built screens compile unchanged.
   static const Color textSecondaryLegacy = textSecondary;
   static const Color borderLight = border;
-  static const Color chipInactiveBg = Color(0xFFF1F5F9);
-  static const Color primaryDark = Color(0xFF016B77); // deeper shade of `primary` for gradient depth
+  static const Color chipInactiveBg = Color(0xFFEEF1F6); // spec Neutral chip
+  static const Color primaryDark =
+      Color(0xFF004E58); // deeper shade of `primary` for gradient depth
 
   // ---- 2.2 Meal-type icon colors (confirmed) ----
   // Breakfast and lunch share the same "daytime" family, distinguished by
@@ -61,12 +86,12 @@ class AppColors {
   static const Color accentPinkBg = Color(0xFFFCE7F3);
   static const Color accentIndigo = Color(0xFF6C5CE7);
 
-  static const Color primarySoftBg = Color(0xFFEAF5F7);
-  static const Color primarySoftBorder = Color(0xFFBFDEE4);
+  static const Color primarySoftBg = Color(0xFFE6F4F5);
+  static const Color primarySoftBorder = Color(0xFF99C7CD);
 
   // Soft-light neutrals used by the refreshed hero/splash surfaces.
-  static const Color canvasSoft = Color(0xFFF8FAFC);
-  static const Color hairline = Color(0xFFEFF3F7);
+  static const Color canvasSoft = Color(0xFFF6F9FF);
+  static const Color hairline = Color(0xFFEAF0FF);
 
   static const Color ctaVoiceStart = Color(0xFFF472B6);
   static const Color ctaVoiceEnd = Color(0xFFFB923C);
@@ -77,29 +102,34 @@ class AppColors {
   static const Color liveLineGlow = Color(0xFF34D399);
   static const Color breathingGradientStart = Color(0xFF1E3A8A);
   static const Color breathingGradientEnd = Color(0xFF4338CA);
-  static const Color lockedOverlay = Color(0xBFFFFFFF); // rgba(255,255,255,.75) per v2 section 7.14
+  static const Color lockedOverlay =
+      Color(0xBFFFFFFF); // rgba(255,255,255,.75) per v2 section 7.14
 
   // Flat "gradient" (both stops the same solid primary) — see class doc.
-  static const LinearGradient primaryGradient = LinearGradient(colors: [primary, primary]);
+  static const LinearGradient primaryGradient =
+      LinearGradient(colors: [primary, primary]);
   static const LinearGradient primaryDarkGradient = LinearGradient(
     colors: [primaryDark, primary],
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
   );
+
   /// Brand gradient for full-bleed surfaces (splash, hero cards): a rich but
   /// subtle `#028090` falloff, never a multi-hue rainbow.
   static const LinearGradient brandGradient = LinearGradient(
-    colors: [Color(0xFF028090), Color(0xFF026C79), Color(0xFF014E58)],
+    colors: [Color(0xFF007A89), Color(0xFF006572), Color(0xFF004E58)],
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
   );
   static const LinearGradient brandGradientVertical = LinearGradient(
-    colors: [Color(0xFF028C9C), Color(0xFF028090), Color(0xFF015F6B)],
+    colors: [Color(0xFF00727F), Color(0xFF006572), Color(0xFF00535D)],
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
   );
-  static const LinearGradient ctaVoiceGradient = LinearGradient(colors: [ctaVoiceStart, ctaVoiceEnd]);
-  static const LinearGradient breathingGradient = LinearGradient(colors: [breathingGradientStart, breathingGradientEnd]);
+  static const LinearGradient ctaVoiceGradient =
+      LinearGradient(colors: [ctaVoiceStart, ctaVoiceEnd]);
+  static const LinearGradient breathingGradient =
+      LinearGradient(colors: [breathingGradientStart, breathingGradientEnd]);
   static const LinearGradient liveCardGradient = LinearGradient(
     colors: [liveCardBgStart, liveCardBgEnd],
     begin: Alignment.topLeft,
@@ -108,7 +138,7 @@ class AppColors {
   // The success-screen glow circle: primary to a lighter shade of itself
   // (section 3, M6) — a real (subtle) gradient, distinct from CTA buttons.
   static const LinearGradient successGlowGradient = LinearGradient(
-    colors: [primary, Color(0xFF03A8BA)],
+    colors: [primary, Color(0xFF0A8C9B)],
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
   );
@@ -187,4 +217,57 @@ class AppColors {
         return textSecondary;
     }
   }
+}
+
+/// Dark-mode counterparts of the semantic [AppColors] tokens.
+///
+/// Built from the light palette rather than invented: the light tokens follow
+/// the slate scale (`#F8FAFC` canvas, `#0F172A` text, `#64748B` secondary), so
+/// dark mode inverts along that same scale, and the accent is the palette's
+/// own lighter brand shade (the `successGlowGradient` end stop), because
+/// `#028090` itself is too dark for text on dark surfaces. Contrast ratios
+/// below are enforced by `test/app_theme_test.dart`.
+///
+/// Brand fills that carry white text (CTAs, filled buttons) keep
+/// [AppColors.primary] in both modes — white on `#028090` is 4.7:1.
+class AppDarkColors {
+  AppDarkColors._();
+
+  /// Accent for text, icons and outlines on dark surfaces (6.2:1 on
+  /// [background], 5.1:1 on [surface]).
+  static const Color primary = Color(0xFF03A8BA);
+
+  /// Text/icons placed on a [primary] fill.
+  static const Color onPrimary = Color(0xFF0F172A);
+
+  /// Badge/icon backgrounds: [primary] at 18% over [surface].
+  static const Color primaryTint = Color(0xFF194052);
+
+  /// Softer accent wash: [primary] at 12% over [surface].
+  static const Color primarySoftBg = Color(0xFF1B384A);
+
+  /// The light palette's text color, inverted into the canvas.
+  static const Color background = Color(0xFF0F172A);
+  static const Color canvasSoft = background;
+
+  /// Raised card surfaces, one slate step above [background].
+  static const Color surface = Color(0xFF1E293B);
+
+  /// The light palette's canvas, inverted into primary text.
+  static const Color textPrimary = Color(0xFFF8FAFC);
+  static const Color textSecondary = Color(0xFF94A3B8);
+
+  static const Color border = Color(0xFF334155);
+  static const Color hairline = Color(0xFF283548);
+
+  /// The light palette's secondary text, reused for muted icons (3:1 on
+  /// [surface], the non-text UI threshold).
+  static const Color iconMuted = Color(0xFF64748B);
+
+  static const Color chipInactiveBg = Color(0xFF334155);
+  static const Color neutralTrack = Color(0xFF334155);
+
+  /// One step lighter than [AppColors.danger] so error text stays readable
+  /// on [surface].
+  static const Color danger = Color(0xFFF87171);
 }

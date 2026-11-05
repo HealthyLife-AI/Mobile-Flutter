@@ -27,6 +27,69 @@ class AppointmentDto {
     );
   }
 
+  /// The answer of `GET /me/appointments/slots` (12.1). A day or a time that
+  /// cannot be read is skipped.
+  static AppointmentSlots slotsFromJson(
+      Map<String, dynamic> json, AppointmentType asked) {
+    final days = <SlotDay>[];
+    if (json['days'] case final List<dynamic> raw) {
+      for (final item in raw) {
+        if (item is! Map) continue;
+        final date = DateTime.tryParse('${item['date']}');
+        if (date == null) continue;
+        final times = <AppointmentSlot>[];
+        if (item['times'] case final List<dynamic> values) {
+          for (final value in values) {
+            final at = _time(value);
+            if (at != null) {
+              times.add(AppointmentSlot(startsAt: at, value: value as String));
+            }
+          }
+        }
+        if (times.isEmpty) continue;
+        days.add(SlotDay(
+            date: DateTime(date.year, date.month, date.day), times: times));
+      }
+    }
+    final type = _type(_text(json['type']));
+    return AppointmentSlots(
+      type: type == AppointmentType.unknown ? asked : type,
+      durationMinutes: _int(json['duration_minutes']) ?? 0,
+      videoAvailable: json['video_available'] == true,
+      days: days,
+    );
+  }
+
+  /// The body of `POST /me/appointments` (12.2). The time goes back as the
+  /// server sent it; an empty note is left out.
+  static Map<String, Object?> bookingBody(AppointmentRequest request) {
+    final note = request.note?.trim() ?? '';
+    return {
+      'type': typeValue(request.type),
+      'starts_at': request.slot.value,
+      'channel': channelValue(request.channel),
+      if (request.topics.isNotEmpty) 'topics': request.topics,
+      if (note.isNotEmpty) 'note': note,
+    };
+  }
+
+  /// The API's name for [type] (`type=` and the booking body).
+  static String typeValue(AppointmentType type) => switch (type) {
+        AppointmentType.followUp => 'follow_up',
+        AppointmentType.resultsReview => 'results_review',
+        AppointmentType.quickConsult => 'quick_consult',
+        AppointmentType.unknown =>
+          throw ArgumentError('An unknown kind cannot be booked'),
+      };
+
+  static String channelValue(AppointmentChannel channel) => switch (channel) {
+        AppointmentChannel.whatsapp => 'whatsapp',
+        AppointmentChannel.phone => 'phone',
+        AppointmentChannel.video => 'video',
+        AppointmentChannel.unknown =>
+          throw ArgumentError('An unknown channel cannot be booked'),
+      };
+
   static AppointmentType _type(String? value) => switch (value) {
         'follow_up' => AppointmentType.followUp,
         'results_review' => AppointmentType.resultsReview,

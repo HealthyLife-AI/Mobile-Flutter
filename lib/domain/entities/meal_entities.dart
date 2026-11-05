@@ -54,6 +54,10 @@ class MealLogEntry {
   final bool isOffPlan;
   final Meal? plannedMeal;
 
+  /// The logs this entry was sent to the server as (6.1): one per food eaten.
+  /// Empty for an entry that never went to the server.
+  final List<SentMealLog> sentLogs;
+
   const MealLogEntry({
     required this.id,
     required this.name,
@@ -62,7 +66,57 @@ class MealLogEntry {
     required this.loggedAt,
     required this.isOffPlan,
     this.plannedMeal,
+    this.sentLogs = const [],
   });
+
+  /// False once the server's edit window has passed for one of its logs
+  /// (6.1: show delete only before `editable_until`).
+  bool canDeleteAt(DateTime now) => sentLogs.every((log) {
+        final until = log.editableUntil;
+        return until == null || now.isBefore(until);
+      });
+
+  /// Whether its grams can be changed now (6.3): one food the server has
+  /// saved, still inside the edit window. A plan meal holds several logs, so
+  /// it has no single amount to change.
+  bool canEditGramsAt(DateTime now) =>
+      plannedMeal == null &&
+      sentLogs.length == 1 &&
+      sentLogs.single.serverId != null &&
+      canDeleteAt(now);
+
+  MealLogEntry copyWith({
+    int? calories,
+    int? grams,
+    List<SentMealLog>? sentLogs,
+  }) =>
+      MealLogEntry(
+        id: id,
+        name: name,
+        calories: calories ?? this.calories,
+        grams: grams ?? this.grams,
+        loggedAt: loggedAt,
+        isOffPlan: isOffPlan,
+        plannedMeal: plannedMeal,
+        sentLogs: sentLogs ?? this.sentLogs,
+      );
+}
+
+/// One `POST /me/meal-logs` made for a [MealLogEntry].
+class SentMealLog {
+  const SentMealLog({required this.key, this.serverId, this.editableUntil});
+
+  /// The idempotency key the log was sent with. It finds the write in the
+  /// offline queue, and the server's answer to it.
+  final String key;
+
+  /// The server's id for the log, once it has been saved. Null while the
+  /// write waits in the queue, or when the server refused it.
+  final int? serverId;
+
+  /// `editable_until` from the server's answer: until then the log can be
+  /// deleted.
+  final DateTime? editableUntil;
 }
 
 class FoodOption {
@@ -120,6 +174,10 @@ class SearchableFood {
   /// Fibre per 100 g (guide 5.2). Null when the server sends none.
   final double? fiberGPer100g;
 
+  /// The aisle the shopping list puts it in (guide 5.4), such as `produce`.
+  /// Null when the server sends none.
+  final String? shoppingSection;
+
   const SearchableFood(
       {required this.name,
       required this.caloriesPer100g,
@@ -127,5 +185,6 @@ class SearchableFood {
       this.category = 'default',
       this.id,
       this.allergens = const [],
-      this.fiberGPer100g});
+      this.fiberGPer100g,
+      this.shoppingSection});
 }

@@ -23,7 +23,6 @@ import 'package:healthylife_ai/presentation/screens/language_settings_screen.dar
 import 'package:healthylife_ai/presentation/screens/login_screen.dart';
 import 'package:healthylife_ai/presentation/screens/notification_settings_screen.dart';
 import 'package:healthylife_ai/presentation/screens/onboarding_screen.dart';
-import 'package:healthylife_ai/presentation/screens/privacy_document_screen.dart';
 import 'package:healthylife_ai/presentation/screens/profile_screen.dart';
 import 'package:healthylife_ai/presentation/widgets/app_header_bar.dart';
 
@@ -488,7 +487,6 @@ void main() {
       'login': () => const LoginScreen(),
       'notification settings': () => const NotificationSettingsScreen(),
       'onboarding': () => const OnboardingScreen(),
-      'privacy document': () => const PrivacyDocumentScreen(),
       'profile': () => const ProfileScreen(),
     };
 

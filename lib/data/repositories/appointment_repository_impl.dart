@@ -72,6 +72,45 @@ class AppointmentRepositoryImpl implements AppointmentRepository, PatientCache {
   }
 
   @override
+  Future<Result<AppointmentSlots>> getSlots(AppointmentType type) => guard(
+        () async => AppointmentDto.slotsFromJson(
+            await _remote.fetchSlots(AppointmentDto.typeValue(type)), type),
+        context: 'AppointmentRepository.getSlots',
+      );
+
+  @override
+  Future<Result<Appointment>> book(AppointmentRequest request) => _write(
+      () => _remote.book(AppointmentDto.bookingBody(request)),
+      'AppointmentRepository.book');
+
+  @override
+  Future<Result<Appointment>> reschedule(
+          Appointment appointment, AppointmentSlot slot) =>
+      _write(() => _remote.reschedule(appointment.id, slot.value),
+          'AppointmentRepository.reschedule');
+
+  @override
+  Future<Result<Appointment>> cancel(Appointment appointment) => _write(
+      () => _remote.cancel(appointment.id), 'AppointmentRepository.cancel');
+
+  /// Sends one write and reads the answer. Once it succeeds, the upcoming
+  /// list is read again, so the kept copy and the reminders follow (10.6).
+  Future<Result<Appointment>> _write(
+    Future<Map<String, dynamic>> Function() send,
+    String context,
+  ) async {
+    final result = await guard(() async {
+      final saved = AppointmentDto.fromJson(await send());
+      if (saved == null) {
+        throw const ParseException('The appointment has no id or start');
+      }
+      return saved;
+    }, context: context);
+    if (result.isSuccess) await refreshReminders();
+    return result;
+  }
+
+  @override
   Future<void> forgetPatientData() async {
     await _storage.remove(StorageKeys.appointmentsUpcoming);
     await _storage.remove(StorageKeys.appointmentsPast);

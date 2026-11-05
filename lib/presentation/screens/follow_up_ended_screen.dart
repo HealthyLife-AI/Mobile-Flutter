@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../core/navigation/app_page_route.dart';
 import '../../core/navigation/logout_flow.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_radius.dart';
@@ -9,7 +8,7 @@ import '../../core/theme/app_text_styles.dart';
 import '../../domain/entities/auth_entities.dart';
 import '../widgets/app_header_bar.dart';
 import '../widgets/gradient_cta_button.dart';
-import 'privacy_document_screen.dart';
+import '../widgets/privacy_policy.dart';
 
 import '../../l10n/l10n.dart';
 
@@ -184,9 +183,10 @@ class FollowUpEndedScreen extends StatelessWidget {
             ),
             const SizedBox(height: 18),
             Center(
+              // The policy published on the website (API guide 4). There is
+              // no session here, so the address kept from earlier is used.
               child: TextButton(
-                onPressed: () => Navigator.of(context).push(AppPageRoute(
-                    builder: (_) => const PrivacyDocumentScreen())),
+                onPressed: () => openPrivacyPolicy(context),
                 child: Text(l10n.followUpTerms, style: AppTextStyles.caption),
               ),
             ),

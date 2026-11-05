@@ -9,6 +9,7 @@ import '../../core/theme/app_text_styles.dart';
 import '../../core/errors/failure.dart';
 import '../bloc/auth/auth_cubit.dart';
 import '../widgets/app_header_bar.dart';
+import '../widgets/forgot_password_dialog.dart';
 
 import '../../l10n/l10n.dart';
 
@@ -176,22 +177,6 @@ class _PasswordSettingsScreenState extends State<PasswordSettingsScreen>
     };
   }
 
-  void _forgotPassword() {
-    showDialog<void>(
-      context: context,
-      builder: (dialogContext) => AlertDialog(
-        title: Text(context.l10n.passwordForgot),
-        content: Text(context.l10n.loginForgotBody),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(dialogContext).pop(),
-            child: Text(context.l10n.commonClose),
-          ),
-        ],
-      ),
-    );
-  }
-
   // ───────────────────────── عناصر مساعدة ─────────────────────────
 
   /// يلف أي عنصر بأنيميشن ظهور (تلاشي + انزلاق للأعلى) حسب ترتيبه.
@@ -267,7 +252,7 @@ class _PasswordSettingsScreenState extends State<PasswordSettingsScreen>
                     ),
                     const Spacer(),
                     TextButton(
-                      onPressed: _forgotPassword,
+                      onPressed: () => showForgotPasswordDialog(context),
                       style: TextButton.styleFrom(
                         padding: EdgeInsets.zero,
                         minimumSize: Size.zero,

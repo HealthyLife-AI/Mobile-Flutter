@@ -65,6 +65,7 @@ class MeasurementEntry {
     this.hipCm,
     this.thighCm,
     this.armCm,
+    this.deletableUntil,
   });
 
   final String id;
@@ -77,6 +78,19 @@ class MeasurementEntry {
   final double? thighCm;
   final double? armCm;
 
+  /// `deletable_until` (7.1): the arrival time plus 7 days. Null on a clinic
+  /// reading, which only the nutritionist can remove.
+  final DateTime? deletableUntil;
+
+  /// Whether the patient may delete it now (7.3): their own reading before
+  /// [deletableUntil], or one still waiting to be sent.
+  bool canDeleteAt(DateTime now) {
+    if (source == ReadingSource.clinicAnalyser) return false;
+    if (pending) return true;
+    final until = deletableUntil;
+    return until != null && now.isBefore(until);
+  }
+
   Map<String, dynamic> toJson() => {
         'id': id,
         'recordedAt': recordedAt.toIso8601String(),
@@ -86,6 +100,8 @@ class MeasurementEntry {
         if (hipCm != null) 'hipCm': hipCm,
         if (thighCm != null) 'thighCm': thighCm,
         if (armCm != null) 'armCm': armCm,
+        if (deletableUntil != null)
+          'deletableUntil': deletableUntil!.toIso8601String(),
       };
 
   static MeasurementEntry? fromJson(Map<String, dynamic> json) {
@@ -105,6 +121,9 @@ class MeasurementEntry {
       hipCm: d('hipCm'),
       thighCm: d('thighCm'),
       armCm: d('armCm'),
+      deletableUntil: json['deletableUntil'] is String
+          ? DateTime.tryParse(json['deletableUntil'] as String)
+          : null,
     );
   }
 }

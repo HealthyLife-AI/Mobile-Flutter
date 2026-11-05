@@ -320,3 +320,43 @@ wired to the same real confirm → clear-stack → onboarding flow.
 `ActivationScreen` (set password) now leads to `HealthDataConsentScreen`
 first, and only then to `OnboardingMeasurementsScreen` (step 1/3) —
 consent is a real gate, not a screen the wizard can bypass.
+
+## Patient-app spec (phases 1–4): where each screen lives
+
+Built from the "HealthyLife Mobile Screens" spec. Every endpoint below is
+live on `AppConfig.apiBaseUrl`; the data layer is in
+`lib/data/repositories/{patient_care,engagement,health_records}_repository_impl.dart`.
+
+| Spec item | Endpoint(s) | Screen / widget |
+| --- | --- | --- |
+| Nutritionist's instructions | `GET /me/meal-plan` → `patient_instructions` | `widgets/patient_instructions_card.dart` on `screens/weekly_plan_screen.dart` |
+| Physical activity | `GET /me/meal-plan` → `activities` | `PlanActivitiesSection` (same file) |
+| Measurement reminder + schedule | `GET /me/measurement-schedule` | `widgets/measurement_schedule_card.dart` (home, measurement entry, measurements) |
+| Quick contact / My requests | `GET`·`POST /me/quick-requests` | `screens/quick_request_screen.dart`, `screens/my_requests_screen.dart`, `widgets/quick_contact_card.dart` |
+| Check-in | `GET /me/checkins/current`, `POST /me/checkins/{id}` | `screens/checkin_screen.dart` |
+| Food likes/dislikes | `GET`·`PUT /me/food-preferences` | `screens/food_preferences_screen.dart` |
+| Goal projection, weight insight | `GET /me/goal-projection`, `GET /me/weight-insight` | `widgets/insight_cards.dart` on the progress screen |
+| Today card + reminders | `GET /me/today`, `GET /me/posts/unread-count` | `widgets/today_card.dart` on home |
+| Advice posts | `GET /me/posts`, `GET /me/posts/{id}`, `POST …/read` | `screens/posts_screens.dart` |
+| Notification categories | `GET`·`PUT /me/notification-preferences` | `screens/notification_settings_screen.dart` |
+| Medical reports | `/me/consent`, `/me/reports` (404 = off) | `screens/medical_reports_screens.dart`, inside the health record |
+| Cost/prep badges | `cost_tier`, `prep_level` on plan items | `foodTagBadges` in `widgets/spec_ui.dart`, meal detail |
+| Sleep and mood | `/me/wellbeing` | `screens/wellbeing_screen.dart` |
+
+Design tokens (Cairo, `#006572`, cards 16, buttons 52/14) are in `lib/core/theme`;
+the shared building blocks are in `lib/presentation/widgets/spec_ui.dart`.
+New push types are routed in `lib/core/navigation/push_destination.dart`.
+
+### Before a store release
+
+- Choose the final application id / bundle id (both are still
+  `com.example.healthylife`, which Google Play refuses), then register it in
+  Firebase and replace `android/app/google-services.json` and
+  `lib/firebase_options.dart` (`flutterfire configure`).
+- Android signing: create an upload keystore and `android/key.properties`
+  (`storeFile`, `storePassword`, `keyAlias`, `keyPassword`). Without it the
+  release build is signed with the debug key.
+- iOS: enable the Push Notifications capability and Background Modes →
+  Remote notifications in Xcode, and upload the APNs key to Firebase.
+- Build: `flutter build appbundle --release --obfuscate --split-debug-info=build/symbols`
+  and `flutter build ipa --release`.

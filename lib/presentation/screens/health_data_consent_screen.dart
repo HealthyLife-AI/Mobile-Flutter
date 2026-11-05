@@ -4,14 +4,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_radius.dart';
 import '../../core/theme/app_text_styles.dart';
-import '../../core/navigation/app_page_route.dart';
 import '../widgets/gradient_cta_button.dart';
 import '../widgets/confirm_action_sheet.dart';
+import '../widgets/privacy_policy.dart';
 import '../../core/errors/failure.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../bloc/auth/auth_cubit.dart';
-import 'privacy_document_screen.dart';
 
 import '../../l10n/l10n.dart';
 
@@ -22,11 +20,10 @@ class _ConsentClause {
   const _ConsentClause(this.icon, this.question, this.answer);
 }
 
-/// The legal/clinical gate between activation and the health-data wizard:
-/// a patient cannot reach measurements, conditions, or medications until
-/// they've explicitly reviewed what's collected and agreed to it. This
-/// mirrors informed-consent flows required by real HIPAA-style clinical
-/// products — not just a decorative screen.
+/// The consent gate after sign-in (API guide 4): a patient cannot reach the
+/// app until they have read what is collected and accepted the current
+/// policy. Its plain statements must match the policy published on the
+/// website; the full text is only there, behind the "read" link.
 class HealthDataConsentScreen extends StatefulWidget {
   const HealthDataConsentScreen({super.key});
 
@@ -70,28 +67,9 @@ class _HealthDataConsentScreenState extends State<HealthDataConsentScreen> {
     if (confirmed == true && mounted) await context.read<AuthCubit>().signOut();
   }
 
-  /// Opens `policy_url` from the consent response (API guide 4). When the server
-  /// sent no usable URL, the bundled privacy document is shown instead.
-  Future<void> _openPolicy() async {
-    final raw = context.read<AuthCubit>().state.consent?.policyUrl;
-    final uri = raw == null ? null : Uri.tryParse(raw);
-    if (uri == null || (uri.scheme != 'https' && uri.scheme != 'http')) {
-      await Navigator.of(context)
-          .push(AppPageRoute(builder: (_) => const PrivacyDocumentScreen()));
-      return;
-    }
-    var opened = false;
-    try {
-      opened = await launchUrl(uri, mode: LaunchMode.externalApplication);
-    } catch (_) {
-      opened = false;
-    }
-    if (!opened && mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(context.l10n.linkCouldNotOpen)),
-      );
-    }
-  }
+  /// Opens the published policy: `policy_url` from the consent response
+  /// (API guide 4).
+  Future<void> _openPolicy() => openPrivacyPolicy(context);
 
   /// Accepts the policy. On success the auth listener replaces this screen with
   /// the wizard, so only a failure is shown here.
@@ -132,7 +110,7 @@ class _HealthDataConsentScreenState extends State<HealthDataConsentScreen> {
                     children: [
                       const _Reveal(
                         delay: Duration(milliseconds: 900),
-                        child: _EncryptionBanner(),
+                        child: _CareBanner(),
                       ),
                       const SizedBox(height: 16),
                       _Reveal(
@@ -252,21 +230,6 @@ class _HealthDataConsentScreenState extends State<HealthDataConsentScreen> {
         Text(
           context.l10n.consentDataUseNote,
           style: AppTextStyles.caption,
-        ),
-        const SizedBox(height: 12),
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-          decoration: BoxDecoration(
-              color: AppColors.surface,
-              borderRadius: BorderRadius.circular(AppRadius.cardSmall)),
-          child: Row(children: [
-            const Icon(Icons.lock_outline_rounded,
-                size: 14, color: AppColors.primary),
-            const SizedBox(width: 8),
-            Expanded(
-                child: Text(context.l10n.consentEncryptionShort,
-                    style: AppTextStyles.caption)),
-          ]),
         ),
       ]),
     );
@@ -475,39 +438,6 @@ class _ConsentHero extends StatelessWidget {
           padding: const EdgeInsets.fromLTRB(22, 18, 22, 20),
           child: Column(children: [
             const _ShieldHero(),
-            const SizedBox(height: 6),
-            _Reveal(
-              delay: const Duration(milliseconds: 450),
-              child: Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
-                decoration: BoxDecoration(
-                  color: AppColors.surface,
-                  borderRadius: BorderRadius.circular(AppRadius.pill),
-                  border: Border.all(color: AppColors.border),
-                  boxShadow: [
-                    BoxShadow(
-                        color: AppColors.primary.withAlpha(22),
-                        blurRadius: 12,
-                        offset: const Offset(0, 4)),
-                  ],
-                ),
-                child: Row(mainAxisSize: MainAxisSize.min, children: [
-                  const Icon(Icons.verified_user_rounded,
-                      size: 14, color: AppColors.primary),
-                  const SizedBox(width: 6),
-                  Text(
-                    context.l10n.consentProtectionSystem,
-                    style: const TextStyle(
-                      fontFamily: AppTextStyles.fontFamily,
-                      fontSize: 11,
-                      color: AppColors.primary,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                ]),
-              ),
-            ),
             const SizedBox(height: 18),
             _Reveal(
               delay: const Duration(milliseconds: 600),
@@ -708,11 +638,12 @@ class _CheckPainter extends CustomPainter {
       oldDelegate.progress != progress;
 }
 
-/// صورة الرعاية مع شريط التشفير فوقها (بدل البطاقة المنفصلة السابقة).
+/// صورة الرعاية فقط، بدون أي ادعاء أمني فوقها: ما يُقال عن حماية البيانات
+/// موجود في البنود، بما يطابق السياسة المنشورة.
 /// ضعي الصورة في assets/images/consent_care.jpg وسجّليها في pubspec.yaml؛
 /// لو مش موجودة بيظهر خلفية بلون الـ theme بدون أخطاء.
-class _EncryptionBanner extends StatelessWidget {
-  const _EncryptionBanner();
+class _CareBanner extends StatelessWidget {
+  const _CareBanner();
 
   @override
   Widget build(BuildContext context) {
@@ -729,38 +660,6 @@ class _EncryptionBanner extends StatelessWidget {
               child: const Icon(Icons.health_and_safety_rounded,
                   size: 48, color: AppColors.primary),
             ),
-          ),
-          // تدرّج داكن من الأسفل لقراءة النص
-          DecoratedBox(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.bottomCenter,
-                end: Alignment.center,
-                colors: [
-                  Colors.black.withAlpha(170),
-                  Colors.black.withAlpha(0)
-                ],
-              ),
-            ),
-          ),
-          Positioned(
-            left: 12,
-            right: 12,
-            bottom: 10,
-            child: Row(children: [
-              const Icon(Icons.enhanced_encryption_rounded,
-                  size: 16, color: AppColors.accentGreen),
-              const SizedBox(width: 8),
-              Expanded(
-                child: Text(
-                  context.l10n.consentAesNote,
-                  style: const TextStyle(
-                      fontSize: 11,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white),
-                ),
-              ),
-            ]),
           ),
         ]),
       ),

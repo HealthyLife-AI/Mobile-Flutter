@@ -109,6 +109,52 @@ class MealLogCubit extends Cubit<MealLogState> {
     return result;
   }
 
+  /// Deletes the entry, here and on the server (6.4). The entries are read
+  /// again either way: a delete that failed half-way has still removed what
+  /// it could.
+  Future<Result<void>> delete(String entryId) async {
+    final generation = _generation;
+    final result = await _repository.delete(entryId);
+    if (_isStale(generation)) return result;
+    final entries = await _repository.getEntries();
+    if (_isStale(generation)) return result;
+    final kept = entries.valueOrNull ?? state.entries;
+    emit(state.copyWith(
+      status: kept.isEmpty ? MealLogStatus.empty : MealLogStatus.loaded,
+      entries: kept,
+    ));
+    return result;
+  }
+
+  /// Reads today's logs from the server (6.2). [planMeals] are today's plan
+  /// meals, so a planned log joins its meal. A failure (offline) keeps what
+  /// is on screen.
+  Future<void> syncToday(List<Meal> planMeals) async {
+    final generation = _generation;
+    final result =
+        await _repository.syncDay(DateTime.now(), planMeals: planMeals);
+    if (_isStale(generation) || !result.isSuccess) return;
+    await _showEntries(generation);
+  }
+
+  /// Changes the grams of a one-food entry (6.3).
+  Future<Result<MealLogEntry>> updateGrams(String entryId, int grams) async {
+    final generation = _generation;
+    final result = await _repository.updateGrams(entryId, grams);
+    if (!_isStale(generation)) await _showEntries(generation);
+    return result;
+  }
+
+  Future<void> _showEntries(int generation) async {
+    final entries = await _repository.getEntries();
+    if (_isStale(generation)) return;
+    final kept = entries.valueOrNull ?? state.entries;
+    emit(state.copyWith(
+      status: kept.isEmpty ? MealLogStatus.empty : MealLogStatus.loaded,
+      entries: kept,
+    ));
+  }
+
   Future<void> _refreshAfterWrite(
       Result<MealLogEntry> result, int generation) async {
     if (_isStale(generation)) return;

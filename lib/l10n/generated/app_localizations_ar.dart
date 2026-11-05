@@ -196,8 +196,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get aboutPrivacyPolicyTitle => 'سياسة الخصوصية وأمان البيانات الصحية';
 
   @override
-  String get aboutPrivacyPolicySubtitle =>
-      'تشفير سريري عالي المستوى لملفك الغذائي';
+  String get aboutPrivacyPolicySubtitle => 'اقرأ السياسة المنشورة على موقعنا';
 
   @override
   String get aboutMedicalTermsTitle => 'الشروط والأحكام الطبية';
@@ -206,23 +205,27 @@ class AppLocalizationsAr extends AppLocalizations {
   String get aboutMedicalTermsSubtitle => 'إرشادات متابعة خطط الرعاية الصحية';
 
   @override
-  String get aboutLicensesTitle => 'تراخيص الهيئة الطبية والاعتماد';
+  String get aboutLicensesTitle => 'تراخيص البرمجيات';
 
   @override
-  String get aboutLicensesSubtitle => 'سجل الامتثال الطبي الموثق رقم #A-8841';
+  String get aboutLicensesSubtitle =>
+      'المكتبات مفتوحة المصدر المستخدمة في التطبيق';
 
   @override
   String get aboutSupportTitle => 'الدعم الفني ومساعدة التطبيق';
 
   @override
-  String get aboutSupportSubtitle => 'مساعدة متواصلة للاستفسارات التقنية';
+  String get aboutSupportSubtitle => 'تواصل مع أخصائيك عبر واتساب';
 
   @override
-  String get aboutStandardHealthProtection => 'حماية صحية قياسية';
+  String get aboutSupportNoNumber => 'لا يوجد رقم واتساب لأخصائيك بعد.';
+
+  @override
+  String get aboutStandardHealthProtection => 'حماية بياناتك';
 
   @override
   String get aboutEncryptionNote =>
-      'بياناتك مشفرة ومحمية وفق معايير الخصوصية الصحية المعتمدة لمزامنة آمنة مع ملفك السريري.';
+      'الاتصال بين التطبيق وخوادمنا مشفّر، ونأخذ نسخة احتياطية مشفّرة يوميًا.';
 
   @override
   String get aboutLogoutNote =>
@@ -292,8 +295,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get activationCta => 'تفعيل الحساب وبدء الخطة';
 
   @override
-  String get activationEncryptedNote =>
-      'بياناتك الصحية مشفرة ومحمية وفق لوائح الامتثال الطبي';
+  String get activationEncryptedNote => 'الاتصال بين التطبيق وخوادمنا مشفّر.';
 
   @override
   String get activationLinkValid => 'رابط ساري وعامل';
@@ -342,6 +344,39 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get dailyLogMealDeleted => 'تم حذف الوجبة من سجل اليوم';
+
+  @override
+  String get entryEditLocked =>
+      'مرّ أكثر من 7 أيام على تسجيل هذا الإدخال، فلا يمكن تعديله.';
+
+  @override
+  String get dailyLogDeleteOffline =>
+      'لم تُحذف الوجبة: الحذف يحتاج اتصالًا بالإنترنت. حاول مجددًا عند الاتصال.';
+
+  @override
+  String get dailyLogDeleteFailed => 'تعذّر حذف الوجبة. حاول مرة أخرى.';
+
+  @override
+  String get dailyLogEditGramsTitle => 'تعديل الكمية';
+
+  @override
+  String get dailyLogEditGramsLabel => 'الكمية (غرام)';
+
+  @override
+  String get dailyLogEditGramsRange => 'أدخل كمية بين 1 و5000 غرام.';
+
+  @override
+  String get dailyLogGramsChanged => 'تم تعديل الكمية';
+
+  @override
+  String get dailyLogEditOffline =>
+      'لم تُحفظ الكمية: التعديل يحتاج اتصالًا بالإنترنت. حاول مجددًا عند الاتصال.';
+
+  @override
+  String get dailyLogEditGone => 'لم يعد هذا الإدخال موجودًا، فأُزيل من سجلك.';
+
+  @override
+  String get dailyLogEditFailed => 'تعذّر حفظ الكمية. حاول مرة أخرى.';
 
   @override
   String get commonUndo => 'تراجع';
@@ -688,25 +723,28 @@ class AppLocalizationsAr extends AppLocalizations {
   String get commonOpenWhatsApp => 'فتح واتساب';
 
   @override
-  String get consentClauseStorageTitle => 'كيف تُحفظ بياناتك الصحية؟';
+  String get consentClauseStorageTitle => 'كيف نحمي بياناتك؟';
 
   @override
   String get consentClauseStorageBody =>
-      'تشفير كامل وفق أعلى معايير الخصوصية الصحية السريرية (HIPAA standards). تُخزَّن السجلات على خوادم طبية معزولة لا يمكن لأي طرف ثالث أو شركة إعلانات الوصول إليها تحت أي ظرف.';
+      'الاتصال بين التطبيق وخوادمنا مشفّر، ونأخذ نسخة احتياطية مشفّرة يوميًا.';
 
   @override
   String get consentClauseAccessTitle => 'من يمكنه الاطلاع عليها؟';
 
   @override
   String get consentClauseAccessBody =>
-      'أخصائي التغذية العلاجية المعتمد على حسابك فقط، عبر نظام مراجعة سريري مشفر. لا تُشارك بياناتك مع أي جهة أخرى، ولا تُستخدم لأي غرض تسويقي.';
+      'بياناتك الصحية يطّلع عليها أخصائيك فقط، ولا نبيعها ولا نستخدمها للإعلانات.';
 
   @override
-  String get consentClauseRevokeTitle => 'حقك الكامل في إلغاء الموافقة';
+  String get consentClauseRevokeTitle => 'حقك في حذف بياناتك';
 
   @override
   String get consentClauseRevokeBody =>
-      'يمكنك سحب موافقتك في أي وقت من الحساب ← الخصوصية. سيؤدي ذلك إلى إيقاف تخصيص الخطة الغذائية تلقائياً حتى تجديد الموافقة، دون التأثير على سجلاتك المحفوظة.';
+      'يمكنك حذف بياناتك أو حسابك من التطبيق في أي وقت.';
+
+  @override
+  String get privacyOnWebsite => 'سياسة الخصوصية متوفرة على موقعنا.';
 
   @override
   String get consentExitTitle => 'الخروج من إعداد ملفك الصحي؟';
@@ -753,14 +791,7 @@ class AppLocalizationsAr extends AppLocalizations {
       'بياناتك (سجل الوجبات، القياسات، والحالة الصحية) تصل لأخصائي التغذية المتابع لك فقط وتُستخدم لبناء خطتك الغذائية ومتابعة تقدمك السريري بأمان.';
 
   @override
-  String get consentEncryptionShort =>
-      'مشفّرة بنظام bit-256 ومتوافقة مع المعايير الصحية السريرية (HIPAA).';
-
-  @override
   String get consentTitle => 'الموافقة على استخدام البيانات الصحية';
-
-  @override
-  String get consentProtectionSystem => 'منظومة الحماية السريرية الذكية';
 
   @override
   String get consentBeforeWeStart => 'قبل أن نبدأ رحلتك الصحية';
@@ -768,10 +799,6 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get consentCommitment =>
       'نحن نلتزم بحماية خصوصية بياناتك الصحية والسريرية بأقصى درجات الشفافية والأمان.';
-
-  @override
-  String get consentAesNote =>
-      'بياناتك الطبية مشفرة بنظام bit AES-256 من لحظة إدخالها';
 
   @override
   String get consentCheckbox =>
@@ -1111,8 +1138,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get logMealOffPlanFooter => 'المتابعة للبحث وحساب الغرامات (P-22)';
 
   @override
-  String get logMealPrivacyNote =>
-      'بياناتك الغذائية مشفرة وتُعامل بخصوصية طبية تامة';
+  String get logMealPrivacyNote => 'سجل وجباتك يطّلع عليه أخصائيك فقط.';
 
   @override
   String get logMealEncouragementLabel => 'إضاءة تشجيعية: ';
@@ -1325,6 +1351,33 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get measurementsHomeReading => 'قياس منزلي';
+
+  @override
+  String get measurementsHistoryTitle => 'سجل القراءات';
+
+  @override
+  String get measurementsDeleteReading => 'حذف القراءة';
+
+  @override
+  String get measurementsDeleteConfirmTitle => 'حذف هذه القراءة؟';
+
+  @override
+  String get measurementsDeleteConfirmBody =>
+      'ستُحذف من سجلّك، ولن يراها أخصائيك بعد الآن.';
+
+  @override
+  String get measurementsDeleted => 'تم حذف القراءة';
+
+  @override
+  String get measurementsDeleteClinic =>
+      'سجّل أخصائيك هذه القراءة في العيادة، فلا يمكن حذفها من التطبيق.';
+
+  @override
+  String get measurementsDeleteOffline =>
+      'لم تُحذف القراءة: الحذف يحتاج اتصالًا بالإنترنت. حاول مجددًا عند الاتصال.';
+
+  @override
+  String get measurementsDeleteFailed => 'تعذّر حذف القراءة. حاول مرة أخرى.';
 
   @override
   String get measurementsSyncNote =>
@@ -1619,9 +1672,6 @@ class AppLocalizationsAr extends AppLocalizations {
       'تحقق من تفعيل Wi-Fi أو بيانات الهاتف من إعدادات جهازك';
 
   @override
-  String get onboardingHealthAsPrescribed => 'حسب الوصفة';
-
-  @override
   String get onboardingHealthTitle => 'البيانات الصحية';
 
   @override
@@ -1629,18 +1679,18 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get onboardingHealthConditionsNote =>
-      'حدد أي حالات صحية تم تشخيصك بها لتكييف برنامجك الغذائي ومكوناته والوجبات المقترحة وفق استجابة تامة وآمنة لجسمك.';
+      'حدّد أي حالات صحية تم تشخيصك بها، لتصل إلى أخصائيك ويراعيها في خطتك.';
 
   @override
   String get onboardingHealthConfidentialNote =>
-      'سرية سريرية مشفرة ومعتمدة طبياً — تساعد هذه التفاصيل أخصائي التغذية في استبعاد أي مكونات قد تتعارض مع مؤشراتك الحيوية أو أدويتك الموصوفة.';
+      'يطّلع على هذه التفاصيل أخصائيك فقط، وتساعده في استبعاد أي مكونات قد تتعارض مع حالتك أو أدويتك.';
 
   @override
   String get onboardingHealthAllergies => 'الحساسية الغذائية والتفضيلات';
 
   @override
   String get onboardingHealthAllergiesNote =>
-      'حدد مسببات الحساسية المعتمدة ليقوم النظام باستبعادها تلقائياً من جداول الوجبات والوصفات المقترحة.';
+      'حدّد ما يسبب لك حساسية، ليراجعه أخصائيك ويضيفه إلى ملفك. بعد اعتماده تظهر علامة تنبيه على الأطعمة التي قد تحتويه.';
 
   @override
   String get onboardingHealthMedications => 'الأدوية والمكملات المنتظمة';
@@ -1650,7 +1700,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get onboardingHealthMedicationsNote =>
-      'اكتب أي أدوية موصوفة أو فيتامينات تتناولها لضمان عدم حدوث تداخلات كيميائية مع توقيت ومكونات الوجبات.';
+      'اكتب الأدوية أو الفيتامينات التي تتناولها، ليراعيها أخصائيك في توقيت وجباتك ومكوناتها.';
 
   @override
   String get commonAdd => 'إضافة';
@@ -1661,7 +1711,20 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get onboardingHealthReviewNote =>
-      'تخضع كافة الملاحظات والأدوية لمراجعة برمجية واستشارية دقيقة لملاءمة النظام الغذائي واستبعاد أي تداخلات غذائية مع أدويتك الموصوفة.';
+      'يراجع أخصائيك الأدوية والحساسيات قبل إضافتها إلى ملفك.';
+
+  @override
+  String get onboardingHealthAllergyClass => 'كيف تؤثر عليك هذه الأطعمة؟';
+
+  @override
+  String onboardingHealthRequestConditions(String list) {
+    return 'الأمراض المزمنة: $list';
+  }
+
+  @override
+  String onboardingHealthRequestNotes(String notes) {
+    return 'ملاحظات: $notes';
+  }
 
   @override
   String get onboardingHealthOtherNotes =>
@@ -1735,7 +1798,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get onboardingMeasurementsPrivacyNote =>
-      'بياناتك وقياساتك مشفرة بالكامل بمعايير أمان صحية معتمدة، وتُعرض حصرياً لأخصائي التغذية المعتمد لتصميم خطتك الغذائية الفردية.';
+      'قياساتك يطّلع عليها أخصائيك فقط، ليصمّم خطتك الغذائية بناءً عليها.';
 
   @override
   String get onboardingMeasurementsSaveContinue => 'حفظ والمتابعة';
@@ -1962,49 +2025,6 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get commonEnabled => 'مفعّل';
-
-  @override
-  String get privacyScopeTitle => '١. نطاق البيانات المجمّعة';
-
-  @override
-  String get privacyScopeBody =>
-      'نجمع فقط ما يلزم لبناء خطتك الغذائية العلاجية: قياساتك الحيوية (الوزن، محيط الجسم)، سجلات وجباتك اليومية، حالاتك الصحية المشخصة، حساسياتك الغذائية، والأدوية والمكملات التي تخبرينا بها. لا نطلب أو نُخزّن أي بيانات مالية أو بيانات موقع دائم.';
-
-  @override
-  String get privacyEncryptionTitle => '٢. التشفير وأماكن التخزين';
-
-  @override
-  String get privacyEncryptionBody =>
-      'تُشفّر جميع البيانات الصحية أثناء النقل والتخزين بنظام bit AES-256، وتُحفظ على خوادم طبية معزولة متوافقة مع معايير HIPAA. لا تُستخدم بياناتك في تدريب نماذج عامة ولا تُشارك مع أي شركة إعلانات تحت أي ظرف.';
-
-  @override
-  String get privacyAccessTitle => '٣. من يستطيع الاطلاع على ملفك';
-
-  @override
-  String get privacyAccessBody =>
-      'فريق الرعاية المخصص لك فقط — أخصائي التغذية العلاجية المعتمد على حسابك — يستطيع الاطلاع على سجلك الكامل. أي تحديث أو تعديل على خطتك يُسجَّل باسم صاحبه ووقته في سجل تدقيق لا يمكن حذفه.';
-
-  @override
-  String get privacyRightsTitle => '٤. حقك في التعديل والإلغاء';
-
-  @override
-  String get privacyRightsBody =>
-      'يمكنك سحب موافقتك في أي وقت من الحساب ← الخصوصية، وسيؤدي ذلك إلى إيقاف تخصيص الخطة تلقائياً حتى تجديد الموافقة. يمكنك أيضاً طلب نسخة كاملة من بياناتك أو حذفها نهائياً بالتواصل مع أخصائي التغذية.';
-
-  @override
-  String get privacyRetentionTitle =>
-      '٥. الاحتفاظ بالبيانات بعد انتهاء المتابعة';
-
-  @override
-  String get privacyRetentionBody =>
-      'عند انتهاء فترة المتابعة السريرية، تبقى سجلاتك وقياساتك محفوظة بأمان لاستئناف الخطة فور التجديد، ولا تُحذف تلقائياً إلا بطلب صريح منك.';
-
-  @override
-  String get privacyTitle => 'الخصوصية السريرية الكاملة';
-
-  @override
-  String get privacyLastUpdated =>
-      'آخر تحديث لهذه الوثيقة: يناير 2026 — متوافقة مع معايير HIPAA السريرية';
 
   @override
   String get profileMeasurementsSubtitle => 'سجّل قياساتك وتابع مسار تغيّرك';
@@ -2596,7 +2616,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get offlinePanelLogMeasurementsDesc =>
-      'يتم حفظ التغييرات بقاعدة بيانات الهاتف المشفرة';
+      'تُحفظ التغييرات على هاتفك، وتُرسل عند عودة الاتصال.';
 
   @override
   String get offlinePanelNotes => 'تدوين الملاحظات والوجبات السريعة';
@@ -3333,6 +3353,9 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get weighInReminderChannel => 'تذكير القياس الأسبوعي';
+
+  @override
+  String get pushChannelName => 'إشعارات أخصائيك وخطتك';
 
   @override
   String get weighInReminderTitle => 'حان موعد قياسك الأسبوعي';
@@ -4247,13 +4270,163 @@ class AppLocalizationsAr extends AppLocalizations {
       'محسوبة من وجباتك المسجّلة على هالجهاز ومن قياساتك وهدفك.';
 
   @override
-  String get callsAskForAppointment => 'اطلب موعدًا من أخصائيتك';
-
-  @override
   String get callsNextTitle => 'موعدك القادم';
 
   @override
   String get callsLaterTitle => 'المواعيد الجاية';
+
+  @override
+  String get shoppingListTitle => 'قائمة التسوق';
+
+  @override
+  String get shoppingDayTab => 'هذا اليوم';
+
+  @override
+  String get shoppingWeekTab => 'الأسبوع كاملًا';
+
+  @override
+  String get shoppingWeekNote =>
+      'الوجبات اليومية لسبعة أيام، ووجبات الأيام المحددة مرة واحدة.';
+
+  @override
+  String get shoppingNote => 'الكميات من خطتك، والبدائل مذكورة تحت كل صنف.';
+
+  @override
+  String get shoppingEmpty => 'لا يوجد ما تشتريه في هذه الفترة.';
+
+  @override
+  String shoppingAlternatives(String names) {
+    return 'أو: $names';
+  }
+
+  @override
+  String get shoppingSectionProduce => 'خضار وفواكه';
+
+  @override
+  String get shoppingSectionMeat => 'لحوم ودواجن وأسماك';
+
+  @override
+  String get shoppingSectionDairy => 'ألبان وبيض';
+
+  @override
+  String get shoppingSectionGrains => 'حبوب ونشويات';
+
+  @override
+  String get shoppingSectionLegumes => 'بقوليات ومكسرات';
+
+  @override
+  String get shoppingSectionOils => 'زيوت وتوابل';
+
+  @override
+  String get shoppingSectionOther => 'أخرى';
+
+  @override
+  String get callsBookTitle => 'حجز موعد';
+
+  @override
+  String get callsChangeTitle => 'تغيير الموعد';
+
+  @override
+  String get callsCancelAction => 'إلغاء الموعد';
+
+  @override
+  String get callsJoinCall => 'الانضمام إلى المكالمة';
+
+  @override
+  String get callsTypeSection => 'نوع الموعد';
+
+  @override
+  String callsMinutes(String minutes) {
+    return '$minutes دقيقة';
+  }
+
+  @override
+  String get callsTimeSection => 'اختر الوقت';
+
+  @override
+  String get callsTimesLocal => 'الأوقات بتوقيت جهازك.';
+
+  @override
+  String get callsNoSlots => 'لا توجد أوقات متاحة حاليًا.';
+
+  @override
+  String get callsNoSlotsBody => 'تواصل مع أخصائيك لتحديد موعد.';
+
+  @override
+  String get callsChannelSection => 'طريقة التواصل';
+
+  @override
+  String get callsTopicsSection => 'ما الذي تودّ مناقشته؟ (اختياري)';
+
+  @override
+  String get callsTopicWeight => 'الوزن';
+
+  @override
+  String get callsTopicMeals => 'الوجبات';
+
+  @override
+  String get callsTopicPlanChange => 'تعديل الخطة';
+
+  @override
+  String get callsTopicResults => 'النتائج';
+
+  @override
+  String get callsTopicMedications => 'الأدوية';
+
+  @override
+  String get callsTopicOther => 'أخرى';
+
+  @override
+  String get callsNoteSection => 'ملاحظة لأخصائيك (اختياري)';
+
+  @override
+  String get callsConfirmBooking => 'تأكيد الحجز';
+
+  @override
+  String get callsConfirmChange => 'تأكيد الموعد الجديد';
+
+  @override
+  String get callsCurrentAppointment => 'الموعد الحالي';
+
+  @override
+  String get callsBooked => 'تم حجز موعدك';
+
+  @override
+  String get callsRescheduled => 'تم تغيير موعدك';
+
+  @override
+  String get callsCancelled => 'تم إلغاء موعدك';
+
+  @override
+  String get callsCancelConfirmTitle => 'إلغاء هذا الموعد؟';
+
+  @override
+  String get callsCancelConfirmBody =>
+      'سيُلغى الموعد، ويمكنك حجز موعد جديد لاحقًا.';
+
+  @override
+  String get callsKeep => 'إبقاء الموعد';
+
+  @override
+  String get callsErrorExists =>
+      'لديك موعد قادم بالفعل. يمكنك تعديله أو إلغاؤه.';
+
+  @override
+  String get callsErrorSlotTaken => 'هذا الوقت لم يعد متاحًا، اختر وقتًا آخر.';
+
+  @override
+  String get callsErrorVideo => 'مكالمات الفيديو غير متاحة مع أخصائيك حاليًا.';
+
+  @override
+  String get callsErrorClosed => 'هذا الموعد لم يعد قائمًا.';
+
+  @override
+  String callsErrorLocked(String hours) {
+    return 'لا يمكن تعديل الموعد أو إلغاؤه قبل أقل من $hours ساعة. تواصل مع أخصائيك.';
+  }
+
+  @override
+  String get callsErrorGeneric => 'تعذّر إتمام الطلب. حاول مرة أخرى.';
 
   @override
   String get healthSyncHeroApple => 'ربط التطبيق مع Apple Health';

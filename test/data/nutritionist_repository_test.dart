@@ -5,6 +5,7 @@ import 'package:healthylife_ai/core/network/api_client.dart';
 import 'package:healthylife_ai/core/storage/storage_service.dart';
 import 'package:healthylife_ai/data/datasources/nutritionist_remote_data_source.dart';
 import 'package:healthylife_ai/data/repositories/nutritionist_repository_impl.dart';
+import 'package:healthylife_ai/data/repositories/password_help_contact.dart';
 
 /// Answers `GET me/nutritionist` with the next scripted answer: a value is
 /// returned, an [AppException] is thrown.
@@ -105,5 +106,43 @@ void main() {
     api.answers.add(const NetworkException('no connection'));
     final result = await _repository(api, storage).getProfile();
     expect(result.failureOrNull, isA<NetworkFailure>());
+  });
+
+  group('forgot-password contact (3.6)', () {
+    NutritionistRepositoryImpl withHelp(PasswordHelpContact help) =>
+        NutritionistRepositoryImpl(storage, NutritionistRemoteDataSource(api),
+            passwordHelp: help);
+
+    test('outlives the end of the session', () async {
+      final help = PasswordHelpContact(storage);
+      api.answers.add(_answer);
+      await withHelp(help).getProfile();
+
+      await withHelp(help).forgetPatientData();
+
+      expect(await help.whatsappUri(), Uri.parse('https://wa.me/970599123456'));
+    });
+
+    test('is forgotten when the nutritionist has no number any more',
+        () async {
+      final help = PasswordHelpContact(storage);
+      api.answers.add(_answer);
+      await withHelp(help).getProfile();
+
+      api.answers.add({'name': 'د. أمل', 'whatsapp_number': null});
+      await withHelp(help).getProfile();
+
+      expect(await help.whatsappUri(), isNull);
+    });
+
+    test('is removed with the account', () async {
+      final help = PasswordHelpContact(storage);
+      api.answers.add(_answer);
+      await withHelp(help).getProfile();
+
+      await help.forget();
+
+      expect(await help.whatsappUri(), isNull);
+    });
   });
 }

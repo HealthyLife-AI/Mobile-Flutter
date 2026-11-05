@@ -17,6 +17,8 @@ import '../../data/repositories/meal_log_repository_impl.dart';
 import '../../data/repositories/meal_plan_repository_impl.dart';
 import '../../data/repositories/measurement_repository_impl.dart';
 import '../../data/repositories/nutritionist_repository_impl.dart';
+import '../../data/repositories/password_help_contact.dart';
+import '../../data/repositories/privacy_policy_link.dart';
 import '../../data/repositories/appointment_repository_impl.dart';
 import '../../data/repositories/progress_repository_impl.dart';
 import '../../data/repositories/review_repository_impl.dart';
@@ -36,6 +38,7 @@ import '../../data/services/local_reminder_notifications.dart';
 import '../../data/services/firebase_push_registrar.dart';
 import '../../data/services/notification_preferences_sync.dart';
 import '../../data/services/notification_read_receipt.dart';
+import '../../data/services/push_channel.dart';
 import '../../data/services/system_notification_permissions.dart';
 import '../../data/services/weigh_in_reminder.dart';
 import '../navigation/dropped_write_notice.dart';
@@ -139,6 +142,10 @@ class AppDependencies {
   final ChangeSignal requestChanges = ChangeSignal();
   final ChangeSignal postChanges = ChangeSignal();
 
+  /// Raised by a push that arrives while the app is open, so the inbox and
+  /// its unread badge are read again (API guide 10.4).
+  final ChangeSignal notificationChanges = ChangeSignal();
+
   final MealPlanRemoteDataSource? _mealPlanSource;
   final NotificationDataSource? _notificationSource;
   final ApiClient? _apiOverride;
@@ -175,11 +182,16 @@ class AppDependencies {
     storage: storage,
     api: api,
     onDropped: showDroppedWriteNotice,
+    // A saved meal log's server id, so it can be deleted later (6.4).
+    onSaved: (write, response) => _mealLog.recordSaved(write, response),
   );
 
   late final AuthRemoteDataSource _authRemote = AuthRemoteDataSource(api);
 
-  late final PushRegistrar push = FirebasePushRegistrar(api: api);
+  late final PushRegistrar push = FirebasePushRegistrar(
+    api: api,
+    prepareChannel: () => createPushChannel(_reminderNotifications, settings),
+  );
 
   /// Reads/requests the OS notification permission and opens the system
   /// settings page. Used by the notification settings and onboarding screens;
@@ -216,7 +228,17 @@ class AppDependencies {
     local: session,
     coordinator: _coordinator,
     push: push,
+    onAccountDeleted: passwordHelp.forget,
+    onConsent: (consent) => privacyPolicy.remember(consent.policyUrl),
   );
+
+  /// The published privacy policy's address (API guide 4). It outlives the
+  /// session, so it is not in [_patientCaches].
+  late final PrivacyPolicyLink privacyPolicy = PrivacyPolicyLink(storage);
+
+  /// The nutritionist's WhatsApp number for the forgot-password message
+  /// (3.6). It outlives the session, so it is not in [_patientCaches].
+  late final PasswordHelpContact passwordHelp = PasswordHelpContact(storage);
   late final SettingsRepository settings = SettingsRepositoryImpl(storage);
   late final MealPlanRepositoryImpl _mealPlan = MealPlanRepositoryImpl(
     storage,
@@ -229,7 +251,7 @@ class AppDependencies {
   // The patient-scoped repositories are kept as their concrete types too, so
   // [_patientCaches] can clear them.
   late final MealLogRepositoryImpl _mealLog =
-      MealLogRepositoryImpl(storage, offlineQueue);
+      MealLogRepositoryImpl(storage, offlineQueue, api);
   late final MealLogRepository mealLog = _mealLog;
 
   late final MeasurementRepositoryImpl _measurement = MeasurementRepositoryImpl(
@@ -240,7 +262,8 @@ class AppDependencies {
   late final MeasurementRepository measurement = _measurement;
 
   late final NutritionistRepositoryImpl _nutritionist =
-      NutritionistRepositoryImpl(storage, NutritionistRemoteDataSource(api));
+      NutritionistRepositoryImpl(storage, NutritionistRemoteDataSource(api),
+          passwordHelp: passwordHelp);
   late final NutritionistRepository nutritionist = _nutritionist;
 
   late final HealthProfileRepositoryImpl _healthProfile =
@@ -256,8 +279,9 @@ class AppDependencies {
   late final ProgressRepository progress = _progressData;
 
   /// The device's own reminders as local notifications (API guide 10.6):
-  /// appointments and the weekly weigh-in share the plugin.
-  late final ReminderNotifications _reminderNotifications =
+  /// appointments and the weekly weigh-in share the plugin, which also
+  /// creates the push channel (10.4).
+  late final FlutterReminderNotifications _reminderNotifications =
       FlutterReminderNotifications();
 
   late final AppointmentReminderScheduler _appointmentReminders =

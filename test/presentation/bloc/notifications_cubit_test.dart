@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:healthylife_ai/core/errors/failure.dart';
 import 'package:healthylife_ai/core/errors/result.dart';
@@ -50,6 +52,12 @@ class _FakeRepository implements NotificationRepository {
     bulk.add(ids);
     return failWith != null ? Failed(failWith!) : const Success(null);
   }
+
+  /// The server's unread count. Null: not known, so the rows count.
+  int? unread;
+
+  @override
+  Future<Result<int?>> unreadCount() async => Success(unread);
 }
 
 void main() {
@@ -198,5 +206,68 @@ void main() {
     cubit.reset();
     expect(cubit.state.status, NotificationsStatus.initial);
     expect(cubit.state.groups, isEmpty);
+  });
+
+  group('the unread badge (10.2)', () {
+    test('counts every page, from the server', () async {
+      final repository = _FakeRepository([
+        NotificationDateGroup(label: 'today', items: [_entry('a')]),
+      ])
+        ..unread = 23;
+      final cubit = NotificationsCubit(repository);
+      await cubit.load();
+
+      expect(cubit.state.unreadShown, 1);
+      expect(cubit.state.unreadCount, 23);
+    });
+
+    test('counts down as rows are read here', () async {
+      final repository = _FakeRepository([
+        NotificationDateGroup(label: 'today', items: [_entry('a')]),
+      ])
+        ..unread = 23;
+      final cubit = NotificationsCubit(repository);
+      await cubit.load();
+
+      await cubit.markRead('a');
+      expect(cubit.state.unreadCount, 22);
+
+      await cubit.markRead('a'); // already read: no change
+      expect(cubit.state.unreadCount, 22);
+    });
+
+    test('mark all read reaches rows on pages not read yet', () async {
+      final repository = _FakeRepository([
+        NotificationDateGroup(
+            label: 'today', items: [_entry('a', unread: false)]),
+      ])
+        ..unread = 4;
+      final cubit = NotificationsCubit(repository);
+      await cubit.load();
+
+      await cubit.markAllRead();
+
+      expect(repository.bulk.single, isEmpty);
+      expect(cubit.state.unreadCount, 0);
+    });
+
+    test('a push while the app is open reads the inbox again (10.4)',
+        () async {
+      final changes = StreamController<void>.broadcast();
+      final repository = _FakeRepository([
+        NotificationDateGroup(label: 'today', items: [_entry('a')]),
+      ])
+        ..unread = 1;
+      final cubit = NotificationsCubit(repository, changes: changes.stream);
+      await cubit.load();
+
+      repository.unread = 2;
+      changes.add(null);
+      await Future<void>.delayed(Duration.zero);
+
+      expect(cubit.state.unreadCount, 2);
+      await cubit.close();
+      await changes.close();
+    });
   });
 }

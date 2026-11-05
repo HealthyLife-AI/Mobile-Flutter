@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -18,6 +20,7 @@ class NotificationsState {
     this.page = 0,
     this.hasMore = false,
     this.loadingMore = false,
+    this.unreadTotal,
   });
 
   final NotificationsStatus status;
@@ -35,7 +38,15 @@ class NotificationsState {
   /// An older page is being read.
   final bool loadingMore;
 
-  int get unreadCount =>
+  /// Unread rows on every page, from `GET /me/notifications/unread-count`
+  /// (10.2), kept in step as rows are read here. Null when not known.
+  final int? unreadTotal;
+
+  /// The badge: every unread row, not only the pages shown. Without the
+  /// server's count, the unread rows shown.
+  int get unreadCount => unreadTotal ?? unreadShown;
+
+  int get unreadShown =>
       groups.fold(0, (sum, g) => sum + g.items.where((e) => e.unread).length);
 
   bool get isEmpty => groups.every((g) => g.items.isEmpty);
@@ -49,6 +60,7 @@ class NotificationsState {
     int? page,
     bool? hasMore,
     bool loadingMore = false,
+    int? Function()? unreadTotal,
   }) =>
       NotificationsState(
         status: status ?? this.status,
@@ -58,21 +70,31 @@ class NotificationsState {
         page: page ?? this.page,
         hasMore: hasMore ?? this.hasMore,
         loadingMore: loadingMore,
+        unreadTotal: unreadTotal == null ? this.unreadTotal : unreadTotal(),
       );
 }
 
 class NotificationsCubit extends Cubit<NotificationsState> {
-  NotificationsCubit(this._repository) : super(const NotificationsState());
+  /// [changes] (a push that arrived while the app is open, 10.4) reads the
+  /// newest page and the count again.
+  NotificationsCubit(this._repository, {Stream<void>? changes})
+      : super(const NotificationsState()) {
+    _changes = changes?.listen((_) {
+      if (state.status != NotificationsStatus.initial) unawaited(load());
+    });
+  }
 
   final NotificationRepository _repository;
+  StreamSubscription<void>? _changes;
 
-  /// Reads the newest page again. The older pages already shown are dropped:
-  /// they are read again on request.
+  /// Reads the newest page again, and the server's unread count. The older
+  /// pages already shown are dropped: they are read again on request.
   Future<void> load() async {
     if (state.status == NotificationsStatus.initial) {
       emit(state.copyWith(status: NotificationsStatus.loading));
     }
-    final result = await _repository.getPage(1);
+    final (result, count) =
+        await (_repository.getPage(1), _repository.unreadCount()).wait;
     if (isClosed) return;
     result.when(
       success: (page) => emit(state.copyWith(
@@ -82,10 +104,27 @@ class NotificationsCubit extends Cubit<NotificationsState> {
         groups: page.groups,
         page: 1,
         hasMore: page.hasMore,
+        // Without a count, the rows shown are the badge.
+        unreadTotal: () => count.valueOrNull,
       )),
       failure: (failure) => emit(NotificationsState(
           status: NotificationsStatus.error, failure: failure)),
     );
+  }
+
+  @override
+  Future<void> close() async {
+    await _changes?.cancel();
+    return super.close();
+  }
+
+  /// The server's count less one, when a row shown as unread is read here.
+  int? _oneFewerUnread(String id) {
+    final total = state.unreadTotal;
+    if (total == null) return null;
+    final wasUnread = state.groups
+        .any((g) => g.items.any((e) => e.id == id && e.unread));
+    return wasUnread && total > 0 ? total - 1 : total;
   }
 
   /// Adds the next, older page under the rows shown. A failure keeps what is
@@ -110,8 +149,10 @@ class NotificationsCubit extends Cubit<NotificationsState> {
 
   Future<void> markRead(String id) async {
     // Optimistic: flip locally, persist in background.
+    final total = _oneFewerUnread(id);
     final groups = _mapGroups((e) => e.id == id ? e.markRead() : e);
-    emit(state.copyWith(groups: groups, status: state.status));
+    emit(state.copyWith(
+        groups: groups, status: state.status, unreadTotal: () => total));
     final result = await _repository.markRead(id);
     if (isClosed) return;
     if (result case Failed<void>(:final failure)) {
@@ -127,10 +168,15 @@ class NotificationsCubit extends Cubit<NotificationsState> {
         for (final e in g.items)
           if (e.unread) e.id,
     ];
-    if (ids.isEmpty) return;
+    // Unread rows can sit on pages not read yet: the server's read-all marks
+    // those too (10.2).
+    if (ids.isEmpty && (state.unreadTotal ?? 0) == 0) return;
     final groups = _mapGroups((e) => e.unread ? e.markRead() : e);
-    emit(
-        state.copyWith(groups: groups, status: state.status, processing: true));
+    emit(state.copyWith(
+        groups: groups,
+        status: state.status,
+        processing: true,
+        unreadTotal: () => state.unreadTotal == null ? null : 0));
     final result = await _repository.markAllRead(ids);
     if (isClosed) return;
     emit(state.copyWith(processing: false, status: state.status));
