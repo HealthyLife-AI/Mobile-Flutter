@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "17284017886",
+    "project_id": "healthylife-3ce36",
+    "storage_bucket": "healthylife-3ce36.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:17284017886:android:a1b3cc86da6676779a1c4f",
+        "android_client_info": {
+          "package_name": "com.example.healthylife"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC4eizd1QxkCqL7bKgCWM3yiMLGa3gg9SM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
