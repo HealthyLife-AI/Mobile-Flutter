@@ -4,15 +4,26 @@ import 'app_colors.dart';
 /// Section 2.2 — Typography tokens. Rounded sans-serif family,
 /// weights/sizes fixed centrally so no screen hardcodes a TextStyle.
 ///
+<<<<<<< HEAD
 /// Font: Cairo (SIL OFL), the family the design spec names, is bundled from
 /// `assets/fonts/` at weights 400, 500, 600, 700 and 800. Sizes follow the
 /// spec: headings 20 Bold, card titles 16 Bold, body 14-15, small 12,
 /// smallest 11.
+=======
+/// Font: Tajawal (SIL OFL) is bundled from `assets/fonts/` and declared under
+/// `flutter: fonts:` in pubspec.yaml at weights 400, 500, 700 and 800. Tajawal
+/// has no 600 face, so the w600 styles use the Bold face (700), the next weight up.
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 class AppTextStyles {
   AppTextStyles._();
 
   /// Family used by every token and by the theme. Bundled, see the note above.
+<<<<<<< HEAD
   static const String fontFamily = 'Cairo'; // covers Arabic and Latin
+=======
+  static const String fontFamily =
+      'Tajawal'; // rounded, covers Arabic and Latin
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 
   static const TextStyle h1 = TextStyle(
     fontFamily: fontFamily,

@@ -200,7 +200,11 @@ class _AnimatedGradientCtaButtonState extends State<_AnimatedGradientCtaButton>
               style: OutlinedButton.styleFrom(
                 side: const BorderSide(color: AppColors.primary, width: 1.4),
                 shape: RoundedRectangleBorder(
+<<<<<<< HEAD
                     borderRadius: BorderRadius.circular(AppRadius.button)),
+=======
+                    borderRadius: BorderRadius.circular(AppRadius.pill)),
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
               ),
               child: ButtonShine(
                 borderRadius: BorderRadius.circular(AppRadius.button),
@@ -223,7 +227,11 @@ class _AnimatedGradientCtaButtonState extends State<_AnimatedGradientCtaButton>
     // keeps the repaint away from the rest of the screen (a text field and
     // the keyboard's slide included).
     final content = ButtonShine(
+<<<<<<< HEAD
       borderRadius: BorderRadius.circular(AppRadius.button),
+=======
+      borderRadius: BorderRadius.circular(AppRadius.pill),
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
       child: Center(
         child: widget.loading
             ? const SizedBox(
@@ -263,11 +271,19 @@ class _AnimatedGradientCtaButtonState extends State<_AnimatedGradientCtaButton>
               builder: (context, child) {
                 final glow = 0.5 + 0.5 * math.sin(_loop.value * 2 * math.pi);
                 return Container(
+<<<<<<< HEAD
                   height: 52,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                     gradient: grad,
                     borderRadius: BorderRadius.circular(AppRadius.button),
+=======
+                  height: 54,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    gradient: grad,
+                    borderRadius: BorderRadius.circular(AppRadius.pill),
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
                     boxShadow: [
                       BoxShadow(
                         color: grad.colors.last

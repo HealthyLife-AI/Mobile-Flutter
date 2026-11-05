@@ -22,10 +22,17 @@ void main() {
 
   setUpAll(() async {
     // Real glyph widths, as on the device.
+<<<<<<< HEAD
     final loader = FontLoader('Cairo');
     for (final face in ['Regular', 'Medium', 'Bold', 'ExtraBold']) {
       loader.addFont(Future.value(ByteData.sublistView(
           File('assets/fonts/Cairo-$face.ttf').readAsBytesSync())));
+=======
+    final loader = FontLoader('Tajawal');
+    for (final face in ['Regular', 'Medium', 'Bold', 'ExtraBold']) {
+      loader.addFont(Future.value(ByteData.sublistView(
+          File('assets/fonts/Tajawal-$face.ttf').readAsBytesSync())));
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
     }
     await loader.load();
   });

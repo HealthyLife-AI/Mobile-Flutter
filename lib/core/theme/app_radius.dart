@@ -10,9 +10,12 @@ class AppRadius {
 
   /// Material filled buttons (four of the five existing call sites use 14).
   static const double button = 14;
+<<<<<<< HEAD
 
   /// Inner panels inside a card, and the 40x40 icon tile (design spec).
   static const double panel = 12;
+=======
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   // FullWidthActionBar (section 2.5 exception): a flow-completion CTA gets
   // noticeably LESS rounding than the usual pill, and no side margin.
   static const double actionBar = 10;

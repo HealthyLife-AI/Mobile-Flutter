@@ -11,6 +11,8 @@ import '../widgets/external_link.dart';
 
 import '../../l10n/l10n.dart';
 
+import '../../l10n/l10n.dart';
+
 /// دليل القياسات — illustrated step-by-step guide for each circumference
 /// measurement. All four guides are listed in one scroll; the chip row jumps
 /// to a section and follows the scroll position.

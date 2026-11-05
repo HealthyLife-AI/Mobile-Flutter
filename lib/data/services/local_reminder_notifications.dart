@@ -33,11 +33,14 @@ const String appointmentChannelId = 'appointment_reminders';
 /// The Android channel of the weekly weigh-in reminder.
 const String weighInChannelId = 'measurement_reminders';
 
+<<<<<<< HEAD
 /// The Android channel of the server's pushes. A push carries no channel id
 /// (API guide 10.4), so AndroidManifest.xml names this one as FCM's default.
 /// The two values must stay the same.
 const String pushChannelId = 'healthylife_updates';
 
+=======
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 /// The `flutter_local_notifications` plugin behind [ReminderNotifications].
 ///
 /// It asks the OS for no permission. Initialisation turns off the iOS prompts,
@@ -97,6 +100,7 @@ class FlutterReminderNotifications implements ReminderNotifications {
     );
   }
 
+<<<<<<< HEAD
   /// Creates the Android channel [id], or renames it to [name] when it is
   /// already there. Other platforms have no channels.
   Future<void> createChannel({required String id, required String name}) async {
@@ -108,6 +112,8 @@ class FlutterReminderNotifications implements ReminderNotifications {
             AndroidNotificationChannel(id, name, importance: Importance.high));
   }
 
+=======
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   @override
   Future<List<int>> scheduledIds() async {
     await _prepare();

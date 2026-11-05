@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 import '../../core/errors/failure.dart';
+=======
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 import '../../core/errors/result.dart';
 import '../entities/meal_entities.dart';
 import '../entities/meal_plan_entities.dart';
@@ -23,6 +26,7 @@ abstract interface class MealLogRepository {
   Future<Result<MealLogEntry>> logFood(SearchableFood food,
       {required int grams});
 
+<<<<<<< HEAD
   /// Deletes the entry here and its logs on the server (API guide 6.4). Logs
   /// still waiting in the offline queue are taken out unsent. Needs a
   /// connection for the logs the server already has (14): offline, it fails
@@ -43,5 +47,7 @@ abstract interface class MealLogRepository {
   /// server no longer has (404) is removed here as well.
   Future<Result<MealLogEntry>> updateGrams(String entryId, int grams);
 
+=======
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   Future<Result<void>> clear();
 }

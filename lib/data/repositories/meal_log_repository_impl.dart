@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import '../../core/errors/app_exception.dart';
 import '../../core/errors/exception_mapper.dart';
 import '../../core/errors/result.dart';
@@ -6,15 +7,26 @@ import '../../core/storage/patient_cache.dart';
 import '../../core/storage/storage_service.dart';
 import '../../core/sync/offline_queue.dart';
 import '../../core/sync/pending_write.dart';
+=======
+import '../../core/errors/exception_mapper.dart';
+import '../../core/errors/result.dart';
+import '../../core/storage/patient_cache.dart';
+import '../../core/storage/storage_service.dart';
+import '../../core/sync/offline_queue.dart';
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 import '../../core/time/date_only.dart';
 import '../../core/utils/uuid_v4.dart';
 import '../../domain/entities/meal_entities.dart';
 import '../../domain/entities/meal_plan_entities.dart';
 import '../../domain/repositories/meal_log_repository.dart';
+<<<<<<< HEAD
 import '../models/json_read.dart';
 import '../models/meal_log_entry_dto.dart';
 import '../models/server_meal_log.dart';
 import 'meal_log_sync.dart';
+=======
+import '../models/meal_log_entry_dto.dart';
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 
 /// Storage-backed meal log. The in-memory cache is the source of truth for
 /// the running session; storage write-through makes logs survive restarts.
@@ -24,6 +36,7 @@ import 'meal_log_sync.dart';
 /// is offline when they log it: off-plan foods with a server id, and each item
 /// of a meal from the server's plan with its `meal_item_id`. That is what lets
 /// the nutritionist see the patient's adherence.
+<<<<<<< HEAD
 ///
 /// Each entry keeps the idempotency keys of its logs, and the queue reports
 /// the server's id for each one it saves ([recordSaved]), so deleting an entry
@@ -33,6 +46,12 @@ class MealLogRepositoryImpl implements MealLogRepository, PatientCache {
     this._storage,
     this._queue,
     this._api, {
+=======
+class MealLogRepositoryImpl implements MealLogRepository, PatientCache {
+  MealLogRepositoryImpl(
+    this._storage,
+    this._queue, {
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
     DateTime Function()? clock,
     String Function()? newKey,
   })  : _clock = clock ?? DateTime.now,
@@ -40,20 +59,28 @@ class MealLogRepositoryImpl implements MealLogRepository, PatientCache {
 
   static const String _path = 'me/meal-logs';
 
+<<<<<<< HEAD
   /// 15 logs a page (6.2): three days of meals fit well inside this.
   static const int _maxPages = 10;
 
   final StorageService _storage;
   final OfflineQueue _queue;
   final ApiClient _api;
+=======
+  final StorageService _storage;
+  final OfflineQueue _queue;
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   final DateTime Function() _clock;
   final String Function() _newKey;
   List<MealLogEntry>? _cache;
 
+<<<<<<< HEAD
   /// The changes to the entries, one after another, so two changes never
   /// overwrite each other.
   Future<void> _changes = Future<void>.value();
 
+=======
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   @override
   Future<Result<List<MealLogEntry>>> getEntries() =>
       guard(() async => List.unmodifiable(await _load()));
@@ -75,6 +102,7 @@ class MealLogRepositoryImpl implements MealLogRepository, PatientCache {
             .firstOrNull;
         if (existing != null) return existing; // idempotent — no duplicates
         final items = eaten ?? meal.source?.items ?? const <PlanItem>[];
+<<<<<<< HEAD
         final sends = meal.source == null ? const <PlanItem>[] : items;
         final bodies = [
           for (final item in sends)
@@ -88,6 +116,8 @@ class MealLogRepositoryImpl implements MealLogRepository, PatientCache {
               'idempotency_key': _newKey(),
             },
         ];
+=======
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
         final entry = MealLogEntry(
           id: 'planned-${meal.id}-${dateOnly(now)}',
           name: meal.name,
@@ -100,6 +130,7 @@ class MealLogRepositoryImpl implements MealLogRepository, PatientCache {
           loggedAt: now,
           isOffPlan: false,
           plannedMeal: meal,
+<<<<<<< HEAD
           sentLogs: _sentLogsFor(bodies),
         );
         await _keep(entry, bodies);
@@ -109,12 +140,36 @@ class MealLogRepositoryImpl implements MealLogRepository, PatientCache {
   /// Records an off-plan food. With a server food id the log is queued, so it
   /// is not lost, then sent now if there is a connection. Its idempotency key
   /// is made here and kept for every retry (14.1).
+=======
+        );
+        final sends = meal.source == null ? const <PlanItem>[] : items;
+        for (final item in sends) {
+          await _queue.enqueue(path: _path, body: {
+            'food_id': item.food.id,
+            // The plan item (or alternative) eaten; the plan meal decides
+            // the meal type on the server (6.1).
+            'meal_item_id': item.id,
+            'quantity_grams': item.quantityGrams,
+            'logged_at': now.toUtc().toIso8601String(),
+            'idempotency_key': _newKey(),
+          });
+        }
+        await _append(entry);
+        if (sends.isNotEmpty) await _queue.flush();
+        return entry;
+      });
+
+  /// Records an off-plan food. With a server food id the log is queued first,
+  /// so it is not lost, then sent now if there is a connection. Its
+  /// idempotency key is made here and kept for every retry (14.1).
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   @override
   Future<Result<MealLogEntry>> logFood(SearchableFood food,
           {required int grams}) =>
       guard(() async {
         final now = _clock();
         final foodId = food.id;
+<<<<<<< HEAD
         final bodies = [
           if (foodId != null)
             {
@@ -125,6 +180,8 @@ class MealLogRepositoryImpl implements MealLogRepository, PatientCache {
               'idempotency_key': _newKey(),
             },
         ];
+=======
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
         final entry = MealLogEntry(
           id: 'food-${now.microsecondsSinceEpoch}',
           name: food.name,
@@ -132,13 +189,29 @@ class MealLogRepositoryImpl implements MealLogRepository, PatientCache {
           grams: grams,
           loggedAt: now,
           isOffPlan: true,
+<<<<<<< HEAD
           sentLogs: _sentLogsFor(bodies),
         );
         await _keep(entry, bodies);
+=======
+        );
+        if (foodId != null) {
+          await _queue.enqueue(path: _path, body: {
+            'food_id': foodId,
+            'quantity_grams': grams,
+            // The real time it was eaten, in UTC with an offset (1.2, 14.1).
+            'logged_at': now.toUtc().toIso8601String(),
+            'idempotency_key': _newKey(),
+          });
+        }
+        await _append(entry);
+        if (foodId != null) await _queue.flush();
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
         return entry;
       });
 
   @override
+<<<<<<< HEAD
   Future<Result<void>> delete(String entryId) => guard(() async {
         // No queued write may be sent while it is taken out (6.4, 14).
         await _queue.paused(() async {
@@ -345,6 +418,17 @@ class MealLogRepositoryImpl implements MealLogRepository, PatientCache {
     });
     _changes = next.catchError((Object _) {});
     return next;
+=======
+  Future<Result<void>> clear() => guard(() async {
+        _cache = [];
+        await _storage.remove(StorageKeys.mealLogEntries);
+      });
+
+  @override
+  Future<void> forgetPatientData() async {
+    _cache = null;
+    await _storage.remove(StorageKeys.mealLogEntries);
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   }
 
   Future<List<MealLogEntry>> _load() async {
@@ -367,12 +451,23 @@ class MealLogRepositoryImpl implements MealLogRepository, PatientCache {
     return _cache!;
   }
 
+<<<<<<< HEAD
   Future<void> _persist() async {
     final entries = _cache ?? const <MealLogEntry>[];
     if (entries.isEmpty) {
       await _storage.remove(StorageKeys.mealLogEntries);
       return;
     }
+=======
+  Future<void> _append(MealLogEntry entry) async {
+    final entries = await _load();
+    _cache = [...entries, entry];
+    await _persist();
+  }
+
+  Future<void> _persist() async {
+    final entries = _cache ?? const <MealLogEntry>[];
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
     await _storage.writeMap(StorageKeys.mealLogEntries, {
       'entries':
           entries.map((e) => MealLogEntryDto.fromEntity(e).toJson()).toList(),

@@ -1,5 +1,8 @@
+<<<<<<< HEAD
 import 'dart:async';
 
+=======
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 import 'package:flutter_test/flutter_test.dart';
 import 'package:healthylife_ai/core/errors/app_exception.dart';
 import 'package:healthylife_ai/core/network/api_client.dart';
@@ -362,6 +365,7 @@ void main() {
     expect(back.retriedWithout, {'meal_item_id'});
     expect(PendingWrite.fromJson({'id': 'x'}), isNull);
   });
+<<<<<<< HEAD
 
   test('a saved write is reported before it leaves the queue', () async {
     late OfflineQueue queue;
@@ -409,4 +413,6 @@ void main() {
     await pause;
     expect((await flush).sent, 1);
   });
+=======
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 }

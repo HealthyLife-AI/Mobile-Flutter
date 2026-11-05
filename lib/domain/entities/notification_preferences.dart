@@ -8,14 +8,18 @@ class NotificationPreferences {
     this.measurements = true,
     this.nutritionist = true,
     this.plan = true,
+<<<<<<< HEAD
     this.morning = true,
     this.education = true,
     this.categoryOrder = defaultCategoryOrder,
+=======
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
     this.quietHoursEnabled = true,
     this.quietStartMinute = 22 * 60,
     this.quietEndMinute = 7 * 60,
   });
 
+<<<<<<< HEAD
   /// The categories shown before the server has answered.
   static const List<String> defaultCategoryOrder = [
     'meals',
@@ -34,11 +38,14 @@ class NotificationPreferences {
     'education',
   };
 
+=======
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   final bool meals;
   final bool measurements;
   final bool nutritionist;
   final bool plan;
 
+<<<<<<< HEAD
   /// The morning message (spec, phase 3). On by default.
   final bool morning;
 
@@ -71,6 +78,8 @@ class NotificationPreferences {
         _ => this,
       };
 
+=======
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   final bool quietHoursEnabled;
 
   /// Minutes after midnight, local time. A range like 22:00–07:00 spans
@@ -92,9 +101,12 @@ class NotificationPreferences {
     bool? measurements,
     bool? nutritionist,
     bool? plan,
+<<<<<<< HEAD
     bool? morning,
     bool? education,
     List<String>? categoryOrder,
+=======
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
     bool? quietHoursEnabled,
     int? quietStartMinute,
     int? quietEndMinute,
@@ -104,9 +116,12 @@ class NotificationPreferences {
         measurements: measurements ?? this.measurements,
         nutritionist: nutritionist ?? this.nutritionist,
         plan: plan ?? this.plan,
+<<<<<<< HEAD
         morning: morning ?? this.morning,
         education: education ?? this.education,
         categoryOrder: categoryOrder ?? this.categoryOrder,
+=======
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
         quietHoursEnabled: quietHoursEnabled ?? this.quietHoursEnabled,
         quietStartMinute: quietStartMinute ?? this.quietStartMinute,
         quietEndMinute: quietEndMinute ?? this.quietEndMinute,
@@ -119,14 +134,18 @@ class NotificationPreferences {
       other.measurements == measurements &&
       other.nutritionist == nutritionist &&
       other.plan == plan &&
+<<<<<<< HEAD
       other.morning == morning &&
       other.education == education &&
       _sameOrder(other.categoryOrder, categoryOrder) &&
+=======
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
       other.quietHoursEnabled == quietHoursEnabled &&
       other.quietStartMinute == quietStartMinute &&
       other.quietEndMinute == quietEndMinute;
 
   @override
+<<<<<<< HEAD
   int get hashCode => Object.hash(
       meals,
       measurements,
@@ -146,4 +165,8 @@ class NotificationPreferences {
     }
     return true;
   }
+=======
+  int get hashCode => Object.hash(meals, measurements, nutritionist, plan,
+      quietHoursEnabled, quietStartMinute, quietEndMinute);
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 }

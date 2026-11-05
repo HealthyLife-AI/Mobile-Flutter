@@ -7,7 +7,10 @@ import 'package:healthylife_ai/presentation/bloc/meal_log/meal_log_cubit.dart';
 import 'package:healthylife_ai/presentation/bloc/meal_plan/meal_plan_cubit.dart';
 import 'package:healthylife_ai/presentation/bloc/measurements/measurements_cubit.dart';
 import 'package:healthylife_ai/presentation/bloc/notifications/notifications_cubit.dart';
+<<<<<<< HEAD
 import 'package:healthylife_ai/presentation/bloc/patient_features_cubits.dart';
+=======
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 import 'package:healthylife_ai/presentation/bloc/settings/settings_cubit.dart';
 
 import 'localized_app.dart';
@@ -59,6 +62,7 @@ Widget appProviders(
         // and a test decides for itself what each should start as.
         BlocProvider(create: (_) => NotificationsCubit(deps.notification)),
         BlocProvider(create: (_) => MeasurementsCubit(deps.measurement)),
+<<<<<<< HEAD
         // The patient-app spec's session cubits, not loaded either.
         BlocProvider(
             create: (_) => MeasurementScheduleCubit(deps.measurementSchedule,
@@ -66,6 +70,8 @@ Widget appProviders(
         BlocProvider(create: (_) => QuickRequestsCubit(deps.quickRequests)),
         BlocProvider(create: (_) => TodayCubit(deps.today)),
         BlocProvider(create: (_) => PostsUnreadCubit(deps.posts)),
+=======
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
       ],
       child: localizedApp(
         locale: locale,

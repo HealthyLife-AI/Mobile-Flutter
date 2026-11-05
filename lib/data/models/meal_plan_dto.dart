@@ -23,6 +23,7 @@ abstract final class MealPlanDto {
       startDate: _date(json['start_date']),
       meals: meals,
       summaryByDay: _summary(json['summary_by_day']),
+<<<<<<< HEAD
       patientInstructions:
           parsePatientInstructions(json['patient_instructions']),
       activities: _activities(json['activities']),
@@ -68,6 +69,11 @@ abstract final class MealPlanDto {
     return trimmed.isEmpty ? null : trimmed;
   }
 
+=======
+    );
+  }
+
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   static PlanMeal? _meal(Map<String, dynamic> json) {
     final id = _int(json['id']);
     if (id == null) return null;
@@ -102,16 +108,20 @@ abstract final class MealPlanDto {
                 : 0),
         macros: _macros(json['macros']),
         alternatives: _items(json['alternatives']),
+<<<<<<< HEAD
         // On the item (5.1); the food object is the fallback.
         costTier: _costTier(json['cost_tier'] ??
             (foodJson is Map ? foodJson['cost_tier'] : null)),
         prepLevel: _prepLevel(json['prep_level'] ??
             (foodJson is Map ? foodJson['prep_level'] : null)),
+=======
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
       ));
     }
     return items;
   }
 
+<<<<<<< HEAD
   static FoodCostTier _costTier(Object? raw) => switch (raw) {
         'economical' => FoodCostTier.economical,
         'standard' => FoodCostTier.standard,
@@ -126,6 +136,8 @@ abstract final class MealPlanDto {
         _ => FoodPrepLevel.unknown,
       };
 
+=======
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   static PlanMealType _type(Object? name) => switch (name) {
         'breakfast' => PlanMealType.breakfast,
         'snack' => PlanMealType.snack,
@@ -167,6 +179,7 @@ abstract final class MealPlanDto {
   static DateTime? _date(Object? value) =>
       value is String ? DateTime.tryParse(value) : null;
 }
+<<<<<<< HEAD
 
 // A "- " or "• " the nutritionist typed would otherwise render as a second
 // bullet next to the card's own dot.
@@ -196,3 +209,5 @@ List<String> parsePatientInstructions(Object? raw) {
       .where((line) => !_looksEmpty(line))
       .toList(growable: false);
 }
+=======
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a

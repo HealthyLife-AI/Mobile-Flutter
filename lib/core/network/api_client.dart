@@ -1,5 +1,8 @@
+<<<<<<< HEAD
 import 'dart:typed_data';
 
+=======
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 import 'package:dio/dio.dart';
 
 import '../errors/app_exception.dart';
@@ -33,6 +36,7 @@ abstract interface class ApiClient {
   Future<dynamic> delete(String path, {Object? body, bool auth = true});
 }
 
+<<<<<<< HEAD
 /// Binary transfers: downloading a file the patient owns and uploading one
 /// with progress (medical reports). Kept apart from [ApiClient] so the many
 /// test fakes of the JSON surface stay unchanged.
@@ -56,6 +60,11 @@ abstract interface class FileTransferClient {
 /// [ApiClient] backed by Dio. Interceptors (auth, retry, logging) are attached
 /// by `createApiClient`; this class only sends requests and maps failures.
 class DioApiClient implements ApiClient, FileTransferClient {
+=======
+/// [ApiClient] backed by Dio. Interceptors (auth, retry, logging) are attached
+/// by `createApiClient`; this class only sends requests and maps failures.
+class DioApiClient implements ApiClient {
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   DioApiClient(this._dio);
 
   final Dio _dio;
@@ -82,6 +91,7 @@ class DioApiClient implements ApiClient, FileTransferClient {
   Future<dynamic> delete(String path, {Object? body, bool auth = true}) => _run(
       () => _dio.delete<dynamic>(path, data: body, options: _options(auth)));
 
+<<<<<<< HEAD
   @override
   Future<Uint8List> getBytes(String path) async {
     final data = await _run(() => _dio.get<dynamic>(path,
@@ -123,6 +133,8 @@ class DioApiClient implements ApiClient, FileTransferClient {
             onSendProgress: onProgress,
           ));
 
+=======
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   Options _options(bool auth) => Options(extra: {kAuthRequiredKey: auth});
 
   Future<dynamic> _run(Future<Response<dynamic>> Function() send) async {

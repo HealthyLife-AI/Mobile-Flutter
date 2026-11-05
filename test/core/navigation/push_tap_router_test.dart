@@ -39,7 +39,11 @@ void main() {
         events.add('mark:$id');
         if (failMarks) throw StateError('offline');
       },
+<<<<<<< HEAD
       open: (destination, {reviewId, postId}) => events.add('open:${destination.name}'),
+=======
+      open: (destination, {reviewId}) => events.add('open:${destination.name}'),
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
       afterFrame: frames.schedule,
     );
   });
@@ -150,7 +154,11 @@ void main() {
     final read = Completer<void>();
     final inFlight = PushTapRouter(
       markRead: (_) => read.future,
+<<<<<<< HEAD
       open: (destination, {reviewId, postId}) => events.add('open:${destination.name}'),
+=======
+      open: (destination, {reviewId}) => events.add('open:${destination.name}'),
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
       afterFrame: frames.schedule,
     );
     inFlight.updateGate(PushGate.open);
@@ -169,7 +177,11 @@ void main() {
     final opened = <String?>[];
     final noteRouter = PushTapRouter(
       markRead: (_) async {},
+<<<<<<< HEAD
       open: (destination, {reviewId, postId}) => opened.add(reviewId),
+=======
+      open: (destination, {reviewId}) => opened.add(reviewId),
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
       afterFrame: frames.schedule,
     );
     noteRouter.updateGate(PushGate.open);

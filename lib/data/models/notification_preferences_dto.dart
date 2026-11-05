@@ -19,6 +19,7 @@ abstract final class NotificationPreferencesDto {
       measurements: flag(categories, 'measurements', defaults.measurements),
       nutritionist: flag(categories, 'nutritionist', defaults.nutritionist),
       plan: flag(categories, 'plan', defaults.plan),
+<<<<<<< HEAD
       morning: flag(categories, 'morning', defaults.morning),
       education: flag(categories, 'education', defaults.education),
       // The server's categories, in its order (spec, phase 3).
@@ -29,6 +30,8 @@ abstract final class NotificationPreferencesDto {
                   '$key',
             ]
           : NotificationPreferences.defaultCategoryOrder,
+=======
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
       quietHoursEnabled: flag(quiet, 'enabled', defaults.quietHoursEnabled),
       quietStartMinute: _minute(quiet is Map ? quiet['start'] : null) ??
           defaults.quietStartMinute,
@@ -44,9 +47,12 @@ abstract final class NotificationPreferencesDto {
         'measurements': p.measurements,
         'nutritionist': p.nutritionist,
         'plan': p.plan,
+<<<<<<< HEAD
         // Only the new categories the server returned.
         for (final key in const ['morning', 'education'])
           if (p.categoryOrder.contains(key)) key: p.isOn(key),
+=======
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
         'quiet_hours_enabled': p.quietHoursEnabled,
         'quiet_start': clockText(p.quietStartMinute),
         'quiet_end': clockText(p.quietEndMinute),
@@ -54,9 +60,17 @@ abstract final class NotificationPreferencesDto {
 
   /// The device copy, in the response's nested shape so [fromJson] reads it.
   static Map<String, dynamic> toJson(NotificationPreferences p) => {
+<<<<<<< HEAD
         // Kept in the server's order, so a read of the copy shows the same.
         'categories': {
           for (final key in p.categoryOrder) key: p.isOn(key),
+=======
+        'categories': {
+          'meals': p.meals,
+          'measurements': p.measurements,
+          'nutritionist': p.nutritionist,
+          'plan': p.plan,
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
         },
         'quiet_hours': {
           'enabled': p.quietHoursEnabled,

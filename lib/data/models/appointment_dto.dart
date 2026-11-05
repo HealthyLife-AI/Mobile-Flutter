@@ -27,6 +27,7 @@ class AppointmentDto {
     );
   }
 
+<<<<<<< HEAD
   /// The answer of `GET /me/appointments/slots` (12.1). A day or a time that
   /// cannot be read is skipped.
   static AppointmentSlots slotsFromJson(
@@ -90,6 +91,8 @@ class AppointmentDto {
           throw ArgumentError('An unknown channel cannot be booked'),
       };
 
+=======
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   static AppointmentType _type(String? value) => switch (value) {
         'follow_up' => AppointmentType.followUp,
         'results_review' => AppointmentType.resultsReview,

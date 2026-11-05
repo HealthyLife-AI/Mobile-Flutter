@@ -65,7 +65,10 @@ class MeasurementEntry {
     this.hipCm,
     this.thighCm,
     this.armCm,
+<<<<<<< HEAD
     this.deletableUntil,
+=======
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   });
 
   final String id;
@@ -78,6 +81,7 @@ class MeasurementEntry {
   final double? thighCm;
   final double? armCm;
 
+<<<<<<< HEAD
   /// `deletable_until` (7.1): the arrival time plus 7 days. Null on a clinic
   /// reading, which only the nutritionist can remove.
   final DateTime? deletableUntil;
@@ -91,6 +95,8 @@ class MeasurementEntry {
     return until != null && now.isBefore(until);
   }
 
+=======
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   Map<String, dynamic> toJson() => {
         'id': id,
         'recordedAt': recordedAt.toIso8601String(),
@@ -100,8 +106,11 @@ class MeasurementEntry {
         if (hipCm != null) 'hipCm': hipCm,
         if (thighCm != null) 'thighCm': thighCm,
         if (armCm != null) 'armCm': armCm,
+<<<<<<< HEAD
         if (deletableUntil != null)
           'deletableUntil': deletableUntil!.toIso8601String(),
+=======
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
       };
 
   static MeasurementEntry? fromJson(Map<String, dynamic> json) {
@@ -121,9 +130,12 @@ class MeasurementEntry {
       hipCm: d('hipCm'),
       thighCm: d('thighCm'),
       armCm: d('armCm'),
+<<<<<<< HEAD
       deletableUntil: json['deletableUntil'] is String
           ? DateTime.tryParse(json['deletableUntil'] as String)
           : null,
+=======
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
     );
   }
 }

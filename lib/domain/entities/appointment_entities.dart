@@ -64,6 +64,7 @@ class Appointment {
 
   /// Set for a video appointment only, and may be null even then.
   final String? meetingLink;
+<<<<<<< HEAD
 
   /// Still on: booked and not started. Only then can it be changed or
   /// cancelled (12.3).
@@ -150,4 +151,6 @@ class AppointmentRequest {
   /// Server names from [appointmentTopics], at most [maxAppointmentTopics].
   final List<String> topics;
   final String? note;
+=======
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 }

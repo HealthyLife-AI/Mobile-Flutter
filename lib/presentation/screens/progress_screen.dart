@@ -1,8 +1,14 @@
+<<<<<<< HEAD
 import '../bloc/patient_features_cubits.dart';
 import '../widgets/insight_cards.dart';
 import '../widgets/quick_contact_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+=======
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:url_launcher/url_launcher.dart';
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 import '../../core/di/app_dependencies.dart';
 import '../../core/errors/result.dart';
 import '../../core/state/async_state.dart';
@@ -50,9 +56,12 @@ class ProgressScreen extends StatelessWidget {
         BlocProvider(create: (_) => ReviewsCubit(deps.reviews)..load()),
         BlocProvider(
             create: (_) => AppointmentsCubit(deps.appointments)..load()),
+<<<<<<< HEAD
         // Both null until the nutritionist enables them (spec, phases 2–3).
         BlocProvider(create: (_) => GoalProjectionCubit(deps.insights)..load()),
         BlocProvider(create: (_) => WeightInsightCubit(deps.insights)..load()),
+=======
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
       ],
       child: const _ProgressBody(),
     );
@@ -106,9 +115,12 @@ class _ProgressBodyState extends State<_ProgressBody> {
               KeyedSubtree(key: _progressKey, child: _weightCard()),
               const SizedBox(height: 16),
               _chartCard(),
+<<<<<<< HEAD
               // Under the weight chart; each hides itself while null.
               const WeightInsightCard(padding: EdgeInsets.only(top: 16)),
               const GoalProjectionCard(padding: EdgeInsets.only(top: 16)),
+=======
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
               const SizedBox(height: 20),
               _vitalsSection(),
               const SizedBox(height: 12),
@@ -117,9 +129,13 @@ class _ProgressBodyState extends State<_ProgressBody> {
               KeyedSubtree(key: _notesKey, child: _evaluationCard()),
               ..._keyPointsCard(),
               ..._tasksCard(),
+<<<<<<< HEAD
               // Replaces the WhatsApp discussion button (spec, phase 1).
               const SizedBox(height: 16),
               const QuickContactButton(),
+=======
+              ..._whatsappButton(),
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
               ..._nextAppointment(),
             ],
           ),
@@ -926,6 +942,57 @@ class _ProgressBodyState extends State<_ProgressBody> {
     ];
   }
 
+<<<<<<< HEAD
+=======
+  // ── 9) زر واتساب ──────────────────────────────────────────────────────
+  /// Opens a chat with the nutritionist (`https://wa.me/<digits>`, 9.1). Left
+  /// out when the profile has no number.
+  List<Widget> _whatsappButton() {
+    final uri =
+        context.watch<NutritionistCubit>().state.dataOrNull?.whatsappUri;
+    if (uri == null) return const [];
+    return [
+      const SizedBox(height: 16),
+      SizedBox(
+        height: 52,
+        child: FilledButton(
+          style: FilledButton.styleFrom(
+            backgroundColor: AppColors.primary,
+            foregroundColor: Colors.white,
+            elevation: 0,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+            textStyle: const TextStyle(
+                fontFamily: AppTextStyles.fontFamily,
+                fontSize: 13,
+                fontWeight: FontWeight.w700),
+          ),
+          onPressed: () => _openWhatsApp(uri),
+          child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            const Icon(Icons.chat_outlined, size: 19),
+            const SizedBox(width: 8),
+            Flexible(child: Text(context.l10n.progressDiscussWhatsApp)),
+          ]),
+        ),
+      ),
+    ];
+  }
+
+  Future<void> _openWhatsApp(Uri uri) async {
+    var opened = false;
+    try {
+      opened = await launchUrl(uri, mode: LaunchMode.externalApplication);
+    } catch (_) {
+      opened = false;
+    }
+    if (!opened && mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(context.l10n.linkCouldNotOpen)),
+      );
+    }
+  }
+
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   // ── 10) الموعد القادم (API guide 12.4) ────────────────────────────────
   /// The soonest booked appointment, in the device's time. Left out when
   /// there is none or the list is not known.

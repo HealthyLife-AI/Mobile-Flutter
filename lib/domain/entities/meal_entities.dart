@@ -54,10 +54,13 @@ class MealLogEntry {
   final bool isOffPlan;
   final Meal? plannedMeal;
 
+<<<<<<< HEAD
   /// The logs this entry was sent to the server as (6.1): one per food eaten.
   /// Empty for an entry that never went to the server.
   final List<SentMealLog> sentLogs;
 
+=======
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   const MealLogEntry({
     required this.id,
     required this.name,
@@ -66,6 +69,7 @@ class MealLogEntry {
     required this.loggedAt,
     required this.isOffPlan,
     this.plannedMeal,
+<<<<<<< HEAD
     this.sentLogs = const [],
   });
 
@@ -117,6 +121,9 @@ class SentMealLog {
   /// `editable_until` from the server's answer: until then the log can be
   /// deleted.
   final DateTime? editableUntil;
+=======
+  });
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 }
 
 class FoodOption {
@@ -174,10 +181,13 @@ class SearchableFood {
   /// Fibre per 100 g (guide 5.2). Null when the server sends none.
   final double? fiberGPer100g;
 
+<<<<<<< HEAD
   /// The aisle the shopping list puts it in (guide 5.4), such as `produce`.
   /// Null when the server sends none.
   final String? shoppingSection;
 
+=======
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   const SearchableFood(
       {required this.name,
       required this.caloriesPer100g,
@@ -185,6 +195,10 @@ class SearchableFood {
       this.category = 'default',
       this.id,
       this.allergens = const [],
+<<<<<<< HEAD
       this.fiberGPer100g,
       this.shoppingSection});
+=======
+      this.fiberGPer100g});
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 }

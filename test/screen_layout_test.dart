@@ -238,6 +238,7 @@ void main() {
 
     // The list starts empty: nothing is filled in for the patient.
     final scrollable = find.byType(Scrollable).first;
+<<<<<<< HEAD
     final field = find.byWidgetPredicate((w) =>
         w is TextField &&
         w.decoration?.hintText == 'أدخل اسم الدواء والجرعة (مثال: أوميغا 3)');
@@ -251,6 +252,15 @@ void main() {
     await tester.scrollUntilVisible(medication, 180, scrollable: scrollable);
     expectTextHugsStartEdge(tester, medication,
         direction: TextDirection.rtl, reason: '$name should be right-aligned');
+=======
+    for (final name in ['متفورمين (Metformin) 500mg', 'فيتامين د 5000IU']) {
+      final medication = find.text(name);
+      await tester.scrollUntilVisible(medication, 180, scrollable: scrollable);
+      expectTextHugsStartEdge(tester, medication,
+          direction: TextDirection.rtl,
+          reason: '$name should be right-aligned');
+    }
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   });
 
   testWidgets('account screen bottom remains within the viewport',

@@ -31,8 +31,12 @@ enum PushGate {
 class PushTapRouter {
   PushTapRouter({
     required Future<void> Function(String notificationId) markRead,
+<<<<<<< HEAD
     required void Function(PushDestination destination,
             {String? reviewId, String? postId})
+=======
+    required void Function(PushDestination destination, {String? reviewId})
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
         open,
     void Function(void Function() callback)? afterFrame,
   })  : _markRead = markRead,
@@ -40,8 +44,12 @@ class PushTapRouter {
         _afterFrame = afterFrame ?? _nextFrame;
 
   final Future<void> Function(String notificationId) _markRead;
+<<<<<<< HEAD
   final void Function(PushDestination destination,
       {String? reviewId, String? postId}) _open;
+=======
+  final void Function(PushDestination destination, {String? reviewId}) _open;
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   final void Function(void Function() callback) _afterFrame;
 
   /// The longest the screen waits for the read to be confirmed.
@@ -96,8 +104,12 @@ class PushTapRouter {
     }
     // The session may have ended while the read was in flight.
     if (_gate != PushGate.open) return;
+<<<<<<< HEAD
     _open(destinationForType(tap.type),
         reviewId: tap.reviewId, postId: tap.postId);
+=======
+    _open(destinationForType(tap.type), reviewId: tap.reviewId);
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   }
 }
 

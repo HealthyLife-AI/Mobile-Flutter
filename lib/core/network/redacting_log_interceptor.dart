@@ -15,6 +15,7 @@ class RedactingLogInterceptor extends Interceptor {
     'access_token',
     'fcm_token',
     'authorization',
+<<<<<<< HEAD
     // Health data the patient writes (quick requests, check-ins, sleep and
     // mood, food preferences, report titles): never in a log, debug or not.
     'note',
@@ -30,6 +31,8 @@ class RedactingLogInterceptor extends Interceptor {
     'title',
     'category',
     'report_date',
+=======
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   };
 
   @override

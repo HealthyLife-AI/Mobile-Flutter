@@ -22,7 +22,11 @@ void main() {
     events = [];
     taps = PushTapRouter(
       markRead: (id) async => events.add('mark:$id'),
+<<<<<<< HEAD
       open: (destination, {reviewId, postId}) => events.add('open:${destination.name}'),
+=======
+      open: (destination, {reviewId}) => events.add('open:${destination.name}'),
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
       afterFrame: (callback) => callback(),
     );
     presenter = ForegroundPushPresenter(

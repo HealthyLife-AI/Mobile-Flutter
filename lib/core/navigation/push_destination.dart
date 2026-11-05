@@ -20,6 +20,7 @@ enum PushDestination {
   /// The nutritionist's notes. `review_new`, `review_updated`.
   notes,
 
+<<<<<<< HEAD
   /// My quick requests. `quick_request_answered`.
   myRequests,
 
@@ -39,6 +40,8 @@ enum PushDestination {
   /// Sleep and mood. `wellbeing_reminder`.
   wellbeing,
 
+=======
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   /// Notification inbox. Used for unknown types, so older app versions keep
   /// working when new types are added.
   inbox,
@@ -52,6 +55,7 @@ PushDestination destinationForType(String? type) => switch (type) {
       'appointment_cancelled' ||
       'appointment_rescheduled' =>
         PushDestination.appointments,
+<<<<<<< HEAD
       // The morning message opens home (category `morning`).
       'follow_up_resumed' ||
       'morning' ||
@@ -65,6 +69,9 @@ PushDestination destinationForType(String? type) => switch (type) {
         PushDestination.checkin,
       'post_published' || 'post_new' || 'education' => PushDestination.post,
       'wellbeing' || 'wellbeing_reminder' => PushDestination.wellbeing,
+=======
+      'follow_up_resumed' => PushDestination.home,
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
       'log_reminder' => PushDestination.logMeal,
       'review_new' || 'review_updated' => PushDestination.notes,
       _ => PushDestination.inbox,
@@ -83,7 +90,11 @@ bool isPlanChangePush(Map<String, dynamic>? data) =>
 
 /// What a tapped push carries. Every `data` value arrives as a string (10.4).
 class PushTap {
+<<<<<<< HEAD
   const PushTap({this.notificationId, this.type, this.reviewId, this.postId});
+=======
+  const PushTap({this.notificationId, this.type, this.reviewId});
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 
   /// The inbox row to mark read, or null when the push had none.
   final String? notificationId;
@@ -95,9 +106,12 @@ class PushTap {
   /// null.
   final String? reviewId;
 
+<<<<<<< HEAD
   /// The post an `education` push names (`post_id`), or null.
   final String? postId;
 
+=======
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   /// Reads a tap from the message `data`. Returns null when neither the
   /// notification id nor the type is present, so a plain notification opens
   /// nothing. Non-string values are ignored.
@@ -110,7 +124,10 @@ class PushTap {
       notificationId: id,
       type: type,
       reviewId: _text(data['review_id']),
+<<<<<<< HEAD
       postId: _text(data['post_id']),
+=======
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
     );
   }
 

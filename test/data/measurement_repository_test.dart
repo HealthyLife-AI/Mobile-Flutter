@@ -3,9 +3,13 @@ import 'package:healthylife_ai/core/errors/app_exception.dart';
 import 'package:healthylife_ai/core/network/api_client.dart';
 import 'package:healthylife_ai/core/storage/storage_service.dart';
 import 'package:healthylife_ai/core/sync/offline_queue.dart';
+<<<<<<< HEAD
 import 'package:healthylife_ai/core/errors/failure.dart';
 import 'package:healthylife_ai/data/datasources/measurement_remote_data_source.dart';
 import 'package:healthylife_ai/data/models/measurement_dto.dart';
+=======
+import 'package:healthylife_ai/data/datasources/measurement_remote_data_source.dart';
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 import 'package:healthylife_ai/data/repositories/measurement_repository_impl.dart';
 import 'package:healthylife_ai/domain/entities/measurement_entities.dart';
 
@@ -45,6 +49,7 @@ class _ScriptedApi implements ApiClient {
   Future<dynamic> patch(String path, {Object? body, bool auth = true}) =>
       throw UnimplementedError(path);
 
+<<<<<<< HEAD
   /// Each DELETE takes the next scripted failure, or succeeds.
   final List<AppException?> deleteAnswers = [];
   final List<String> deletes = [];
@@ -56,6 +61,11 @@ class _ScriptedApi implements ApiClient {
     if (next != null) throw next;
     return null;
   }
+=======
+  @override
+  Future<dynamic> delete(String path, {Object? body, bool auth = true}) =>
+      throw UnimplementedError(path);
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 }
 
 /// One reading as the API returns it (7.1, 7.2).
@@ -229,6 +239,7 @@ void main() {
     api.gets.add(_offline);
     expect((await repository.getSnapshot()).isSuccess, isFalse);
   });
+<<<<<<< HEAD
 
   group('deleting a reading (7.3)', () {
     MeasurementEntry own(String id, {DateTime? until}) => MeasurementEntry(
@@ -293,4 +304,6 @@ void main() {
       expect(api.gets, isEmpty, reason: 'no GET was scripted or needed');
     });
   });
+=======
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 }

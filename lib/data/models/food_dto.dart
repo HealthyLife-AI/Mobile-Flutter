@@ -58,7 +58,10 @@ class FoodDto {
         category: _categoryFor(shoppingSection),
         allergens: allergens,
         fiberGPer100g: fiberGPer100g,
+<<<<<<< HEAD
         shoppingSection: shoppingSection,
+=======
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
       );
 
   /// The macro badge is the macro with the most grams per 100 g. The server

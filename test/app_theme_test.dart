@@ -103,7 +103,11 @@ void main() {
           Colors.transparent);
     });
 
+<<<<<<< HEAD
     test('is light, on the brand canvas, with the Cairo family', () {
+=======
+    test('is light, on the brand canvas, with the Tajawal family', () {
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
       expect(light.brightness, Brightness.light);
       expect(light.scaffoldBackgroundColor, AppColors.background);
       expect(light.colorScheme.primary, AppColors.primary);
@@ -288,6 +292,7 @@ void main() {
   });
 
   group('shadows', () {
+<<<<<<< HEAD
     test('the soft shadow is the design spec\'s, now immutable', () {
       // 0 4 16 rgba(17,28,45,.07).
       expect(AppShadows.soft, const [
@@ -295,6 +300,14 @@ void main() {
           color: Color(0x12111C2D),
           blurRadius: 16,
           offset: Offset(0, 4),
+=======
+    test('the soft shadow is the original spec, now immutable', () {
+      expect(AppShadows.soft, [
+        BoxShadow(
+          color: Colors.black.withValues(alpha: 0.06),
+          blurRadius: 24,
+          offset: const Offset(0, 8),
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
         ),
       ]);
       expect(AppTheme.softShadow, same(AppShadows.soft));
@@ -303,7 +316,11 @@ void main() {
 
   group('fonts', () {
     test('every font asset declared in pubspec.yaml exists', () {
+<<<<<<< HEAD
       // Cairo is requested by family name only; the moment font files are
+=======
+      // Tajawal is requested by family name only; the moment font files are
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
       // declared, they must actually be in the repo.
       final declared = RegExp(r'^\s*-\s*asset:\s*(\S+)', multiLine: true)
           .allMatches(File('pubspec.yaml').readAsStringSync())
@@ -314,8 +331,13 @@ void main() {
     });
 
     test('the theme and every token request the same family', () {
+<<<<<<< HEAD
       expect(AppTheme.light.textTheme.bodyLarge!.fontFamily, 'Cairo');
       expect(AppTheme.dark.textTheme.bodyLarge!.fontFamily, 'Cairo');
+=======
+      expect(AppTheme.light.textTheme.bodyLarge!.fontFamily, 'Tajawal');
+      expect(AppTheme.dark.textTheme.bodyLarge!.fontFamily, 'Tajawal');
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
       for (final style in [
         AppTextStyles.h1,
         AppTextStyles.sectionHeading,

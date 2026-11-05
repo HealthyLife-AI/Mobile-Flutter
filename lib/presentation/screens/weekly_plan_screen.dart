@@ -13,10 +13,14 @@ import '../widgets/date_chip_picker.dart';
 import '../widgets/load_error_view.dart';
 import '../widgets/meal_card.dart';
 import '../widgets/metric_stat_box.dart';
+<<<<<<< HEAD
 import '../widgets/patient_instructions_card.dart';
 import '../widgets/spec_ui.dart';
 import 'meal_detail_screen.dart';
 import 'shopping_list_screen.dart';
+=======
+import 'meal_detail_screen.dart';
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 import '../../core/navigation/app_page_route.dart';
 import '../widgets/app_header_bar.dart';
 
@@ -60,6 +64,7 @@ class _WeeklyPlanScreenState extends State<WeeklyPlanScreen> {
         _ => l10n.weekdayShortFriday,
       };
 
+<<<<<<< HEAD
   /// Pull-to-refresh: reads the plan again. A failed read keeps the plan on
   /// screen (the cubit holds it as `previous`) and says so.
   Future<void> _refresh() async {
@@ -71,6 +76,8 @@ class _WeeklyPlanScreenState extends State<WeeklyPlanScreen> {
     }
   }
 
+=======
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   @override
   Widget build(BuildContext context) {
     final planState = context.watch<MealPlanCubit>().state;
@@ -92,6 +99,7 @@ class _WeeklyPlanScreenState extends State<WeeklyPlanScreen> {
 
     return Scaffold(
       backgroundColor: AppColors.background,
+<<<<<<< HEAD
       appBar: AppHeaderBar(
         title: context.l10n.dailyLogWeeklyPlanTooltip,
         actions: [
@@ -106,6 +114,9 @@ class _WeeklyPlanScreenState extends State<WeeklyPlanScreen> {
             ),
         ],
       ),
+=======
+      appBar: AppHeaderBar(title: context.l10n.dailyLogWeeklyPlanTooltip),
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
       body: SafeArea(child: body),
     );
   }
@@ -134,6 +145,7 @@ class _WeeklyPlanScreenState extends State<WeeklyPlanScreen> {
     String grams(double g) =>
         l10n.commonGramsValue(context.localizeDigits(g.round()));
 
+<<<<<<< HEAD
     return RefreshIndicator(
       color: AppColors.primary,
       onRefresh: _refresh,
@@ -331,6 +343,189 @@ class _WeeklyPlanScreenState extends State<WeeklyPlanScreen> {
           ],
         ],
       ),
+=======
+    return ListView(
+      padding: const EdgeInsets.fromLTRB(18, 12, 18, 110),
+      children: [
+        const SizedBox(height: 4),
+        TweenAnimationBuilder<double>(
+          tween: Tween(begin: 0.96, end: 1),
+          duration: const Duration(milliseconds: 450),
+          curve: Curves.easeOutCubic,
+          builder: (context, scale, child) => Transform.scale(
+            scale: scale,
+            child: child,
+          ),
+          child: Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: AppColors.surface,
+              borderRadius: BorderRadius.circular(AppRadius.card),
+              boxShadow: [
+                BoxShadow(
+                  color: AppColors.primary.withValues(alpha: 0.08),
+                  blurRadius: 18,
+                  offset: const Offset(0, 10),
+                ),
+              ],
+            ),
+            child: Row(
+              children: [
+                Container(
+                  width: 44,
+                  height: 44,
+                  decoration: BoxDecoration(
+                      color: AppColors.accentGreenBg,
+                      borderRadius: BorderRadius.circular(14)),
+                  child: const Icon(Icons.calendar_month_rounded,
+                      color: AppColors.accentGreen),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(l10n.weeklyPlanPreviewScreen,
+                          textAlign: TextAlign.start,
+                          style: AppTextStyles.cardTitle),
+                      const SizedBox(height: 4),
+                      Text(l10n.weeklyPlanLoggingHint,
+                          textAlign: TextAlign.start,
+                          style: AppTextStyles.caption),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        const SizedBox(height: 20),
+        Row(
+          children: [
+            if (week != null && week >= 1)
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
+                decoration: BoxDecoration(
+                    color: AppColors.accentGreenBg,
+                    borderRadius: BorderRadius.circular(AppRadius.pill)),
+                child: Row(children: [
+                  const Icon(Icons.verified_rounded,
+                      color: AppColors.accentGreen, size: 14),
+                  const SizedBox(width: 4),
+                  Text(l10n.weeklyPlanWeekNumber(context.localizeDigits(week)),
+                      style: AppTextStyles.caption),
+                ]),
+              ),
+            const Spacer(),
+            Text(context.localizeDigits(material.formatMonthYear(selected)),
+                style: AppTextStyles.body),
+          ],
+        ),
+        const SizedBox(height: 12),
+        DateChipPicker(
+            days: days,
+            selectedIndex: _selectedDay,
+            onChanged: (i) => setState(() => _selectedDay = i)),
+        const SizedBox(height: 20),
+        TweenAnimationBuilder<double>(
+          tween: Tween(begin: 0.96, end: 1),
+          duration: const Duration(milliseconds: 500),
+          curve: Curves.easeOutBack,
+          builder: (context, scale, child) => Transform.scale(
+            scale: scale,
+            child: child,
+          ),
+          child: Container(
+            padding: const EdgeInsets.all(18),
+            decoration: BoxDecoration(
+              color: AppColors.surface,
+              borderRadius: BorderRadius.circular(AppRadius.card),
+              boxShadow: [
+                BoxShadow(
+                  color: AppColors.primary.withValues(alpha: 0.08),
+                  blurRadius: 18,
+                  offset: const Offset(0, 10),
+                ),
+              ],
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 12, vertical: 6),
+                      decoration: BoxDecoration(
+                          color: AppColors.accentGreenBg,
+                          borderRadius: BorderRadius.circular(AppRadius.pill)),
+                      child: Row(children: [
+                        const Icon(Icons.check_circle_rounded,
+                            color: AppColors.accentGreen, size: 14),
+                        const SizedBox(width: 4),
+                        Text(l10n.weeklyPlanDetailed,
+                            style: AppTextStyles.caption),
+                      ]),
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                          l10n.weeklyPlanDayOf(context.localizeDigits(
+                              material.formatMediumDate(selected))),
+                          textAlign: TextAlign.end,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: AppTextStyles.body),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 4),
+                Row(
+                  children: [
+                    Text(context.localizeDigits(totals.calories.round()),
+                        style: AppTextStyles.metricLarge
+                            .copyWith(color: AppColors.primary)),
+                    const SizedBox(width: 6),
+                    Padding(
+                        padding: const EdgeInsets.only(top: 10),
+                        child: Text(l10n.commonCaloriesUnit,
+                            style: AppTextStyles.secondary)),
+                  ],
+                ),
+                const SizedBox(height: 14),
+                Row(children: [
+                  MetricStatBox(
+                      label: l10n.macroHealthyFatsShort,
+                      value: grams(totals.fatG)),
+                  MetricStatBox(
+                      label: l10n.macroCarbohydrates,
+                      value: grams(totals.carbsG)),
+                  MetricStatBox(
+                      label: l10n.macroProteinLabel,
+                      value: grams(totals.proteinG)),
+                ]),
+                const SizedBox(height: 10),
+                Text(l10n.weeklyPlanFromNutritionist,
+                    textAlign: TextAlign.start, style: AppTextStyles.caption),
+              ],
+            ),
+          ),
+        ),
+        const SizedBox(height: 24),
+        if (meals.isEmpty)
+          Text(l10n.planNoMealToday,
+              textAlign: TextAlign.center, style: AppTextStyles.caption),
+        for (final m in meals)
+          MealCard(
+            meal: m,
+            enableHero: false,
+            forceMealTypeColors: true,
+            onLog: () => Navigator.of(context)
+                .push(AppPageRoute(builder: (_) => MealDetailScreen(meal: m))),
+          ),
+      ],
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
     );
   }
 }

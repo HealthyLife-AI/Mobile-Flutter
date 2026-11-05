@@ -1,20 +1,29 @@
 import 'package:flutter/material.dart';
+<<<<<<< HEAD
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../l10n/l10n.dart';
 import '../../presentation/bloc/auth/auth_cubit.dart';
 import '../../presentation/bloc/measurements/measurements_cubit.dart';
+=======
+
+import '../../l10n/l10n.dart';
+import '../../presentation/bloc/auth/auth_cubit.dart';
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 import '../../presentation/screens/health_record_screen.dart';
 import '../../presentation/screens/log_meal_intro_screen.dart';
 import '../../presentation/screens/notifications_center_screen.dart';
 import '../../presentation/screens/reviews_screen.dart';
 import '../../presentation/screens/schedule_calls_screen.dart';
 import '../../presentation/screens/weekly_plan_screen.dart';
+<<<<<<< HEAD
 import '../../presentation/screens/checkin_screen.dart';
 import '../../presentation/screens/my_requests_screen.dart';
 import '../../presentation/screens/new_measurement_screen.dart';
 import '../../presentation/screens/posts_screens.dart';
 import '../../presentation/screens/wellbeing_screen.dart';
+=======
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 import 'app_navigator.dart';
 import 'app_page_route.dart';
 import 'push_destination.dart';
@@ -30,8 +39,12 @@ PushGate pushGateFor(AuthState state) {
 /// Opens [destination] on the app's root navigator. Home is the shell at the
 /// bottom of the stack, so it pops back to that. [reviewId] is the note to show
 /// first on the notes screen; other screens ignore it.
+<<<<<<< HEAD
 void openPushDestination(PushDestination destination,
     {String? reviewId, String? postId}) {
+=======
+void openPushDestination(PushDestination destination, {String? reviewId}) {
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   final navigator = appNavigatorKey.currentState;
   if (navigator == null) return;
   switch (destination) {
@@ -53,6 +66,7 @@ void openPushDestination(PushDestination destination,
     case PushDestination.notes:
       _push(navigator, ReviewsScreen(focusReviewId: reviewId));
       break;
+<<<<<<< HEAD
     case PushDestination.myRequests:
       _push(navigator, const MyRequestsScreen());
       break;
@@ -77,6 +91,8 @@ void openPushDestination(PushDestination destination,
     case PushDestination.wellbeing:
       _push(navigator, const WellbeingScreen());
       break;
+=======
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
     case PushDestination.inbox:
       _push(navigator, const NotificationsCenterScreen());
       break;
@@ -106,8 +122,11 @@ void showPushNotice({
         content: Text(text),
         behavior: SnackBarBehavior.floating,
         duration: const Duration(seconds: 6),
+<<<<<<< HEAD
         // A notice with an action stays until dismissed unless told not to.
         persist: false,
+=======
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
         action: SnackBarAction(
           label: context.l10n.commonViewDetails,
           onPressed: onOpen,

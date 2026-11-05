@@ -21,10 +21,13 @@ import 'password_settings_screen.dart';
 import '../bloc/auth/auth_cubit.dart';
 import '../bloc/notifications/notifications_cubit.dart';
 import '../widgets/password_reminder_card.dart';
+<<<<<<< HEAD
 import '../bloc/patient_features_cubits.dart';
 import '../widgets/measurement_schedule_card.dart';
 import '../widgets/quick_contact_card.dart';
 import '../widgets/today_card.dart';
+=======
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 
 import '../../l10n/l10n.dart';
 
@@ -174,6 +177,7 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
     }
   }
 
+<<<<<<< HEAD
   /// Pull-to-refresh: everything the home screen shows, read again.
   Future<void> _refreshAll() => Future.wait([
         context.read<MealPlanCubit>().load(),
@@ -184,6 +188,8 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
         context.read<PostsUnreadCubit>().load(),
       ]);
 
+=======
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   void _openMeal(Meal meal) {
     Navigator.of(context)
         .push(AppPageRoute(builder: (_) => MealDetailScreen(meal: meal)));
@@ -222,6 +228,7 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
             // fades out.
             child: ScrollEdgeFade(
               fadeHeight: 16,
+<<<<<<< HEAD
               child: RefreshIndicator(
                   color: AppColors.primary,
                   onRefresh: _refreshAll,
@@ -326,6 +333,98 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
                       const _Reveal(delayMs: 760, child: _TipCard()),
                     ],
                   )),
+=======
+              child: ListView(
+                padding: const EdgeInsets.fromLTRB(18, 24, 18, 40),
+                children: [
+                  _Reveal(
+                    child: _Header(
+                      offline: offlineUi,
+                      // The bell opens the inbox, not the settings that decide
+                      // which notifications are sent (the two are different
+                      // screens on purpose).
+                      onBell: () => Navigator.of(context).push(AppPageRoute(
+                          builder: (_) => const NotificationsCenterScreen())),
+                      onStatus: _toggleConnection,
+                    ),
+                  ),
+                  AnimatedSize(
+                    duration: const Duration(milliseconds: 320),
+                    curve: Curves.easeOutCubic,
+                    alignment: Alignment.topCenter,
+                    child: offlineUi
+                        ? Padding(
+                            padding: const EdgeInsets.only(top: 14),
+                            child: OfflineBanner(
+                              state: _conn,
+                              pendingCount: _pendingCount,
+                              onTap: () => ConnectionStatusSheet.show(context),
+                            ),
+                          )
+                        : const SizedBox(width: double.infinity),
+                  ),
+                  // Gentle reminder while the password is the temporary one
+                  // from the nutritionist (API guide 3.4). Never blocks the app.
+                  if (context.select<AuthCubit, bool>((cubit) =>
+                      cubit.state.user?.passwordIsTemporary ?? false)) ...[
+                    const SizedBox(height: 16),
+                    PasswordReminderCard(
+                      onTap: () => Navigator.of(context).push(AppPageRoute(
+                          builder: (_) => const PasswordSettingsScreen())),
+                    ),
+                  ],
+                  if (plan == null) ...[
+                    const SizedBox(height: 20),
+                    // No plan to show: the load failed, or there is no active
+                    // plan yet (204), which is an empty state, not an error.
+                    if (planState case AsyncError<MealPlan?>(:final failure))
+                      LoadErrorView(
+                        message: loadFailureMessage(context, failure),
+                        onRetry: () => context.read<MealPlanCubit>().load(),
+                      )
+                    else
+                      const _Reveal(delayMs: 120, child: _NoPlanCard()),
+                  ] else ...[
+                    if (meals.isNotEmpty) ...[
+                      const SizedBox(height: 16),
+                      _Reveal(
+                        delayMs: 120,
+                        from: const Offset(0, 0.12),
+                        child:
+                            _ProgressCard(logged: logged, total: meals.length),
+                      ),
+                    ],
+                    const SizedBox(height: 20),
+                    _Reveal(
+                        delayMs: 220,
+                        child: _SectionHeader(targetKcal: target)),
+                    const SizedBox(height: 12),
+                    if (meals.isEmpty)
+                      Text(context.l10n.planNoMealToday,
+                          textAlign: TextAlign.center,
+                          style: _ts(12.5, c: _C.muted)),
+                    for (int i = 0; i < slots.length; i++)
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 12),
+                        child: _Reveal(
+                          delayMs: 280 + i * 110,
+                          from: const Offset(0, 0.1),
+                          child: slots[i].kind == _SlotKind.collapsed
+                              ? _CollapsedCard(slot: slots[i])
+                              : _MealCard(
+                                  slot: slots[i],
+                                  syncPending:
+                                      offlineUi && _pendingCount > 0 && i == 0,
+                                  onLog: () => _openMeal(slots[i].meal),
+                                ),
+                        ),
+                      ),
+                  ],
+                  const SizedBox(height: 4),
+                  const _Reveal(delayMs: 760, child: _TipCard()),
+                ],
+              ),
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
             ),
           ),
         ],
@@ -392,10 +491,16 @@ class _Header extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final patientName = context.watch<AuthCubit>().state.user?.name ?? '';
+<<<<<<< HEAD
     // Unread notifications plus unread posts from the nutritionist (spec,
     // phase 3). No badge when there is nothing unread.
     final unread = context.watch<NotificationsCubit>().state.unreadCount +
         (context.watch<PostsUnreadCubit>().state.dataOrNull ?? 0);
+=======
+    // True only while the inbox still holds something unread, so the dot
+    // means something instead of always glowing.
+    final hasUnread = context.watch<NotificationsCubit>().state.unreadCount > 0;
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -446,7 +551,11 @@ class _Header extends StatelessWidget {
             ],
           ),
         ),
+<<<<<<< HEAD
         _BellButton(onTap: onBell, unread: unread),
+=======
+        _BellButton(onTap: onBell, hasUnread: hasUnread),
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
       ],
     );
   }
@@ -505,9 +614,15 @@ class _StatusDotState extends State<_StatusDot>
 class _BellButton extends StatefulWidget {
   final VoidCallback onTap;
 
+<<<<<<< HEAD
   /// Shown as a count badge while above zero.
   final int unread;
   const _BellButton({required this.onTap, required this.unread});
+=======
+  /// Whether the dot is shown: only while there is something unread.
+  final bool hasUnread;
+  const _BellButton({required this.onTap, required this.hasUnread});
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   @override
   State<_BellButton> createState() => _BellButtonState();
 }
@@ -562,6 +677,7 @@ class _BellButtonState extends State<_BellButton>
                 child: Icon(Icons.notifications_none_rounded,
                     color: _C.teal, size: 23),
               ),
+<<<<<<< HEAD
               if (widget.unread > 0)
                 PositionedDirectional(
                     top: 4,
@@ -586,6 +702,20 @@ class _BellButtonState extends State<_BellButton>
                             height: 1.1,
                             fontWeight: FontWeight.w700),
                       ),
+=======
+              if (widget.hasUnread)
+                PositionedDirectional(
+                    top: 10,
+                    end: 11,
+                    child: Container(
+                      width: 8,
+                      height: 8,
+                      decoration: BoxDecoration(
+                        color: _C.teal,
+                        shape: BoxShape.circle,
+                        border: Border.all(color: Colors.white, width: 1.5),
+                      ),
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
                     )),
             ]),
           ),

@@ -5,7 +5,10 @@ import 'package:healthylife_ai/core/network/api_client.dart';
 import 'package:healthylife_ai/core/storage/storage_service.dart';
 import 'package:healthylife_ai/data/datasources/nutritionist_remote_data_source.dart';
 import 'package:healthylife_ai/data/repositories/nutritionist_repository_impl.dart';
+<<<<<<< HEAD
 import 'package:healthylife_ai/data/repositories/password_help_contact.dart';
+=======
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 
 /// Answers `GET me/nutritionist` with the next scripted answer: a value is
 /// returned, an [AppException] is thrown.
@@ -107,6 +110,7 @@ void main() {
     final result = await _repository(api, storage).getProfile();
     expect(result.failureOrNull, isA<NetworkFailure>());
   });
+<<<<<<< HEAD
 
   group('forgot-password contact (3.6)', () {
     NutritionistRepositoryImpl withHelp(PasswordHelpContact help) =>
@@ -145,4 +149,6 @@ void main() {
       expect(await help.whatsappUri(), isNull);
     });
   });
+=======
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 }

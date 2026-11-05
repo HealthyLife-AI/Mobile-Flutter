@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+<<<<<<< HEAD
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../core/di/app_dependencies.dart';
@@ -11,16 +12,27 @@ import '../../domain/change_request_rules.dart';
 import '../../domain/entities/patient_care_entities.dart';
 import '../../domain/entities/patient_health_profile_entities.dart';
 import '../health_profile_labels.dart';
+=======
+import '../../core/theme/app_colors.dart';
+import '../../core/theme/app_radius.dart';
+import '../../core/theme/app_text_styles.dart';
+import '../../domain/entities/health_profile_entities.dart';
+import '../../data/mock/health_profile_mock_data.dart';
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 import '../widgets/gradient_cta_button.dart';
 import '../widgets/onboarding_reveal.dart';
 import '../widgets/onboarding_step_header.dart';
 import '../widgets/clinical_trust_footer.dart';
+<<<<<<< HEAD
 import '../widgets/spec_ui.dart';
+=======
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 import 'onboarding_notifications_screen.dart';
 import '../../core/navigation/app_page_route.dart';
 
 import '../../l10n/l10n.dart';
 
+<<<<<<< HEAD
 /// Onboarding step 2/3 — "البيانات الصحية": chronic conditions (at least one
 /// choice, "none" included), optional food allergies and a medications list.
 ///
@@ -28,6 +40,12 @@ import '../../l10n/l10n.dart';
 /// medication goes to the nutritionist as a change request (API guide 11.2);
 /// they reach the profile once approved. The API has no field for chronic
 /// conditions or free notes, so those go together as one quick request.
+=======
+/// Onboarding step 2/3 — "البيانات الصحية": chronic conditions (single
+/// clinical multi-select, at least one required), optional food allergies
+/// that auto-exclude ingredients from the generated meal plan, and a
+/// medications/supplements list reviewed by the specialist for interactions.
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 class OnboardingHealthScreen extends StatefulWidget {
   const OnboardingHealthScreen({super.key});
 
@@ -36,6 +54,7 @@ class OnboardingHealthScreen extends StatefulWidget {
 }
 
 class _OnboardingHealthScreenState extends State<OnboardingHealthScreen> {
+<<<<<<< HEAD
   final Set<String> _selectedConditions = {};
 
   /// API allergy groups (11.2), or `none`.
@@ -64,6 +83,15 @@ class _OnboardingHealthScreenState extends State<OnboardingHealthScreen> {
   /// quick request.
   static const int _notesMaxLength = 100;
 
+=======
+  final Set<String> _selectedConditions = {'pcos', 'ibs'};
+  final Set<String> _selectedAllergies = {'lactose'};
+  final List<MedicationEntry> _medications =
+      List.of(HealthProfileMockData.defaultMedications);
+  final TextEditingController _medicationController = TextEditingController();
+  final TextEditingController _notesController = TextEditingController();
+
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   @override
   void dispose() {
     _medicationController.dispose();
@@ -105,8 +133,13 @@ class _OnboardingHealthScreenState extends State<OnboardingHealthScreen> {
     final text = _medicationController.text.trim();
     if (text.isEmpty) return;
     setState(() {
+<<<<<<< HEAD
       // A medication name is at most 100 characters (11.2).
       _medications.add(text.length > 100 ? text.substring(0, 100) : text);
+=======
+      _medications.add(MedicationEntry(
+          name: text, frequency: context.l10n.onboardingHealthAsPrescribed));
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
       _medicationController.clear();
     });
     FocusScope.of(context).unfocus();
@@ -115,6 +148,7 @@ class _OnboardingHealthScreenState extends State<OnboardingHealthScreen> {
   void _removeMedication(int index) =>
       setState(() => _medications.removeAt(index));
 
+<<<<<<< HEAD
   Future<void> _continue() async {
     if (_sending) return;
     setState(() => _sending = true);
@@ -126,10 +160,14 @@ class _OnboardingHealthScreenState extends State<OnboardingHealthScreen> {
           error: true);
       return;
     }
+=======
+  void _continue() {
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
     Navigator.of(context).push(
         AppPageRoute(builder: (_) => const OnboardingNotificationsScreen()));
   }
 
+<<<<<<< HEAD
   /// Sends what the patient entered and returns the first failure, or null.
   /// An item the profile already has, or one already waiting for the
   /// nutritionist, counts as sent.
@@ -209,6 +247,11 @@ class _OnboardingHealthScreenState extends State<OnboardingHealthScreen> {
     final bool canContinue = _selectedConditions.isNotEmpty && !_sending;
     final noAllergy =
         HealthProfileMockData.allergies.firstWhere((a) => a.id == 'none');
+=======
+  @override
+  Widget build(BuildContext context) {
+    final bool canContinue = _selectedConditions.isNotEmpty;
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
     return Scaffold(
       backgroundColor: AppColors.background,
       body: SafeArea(
@@ -290,6 +333,7 @@ class _OnboardingHealthScreenState extends State<OnboardingHealthScreen> {
                           style: AppTextStyles.caption),
                     ),
                     const SizedBox(height: 14),
+<<<<<<< HEAD
                     for (final group in _groups)
                       _SelectableCard(
                         title: allergyGroupLabel(context.l10n, group) ?? group,
@@ -330,6 +374,16 @@ class _OnboardingHealthScreenState extends State<OnboardingHealthScreen> {
                         ],
                       ),
                     ],
+=======
+                    for (final a in HealthProfileMockData.allergies)
+                      _SelectableCard(
+                        title: a.title,
+                        subtitle: a.subtitle,
+                        icon: a.icon,
+                        selected: _selectedAllergies.contains(a.id),
+                        onTap: () => _toggleAllergy(a.id),
+                      ),
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
                     const SizedBox(height: 22),
                     Row(children: [
                       const Icon(Icons.medication_outlined,
@@ -363,7 +417,11 @@ class _OnboardingHealthScreenState extends State<OnboardingHealthScreen> {
                           const SizedBox(width: 9),
                           Expanded(
                             child: Text(
+<<<<<<< HEAD
                               _medications[i],
+=======
+                              _medications[i].name,
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
                               textAlign: TextAlign.start,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
@@ -371,6 +429,13 @@ class _OnboardingHealthScreenState extends State<OnboardingHealthScreen> {
                             ),
                           ),
                           const SizedBox(width: 8),
+<<<<<<< HEAD
+=======
+                          Text(_medications[i].frequency,
+                              textAlign: TextAlign.start,
+                              style: AppTextStyles.pillLabel),
+                          const SizedBox(width: 8),
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
                           GestureDetector(
                             onTap: () => _removeMedication(i),
                             child: const Icon(Icons.close_rounded,
@@ -441,7 +506,11 @@ class _OnboardingHealthScreenState extends State<OnboardingHealthScreen> {
                       child: TextField(
                         controller: _notesController,
                         maxLines: 3,
+<<<<<<< HEAD
                         maxLength: _notesMaxLength,
+=======
+                        maxLength: 200,
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
                         textAlign: TextAlign.start,
                         decoration: InputDecoration(
                           isDense: true,
@@ -464,7 +533,11 @@ class _OnboardingHealthScreenState extends State<OnboardingHealthScreen> {
                 padding: const EdgeInsets.fromLTRB(18, 0, 18, 16),
                 child: GradientCtaButton(
                     label: context.l10n.onboardingHealthContinue,
+<<<<<<< HEAD
                     onPressed: canContinue ? () => _continue() : null),
+=======
+                    onPressed: canContinue ? _continue : null),
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
               ),
             ),
           ],
@@ -494,14 +567,22 @@ class _MiniBadge extends StatelessWidget {
 
 class _SelectableCard extends StatelessWidget {
   final String title;
+<<<<<<< HEAD
   final String? subtitle;
+=======
+  final String subtitle;
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   final IconData icon;
   final bool selected;
   final VoidCallback onTap;
 
   const _SelectableCard({
     required this.title,
+<<<<<<< HEAD
     this.subtitle,
+=======
+    required this.subtitle,
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
     required this.icon,
     required this.selected,
     required this.onTap,
@@ -540,10 +621,15 @@ class _SelectableCard extends StatelessWidget {
                 Text(title,
                     style: AppTextStyles.body
                         .copyWith(fontWeight: FontWeight.w700)),
+<<<<<<< HEAD
                 if (subtitle case final subtitle?) ...[
                   const SizedBox(height: 2),
                   Text(subtitle, style: AppTextStyles.caption),
                 ],
+=======
+                const SizedBox(height: 2),
+                Text(subtitle, style: AppTextStyles.caption),
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
               ],
             ),
           ),

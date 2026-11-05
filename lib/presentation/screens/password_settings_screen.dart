@@ -13,6 +13,8 @@ import '../widgets/forgot_password_dialog.dart';
 
 import '../../l10n/l10n.dart';
 
+import '../../l10n/l10n.dart';
+
 // ───────────────────────── الألوان (مطابقة للصورة) ─────────────────────────
 const Color _teal = Color(0xFF00636E);
 const Color _mint = Color(0xFF3DDBB0);
@@ -175,6 +177,25 @@ class _PasswordSettingsScreenState extends State<PasswordSettingsScreen>
       NetworkFailure() => l10n.commonOfflineBody,
       _ => l10n.commonErrorBody,
     };
+<<<<<<< HEAD
+=======
+  }
+
+  void _forgotPassword() {
+    showDialog<void>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: Text(context.l10n.passwordForgot),
+        content: Text(context.l10n.loginForgotBody),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(),
+            child: Text(context.l10n.commonClose),
+          ),
+        ],
+      ),
+    );
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   }
 
   // ───────────────────────── عناصر مساعدة ─────────────────────────
@@ -252,7 +273,11 @@ class _PasswordSettingsScreenState extends State<PasswordSettingsScreen>
                     ),
                     const Spacer(),
                     TextButton(
+<<<<<<< HEAD
                       onPressed: () => showForgotPasswordDialog(context),
+=======
+                      onPressed: _forgotPassword,
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
                       style: TextButton.styleFrom(
                         padding: EdgeInsets.zero,
                         minimumSize: Size.zero,

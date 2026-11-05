@@ -103,10 +103,13 @@ class NotificationRepositoryImpl
         await _tellServer(_remote.markAllRead);
       });
 
+<<<<<<< HEAD
   @override
   Future<Result<int?>> unreadCount() =>
       guard(_remote.unreadCount, context: 'NotificationRepository.unreadCount');
 
+=======
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   /// The server call is best effort: the row is already read on the device,
   /// and both calls are safe to repeat.
   Future<void> _tellServer(Future<void> Function() call) async {

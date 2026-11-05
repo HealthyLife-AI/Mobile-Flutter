@@ -8,10 +8,16 @@ abstract final class AppShadows {
   /// `Colors.black.withValues(alpha: 0.06)` — the exact same color.)
   static const List<BoxShadow> soft = [
     BoxShadow(
+<<<<<<< HEAD
       // Design spec: 0 4 16 rgba(17,28,45,.07).
       color: Color(0x12111C2D),
       blurRadius: 16,
       offset: Offset(0, 4),
+=======
+      color: Color.from(alpha: 0.06, red: 0, green: 0, blue: 0),
+      blurRadius: 24,
+      offset: Offset(0, 8),
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
     ),
   ];
 }

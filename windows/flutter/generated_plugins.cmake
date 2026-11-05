@@ -3,11 +3,17 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
+<<<<<<< HEAD
   file_selector_windows
   firebase_core
   flutter_secure_storage_windows
   flutter_timezone
   pdfx
+=======
+  firebase_core
+  flutter_secure_storage_windows
+  flutter_timezone
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   permission_handler_windows
   url_launcher_windows
 )

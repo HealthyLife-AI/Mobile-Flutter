@@ -109,6 +109,7 @@ class MealLogCubit extends Cubit<MealLogState> {
     return result;
   }
 
+<<<<<<< HEAD
   /// Deletes the entry, here and on the server (6.4). The entries are read
   /// again either way: a delete that failed half-way has still removed what
   /// it could.
@@ -155,6 +156,8 @@ class MealLogCubit extends Cubit<MealLogState> {
     ));
   }
 
+=======
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   Future<void> _refreshAfterWrite(
       Result<MealLogEntry> result, int generation) async {
     if (_isStale(generation)) return;

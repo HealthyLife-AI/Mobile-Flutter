@@ -152,6 +152,7 @@ class _ProfileScreenState extends State<ProfileScreen>
             context.l10n.healthRecordTitle,
             context.l10n.profileHealthRecordSubtitle,
             () => const HealthRecordScreen()),
+<<<<<<< HEAD
         _NavItem(Icons.lightbulb_outline_rounded, context.l10n.postsTitle,
             context.l10n.profilePostsSubtitle, () => const PostsScreen()),
         _NavItem(
@@ -185,6 +186,20 @@ class _ProfileScreenState extends State<ProfileScreen>
             context.l10n.profileHealthSyncSubtitle,
             () => const HealthSyncScreen()),
         _NavItem(
+=======
+        _NavItem(Icons.emoji_events_outlined, context.l10n.profileAchievements,
+            null, () => const AchievementsScreen()),
+        _NavItem(Icons.favorite_border_rounded, context.l10n.healthSyncTitle,
+            null, () => const HealthSyncScreen()),
+        _NavItem(Icons.bedtime_outlined, context.l10n.profileWellbeing, null,
+            () => const SleepStressMoodScreen()),
+        _NavItem(
+            Icons.event_available_outlined,
+            context.l10n.profileAppointments,
+            null,
+            () => const ScheduleCallsScreen()),
+        _NavItem(
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
             Icons.mark_email_unread_outlined,
             context.l10n.profileNotificationLog,
             null,

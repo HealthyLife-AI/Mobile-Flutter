@@ -34,10 +34,13 @@ class _Repository implements MeasurementRepository {
   @override
   Future<Result<MeasurementSnapshot>> saveEntry(MeasurementEntry entry) =>
       throw UnimplementedError();
+<<<<<<< HEAD
 
   @override
   Future<Result<MeasurementSnapshot>> deleteEntry(MeasurementEntry entry) =>
       throw UnimplementedError();
+=======
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 }
 
 MeasurementEntry _reading(String id, DateTime day) =>
@@ -96,10 +99,13 @@ void main() {
     final viewProgress = inPrompt(find.text('عرض تقدّمي الآن'));
     await tester.scrollUntilVisible(viewProgress, 200,
         scrollable: inPrompt(find.byType(Scrollable)).first);
+<<<<<<< HEAD
     // Centered, so the floating bottom bar does not cover it.
     await Scrollable.ensureVisible(tester.element(viewProgress),
         alignment: 0.5);
     await tester.pump();
+=======
+>>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
     await tester.tap(viewProgress);
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 500));
