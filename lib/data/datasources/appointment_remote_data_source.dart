@@ -2,22 +2,14 @@ import '../../core/errors/app_exception.dart';
 import '../../core/network/api_client.dart';
 import '../../domain/entities/appointment_entities.dart';
 
-<<<<<<< HEAD
 /// The appointment endpoints (API guide 12). The list is a plain array of up
 /// to 50 appointments (12.4); every write answers with the appointment.
-=======
-/// `GET /me/appointments?scope=` (API guide 12.4). The answer is a plain array
-/// of up to 50 appointments.
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 class AppointmentRemoteDataSource {
   AppointmentRemoteDataSource(this._api);
 
   final ApiClient _api;
 
-<<<<<<< HEAD
   /// `GET /me/appointments?scope=` (12.4).
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   Future<List<Map<String, dynamic>>> fetch({
     required AppointmentScope scope,
   }) async {
@@ -33,7 +25,6 @@ class AppointmentRemoteDataSource {
         if (item is Map) Map<String, dynamic>.from(item),
     ];
   }
-<<<<<<< HEAD
 
   /// `GET /me/appointments/slots?type=` (12.1).
   Future<Map<String, dynamic>> fetchSlots(String type) async =>
@@ -59,6 +50,4 @@ class AppointmentRemoteDataSource {
     }
     return Map<String, dynamic>.from(raw);
   }
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 }

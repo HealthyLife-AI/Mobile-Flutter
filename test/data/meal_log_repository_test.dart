@@ -1,9 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:healthylife_ai/core/errors/app_exception.dart';
-<<<<<<< HEAD
 import 'package:healthylife_ai/core/errors/failure.dart';
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 import 'package:healthylife_ai/core/network/api_client.dart';
 import 'package:healthylife_ai/core/storage/storage_service.dart';
 import 'package:healthylife_ai/core/sync/offline_queue.dart';
@@ -13,22 +10,15 @@ import 'package:healthylife_ai/domain/entities/meal_entities.dart';
 import '../helpers/sample_meal_plan.dart';
 
 /// Records each write. Each write takes the next answer: null saves it, an
-<<<<<<< HEAD
 /// [AppException] is thrown. When no answers are left, writes are saved. A
 /// saved log comes back with the id 100 + its number, as the server answers
 /// (6.1). Deletes take [deleteAnswers] the same way.
-=======
-/// [AppException] is thrown. When no answers are left, writes are saved.
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 class _ScriptedApi implements ApiClient {
   final List<String> paths = [];
   final List<Map<String, dynamic>> bodies = [];
   final List<Object?> answers = [];
-<<<<<<< HEAD
   final List<String> deletes = [];
   final List<Object?> deleteAnswers = [];
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 
   @override
   Future<dynamic> post(String path, {Object? body, bool auth = true}) async {
@@ -36,7 +26,6 @@ class _ScriptedApi implements ApiClient {
     bodies.add(Map<String, dynamic>.from(body as Map));
     final next = answers.isEmpty ? null : answers.removeAt(0);
     if (next is AppException) throw next;
-<<<<<<< HEAD
     return {
       'id': 100 + paths.length,
       'editable_until': '2026-10-21T10:36:02+00:00',
@@ -55,21 +44,11 @@ class _ScriptedApi implements ApiClient {
     if (next is AppException) throw next;
     return next;
   }
-=======
-    return null;
-  }
-
-  @override
-  Future<dynamic> get(String path,
-          {Map<String, dynamic>? query, bool auth = true}) =>
-      throw UnimplementedError(path);
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 
   @override
   Future<dynamic> put(String path, {Object? body, bool auth = true}) =>
       throw UnimplementedError(path);
 
-<<<<<<< HEAD
   /// Each PATCH takes the next answer; an [AppException] is thrown.
   final List<Object> patchAnswers = [];
   final List<({String path, Object? body})> patches = [];
@@ -89,15 +68,6 @@ class _ScriptedApi implements ApiClient {
     if (next is AppException) throw next;
     return null;
   }
-=======
-  @override
-  Future<dynamic> patch(String path, {Object? body, bool auth = true}) =>
-      throw UnimplementedError(path);
-
-  @override
-  Future<dynamic> delete(String path, {Object? body, bool auth = true}) =>
-      throw UnimplementedError(path);
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 }
 
 const SearchableFood _rice =
@@ -135,18 +105,12 @@ void main() {
       api: api,
       clock: () => now,
       pause: (_) async {},
-<<<<<<< HEAD
       onSaved: (write, response) => repository.recordSaved(write, response),
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
     );
     repository = MealLogRepositoryImpl(
       storage,
       queue,
-<<<<<<< HEAD
       api,
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
       clock: () => now,
       newKey: () => 'key-${++keysMade}',
     );
@@ -294,7 +258,6 @@ void main() {
 
     expect((await repository.getEntries()).valueOrNull, hasLength(2));
   });
-<<<<<<< HEAD
 
   group('deleting an entry (API guide 6.4)', () {
     Future<List<MealLogEntry>> entries() async =>
@@ -503,6 +466,4 @@ void main() {
       expect(kept.canEditGramsAt(now), isFalse);
     });
   });
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 }

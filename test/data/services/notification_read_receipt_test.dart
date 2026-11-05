@@ -26,12 +26,9 @@ class _Inbox implements NotificationRepository {
   @override
   Future<Result<void>> markAllRead(List<String> ids) async =>
       const Success<void>(null);
-<<<<<<< HEAD
 
   @override
   Future<Result<int?>> unreadCount() async => const Success(null);
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 }
 
 void main() {

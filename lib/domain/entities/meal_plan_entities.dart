@@ -33,7 +33,6 @@ class Macros {
       );
 }
 
-<<<<<<< HEAD
 /// `cost_tier` on a plan item (API guide 5.1). Only [economical] gets a badge.
 /// Null on the wire (not tagged yet) reads as [unknown].
 enum FoodCostTier { economical, standard, premium, unknown }
@@ -41,8 +40,6 @@ enum FoodCostTier { economical, standard, premium, unknown }
 /// `prep_level` on a plan item. [noCook] and [easy] get a badge.
 enum FoodPrepLevel { noCook, easy, normal, unknown }
 
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 /// One planned food, or one of its alternatives. Its [id] is the
 /// `meal_item_id` a log of it carries (6.1). The nutritionist swapping a food
 /// gives the item a new id, so ids are never kept across plan reads.
@@ -53,11 +50,8 @@ class PlanItem {
     required this.quantityGrams,
     required this.macros,
     this.alternatives = const [],
-<<<<<<< HEAD
     this.costTier = FoodCostTier.unknown,
     this.prepLevel = FoodPrepLevel.unknown,
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   });
 
   final int id;
@@ -69,7 +63,6 @@ class PlanItem {
   /// For an alternative: the values "if you eat this instead" (5.1).
   final Macros macros;
   final List<PlanItem> alternatives;
-<<<<<<< HEAD
   final FoodCostTier costTier;
   final FoodPrepLevel prepLevel;
 
@@ -112,8 +105,6 @@ class PlanActivity {
   /// Null: no days badge.
   final int? daysPerWeek;
   final int sortOrder;
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 }
 
 class PlanMeal {
@@ -147,11 +138,8 @@ class MealPlan {
     required this.meals,
     this.startDate,
     this.summaryByDay = const {},
-<<<<<<< HEAD
     this.patientInstructions = const [],
     this.activities = const [],
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   });
 
   final int id;
@@ -165,7 +153,6 @@ class MealPlan {
   /// Planned totals per day index (0–6), as the server summed them.
   final Map<int, Macros> summaryByDay;
 
-<<<<<<< HEAD
   /// The nutritionist's instructions to the patient, one entry per line
   /// (`patient_instructions`). Empty when they wrote nothing: the card is
   /// hidden, never shown blank. Health data: never logged.
@@ -174,8 +161,6 @@ class MealPlan {
   /// In `sort_order`. Empty: the physical-activity section is hidden.
   final List<PlanActivity> activities;
 
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   /// A day's menu: the daily meals plus that weekday's meals (5.1).
   List<PlanMeal> mealsOn(DateTime day) => [
         for (final meal in meals)

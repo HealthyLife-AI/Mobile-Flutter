@@ -31,7 +31,6 @@ class _FakeMealLog implements MealLogRepository {
       throw UnimplementedError();
 
   @override
-<<<<<<< HEAD
   Future<Result<void>> delete(String entryId) async {
     entries.removeWhere((e) => e.id == entryId);
     return const Success(null);
@@ -46,8 +45,6 @@ class _FakeMealLog implements MealLogRepository {
       throw UnimplementedError();
 
   @override
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   Future<Result<void>> clear() => throw UnimplementedError();
 }
 

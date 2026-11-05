@@ -69,7 +69,6 @@ class MeasurementsCubit extends Cubit<MeasurementsState> {
     );
   }
 
-<<<<<<< HEAD
   /// Deletes one of the patient's own readings (7.3). On success the screen
   /// shows the readings left; a failure is returned, and what is on screen
   /// stays.
@@ -90,8 +89,6 @@ class MeasurementsCubit extends Cubit<MeasurementsState> {
     return result.failureOrNull;
   }
 
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   /// Drops what is on screen. Called when the session ends, so the next
   /// patient never sees the previous one's measurements.
   void reset() => emit(const MeasurementsState());

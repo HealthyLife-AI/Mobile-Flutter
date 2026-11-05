@@ -155,11 +155,7 @@
   "@aboutPrivacyPolicyTitle": {
     "description": "UI text in presentation/screens/about_app_screen.dart"
   },
-<<<<<<< HEAD
   "aboutPrivacyPolicySubtitle": "اقرأ السياسة المنشورة على موقعنا",
-=======
-  "aboutPrivacyPolicySubtitle": "تشفير سريري عالي المستوى لملفك الغذائي",
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   "@aboutPrivacyPolicySubtitle": {
     "description": "UI text in presentation/screens/about_app_screen.dart"
   },
@@ -171,19 +167,11 @@
   "@aboutMedicalTermsSubtitle": {
     "description": "UI text in presentation/screens/about_app_screen.dart"
   },
-<<<<<<< HEAD
   "aboutLicensesTitle": "تراخيص البرمجيات",
   "@aboutLicensesTitle": {
     "description": "UI text in presentation/screens/about_app_screen.dart"
   },
   "aboutLicensesSubtitle": "المكتبات مفتوحة المصدر المستخدمة في التطبيق",
-=======
-  "aboutLicensesTitle": "تراخيص الهيئة الطبية والاعتماد",
-  "@aboutLicensesTitle": {
-    "description": "UI text in presentation/screens/about_app_screen.dart"
-  },
-  "aboutLicensesSubtitle": "سجل الامتثال الطبي الموثق رقم #A-8841",
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   "@aboutLicensesSubtitle": {
     "description": "UI text in presentation/screens/about_app_screen.dart"
   },
@@ -191,7 +179,6 @@
   "@aboutSupportTitle": {
     "description": "UI text in presentation/screens/about_app_screen.dart"
   },
-<<<<<<< HEAD
   "aboutSupportSubtitle": "تواصل مع أخصائيك عبر واتساب",
   "@aboutSupportSubtitle": {
     "description": "UI text in presentation/screens/about_app_screen.dart"
@@ -205,17 +192,6 @@
     "description": "UI text in presentation/screens/about_app_screen.dart"
   },
   "aboutEncryptionNote": "الاتصال بين التطبيق وخوادمنا مشفّر، ونأخذ نسخة احتياطية مشفّرة يوميًا.",
-=======
-  "aboutSupportSubtitle": "مساعدة متواصلة للاستفسارات التقنية",
-  "@aboutSupportSubtitle": {
-    "description": "UI text in presentation/screens/about_app_screen.dart"
-  },
-  "aboutStandardHealthProtection": "حماية صحية قياسية",
-  "@aboutStandardHealthProtection": {
-    "description": "UI text in presentation/screens/about_app_screen.dart"
-  },
-  "aboutEncryptionNote": "بياناتك مشفرة ومحمية وفق معايير الخصوصية الصحية المعتمدة لمزامنة آمنة مع ملفك السريري.",
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   "@aboutEncryptionNote": {
     "description": "UI text in presentation/screens/about_app_screen.dart"
   },
@@ -303,11 +279,7 @@
   "@activationCta": {
     "description": "UI text in presentation/screens/activation_screen.dart"
   },
-<<<<<<< HEAD
   "activationEncryptedNote": "الاتصال بين التطبيق وخوادمنا مشفّر.",
-=======
-  "activationEncryptedNote": "بياناتك الصحية مشفرة ومحمية وفق لوائح الامتثال الطبي",
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   "@activationEncryptedNote": {
     "description": "UI text in presentation/screens/activation_screen.dart"
   },
@@ -367,7 +339,6 @@
   "@dailyLogMealDeleted": {
     "description": "UI text in presentation/screens/daily_log_screen.dart"
   },
-<<<<<<< HEAD
   "entryEditLocked": "مرّ أكثر من 7 أيام على تسجيل هذا الإدخال، فلا يمكن تعديله.",
   "@entryEditLocked": {
     "description": "A meal delete refused with 403 log_locked: the 7-day edit window has passed (API guide 6.4, 15)."
@@ -408,8 +379,6 @@
   "@dailyLogEditFailed": {
     "description": "An edit that failed for any other reason."
   },
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   "commonUndo": "تراجع",
   "@commonUndo": {
     "description": "UI text in presentation/screens/daily_log_screen.dart"
@@ -849,19 +818,11 @@
   "@commonOpenWhatsApp": {
     "description": "UI text in presentation/screens/food_search_screen.dart"
   },
-<<<<<<< HEAD
   "consentClauseStorageTitle": "كيف نحمي بياناتك؟",
   "@consentClauseStorageTitle": {
     "description": "UI text in presentation/screens/health_data_consent_screen.dart"
   },
   "consentClauseStorageBody": "الاتصال بين التطبيق وخوادمنا مشفّر، ونأخذ نسخة احتياطية مشفّرة يوميًا.",
-=======
-  "consentClauseStorageTitle": "كيف تُحفظ بياناتك الصحية؟",
-  "@consentClauseStorageTitle": {
-    "description": "UI text in presentation/screens/health_data_consent_screen.dart"
-  },
-  "consentClauseStorageBody": "تشفير كامل وفق أعلى معايير الخصوصية الصحية السريرية (HIPAA standards). تُخزَّن السجلات على خوادم طبية معزولة لا يمكن لأي طرف ثالث أو شركة إعلانات الوصول إليها تحت أي ظرف.",
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   "@consentClauseStorageBody": {
     "description": "UI text in presentation/screens/health_data_consent_screen.dart"
   },
@@ -869,7 +830,6 @@
   "@consentClauseAccessTitle": {
     "description": "UI text in presentation/screens/health_data_consent_screen.dart"
   },
-<<<<<<< HEAD
   "consentClauseAccessBody": "بياناتك الصحية يطّلع عليها أخصائيك فقط، ولا نبيعها ولا نستخدمها للإعلانات.",
   "@consentClauseAccessBody": {
     "description": "UI text in presentation/screens/health_data_consent_screen.dart"
@@ -886,20 +846,6 @@
   "@privacyOnWebsite": {
     "description": "Shown when no address of the published privacy policy is known yet (API guide 4). The app carries no policy text of its own."
   },
-=======
-  "consentClauseAccessBody": "أخصائي التغذية العلاجية المعتمد على حسابك فقط، عبر نظام مراجعة سريري مشفر. لا تُشارك بياناتك مع أي جهة أخرى، ولا تُستخدم لأي غرض تسويقي.",
-  "@consentClauseAccessBody": {
-    "description": "UI text in presentation/screens/health_data_consent_screen.dart"
-  },
-  "consentClauseRevokeTitle": "حقك الكامل في إلغاء الموافقة",
-  "@consentClauseRevokeTitle": {
-    "description": "UI text in presentation/screens/health_data_consent_screen.dart"
-  },
-  "consentClauseRevokeBody": "يمكنك سحب موافقتك في أي وقت من الحساب ← الخصوصية. سيؤدي ذلك إلى إيقاف تخصيص الخطة الغذائية تلقائياً حتى تجديد الموافقة، دون التأثير على سجلاتك المحفوظة.",
-  "@consentClauseRevokeBody": {
-    "description": "UI text in presentation/screens/health_data_consent_screen.dart"
-  },
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   "consentExitTitle": "الخروج من إعداد ملفك الصحي؟",
   "@consentExitTitle": {
     "description": "UI text in presentation/screens/health_data_consent_screen.dart"
@@ -957,24 +903,10 @@
   "@consentDataUseNote": {
     "description": "UI text in presentation/screens/health_data_consent_screen.dart"
   },
-<<<<<<< HEAD
-=======
-  "consentEncryptionShort": "مشفّرة بنظام bit-256 ومتوافقة مع المعايير الصحية السريرية (HIPAA).",
-  "@consentEncryptionShort": {
-    "description": "UI text in presentation/screens/health_data_consent_screen.dart"
-  },
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   "consentTitle": "الموافقة على استخدام البيانات الصحية",
   "@consentTitle": {
     "description": "UI text in presentation/screens/health_data_consent_screen.dart"
   },
-<<<<<<< HEAD
-=======
-  "consentProtectionSystem": "منظومة الحماية السريرية الذكية",
-  "@consentProtectionSystem": {
-    "description": "UI text in presentation/screens/health_data_consent_screen.dart"
-  },
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   "consentBeforeWeStart": "قبل أن نبدأ رحلتك الصحية",
   "@consentBeforeWeStart": {
     "description": "UI text in presentation/screens/health_data_consent_screen.dart"
@@ -983,13 +915,6 @@
   "@consentCommitment": {
     "description": "UI text in presentation/screens/health_data_consent_screen.dart"
   },
-<<<<<<< HEAD
-=======
-  "consentAesNote": "بياناتك الطبية مشفرة بنظام bit AES-256 من لحظة إدخالها",
-  "@consentAesNote": {
-    "description": "UI text in presentation/screens/health_data_consent_screen.dart"
-  },
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   "consentCheckbox": "قرأت ووافقت على شروط مشاركة البيانات بسياسة الخصوصية الصحية.",
   "@consentCheckbox": {
     "description": "UI text in presentation/screens/health_data_consent_screen.dart"
@@ -1432,11 +1357,7 @@
   "@logMealOffPlanFooter": {
     "description": "UI text in presentation/screens/log_meal_intro_screen.dart"
   },
-<<<<<<< HEAD
   "logMealPrivacyNote": "سجل وجباتك يطّلع عليه أخصائيك فقط.",
-=======
-  "logMealPrivacyNote": "بياناتك الغذائية مشفرة وتُعامل بخصوصية طبية تامة",
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   "@logMealPrivacyNote": {
     "description": "UI text in presentation/screens/log_meal_intro_screen.dart"
   },
@@ -1724,7 +1645,6 @@
   "@measurementsHomeReading": {
     "description": "UI text in presentation/screens/measurements_screen.dart"
   },
-<<<<<<< HEAD
   "measurementsHistoryTitle": "سجل القراءات",
   "@measurementsHistoryTitle": {
     "description": "Heading of the readings list on the measurements screen, newest first (API guide 7.2)."
@@ -1757,8 +1677,6 @@
   "@measurementsDeleteFailed": {
     "description": "A reading delete that failed for any other reason."
   },
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   "measurementsSyncNote": "تحديث البيانات متزامن مع قياسات العيادة وسجلك الشخصي بكل موثوقية.",
   "@measurementsSyncNote": {
     "description": "UI text in presentation/screens/measurements_screen.dart"
@@ -2143,13 +2061,6 @@
   "@offlineCheckWifi": {
     "description": "UI text in presentation/screens/offline_state_screen.dart"
   },
-<<<<<<< HEAD
-=======
-  "onboardingHealthAsPrescribed": "حسب الوصفة",
-  "@onboardingHealthAsPrescribed": {
-    "description": "UI text in presentation/screens/onboarding_health_screen.dart"
-  },
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   "onboardingHealthTitle": "البيانات الصحية",
   "@onboardingHealthTitle": {
     "description": "UI text in presentation/screens/onboarding_health_screen.dart"
@@ -2158,19 +2069,11 @@
   "@onboardingHealthConditions": {
     "description": "UI text in presentation/screens/onboarding_health_screen.dart"
   },
-<<<<<<< HEAD
   "onboardingHealthConditionsNote": "حدّد أي حالات صحية تم تشخيصك بها، لتصل إلى أخصائيك ويراعيها في خطتك.",
   "@onboardingHealthConditionsNote": {
     "description": "UI text in presentation/screens/onboarding_health_screen.dart"
   },
   "onboardingHealthConfidentialNote": "يطّلع على هذه التفاصيل أخصائيك فقط، وتساعده في استبعاد أي مكونات قد تتعارض مع حالتك أو أدويتك.",
-=======
-  "onboardingHealthConditionsNote": "حدد أي حالات صحية تم تشخيصك بها لتكييف برنامجك الغذائي ومكوناته والوجبات المقترحة وفق استجابة تامة وآمنة لجسمك.",
-  "@onboardingHealthConditionsNote": {
-    "description": "UI text in presentation/screens/onboarding_health_screen.dart"
-  },
-  "onboardingHealthConfidentialNote": "سرية سريرية مشفرة ومعتمدة طبياً — تساعد هذه التفاصيل أخصائي التغذية في استبعاد أي مكونات قد تتعارض مع مؤشراتك الحيوية أو أدويتك الموصوفة.",
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   "@onboardingHealthConfidentialNote": {
     "description": "UI text in presentation/screens/onboarding_health_screen.dart"
   },
@@ -2178,11 +2081,7 @@
   "@onboardingHealthAllergies": {
     "description": "UI text in presentation/screens/onboarding_health_screen.dart"
   },
-<<<<<<< HEAD
   "onboardingHealthAllergiesNote": "حدّد ما يسبب لك حساسية، ليراجعه أخصائيك ويضيفه إلى ملفك. بعد اعتماده تظهر علامة تنبيه على الأطعمة التي قد تحتويه.",
-=======
-  "onboardingHealthAllergiesNote": "حدد مسببات الحساسية المعتمدة ليقوم النظام باستبعادها تلقائياً من جداول الوجبات والوصفات المقترحة.",
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   "@onboardingHealthAllergiesNote": {
     "description": "UI text in presentation/screens/onboarding_health_screen.dart"
   },
@@ -2194,11 +2093,7 @@
   "@onboardingHealthDoseAccuracy": {
     "description": "UI text in presentation/screens/onboarding_health_screen.dart"
   },
-<<<<<<< HEAD
   "onboardingHealthMedicationsNote": "اكتب الأدوية أو الفيتامينات التي تتناولها، ليراعيها أخصائيك في توقيت وجباتك ومكوناتها.",
-=======
-  "onboardingHealthMedicationsNote": "اكتب أي أدوية موصوفة أو فيتامينات تتناولها لضمان عدم حدوث تداخلات كيميائية مع توقيت ومكونات الوجبات.",
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   "@onboardingHealthMedicationsNote": {
     "description": "UI text in presentation/screens/onboarding_health_screen.dart"
   },
@@ -2210,7 +2105,6 @@
   "@onboardingHealthMedicationHint": {
     "description": "UI text in presentation/screens/onboarding_health_screen.dart"
   },
-<<<<<<< HEAD
   "onboardingHealthReviewNote": "يراجع أخصائيك الأدوية والحساسيات قبل إضافتها إلى ملفك.",
   "@onboardingHealthReviewNote": {
     "description": "UI text in presentation/screens/onboarding_health_screen.dart"
@@ -2237,12 +2131,6 @@
       }
     }
   },
-=======
-  "onboardingHealthReviewNote": "تخضع كافة الملاحظات والأدوية لمراجعة برمجية واستشارية دقيقة لملاءمة النظام الغذائي واستبعاد أي تداخلات غذائية مع أدويتك الموصوفة.",
-  "@onboardingHealthReviewNote": {
-    "description": "UI text in presentation/screens/onboarding_health_screen.dart"
-  },
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   "onboardingHealthOtherNotes": "ملاحظات صحية أخرى للأخصائي (اختياري)",
   "@onboardingHealthOtherNotes": {
     "description": "UI text in presentation/screens/onboarding_health_screen.dart"
@@ -2332,11 +2220,7 @@
   "@onboardingMeasurementsThighHint": {
     "description": "UI text in presentation/screens/onboarding_measurements_screen.dart"
   },
-<<<<<<< HEAD
   "onboardingMeasurementsPrivacyNote": "قياساتك يطّلع عليها أخصائيك فقط، ليصمّم خطتك الغذائية بناءً عليها.",
-=======
-  "onboardingMeasurementsPrivacyNote": "بياناتك وقياساتك مشفرة بالكامل بمعايير أمان صحية معتمدة، وتُعرض حصرياً لأخصائي التغذية المعتمد لتصميم خطتك الغذائية الفردية.",
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   "@onboardingMeasurementsPrivacyNote": {
     "description": "UI text in presentation/screens/onboarding_measurements_screen.dart"
   },
@@ -2618,57 +2502,6 @@
   "@commonEnabled": {
     "description": "UI text in presentation/screens/plan_preparing_screen.dart"
   },
-<<<<<<< HEAD
-=======
-  "privacyScopeTitle": "١. نطاق البيانات المجمّعة",
-  "@privacyScopeTitle": {
-    "description": "UI text in presentation/screens/privacy_document_screen.dart"
-  },
-  "privacyScopeBody": "نجمع فقط ما يلزم لبناء خطتك الغذائية العلاجية: قياساتك الحيوية (الوزن، محيط الجسم)، سجلات وجباتك اليومية، حالاتك الصحية المشخصة، حساسياتك الغذائية، والأدوية والمكملات التي تخبرينا بها. لا نطلب أو نُخزّن أي بيانات مالية أو بيانات موقع دائم.",
-  "@privacyScopeBody": {
-    "description": "UI text in presentation/screens/privacy_document_screen.dart"
-  },
-  "privacyEncryptionTitle": "٢. التشفير وأماكن التخزين",
-  "@privacyEncryptionTitle": {
-    "description": "UI text in presentation/screens/privacy_document_screen.dart"
-  },
-  "privacyEncryptionBody": "تُشفّر جميع البيانات الصحية أثناء النقل والتخزين بنظام bit AES-256، وتُحفظ على خوادم طبية معزولة متوافقة مع معايير HIPAA. لا تُستخدم بياناتك في تدريب نماذج عامة ولا تُشارك مع أي شركة إعلانات تحت أي ظرف.",
-  "@privacyEncryptionBody": {
-    "description": "UI text in presentation/screens/privacy_document_screen.dart"
-  },
-  "privacyAccessTitle": "٣. من يستطيع الاطلاع على ملفك",
-  "@privacyAccessTitle": {
-    "description": "UI text in presentation/screens/privacy_document_screen.dart"
-  },
-  "privacyAccessBody": "فريق الرعاية المخصص لك فقط — أخصائي التغذية العلاجية المعتمد على حسابك — يستطيع الاطلاع على سجلك الكامل. أي تحديث أو تعديل على خطتك يُسجَّل باسم صاحبه ووقته في سجل تدقيق لا يمكن حذفه.",
-  "@privacyAccessBody": {
-    "description": "UI text in presentation/screens/privacy_document_screen.dart"
-  },
-  "privacyRightsTitle": "٤. حقك في التعديل والإلغاء",
-  "@privacyRightsTitle": {
-    "description": "UI text in presentation/screens/privacy_document_screen.dart"
-  },
-  "privacyRightsBody": "يمكنك سحب موافقتك في أي وقت من الحساب ← الخصوصية، وسيؤدي ذلك إلى إيقاف تخصيص الخطة تلقائياً حتى تجديد الموافقة. يمكنك أيضاً طلب نسخة كاملة من بياناتك أو حذفها نهائياً بالتواصل مع أخصائي التغذية.",
-  "@privacyRightsBody": {
-    "description": "UI text in presentation/screens/privacy_document_screen.dart"
-  },
-  "privacyRetentionTitle": "٥. الاحتفاظ بالبيانات بعد انتهاء المتابعة",
-  "@privacyRetentionTitle": {
-    "description": "UI text in presentation/screens/privacy_document_screen.dart"
-  },
-  "privacyRetentionBody": "عند انتهاء فترة المتابعة السريرية، تبقى سجلاتك وقياساتك محفوظة بأمان لاستئناف الخطة فور التجديد، ولا تُحذف تلقائياً إلا بطلب صريح منك.",
-  "@privacyRetentionBody": {
-    "description": "UI text in presentation/screens/privacy_document_screen.dart"
-  },
-  "privacyTitle": "الخصوصية السريرية الكاملة",
-  "@privacyTitle": {
-    "description": "UI text in presentation/screens/privacy_document_screen.dart"
-  },
-  "privacyLastUpdated": "آخر تحديث لهذه الوثيقة: يناير 2026 — متوافقة مع معايير HIPAA السريرية",
-  "@privacyLastUpdated": {
-    "description": "UI text in presentation/screens/privacy_document_screen.dart"
-  },
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   "profileMeasurementsSubtitle": "سجّل قياساتك وتابع مسار تغيّرك",
   "@profileMeasurementsSubtitle": {
     "description": "UI text in presentation/screens/profile_screen.dart"
@@ -3463,11 +3296,7 @@
   "@offlinePanelLogMeasurements": {
     "description": "UI text in presentation/widgets/offline_capability_panel.dart"
   },
-<<<<<<< HEAD
   "offlinePanelLogMeasurementsDesc": "تُحفظ التغييرات على هاتفك، وتُرسل عند عودة الاتصال.",
-=======
-  "offlinePanelLogMeasurementsDesc": "يتم حفظ التغييرات بقاعدة بيانات الهاتف المشفرة",
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   "@offlinePanelLogMeasurementsDesc": {
     "description": "UI text in presentation/widgets/offline_capability_panel.dart"
   },
@@ -3651,10 +3480,7 @@
   "loginErrorInvalid": "اسم المستخدم أو كلمة المرور غير صحيحة.",
   "loginErrorLocked": "تم إيقاف الدخول مؤقتًا بعد عدة محاولات خاطئة. حاول بعد {time}.",
   "@loginErrorLocked": {
-<<<<<<< HEAD
     "description": "Shown while sign-in is locked after 5 wrong passwords (423). {time} is the wait left, counting down as minutes:seconds (API guide 3.1).",
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
     "placeholders": {
       "time": {
         "type": "String"
@@ -3991,13 +3817,10 @@
   "@weighInReminderChannel": {
     "description": "Android notification channel name for the weekly weigh-in reminder (API guide 10.6)."
   },
-<<<<<<< HEAD
   "pushChannelName": "إشعارات أخصائيك وخطتك",
   "@pushChannelName": {
     "description": "Android notification channel name for the server's pushes: plan, notes, appointments and reminders (API guide 10.4)."
   },
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   "weighInReminderTitle": "حان موعد قياسك الأسبوعي",
   "@weighInReminderTitle": {
     "description": "Title of the local weekly weigh-in reminder."
@@ -4013,7 +3836,6 @@
   "notificationSettingsSaveFailed": "تعذّر حفظ الإعداد. تحقق من اتصالك ثم حاول مرة أخرى.",
   "@notificationSettingsSaveFailed": {
     "description": "Snack bar when a notification setting could not be saved on the server."
-<<<<<<< HEAD
   },
   "commonShowAll": "عرض الكل",
   "@commonShowAll": {
@@ -5485,7 +5307,5 @@
   "healthSyncMeanwhile": "لحد ما يجهز الربط، سجّل نومك وقياساتك من التطبيق مباشرة.",
   "@healthSyncMeanwhile": {
     "description": "Patient app design spec"
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   }
 }

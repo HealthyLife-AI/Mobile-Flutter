@@ -3,13 +3,9 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-<<<<<<< HEAD
 import '../../core/errors/failure.dart';
 import '../../core/navigation/app_page_route.dart';
 import '../../core/state/async_state.dart';
-=======
-import '../../core/navigation/app_page_route.dart';
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_radius.dart';
 import '../../core/theme/app_text_styles.dart';
@@ -56,12 +52,9 @@ class _DailyLogScreenState extends State<DailyLogScreen> {
   /// أي وجبة بتنضاف بعدين بتظهر فوراً بدون تأخير.
   Set<String>? _initialIds;
 
-<<<<<<< HEAD
   /// The plan and day the server's logs were last read for.
   String? _syncedFor;
 
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   void _openWeeklyPlan() {
     Navigator.of(context)
         .push(AppPageRoute(builder: (_) => const WeeklyPlanScreen()));
@@ -77,7 +70,6 @@ class _DailyLogScreenState extends State<DailyLogScreen> {
         .push(AppPageRoute(builder: (_) => const LogMealIntroScreen()));
   }
 
-<<<<<<< HEAD
   /// Hides the row at once, and deletes the entry for real (here and on the
   /// server, API guide 6.4) when the undo notice closes without an undo. A
   /// delete that fails brings the row back and says why.
@@ -121,25 +113,6 @@ class _DailyLogScreenState extends State<DailyLogScreen> {
         backgroundColor: AppColors.danger,
       ));
     });
-=======
-  void _delete(_LogItem item) {
-    HapticFeedback.lightImpact();
-    setState(() => _removed.add(item.id));
-    ScaffoldMessenger.of(context)
-      ..hideCurrentSnackBar()
-      ..showSnackBar(
-        SnackBar(
-          content: Text(context.l10n.dailyLogMealDeleted),
-          behavior: SnackBarBehavior.floating,
-          margin: const EdgeInsets.fromLTRB(18, 0, 18, 100),
-          duration: const Duration(seconds: 4),
-          action: SnackBarAction(
-            label: context.l10n.commonUndo,
-            onPressed: () => setState(() => _removed.remove(item.id)),
-          ),
-        ),
-      );
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   }
 
   /// Today's items: the plan's meals logged today (in the plan's order), then
@@ -160,20 +133,12 @@ class _DailyLogScreenState extends State<DailyLogScreen> {
       for (final m in todayMeals)
         if (byPlanMeal[m.id] case final entry?)
           _LogItem(
-<<<<<<< HEAD
               id: entry.id,
               name: m.name,
               calories: entry.calories,
               time: m.timeRange,
               meal: m,
               deletable: entry.canDeleteAt(now)),
-=======
-              id: m.id,
-              name: m.name,
-              calories: entry.calories,
-              time: m.timeRange,
-              meal: m),
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
     ];
 
     final added = entries
@@ -181,7 +146,6 @@ class _DailyLogScreenState extends State<DailyLogScreen> {
             e.plannedMeal != null &&
             !todayMeals.any((m) => m.id == e.plannedMeal!.id))
         .map((e) => _LogItem(
-<<<<<<< HEAD
             id: e.id,
             name: e.plannedMeal!.name,
             calories: e.calories,
@@ -258,28 +222,6 @@ class _DailyLogScreenState extends State<DailyLogScreen> {
         margin: const EdgeInsets.fromLTRB(18, 0, 18, 100),
         backgroundColor: failure == null ? null : AppColors.danger,
       ));
-=======
-            id: e.plannedMeal!.id,
-            name: e.plannedMeal!.name,
-            calories: e.calories,
-            time: e.plannedMeal!.timeRange,
-            meal: e.plannedMeal!));
-
-    final offPlanList =
-        entries.where((e) => e.isOffPlan).toList().reversed.toList();
-    final off = <_LogItem>[
-      for (var i = 0; i < offPlanList.length; i++)
-        _LogItem(
-          id: 'off-$i-${offPlanList[i].name}',
-          name: offPlanList[i].name,
-          calories: offPlanList[i].calories,
-          grams: offPlanList[i].grams,
-          offPlan: true,
-        ),
-    ];
-
-    return [...planned, ...added, ...off];
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   }
 
   @override
@@ -291,22 +233,14 @@ class _DailyLogScreenState extends State<DailyLogScreen> {
         child: BlocBuilder<MealLogCubit, MealLogState>(
           builder: (context, mealLog) {
             // Today's meals and calorie target, from the nutritionist's plan.
-<<<<<<< HEAD
             final planState = context.watch<MealPlanCubit>().state;
             final MealPlan? plan = planState.dataOrNull;
-=======
-            final MealPlan? plan =
-                context.watch<MealPlanCubit>().state.dataOrNull;
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
             final now = DateTime.now();
             final todayMeals = plan == null
                 ? const <Meal>[]
                 : planMealsFor(context, plan, now,
                     isLogged: mealLog.isPlannedLogged);
-<<<<<<< HEAD
             _syncWhenReady(planState, todayMeals);
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
             final goal = plan?.totalOn(now).calories.round() ?? 0;
             final items = _collectItems(mealLog.entries, todayMeals);
             _initialIds ??= items.map((i) => i.id).toSet();
@@ -318,7 +252,6 @@ class _DailyLogScreenState extends State<DailyLogScreen> {
             final showEmpty = _previewEmpty || count == 0;
             final latestId = active.isEmpty ? null : active.last.id;
 
-<<<<<<< HEAD
             return RefreshIndicator(
               color: AppColors.primary,
               onRefresh: () =>
@@ -403,82 +336,6 @@ class _DailyLogScreenState extends State<DailyLogScreen> {
                       child: _WeeklyPlanButton(onTap: _openWeeklyPlan)),
                 ],
               ),
-=======
-            return ListView(
-              padding: const EdgeInsets.fromLTRB(18, 12, 18, 120),
-              children: [
-                _FadeSlide(
-                    delayMs: 0,
-                    dy: -16,
-                    child: _Header(onCalendar: _openWeeklyPlan)),
-                const SizedBox(height: 16),
-                _FadeSlide(
-                  delayMs: 120,
-                  child: _SummaryCard(
-                      count: count, calories: calories, goal: goal),
-                ),
-                const SizedBox(height: 22),
-                _FadeSlide(
-                  delayMs: 240,
-                  child: _SectionHeader(
-                    previewEmpty: _previewEmpty,
-                    onTogglePreview: () {
-                      HapticFeedback.selectionClick();
-                      setState(() => _previewEmpty = !_previewEmpty);
-                    },
-                  ),
-                ),
-                const SizedBox(height: 12),
-                AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 380),
-                  switchInCurve: Curves.easeOutCubic,
-                  switchOutCurve: Curves.easeIn,
-                  transitionBuilder: (child, anim) => FadeTransition(
-                    opacity: anim,
-                    child: SlideTransition(
-                      position: Tween<Offset>(
-                              begin: const Offset(0, .06), end: Offset.zero)
-                          .animate(anim),
-                      child: child,
-                    ),
-                  ),
-                  child: showEmpty
-                      ? const _EmptyState(key: ValueKey('empty'))
-                      : Column(
-                          key: const ValueKey('list'),
-                          children: [
-                            for (var i = 0; i < items.length; i++)
-                              _FadeSlide(
-                                key: ValueKey(items[i].id),
-                                delayMs: _initialIds!.contains(items[i].id)
-                                    ? 340 + math.min(i, 5) * 100
-                                    : 0,
-                                child: _CollapsibleCard(
-                                  removed: _removed.contains(items[i].id),
-                                  child: _TimelineCard(
-                                    item: items[i],
-                                    isLatest: items[i].id == latestId,
-                                    onTap: items[i].meal == null
-                                        ? null
-                                        : () => _openMeal(items[i].meal!),
-                                    onDelete: () => _delete(items[i]),
-                                  ),
-                                ),
-                              ),
-                          ],
-                        ),
-                ),
-                const SizedBox(height: 4),
-                const _FadeSlide(delayMs: 700, child: _ReminderCard()),
-                const SizedBox(height: 16),
-                _FadeSlide(
-                    delayMs: 820, child: _AddMealButton(onTap: _onAddMeal)),
-                const SizedBox(height: 12),
-                _FadeSlide(
-                    delayMs: 900,
-                    child: _WeeklyPlanButton(onTap: _openWeeklyPlan)),
-              ],
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
             );
           },
         ),
@@ -490,10 +347,7 @@ class _DailyLogScreenState extends State<DailyLogScreen> {
 // ───────────────────────────── Data ─────────────────────────────
 
 class _LogItem {
-<<<<<<< HEAD
   /// The [MealLogEntry.id] the row shows.
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   final String id;
   final String name;
   final int calories;
@@ -502,15 +356,12 @@ class _LogItem {
   final bool offPlan;
   final Meal? meal;
 
-<<<<<<< HEAD
   /// False once the server's edit window has passed (6.1).
   final bool deletable;
 
   /// One food the server has saved: its grams can be changed (6.3).
   final bool editable;
 
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   const _LogItem({
     required this.id,
     required this.name,
@@ -519,7 +370,6 @@ class _LogItem {
     this.time,
     this.offPlan = false,
     this.meal,
-<<<<<<< HEAD
     this.deletable = true,
     this.editable = false,
   });
@@ -611,11 +461,6 @@ class _GramsSheetState extends State<_GramsSheet> {
   }
 }
 
-=======
-  });
-}
-
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 // ───────────────────────────── Header ─────────────────────────────
 
 class _Header extends StatelessWidget {
@@ -1035,13 +880,9 @@ class _TimelineCard extends StatelessWidget {
   final _LogItem item;
   final bool isLatest;
   final VoidCallback? onTap;
-<<<<<<< HEAD
 
   /// Null hides the delete button: the server's edit window has passed (6.1).
   final VoidCallback? onDelete;
-=======
-  final VoidCallback onDelete;
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   const _TimelineCard(
       {required this.item,
       required this.isLatest,
@@ -1162,7 +1003,6 @@ class _TimelineCard extends StatelessWidget {
                 ],
               ),
             ),
-<<<<<<< HEAD
             if (onDelete != null)
               Semantics(
                 button: true,
@@ -1179,23 +1019,6 @@ class _TimelineCard extends StatelessWidget {
                   ),
                 ),
               ),
-=======
-            Semantics(
-              button: true,
-              label: context.l10n.dailyLogDeleteMeal,
-              child: Tooltip(
-                message: context.l10n.dailyLogDeleteMeal,
-                child: _PressableScale(
-                  onTap: onDelete,
-                  child: const Padding(
-                    padding: EdgeInsets.all(11),
-                    child: Icon(Icons.delete_outline_rounded,
-                        size: 22, color: _mutedIcon),
-                  ),
-                ),
-              ),
-            ),
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
           ],
         ),
       ),

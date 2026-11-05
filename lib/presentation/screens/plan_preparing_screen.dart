@@ -4,20 +4,14 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-<<<<<<< HEAD
 import 'package:url_launcher/url_launcher.dart';
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 import '../../core/di/app_dependencies.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_radius.dart';
 import '../../core/theme/app_text_styles.dart';
 import '../bloc/auth/auth_cubit.dart';
 import '../bloc/nutritionist/nutritionist_cubit.dart';
-<<<<<<< HEAD
 import '../widgets/spec_ui.dart';
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 
 import '../../l10n/l10n.dart';
 
@@ -278,7 +272,6 @@ class _PlanPreparingScreenState extends State<PlanPreparingScreen>
                           ),
                         ],
                       ),
-<<<<<<< HEAD
                       // The nutritionist's WhatsApp (9.1). Left out until
                       // the profile has a number.
                       Builder(builder: (context) {
@@ -298,17 +291,6 @@ class _PlanPreparingScreenState extends State<PlanPreparingScreen>
                           ),
                         );
                       }),
-=======
-                      const SizedBox(height: 14),
-                      _ShimmerButton(
-                        label: context.l10n.planPreparingContactWhatsApp,
-                        icon: Icons.support_agent_rounded,
-                        loop: _loop,
-                        onPressed: () {
-                          // TODO: افتحي واتساب عبر url_launcher (wa.me/<number>)
-                        },
-                      ),
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
                       const SizedBox(height: 12),
                       Center(
                         child: Text(

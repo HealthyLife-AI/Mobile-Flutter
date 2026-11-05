@@ -59,7 +59,6 @@
   "aboutVersion": "Version 1.0.0 (Build 240)",
   "aboutDescription": "A certified app designed to support you, in direct collaboration with your certified specialist, in reaching lasting health goals.",
   "aboutPrivacyPolicyTitle": "Privacy policy & health data security",
-<<<<<<< HEAD
   "aboutPrivacyPolicySubtitle": "Read the policy published on our website",
   "aboutMedicalTermsTitle": "Medical terms & conditions",
   "aboutMedicalTermsSubtitle": "Guidelines for following health care plans",
@@ -70,17 +69,6 @@
   "aboutSupportNoNumber": "Your nutritionist has no WhatsApp number yet.",
   "aboutStandardHealthProtection": "Protecting your data",
   "aboutEncryptionNote": "The connection between the app and our servers is encrypted, and we take an encrypted backup every day.",
-=======
-  "aboutPrivacyPolicySubtitle": "High-grade clinical encryption for your nutrition profile",
-  "aboutMedicalTermsTitle": "Medical terms & conditions",
-  "aboutMedicalTermsSubtitle": "Guidelines for following health care plans",
-  "aboutLicensesTitle": "Medical authority licenses & accreditation",
-  "aboutLicensesSubtitle": "Documented medical compliance record #A-8841",
-  "aboutSupportTitle": "Technical support & app help",
-  "aboutSupportSubtitle": "Ongoing help with technical questions",
-  "aboutStandardHealthProtection": "Standard health protection",
-  "aboutEncryptionNote": "Your data is encrypted and protected under certified health-privacy standards for secure syncing with your clinical record.",
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   "aboutLogoutNote": "Your session will end securely, and all your logs and measurements stay in your medical records with no data loss.",
   "achievementsFullWeek": "A full week of commitment",
   "achievementsSevenDayStreak": "7-day logging streak",
@@ -102,11 +90,7 @@
   "passwordRuleUppercase": "At least one uppercase letter (A-Z)",
   "passwordRuleDigit": "At least one number (0-9)",
   "activationCta": "Activate account & start the plan",
-<<<<<<< HEAD
   "activationEncryptedNote": "The connection between the app and our servers is encrypted.",
-=======
-  "activationEncryptedNote": "Your health data is encrypted and protected under medical compliance regulations",
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   "activationLinkValid": "Link valid and active",
   "activationLinkExpired": "Link expired / already used",
   "barcodeTitle": "Scan the product barcode",
@@ -119,7 +103,6 @@
   "beetaiInputHint": "Ask BeetAI or log a meal…",
   "beetaiVoiceMessage": "Voice message",
   "dailyLogMealDeleted": "Meal removed from today's log",
-<<<<<<< HEAD
   "entryEditLocked": "This entry was logged more than 7 days ago, so it can't be changed.",
   "dailyLogDeleteOffline": "The meal wasn't deleted: deleting needs an internet connection. Try again once you're online.",
   "dailyLogDeleteFailed": "The meal couldn't be deleted. Please try again.",
@@ -130,8 +113,6 @@
   "dailyLogEditOffline": "The amount wasn't saved: changing it needs an internet connection. Try again once you're online.",
   "dailyLogEditGone": "This entry no longer exists, so it was removed from your log.",
   "dailyLogEditFailed": "The amount couldn't be saved. Please try again.",
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   "commonUndo": "Undo",
   "dailyLogTitle": "Today's log",
   "commonNotifications": "Notifications",
@@ -231,7 +212,6 @@
   "foodSearchRequestNewItem": "Request a new item",
   "foodSearchWhatsAppSheetBody": "Send the item's name or photo to your specialist on WhatsApp, and it will be added to your database as soon as possible.",
   "commonOpenWhatsApp": "Open WhatsApp",
-<<<<<<< HEAD
   "consentClauseStorageTitle": "How do we protect your data?",
   "consentClauseStorageBody": "The connection between the app and our servers is encrypted, and we take an encrypted backup every day.",
   "consentClauseAccessTitle": "Who can see it?",
@@ -239,14 +219,6 @@
   "consentClauseRevokeTitle": "Your right to delete your data",
   "consentClauseRevokeBody": "You can delete your data or your account from the app at any time.",
   "privacyOnWebsite": "The privacy policy is available on our website.",
-=======
-  "consentClauseStorageTitle": "How is your health data stored?",
-  "consentClauseStorageBody": "Full encryption to the highest clinical health-privacy standards (HIPAA standards). Records are stored on isolated medical servers that no third party or advertising company can access under any circumstances.",
-  "consentClauseAccessTitle": "Who can see it?",
-  "consentClauseAccessBody": "Only the certified clinical nutrition specialist assigned to your account, through an encrypted clinical review system. Your data is not shared with anyone else and is never used for marketing.",
-  "consentClauseRevokeTitle": "Your full right to withdraw consent",
-  "consentClauseRevokeBody": "You can withdraw your consent at any time from Account → Privacy. This automatically pauses meal plan personalization until you renew your consent, without affecting your saved records.",
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   "consentExitTitle": "Leave your health profile setup?",
   "consentExitMessage": "You won't be able to continue your treatment journey or access your meal plan until you agree to the health privacy terms.",
   "consentExitConfirm": "Leave now",
@@ -260,18 +232,9 @@
   "consentCharterTitle": "Nutrition privacy charter",
   "consentConfidentialVerified": "Confidential & verified",
   "consentDataUseNote": "Your data (meal log, measurements and health status) reaches only your specialist and is used to build your meal plan and follow your clinical progress safely.",
-<<<<<<< HEAD
   "consentTitle": "Consent to health data use",
   "consentBeforeWeStart": "Before we start your health journey",
   "consentCommitment": "We are committed to protecting the privacy of your health and clinical data with the utmost transparency and security.",
-=======
-  "consentEncryptionShort": "Encrypted with 256-bit encryption and compliant with clinical health standards (HIPAA).",
-  "consentTitle": "Consent to health data use",
-  "consentProtectionSystem": "Smart clinical protection system",
-  "consentBeforeWeStart": "Before we start your health journey",
-  "consentCommitment": "We are committed to protecting the privacy of your health and clinical data with the utmost transparency and security.",
-  "consentAesNote": "Your medical data is encrypted with AES-256 from the moment it is entered",
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   "consentCheckbox": "I have read and agree to the data-sharing terms of the health privacy policy.",
   "consentRevocable": "You can change or withdraw your consent instantly at any time.",
   "healthRecordTitle": "Medical record",
@@ -371,11 +334,7 @@
   "logMealOffPlanNote": "A rich database of Arabic foods and common meals",
   "logMealOffPlanNote2": "No need to feel guilty — flexibility is a key part of success",
   "logMealOffPlanFooter": "Continue to search and calculate grams (P-22)",
-<<<<<<< HEAD
   "logMealPrivacyNote": "Only your nutritionist sees your meal log.",
-=======
-  "logMealPrivacyNote": "Your nutrition data is encrypted and handled with full medical confidentiality",
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   "logMealEncouragementLabel": "A note of encouragement:",
   "logMealEncouragementBody": "Accurate logging helps your specialist fine-tune your calories and fit upcoming meals to your body's natural response and your daily preferences.",
   "mealDetailTitle": "Meal details",
@@ -432,7 +391,6 @@
   "measurementsTrend": "Change over time",
   "measurementsClinicReading": "Clinic measurement (verified)",
   "measurementsHomeReading": "Home measurement",
-<<<<<<< HEAD
   "measurementsHistoryTitle": "Your readings",
   "measurementsDeleteReading": "Delete reading",
   "measurementsDeleteConfirmTitle": "Delete this reading?",
@@ -441,8 +399,6 @@
   "measurementsDeleteClinic": "Your nutritionist recorded this reading at the clinic, so it can't be deleted from the app.",
   "measurementsDeleteOffline": "The reading wasn't deleted: deleting needs an internet connection. Try again once you're online.",
   "measurementsDeleteFailed": "The reading couldn't be deleted. Please try again.",
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   "measurementsSyncNote": "Data updates are reliably synced with clinic measurements and your personal record.",
   "measurementsLastUpdated": "Last updated: 19 September",
   "measurementsBodyCircumference": "Body circumference",
@@ -526,7 +482,6 @@
   "offlineRetry": "Retry connection",
   "offlineSavedMeals": "View meals saved offline",
   "offlineCheckWifi": "Check that Wi-Fi or mobile data is turned on in your device settings",
-<<<<<<< HEAD
   "onboardingHealthTitle": "Health data",
   "onboardingHealthConditions": "Health conditions & diseases",
   "onboardingHealthConditionsNote": "Choose any conditions you have been diagnosed with. They go to your nutritionist, who takes them into account in your plan.",
@@ -542,21 +497,6 @@
   "onboardingHealthAllergyClass": "How do these foods affect you?",
   "onboardingHealthRequestConditions": "Chronic conditions: {list}",
   "onboardingHealthRequestNotes": "Notes: {notes}",
-=======
-  "onboardingHealthAsPrescribed": "As prescribed",
-  "onboardingHealthTitle": "Health data",
-  "onboardingHealthConditions": "Health conditions & diseases",
-  "onboardingHealthConditionsNote": "Select any health conditions you've been diagnosed with, so your nutrition program, its ingredients and suggested meals are adapted to respond fully and safely to your body.",
-  "onboardingHealthConfidentialNote": "Encrypted, medically certified clinical confidentiality — these details help your specialist exclude any ingredients that might conflict with your vital indicators or prescribed medications.",
-  "onboardingHealthAllergies": "Food allergies & preferences",
-  "onboardingHealthAllergiesNote": "Select confirmed allergens so the system automatically excludes them from meal schedules and suggested recipes.",
-  "onboardingHealthMedications": "Regular medications & supplements",
-  "onboardingHealthDoseAccuracy": "Dose accuracy",
-  "onboardingHealthMedicationsNote": "Enter any prescribed medications or vitamins you take, so they don't interact chemically with meal timing and ingredients.",
-  "commonAdd": "Add",
-  "onboardingHealthMedicationHint": "Enter the medication name and dose (e.g. Omega 3)",
-  "onboardingHealthReviewNote": "All notes and medications undergo careful automated and advisory review to fit your diet and rule out any food interactions with your prescribed medications.",
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   "onboardingHealthOtherNotes": "Other health notes for the specialist (optional)",
   "onboardingHealthOtherNotesHint": "e.g. I take vitamin D supplements daily, previous gallbladder surgery, or any regular medications...",
   "onboardingHealthContinue": "Continue to next",
@@ -578,11 +518,7 @@
   "onboardingMeasurementsWaistHint": "At the narrowest point",
   "onboardingMeasurementsHipHint": "The widest area",
   "onboardingMeasurementsThighHint": "Upper right thigh",
-<<<<<<< HEAD
   "onboardingMeasurementsPrivacyNote": "Only your nutritionist sees your measurements, to build your meal plan on them.",
-=======
-  "onboardingMeasurementsPrivacyNote": "Your data and measurements are fully encrypted to certified health security standards, and shown only to your certified specialist to design your individual meal plan.",
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   "onboardingMeasurementsSaveContinue": "Save and continue",
   "onboardingNotificationsTitle": "Don't miss your meal times",
   "onboardingNotificationsIntro": "Turn on notifications to receive personalized meal reminders and specialist alerts that follow your commitment step by step, smoothly.",
@@ -648,21 +584,6 @@
   "planPreparingClinic": "{gender, select, unknown{Clinical nutrition clinic} other{Clinical nutrition clinic • {name}}}",
   "planPreparingAdvanced": "Advanced personalization",
   "commonEnabled": "Enabled",
-<<<<<<< HEAD
-=======
-  "privacyScopeTitle": "1. Scope of data collected",
-  "privacyScopeBody": "We collect only what's needed to build your therapeutic meal plan: your vital measurements (weight, body circumference), your daily meal logs, your diagnosed health conditions, your food allergies, and the medications and supplements you tell us about. We never request or store financial data or permanent location data.",
-  "privacyEncryptionTitle": "2. Encryption and storage locations",
-  "privacyEncryptionBody": "All health data is encrypted in transit and at rest with AES-256 and stored on isolated medical servers that comply with HIPAA standards. Your data is never used to train general models and is never shared with any advertising company under any circumstances.",
-  "privacyAccessTitle": "3. Who can see your record",
-  "privacyAccessBody": "Only your dedicated care team — the certified clinical dietitian on your account — can see your full record. Every update or change to your plan is recorded with its author and time in an audit log that cannot be deleted.",
-  "privacyRightsTitle": "4. Your right to change and withdraw",
-  "privacyRightsBody": "You can withdraw your consent at any time from Account → Privacy, which automatically pauses plan personalization until you renew your consent. You can also request a full copy of your data, or its permanent deletion, by contacting your specialist.",
-  "privacyRetentionTitle": "5. Data retention after follow-up ends",
-  "privacyRetentionBody": "When your clinical follow-up period ends, your logs and measurements stay safely stored so the plan can resume as soon as you renew, and they are only deleted at your explicit request.",
-  "privacyTitle": "Full clinical privacy",
-  "privacyLastUpdated": "Last updated: January 2026 — compliant with clinical HIPAA standards",
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   "profileMeasurementsSubtitle": "Log your measurements and follow how you're changing",
   "profileHealthRecordSubtitle": "Level, goal, medications and confirmed diagnoses",
   "profileAchievements": "My achievements",
@@ -853,11 +774,7 @@
   "offlinePanelBrowsePlan": "Browse today's saved meal plan",
   "offlinePanelBrowsePlanDesc": "Calorie and ingredient tables are available offline",
   "offlinePanelLogMeasurements": "Log weight and circumference measurements",
-<<<<<<< HEAD
   "offlinePanelLogMeasurementsDesc": "Changes are kept on your phone and sent when you're back online.",
-=======
-  "offlinePanelLogMeasurementsDesc": "Changes are saved in the phone's encrypted database",
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   "offlinePanelNotes": "Jot down notes and quick meals",
   "offlinePanelNotesDesc": "Queued for instant sync later",
   "offlinePanelPrivacy": "Privacy protection and local encryption",
@@ -892,11 +809,7 @@
   "loginCta": "Sign in",
   "loginErrorRequired": "Enter your username and password.",
   "loginErrorInvalid": "The username or password is wrong.",
-<<<<<<< HEAD
   "loginErrorLocked": "Sign-in is paused after several wrong attempts. Try again in {time}.",
-=======
-  "loginErrorLocked": "Sign-in is paused after several wrong attempts. Try again at {time}.",
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   "@loginErrorLocked": {
     "placeholders": {
       "time": {
@@ -1137,7 +1050,6 @@
   "notificationsHoursAgo": "{count, plural, =1{1 hour ago} other{{countText} hours ago}}",
   "notificationsLoadOlder": "Show older notifications",
   "weighInReminderChannel": "Weekly weigh-in reminder",
-<<<<<<< HEAD
   "pushChannelName": "Updates from your nutritionist and plan",
   "weighInReminderTitle": "Time for your weekly weigh-in",
   "weighInReminderBody": "Log your weight now, after waking up, to keep your progress accurate.",
@@ -1451,10 +1363,4 @@
   "healthSyncPrivacyChoice": "You choose what is shared, item by item.",
   "healthSyncPrivacyStop": "You can stop sharing any time in your device settings.",
   "healthSyncMeanwhile": "Until then, log your sleep and measurements in the app."
-=======
-  "weighInReminderTitle": "Time for your weekly weigh-in",
-  "weighInReminderBody": "Log your weight now, after waking up, to keep your progress accurate.",
-  "notificationSettingsNutritionistDesc": "New notes from your nutritionist, and changes to them.",
-  "notificationSettingsSaveFailed": "The setting could not be saved. Check your connection and try again."
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 }

@@ -22,10 +22,7 @@ import 'presentation/bloc/meal_log/meal_log_cubit.dart';
 import 'presentation/bloc/meal_plan/meal_plan_cubit.dart';
 import 'presentation/bloc/measurements/measurements_cubit.dart';
 import 'presentation/bloc/notifications/notifications_cubit.dart';
-<<<<<<< HEAD
 import 'presentation/bloc/patient_features_cubits.dart';
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 import 'presentation/bloc/settings/settings_cubit.dart';
 import 'presentation/screens/splash_screen.dart';
 
@@ -107,11 +104,8 @@ void _listenForPushTaps(AppDependencies deps) {
         unawaited(deps.appointments.refreshReminders());
       }
       _rereadPlanIfChanged(deps, message.data);
-<<<<<<< HEAD
       // The inbox has a new row: the unread badge follows (10.4).
       deps.notificationChanges.notify();
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
       deps.foregroundPush.present(
         data: message.data,
         title: message.notification?.title,
@@ -228,16 +222,11 @@ class HealthyLifeApp extends StatelessWidget {
           // unread badge and the notifications center read the same state, and
           // the read/unread marks persist across restarts.
           BlocProvider<NotificationsCubit>(
-<<<<<<< HEAD
             create: (context) {
               final deps = context.read<AppDependencies>();
               return NotificationsCubit(deps.notification,
                   changes: deps.notificationChanges.changes);
             },
-=======
-            create: (context) => NotificationsCubit(
-                context.read<AppDependencies>().notification),
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
           ),
           // The patient's measurements. Loaded with the session so the shell's
           // Progress tab can decide between the "first measurement" explainer
@@ -246,7 +235,6 @@ class HealthyLifeApp extends StatelessWidget {
             create: (context) =>
                 MeasurementsCubit(context.read<AppDependencies>().measurement),
           ),
-<<<<<<< HEAD
           // The patient-app spec features the home screen shows: the
           // measurement schedule, quick requests, the "today" card and the
           // unread posts. Loaded and reset with the session, like the plan.
@@ -279,8 +267,6 @@ class HealthyLifeApp extends StatelessWidget {
                   changes: deps.postChanges.changes);
             },
           ),
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
         ],
         // Rebuilds MaterialApp only when the theme mode or language changes;
         // the navigation stack survives both.
@@ -330,38 +316,29 @@ class HealthyLifeApp extends StatelessWidget {
             final mealPlan = gateContext.read<MealPlanCubit>();
             final notifications = gateContext.read<NotificationsCubit>();
             final measurements = gateContext.read<MeasurementsCubit>();
-<<<<<<< HEAD
             final measurementSchedule =
                 gateContext.read<MeasurementScheduleCubit>();
             final quickRequests = gateContext.read<QuickRequestsCubit>();
             final today = gateContext.read<TodayCubit>();
             final postsUnread = gateContext.read<PostsUnreadCubit>();
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
             if (state.canEnterShell) {
               unawaited(mealLog.load());
               unawaited(mealPlan.load());
               unawaited(notifications.load());
               unawaited(measurements.load());
-<<<<<<< HEAD
               unawaited(measurementSchedule.load());
               unawaited(quickRequests.load());
               unawaited(today.load());
               unawaited(postsUnread.load());
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
             } else {
               mealLog.reset();
               mealPlan.reset();
               notifications.reset();
               measurements.reset();
-<<<<<<< HEAD
               measurementSchedule.reset();
               quickRequests.reset();
               today.reset();
               postsUnread.reset();
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
             }
             // Writes queued offline go out once the patient is in the app
             // (14). Start-up, sign-in and consent all end here.

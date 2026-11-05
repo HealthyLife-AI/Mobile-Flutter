@@ -1,19 +1,12 @@
-<<<<<<< HEAD
 import '../widgets/spec_ui.dart';
 import 'achievements_screen.dart';
 import 'medical_reports_screens.dart';
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_radius.dart';
 import '../../core/theme/app_text_styles.dart';
-<<<<<<< HEAD
-=======
-import '../widgets/gradient_cta_button.dart';
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 import '../widgets/clinical_trust_footer.dart';
 import '../../core/di/app_dependencies.dart';
 import '../../core/state/async_state.dart';
@@ -34,18 +27,9 @@ import '../../l10n/l10n.dart';
 import '../bloc/auth/auth_cubit.dart';
 
 const _lav = Color(0xFFF6F8FE); // خلفية الصناديق الفاتحة
-<<<<<<< HEAD
 const _lavGrey = Color(0xFFEEF1F8);
 const _dangerBg = Color(0xFFFDE8E8);
 const _mintPill = Color(0xFFD3F3E8);
-=======
-const _lavDeep = Color(0xFFE8EEFB);
-const _lavGrey = Color(0xFFEEF1F8);
-const _dangerBg = Color(0xFFFDE8E8);
-const _mintPill = Color(0xFFD3F3E8);
-const _trackBlue = Color(0xFFD9E0F5);
-const _barMuted = Color(0xFF6A9FB0);
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 
 double _seg(double v, double b, double e, [Curve c = Curves.easeOutCubic]) {
   final value = v.isFinite ? math.max(0.0, math.min(1.0, v)) : 0.0;
@@ -120,7 +104,6 @@ class _HealthRecordView extends StatefulWidget {
 
 class _HealthRecordViewState extends State<_HealthRecordView>
     with TickerProviderStateMixin {
-<<<<<<< HEAD
   // Created in initState, not lazily: a screen closed before the profile
   // loads (offline, an error) never touched them, and creating one inside
   // dispose() looks up a deactivated ancestor.
@@ -137,14 +120,6 @@ class _HealthRecordViewState extends State<_HealthRecordView>
         vsync: this, duration: const Duration(milliseconds: 3000))
       ..repeat();
   }
-=======
-  late final AnimationController _enter = AnimationController(
-      vsync: this, duration: const Duration(milliseconds: 3400))
-    ..forward();
-  late final AnimationController _loop = AnimationController(
-      vsync: this, duration: const Duration(milliseconds: 3000))
-    ..repeat();
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 
   @override
   void dispose() {
@@ -242,7 +217,6 @@ class _HealthRecordViewState extends State<_HealthRecordView>
             begin: 0.54,
             end: 0.66,
             child: _EditRequestRow(loop: _loop, onTap: _openRequests)),
-<<<<<<< HEAD
         // The medical reports (spec, phase 4). Renders nothing while the
         // feature is off on the server (every reports endpoint answers 404).
         const SizedBox(height: 22),
@@ -258,101 +232,6 @@ class _HealthRecordViewState extends State<_HealthRecordView>
             subtitle: context.l10n.profileAchievementsSubtitle,
             trailing: const Icon(Icons.chevron_left_rounded,
                 color: AppColors.textMuted),
-=======
-        const SizedBox(height: 26),
-        Row(children: [
-          const Text('🎯', style: TextStyle(fontSize: 18)),
-          const SizedBox(width: 6),
-          Expanded(
-            child: Text(context.l10n.healthRecordBadges,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: AppTextStyles.sectionHeading),
-          ),
-          const SizedBox(width: 8),
-          Flexible(
-            flex: 0,
-            child: Text(context.l10n.healthRecordBadgesUnlocked,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style:
-                    AppTextStyles.caption.copyWith(color: AppColors.primary)),
-          ),
-        ]),
-        const SizedBox(height: 12),
-        _StreakCard(enter: _enter, loop: _loop),
-        const SizedBox(height: 14),
-        _AchievementPair(
-          spacing: 12,
-          first: _AchievementCard(
-            enter: _enter,
-            loop: _loop,
-            popBegin: 0.70,
-            shinePhase: 0.0,
-            iconChild: const Text('🎯', style: TextStyle(fontSize: 28)),
-            iconBg: const Color(0xFFBFF3DF),
-            title: context.l10n.healthRecordBadgeFirstGoal,
-            subtitle: context.l10n.healthRecordBadgeFirstGoalDesc,
-            done: true,
-          ),
-          second: _AchievementCard(
-            enter: _enter,
-            loop: _loop,
-            popBegin: 0.74,
-            shinePhase: 0.33,
-            iconChild: const Text('🥗', style: TextStyle(fontSize: 28)),
-            iconBg: const Color(0xFFEFF2F6),
-            title: context.l10n.healthRecordBadgeIronCommitment,
-            subtitle: context.l10n.healthRecordBadgeIronCommitmentDesc,
-            done: true,
-          ),
-        ),
-        const SizedBox(height: 12),
-        _AchievementPair(
-          spacing: 12,
-          first: _AchievementCard(
-            enter: _enter,
-            loop: _loop,
-            popBegin: 0.78,
-            shinePhase: 0.66,
-            iconChild: const Icon(Icons.water_drop_outlined,
-                color: AppColors.accentBlue, size: 26),
-            iconBg: const Color(0xFFB8EBFA),
-            title: context.l10n.healthRecordBadgeWaterFriend,
-            subtitle: context.l10n.healthRecordBadgeWaterFriendDesc,
-            done: true,
-          ),
-          second: _AchievementCard(
-            enter: _enter,
-            loop: _loop,
-            popBegin: 0.80,
-            shinePhase: 0,
-            locked: true,
-            iconChild: const Icon(Icons.lock_outline_rounded,
-                color: AppColors.textPrimary, size: 24),
-            iconBg: _lavDeep,
-            title: context.l10n.healthRecordBadgeLose5kg,
-            subtitle: context.l10n.healthRecordBadgeLose5kgDesc,
-            progress: 0.76,
-          ),
-        ),
-        const SizedBox(height: 22),
-        _Reveal(
-          anim: _enter,
-          begin: 0.88,
-          end: 1.0,
-          child: AnimatedBuilder(
-            animation: _loop,
-            builder: (_, child) => Transform.scale(
-                scale: 1 + 0.012 * math.sin(_loop.value * 2 * math.pi),
-                child: child),
-            child: GradientCtaButton(
-              label: context.l10n.healthRecordShareSummary,
-              icon: Icons
-                  .ios_share_rounded, // احذف السطر إن كان الزر في التصميم بدون أيقونة
-              onPressed: () {},
-            ),
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
           ),
         ),
         const SizedBox(height: 4),
@@ -416,74 +295,6 @@ class _Reveal extends StatelessWidget {
   }
 }
 
-<<<<<<< HEAD
-=======
-class _ResponsivePair extends StatelessWidget {
-  final Widget first;
-  final Widget second;
-  final double spacing;
-
-  const _ResponsivePair({
-    required this.first,
-    required this.second,
-    this.spacing = 12,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return LayoutBuilder(builder: (context, constraints) {
-      if (constraints.maxWidth < 430) {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            first,
-            SizedBox(height: spacing),
-            second,
-          ],
-        );
-      }
-
-      return Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(child: first),
-          SizedBox(width: spacing),
-          Expanded(child: second),
-        ],
-      );
-    });
-  }
-}
-
-class _AchievementPair extends StatelessWidget {
-  final Widget first;
-  final Widget second;
-  final double spacing;
-
-  const _AchievementPair({
-    required this.first,
-    required this.second,
-    this.spacing = 12,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return LayoutBuilder(builder: (context, constraints) {
-      final gap = constraints.maxWidth < 360 ? 8.0 : spacing;
-
-      return Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(child: first),
-          SizedBox(width: gap),
-          Expanded(child: second),
-        ],
-      );
-    });
-  }
-}
-
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 /// نقطة نابضة بموجة
 class _PulseDot extends StatelessWidget {
   final Animation<double> loop;
@@ -522,128 +333,6 @@ class _PulseDot extends StatelessWidget {
   }
 }
 
-<<<<<<< HEAD
-=======
-/// شريط تقدّم يمتلئ مع لمعان يمر عليه
-class _ProgressBar extends StatelessWidget {
-  final double value;
-  final Animation<double> loop;
-  final double height;
-  final Color track, fill;
-  const _ProgressBar({
-    required this.value,
-    required this.loop,
-    this.height = 10,
-    this.track = _trackBlue,
-    this.fill = AppColors.primary,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final r = BorderRadius.circular(height);
-    return ClipRRect(
-      borderRadius: r,
-      child: SizedBox(
-        height: height,
-        child: LayoutBuilder(builder: (_, cons) {
-          final fw = cons.maxWidth * value.clamp(0.0, 1.0);
-          return Stack(children: [
-            Container(color: track),
-            PositionedDirectional(
-              start: 0,
-              top: 0,
-              bottom: 0,
-              width: fw,
-              child: ClipRRect(
-                borderRadius: r,
-                child: AnimatedBuilder(
-                  animation: loop,
-                  builder: (_, __) {
-                    final t = _seg(loop.value, 0.1, 0.6, Curves.easeInOut);
-                    return Stack(children: [
-                      Container(color: fill),
-                      PositionedDirectional(
-                        start: -40 + (fw + 40) * t,
-                        top: 0,
-                        bottom: 0,
-                        width: 40,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(colors: [
-                              Colors.white.withValues(alpha: 0),
-                              Colors.white.withValues(alpha: 0.55),
-                              Colors.white.withValues(alpha: 0),
-                            ]),
-                          ),
-                        ),
-                      ),
-                    ]);
-                  },
-                ),
-              ),
-            ),
-          ]);
-        }),
-      ),
-    );
-  }
-}
-
-/// لمعة قطرية تمر فوق العنصر بشكل دوري
-class _ShineSweep extends StatelessWidget {
-  final Animation<double> loop;
-  final double phase;
-  final double radius;
-  final Widget child;
-  const _ShineSweep(
-      {required this.loop,
-      required this.radius,
-      required this.child,
-      this.phase = 0});
-
-  @override
-  Widget build(BuildContext context) {
-    return Stack(children: [
-      child,
-      Positioned.fill(
-        child: IgnorePointer(
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(radius),
-            child: AnimatedBuilder(
-              animation: loop,
-              builder: (_, __) {
-                final t = _seg(
-                    (loop.value + phase) % 1.0, 0.0, 0.35, Curves.easeInOut);
-                return Align(
-                  alignment: Alignment(-3 + 6 * t, 0),
-                  child: FractionallySizedBox(
-                    widthFactor: 0.35,
-                    heightFactor: 1,
-                    child: Transform(
-                      transform: Matrix4.skewX(-0.35),
-                      alignment: Alignment.center,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(colors: [
-                            Colors.white.withValues(alpha: 0),
-                            Colors.white.withValues(alpha: 0.5),
-                            Colors.white.withValues(alpha: 0),
-                          ]),
-                        ),
-                      ),
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
-        ),
-      ),
-    ]);
-  }
-}
-
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 // ═════════════════════════ كرت الهوية والمستوى ═════════════════════════
 
 class _IdentityLevelCard extends StatelessWidget {
@@ -746,7 +435,6 @@ class _IdentityLevelCard extends StatelessWidget {
                                   context.watch<AuthCubit>().state.user?.name ??
                                       '',
                                   style: AppTextStyles.cardTitle),
-<<<<<<< HEAD
                             ],
                           ),
                           if (context.watch<AuthCubit>().state.user?.patientCode
@@ -755,32 +443,6 @@ class _IdentityLevelCard extends StatelessWidget {
                             Text(context.l10n.healthRecordFileCode(code),
                                 style: AppTextStyles.caption),
                           ],
-=======
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 9, vertical: 3),
-                                decoration: BoxDecoration(
-                                    color: _mintPill,
-                                    borderRadius:
-                                        BorderRadius.circular(AppRadius.pill)),
-                                child: Text(context.l10n.healthRecordActiveNow,
-                                    style: const TextStyle(
-                                        fontSize: 10.5,
-                                        color: AppColors.primary)),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 6),
-                          Text.rich(
-                              TextSpan(style: AppTextStyles.caption, children: [
-                            TextSpan(
-                                text: context.l10n.healthRecordAgeFileCode),
-                            TextSpan(
-                                text: 'HL-0042',
-                                style: AppTextStyles.caption
-                                    .copyWith(color: AppColors.primary)),
-                          ])),
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
                         ]);
 
                     final profileRow = Row(children: [
@@ -805,11 +467,6 @@ class _IdentityLevelCard extends StatelessWidget {
                       Flexible(flex: 0, child: doctorBadge()),
                     ]);
                   }),
-<<<<<<< HEAD
-=======
-                  const SizedBox(height: 14),
-                  _LevelBox(enter: enter, loop: loop),
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
                 ]),
           ),
         ]),
@@ -881,90 +538,6 @@ class _Avatar extends StatelessWidget {
   }
 }
 
-<<<<<<< HEAD
-=======
-class _LevelBox extends StatelessWidget {
-  final Animation<double> enter, loop;
-  const _LevelBox({required this.enter, required this.loop});
-
-  @override
-  Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: enter,
-      builder: (_, __) {
-        final k = _seg(enter.value, 0.05, 0.32, Curves.easeOutQuart);
-        final pts = (750 * k).round();
-        final pct = (75 * k).round();
-        return Container(
-          padding: const EdgeInsets.all(14),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(AppRadius.cardSmall),
-            gradient: const LinearGradient(
-              begin: Alignment.centerRight,
-              end: Alignment.centerLeft,
-              colors: [Color(0xFFCADBDD), Color(0xFFE8EEFB), Color(0xFFEFF2FC)],
-            ),
-          ),
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-            Row(children: [
-              Container(
-                width: 44,
-                height: 44,
-                decoration: BoxDecoration(
-                    color: const Color(0xFFA7C8C6),
-                    borderRadius: BorderRadius.circular(12)),
-                child: const Icon(Icons.emoji_events_rounded,
-                    color: Color(0xFFE7B500), size: 22),
-              ),
-              const SizedBox(width: 10),
-              Expanded(
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(context.l10n.healthRecordLevel,
-                          style: AppTextStyles.cardTitle),
-                      const SizedBox(height: 2),
-                      Text(context.l10n.healthRecordExcellentWeek,
-                          style: AppTextStyles.caption),
-                    ]),
-              ),
-              Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.85),
-                    borderRadius: BorderRadius.circular(AppRadius.pill)),
-                child: Text(context.l10n.healthRecordPoints(pts),
-                    style: AppTextStyles.caption
-                        .copyWith(fontWeight: FontWeight.w600)),
-              ),
-            ]),
-            const SizedBox(height: 14),
-            _ProgressBar(value: 0.75 * k, loop: loop, height: 10),
-            const SizedBox(height: 10),
-            Row(children: [
-              Expanded(
-                child: Text(
-                  context.l10n.healthRecordPointsToNext,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: AppTextStyles.caption,
-                ),
-              ),
-              const SizedBox(width: 8),
-              Text(context.l10n.healthRecordPercentComplete(pct),
-                  style:
-                      AppTextStyles.caption.copyWith(color: AppColors.primary)),
-            ]),
-          ]),
-        );
-      },
-    );
-  }
-}
-
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 // ═════════════════════════ الهدف الصحي ═════════════════════════
 
 class _GoalCard extends StatelessWidget {
@@ -1408,225 +981,3 @@ class _EditRequestRow extends StatelessWidget {
 }
 
 // ═════════════════════════ الأوسمة والإنجازات ═════════════════════════
-<<<<<<< HEAD
-=======
-
-class _StreakCard extends StatelessWidget {
-  final Animation<double> enter, loop;
-  const _StreakCard({required this.enter, required this.loop});
-
-  @override
-  Widget build(BuildContext context) {
-    return _ShineSweep(
-      loop: loop,
-      radius: AppRadius.card,
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(AppRadius.card),
-          gradient: const LinearGradient(
-            begin: Alignment.centerRight,
-            end: Alignment.centerLeft,
-            colors: [Color(0xFFFCEFD0), Color(0xFFFDF6E7)],
-          ),
-        ),
-        child: Row(children: [
-          // اللهب: يرتجف ويتمايل مع توهّج
-          AnimatedBuilder(
-            animation: loop,
-            builder: (_, child) {
-              final f = math.sin(loop.value * 4 * math.pi);
-              final glow = (math.sin(loop.value * 6 * math.pi) + 1) / 2;
-              return Container(
-                width: 58,
-                height: 58,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(16),
-                  boxShadow: [
-                    BoxShadow(
-                        color: const Color(0xFFF59E0B)
-                            .withValues(alpha: 0.12 + 0.2 * glow),
-                        blurRadius: 10 + 10 * glow)
-                  ],
-                ),
-                child: Transform.rotate(
-                  angle: 0.07 * math.sin(loop.value * 6 * math.pi),
-                  alignment: Alignment.bottomCenter,
-                  child: Transform.scale(
-                      scale: 1 + 0.08 * f,
-                      alignment: Alignment.bottomCenter,
-                      child: child),
-                ),
-              );
-            },
-            child: const Icon(Icons.local_fire_department_rounded,
-                color: Color(0xFFF08A24), size: 32),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              AnimatedBuilder(
-                animation: enter,
-                builder: (_, __) {
-                  final n =
-                      (12 * _seg(enter.value, 0.62, 0.80, Curves.easeOutQuart))
-                          .round();
-                  return Text(context.l10n.healthRecordStreakDays(n),
-                      style: AppTextStyles.cardTitle);
-                },
-              ),
-              const SizedBox(height: 4),
-              Text(context.l10n.healthRecordStreakNote,
-                  style: AppTextStyles.caption),
-            ]),
-          ),
-        ]),
-      ),
-    );
-  }
-}
-
-class _AchievementCard extends StatelessWidget {
-  final Animation<double> enter, loop;
-  final double popBegin, shinePhase;
-  final Widget iconChild;
-  final Color iconBg;
-  final String title, subtitle;
-  final bool done, locked;
-  final double? progress;
-
-  const _AchievementCard({
-    required this.enter,
-    required this.loop,
-    required this.popBegin,
-    required this.iconChild,
-    required this.iconBg,
-    required this.title,
-    required this.subtitle,
-    this.shinePhase = 0,
-    this.done = false,
-    this.locked = false,
-    this.progress,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final textScale = MediaQuery.of(context).textScaleFactor;
-    final compact = MediaQuery.sizeOf(context).width < 390 || textScale > 1.1;
-    final iconSize = compact ? 52.0 : 62.0;
-    final iconTextSize = compact ? 24.0 : 28.0;
-
-    Widget scaledIconChild() {
-      if (!compact) return iconChild;
-      return IconTheme.merge(
-        data: const IconThemeData(size: 22),
-        child: DefaultTextStyle.merge(
-          style: TextStyle(fontSize: iconTextSize),
-          child: iconChild,
-        ),
-      );
-    }
-
-    final card = Container(
-      padding: EdgeInsets.fromLTRB(10, compact ? 12 : 16, 10, 12),
-      decoration: BoxDecoration(
-        color: locked ? _lav : AppColors.surface,
-        borderRadius: BorderRadius.circular(AppRadius.card),
-        boxShadow: locked ? null : _softShadow,
-      ),
-      child: Column(mainAxisSize: MainAxisSize.min, children: [
-        // الأيقونة: ظهور ارتدادي (+ اهتزاز القفل)
-        AnimatedBuilder(
-          animation: Listenable.merge([enter, loop]),
-          builder: (_, child) {
-            final pop =
-                _seg(enter.value, popBegin, popBegin + 0.14, Curves.elasticOut);
-            double shake = 0;
-            if (locked) {
-              final w = loop.value;
-              if (w < 0.2) {
-                shake = math.sin(w / 0.2 * 6 * math.pi) * 0.2 * (1 - w / 0.2);
-              }
-            }
-            return Transform.scale(
-                scale: pop,
-                child: Transform.rotate(angle: shake, child: child));
-          },
-          child: Container(
-            width: iconSize,
-            height: iconSize,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(color: iconBg, shape: BoxShape.circle),
-            child: scaledIconChild(),
-          ),
-        ),
-        SizedBox(height: compact ? 8 : 10),
-        Text(
-          title,
-          textAlign: TextAlign.center,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          style:
-              AppTextStyles.cardTitle.copyWith(fontSize: compact ? 12 : null),
-        ),
-        const SizedBox(height: 4),
-        Text(
-          subtitle,
-          textAlign: TextAlign.center,
-          style:
-              AppTextStyles.caption.copyWith(fontSize: compact ? 10.5 : null),
-          maxLines: 2,
-          overflow: TextOverflow.ellipsis,
-        ),
-        SizedBox(height: compact ? 8 : 10),
-        if (progress != null)
-          AnimatedBuilder(
-            animation: enter,
-            builder: (_, __) {
-              final k = _seg(enter.value, popBegin + 0.04, popBegin + 0.2,
-                  Curves.easeOutQuart);
-              return Column(children: [
-                _ProgressBar(
-                    value: progress! * k,
-                    loop: loop,
-                    height: 7,
-                    track: _trackBlue,
-                    fill: _barMuted),
-                const SizedBox(height: 6),
-                Text(
-                    context.l10n.healthRecordPercentComplete(
-                        (progress! * 100 * k).round()),
-                    style: AppTextStyles.caption.copyWith(fontSize: 11)),
-              ]);
-            },
-          )
-        else
-          Container(
-            padding:
-                EdgeInsets.symmetric(horizontal: compact ? 8 : 12, vertical: 5),
-            decoration: BoxDecoration(
-                color: _mintPill,
-                borderRadius: BorderRadius.circular(AppRadius.pill)),
-            child: Row(mainAxisSize: MainAxisSize.min, children: [
-              const Icon(Icons.check_circle_rounded,
-                  size: 14, color: AppColors.primary),
-              const SizedBox(width: 5),
-              Text(context.l10n.healthRecordDone,
-                  style: const TextStyle(
-                      fontSize: 11,
-                      color: AppColors.primary,
-                      fontWeight: FontWeight.w600)),
-            ]),
-          ),
-      ]),
-    );
-
-    return done
-        ? _ShineSweep(
-            loop: loop, phase: shinePhase, radius: AppRadius.card, child: card)
-        : card;
-  }
-}
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a

@@ -23,7 +23,6 @@ class AppColors {
   AppColors._();
 
   // ---- Brand core tokens ----
-<<<<<<< HEAD
   static const Color primary = Color(0xFF006572); // design spec Primary
   static const Color primaryTint =
       Color(0xFFE6F4F5); // spec "Selected": badge, icon and selected backgrounds
@@ -53,35 +52,13 @@ class AppColors {
 
   /// Spec "Panel": inner panels inside a card, used at 60-70% opacity.
   static const Color panel = Color(0xFFF0F3FF);
-=======
-  static const Color primary = Color(0xFF028090); // brand Primary Teal/Blue
-  static const Color primaryTint =
-      Color(0xFFE3F3F5); // light badge/icon backgrounds
-  static const Color neutralTrack =
-      Color(0xFFE7EDF1); // progress-bar UNFILLED track only
-  static const Color background =
-      Color(0xFFF8FAFC); // ultra-light clean canvas tint
-  static const Color surface = Color(0xFFFFFFFF); // pure-white card canvas
-  static const Color textPrimary = Color(0xFF0F172A);
-  static const Color textSecondary = Color(0xFF64748B);
-  static const Color border = Color(0xFFE8EDF2);
-  static const Color iconMuted = Color(0xFFCBD5E1);
-  static const Color danger =
-      Color(0xFFEF4444); // standard extension, no error screenshots exist yet
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 
   // Legacy aliases kept so earlier-built screens compile unchanged.
   static const Color textSecondaryLegacy = textSecondary;
   static const Color borderLight = border;
-<<<<<<< HEAD
   static const Color chipInactiveBg = Color(0xFFEEF1F6); // spec Neutral chip
   static const Color primaryDark =
       Color(0xFF004E58); // deeper shade of `primary` for gradient depth
-=======
-  static const Color chipInactiveBg = Color(0xFFF1F5F9);
-  static const Color primaryDark =
-      Color(0xFF016B77); // deeper shade of `primary` for gradient depth
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 
   // ---- 2.2 Meal-type icon colors (confirmed) ----
   // Breakfast and lunch share the same "daytime" family, distinguished by

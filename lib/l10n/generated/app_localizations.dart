@@ -455,11 +455,7 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/about_app_screen.dart
   ///
   /// In ar, this message translates to:
-<<<<<<< HEAD
   /// **'اقرأ السياسة المنشورة على موقعنا'**
-=======
-  /// **'تشفير سريري عالي المستوى لملفك الغذائي'**
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   String get aboutPrivacyPolicySubtitle;
 
   /// UI text in presentation/screens/about_app_screen.dart
@@ -477,21 +473,13 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/about_app_screen.dart
   ///
   /// In ar, this message translates to:
-<<<<<<< HEAD
   /// **'تراخيص البرمجيات'**
-=======
-  /// **'تراخيص الهيئة الطبية والاعتماد'**
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   String get aboutLicensesTitle;
 
   /// UI text in presentation/screens/about_app_screen.dart
   ///
   /// In ar, this message translates to:
-<<<<<<< HEAD
   /// **'المكتبات مفتوحة المصدر المستخدمة في التطبيق'**
-=======
-  /// **'سجل الامتثال الطبي الموثق رقم #A-8841'**
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   String get aboutLicensesSubtitle;
 
   /// UI text in presentation/screens/about_app_screen.dart
@@ -503,7 +491,6 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/about_app_screen.dart
   ///
   /// In ar, this message translates to:
-<<<<<<< HEAD
   /// **'تواصل مع أخصائيك عبر واتساب'**
   String get aboutSupportSubtitle;
 
@@ -517,25 +504,12 @@ abstract class AppLocalizations {
   ///
   /// In ar, this message translates to:
   /// **'حماية بياناتك'**
-=======
-  /// **'مساعدة متواصلة للاستفسارات التقنية'**
-  String get aboutSupportSubtitle;
-
-  /// UI text in presentation/screens/about_app_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'حماية صحية قياسية'**
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   String get aboutStandardHealthProtection;
 
   /// UI text in presentation/screens/about_app_screen.dart
   ///
   /// In ar, this message translates to:
-<<<<<<< HEAD
   /// **'الاتصال بين التطبيق وخوادمنا مشفّر، ونأخذ نسخة احتياطية مشفّرة يوميًا.'**
-=======
-  /// **'بياناتك مشفرة ومحمية وفق معايير الخصوصية الصحية المعتمدة لمزامنة آمنة مع ملفك السريري.'**
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   String get aboutEncryptionNote;
 
   /// UI text in presentation/screens/about_app_screen.dart
@@ -667,11 +641,7 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/activation_screen.dart
   ///
   /// In ar, this message translates to:
-<<<<<<< HEAD
   /// **'الاتصال بين التطبيق وخوادمنا مشفّر.'**
-=======
-  /// **'بياناتك الصحية مشفرة ومحمية وفق لوائح الامتثال الطبي'**
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   String get activationEncryptedNote;
 
   /// UI text in presentation/screens/activation_screen.dart
@@ -746,7 +716,6 @@ abstract class AppLocalizations {
   /// **'تم حذف الوجبة من سجل اليوم'**
   String get dailyLogMealDeleted;
 
-<<<<<<< HEAD
   /// A meal delete refused with 403 log_locked: the 7-day edit window has passed (API guide 6.4, 15).
   ///
   /// In ar, this message translates to:
@@ -807,8 +776,6 @@ abstract class AppLocalizations {
   /// **'تعذّر حفظ الكمية. حاول مرة أخرى.'**
   String get dailyLogEditFailed;
 
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   /// UI text in presentation/screens/daily_log_screen.dart
   ///
   /// In ar, this message translates to:
@@ -1406,21 +1373,13 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/health_data_consent_screen.dart
   ///
   /// In ar, this message translates to:
-<<<<<<< HEAD
   /// **'كيف نحمي بياناتك؟'**
-=======
-  /// **'كيف تُحفظ بياناتك الصحية؟'**
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   String get consentClauseStorageTitle;
 
   /// UI text in presentation/screens/health_data_consent_screen.dart
   ///
   /// In ar, this message translates to:
-<<<<<<< HEAD
   /// **'الاتصال بين التطبيق وخوادمنا مشفّر، ونأخذ نسخة احتياطية مشفّرة يوميًا.'**
-=======
-  /// **'تشفير كامل وفق أعلى معايير الخصوصية الصحية السريرية (HIPAA standards). تُخزَّن السجلات على خوادم طبية معزولة لا يمكن لأي طرف ثالث أو شركة إعلانات الوصول إليها تحت أي ظرف.'**
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   String get consentClauseStorageBody;
 
   /// UI text in presentation/screens/health_data_consent_screen.dart
@@ -1432,27 +1391,18 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/health_data_consent_screen.dart
   ///
   /// In ar, this message translates to:
-<<<<<<< HEAD
   /// **'بياناتك الصحية يطّلع عليها أخصائيك فقط، ولا نبيعها ولا نستخدمها للإعلانات.'**
-=======
-  /// **'أخصائي التغذية العلاجية المعتمد على حسابك فقط، عبر نظام مراجعة سريري مشفر. لا تُشارك بياناتك مع أي جهة أخرى، ولا تُستخدم لأي غرض تسويقي.'**
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   String get consentClauseAccessBody;
 
   /// UI text in presentation/screens/health_data_consent_screen.dart
   ///
   /// In ar, this message translates to:
-<<<<<<< HEAD
   /// **'حقك في حذف بياناتك'**
-=======
-  /// **'حقك الكامل في إلغاء الموافقة'**
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   String get consentClauseRevokeTitle;
 
   /// UI text in presentation/screens/health_data_consent_screen.dart
   ///
   /// In ar, this message translates to:
-<<<<<<< HEAD
   /// **'يمكنك حذف بياناتك أو حسابك من التطبيق في أي وقت.'**
   String get consentClauseRevokeBody;
 
@@ -1462,11 +1412,6 @@ abstract class AppLocalizations {
   /// **'سياسة الخصوصية متوفرة على موقعنا.'**
   String get privacyOnWebsite;
 
-=======
-  /// **'يمكنك سحب موافقتك في أي وقت من الحساب ← الخصوصية. سيؤدي ذلك إلى إيقاف تخصيص الخطة الغذائية تلقائياً حتى تجديد الموافقة، دون التأثير على سجلاتك المحفوظة.'**
-  String get consentClauseRevokeBody;
-
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   /// UI text in presentation/screens/health_data_consent_screen.dart
   ///
   /// In ar, this message translates to:
@@ -1548,30 +1493,12 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/health_data_consent_screen.dart
   ///
   /// In ar, this message translates to:
-<<<<<<< HEAD
-=======
-  /// **'مشفّرة بنظام bit-256 ومتوافقة مع المعايير الصحية السريرية (HIPAA).'**
-  String get consentEncryptionShort;
-
-  /// UI text in presentation/screens/health_data_consent_screen.dart
-  ///
-  /// In ar, this message translates to:
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   /// **'الموافقة على استخدام البيانات الصحية'**
   String get consentTitle;
 
   /// UI text in presentation/screens/health_data_consent_screen.dart
   ///
   /// In ar, this message translates to:
-<<<<<<< HEAD
-=======
-  /// **'منظومة الحماية السريرية الذكية'**
-  String get consentProtectionSystem;
-
-  /// UI text in presentation/screens/health_data_consent_screen.dart
-  ///
-  /// In ar, this message translates to:
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   /// **'قبل أن نبدأ رحلتك الصحية'**
   String get consentBeforeWeStart;
 
@@ -1584,15 +1511,6 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/health_data_consent_screen.dart
   ///
   /// In ar, this message translates to:
-<<<<<<< HEAD
-=======
-  /// **'بياناتك الطبية مشفرة بنظام bit AES-256 من لحظة إدخالها'**
-  String get consentAesNote;
-
-  /// UI text in presentation/screens/health_data_consent_screen.dart
-  ///
-  /// In ar, this message translates to:
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   /// **'قرأت ووافقت على شروط مشاركة البيانات بسياسة الخصوصية الصحية.'**
   String get consentCheckbox;
 
@@ -2187,11 +2105,7 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/log_meal_intro_screen.dart
   ///
   /// In ar, this message translates to:
-<<<<<<< HEAD
   /// **'سجل وجباتك يطّلع عليه أخصائيك فقط.'**
-=======
-  /// **'بياناتك الغذائية مشفرة وتُعامل بخصوصية طبية تامة'**
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   String get logMealPrivacyNote;
 
   /// UI text in presentation/screens/log_meal_intro_screen.dart
@@ -2530,7 +2444,6 @@ abstract class AppLocalizations {
   /// **'قياس منزلي'**
   String get measurementsHomeReading;
 
-<<<<<<< HEAD
   /// Heading of the readings list on the measurements screen, newest first (API guide 7.2).
   ///
   /// In ar, this message translates to:
@@ -2579,8 +2492,6 @@ abstract class AppLocalizations {
   /// **'تعذّر حذف القراءة. حاول مرة أخرى.'**
   String get measurementsDeleteFailed;
 
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   /// UI text in presentation/screens/measurements_screen.dart
   ///
   /// In ar, this message translates to:
@@ -3082,15 +2993,6 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/onboarding_health_screen.dart
   ///
   /// In ar, this message translates to:
-<<<<<<< HEAD
-=======
-  /// **'حسب الوصفة'**
-  String get onboardingHealthAsPrescribed;
-
-  /// UI text in presentation/screens/onboarding_health_screen.dart
-  ///
-  /// In ar, this message translates to:
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   /// **'البيانات الصحية'**
   String get onboardingHealthTitle;
 
@@ -3103,21 +3005,13 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/onboarding_health_screen.dart
   ///
   /// In ar, this message translates to:
-<<<<<<< HEAD
   /// **'حدّد أي حالات صحية تم تشخيصك بها، لتصل إلى أخصائيك ويراعيها في خطتك.'**
-=======
-  /// **'حدد أي حالات صحية تم تشخيصك بها لتكييف برنامجك الغذائي ومكوناته والوجبات المقترحة وفق استجابة تامة وآمنة لجسمك.'**
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   String get onboardingHealthConditionsNote;
 
   /// UI text in presentation/screens/onboarding_health_screen.dart
   ///
   /// In ar, this message translates to:
-<<<<<<< HEAD
   /// **'يطّلع على هذه التفاصيل أخصائيك فقط، وتساعده في استبعاد أي مكونات قد تتعارض مع حالتك أو أدويتك.'**
-=======
-  /// **'سرية سريرية مشفرة ومعتمدة طبياً — تساعد هذه التفاصيل أخصائي التغذية في استبعاد أي مكونات قد تتعارض مع مؤشراتك الحيوية أو أدويتك الموصوفة.'**
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   String get onboardingHealthConfidentialNote;
 
   /// UI text in presentation/screens/onboarding_health_screen.dart
@@ -3129,11 +3023,7 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/onboarding_health_screen.dart
   ///
   /// In ar, this message translates to:
-<<<<<<< HEAD
   /// **'حدّد ما يسبب لك حساسية، ليراجعه أخصائيك ويضيفه إلى ملفك. بعد اعتماده تظهر علامة تنبيه على الأطعمة التي قد تحتويه.'**
-=======
-  /// **'حدد مسببات الحساسية المعتمدة ليقوم النظام باستبعادها تلقائياً من جداول الوجبات والوصفات المقترحة.'**
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   String get onboardingHealthAllergiesNote;
 
   /// UI text in presentation/screens/onboarding_health_screen.dart
@@ -3151,11 +3041,7 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/onboarding_health_screen.dart
   ///
   /// In ar, this message translates to:
-<<<<<<< HEAD
   /// **'اكتب الأدوية أو الفيتامينات التي تتناولها، ليراعيها أخصائيك في توقيت وجباتك ومكوناتها.'**
-=======
-  /// **'اكتب أي أدوية موصوفة أو فيتامينات تتناولها لضمان عدم حدوث تداخلات كيميائية مع توقيت ومكونات الوجبات.'**
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   String get onboardingHealthMedicationsNote;
 
   /// UI text in presentation/screens/onboarding_health_screen.dart
@@ -3173,7 +3059,6 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/onboarding_health_screen.dart
   ///
   /// In ar, this message translates to:
-<<<<<<< HEAD
   /// **'يراجع أخصائيك الأدوية والحساسيات قبل إضافتها إلى ملفك.'**
   String get onboardingHealthReviewNote;
 
@@ -3195,11 +3080,6 @@ abstract class AppLocalizations {
   /// **'ملاحظات: {notes}'**
   String onboardingHealthRequestNotes(String notes);
 
-=======
-  /// **'تخضع كافة الملاحظات والأدوية لمراجعة برمجية واستشارية دقيقة لملاءمة النظام الغذائي واستبعاد أي تداخلات غذائية مع أدويتك الموصوفة.'**
-  String get onboardingHealthReviewNote;
-
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   /// UI text in presentation/screens/onboarding_health_screen.dart
   ///
   /// In ar, this message translates to:
@@ -3329,11 +3209,7 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/onboarding_measurements_screen.dart
   ///
   /// In ar, this message translates to:
-<<<<<<< HEAD
   /// **'قياساتك يطّلع عليها أخصائيك فقط، ليصمّم خطتك الغذائية بناءً عليها.'**
-=======
-  /// **'بياناتك وقياساتك مشفرة بالكامل بمعايير أمان صحية معتمدة، وتُعرض حصرياً لأخصائي التغذية المعتمد لتصميم خطتك الغذائية الفردية.'**
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   String get onboardingMeasurementsPrivacyNote;
 
   /// UI text in presentation/screens/onboarding_measurements_screen.dart
@@ -3726,81 +3602,6 @@ abstract class AppLocalizations {
   /// **'مفعّل'**
   String get commonEnabled;
 
-<<<<<<< HEAD
-=======
-  /// UI text in presentation/screens/privacy_document_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'١. نطاق البيانات المجمّعة'**
-  String get privacyScopeTitle;
-
-  /// UI text in presentation/screens/privacy_document_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'نجمع فقط ما يلزم لبناء خطتك الغذائية العلاجية: قياساتك الحيوية (الوزن، محيط الجسم)، سجلات وجباتك اليومية، حالاتك الصحية المشخصة، حساسياتك الغذائية، والأدوية والمكملات التي تخبرينا بها. لا نطلب أو نُخزّن أي بيانات مالية أو بيانات موقع دائم.'**
-  String get privacyScopeBody;
-
-  /// UI text in presentation/screens/privacy_document_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'٢. التشفير وأماكن التخزين'**
-  String get privacyEncryptionTitle;
-
-  /// UI text in presentation/screens/privacy_document_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'تُشفّر جميع البيانات الصحية أثناء النقل والتخزين بنظام bit AES-256، وتُحفظ على خوادم طبية معزولة متوافقة مع معايير HIPAA. لا تُستخدم بياناتك في تدريب نماذج عامة ولا تُشارك مع أي شركة إعلانات تحت أي ظرف.'**
-  String get privacyEncryptionBody;
-
-  /// UI text in presentation/screens/privacy_document_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'٣. من يستطيع الاطلاع على ملفك'**
-  String get privacyAccessTitle;
-
-  /// UI text in presentation/screens/privacy_document_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'فريق الرعاية المخصص لك فقط — أخصائي التغذية العلاجية المعتمد على حسابك — يستطيع الاطلاع على سجلك الكامل. أي تحديث أو تعديل على خطتك يُسجَّل باسم صاحبه ووقته في سجل تدقيق لا يمكن حذفه.'**
-  String get privacyAccessBody;
-
-  /// UI text in presentation/screens/privacy_document_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'٤. حقك في التعديل والإلغاء'**
-  String get privacyRightsTitle;
-
-  /// UI text in presentation/screens/privacy_document_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'يمكنك سحب موافقتك في أي وقت من الحساب ← الخصوصية، وسيؤدي ذلك إلى إيقاف تخصيص الخطة تلقائياً حتى تجديد الموافقة. يمكنك أيضاً طلب نسخة كاملة من بياناتك أو حذفها نهائياً بالتواصل مع أخصائي التغذية.'**
-  String get privacyRightsBody;
-
-  /// UI text in presentation/screens/privacy_document_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'٥. الاحتفاظ بالبيانات بعد انتهاء المتابعة'**
-  String get privacyRetentionTitle;
-
-  /// UI text in presentation/screens/privacy_document_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'عند انتهاء فترة المتابعة السريرية، تبقى سجلاتك وقياساتك محفوظة بأمان لاستئناف الخطة فور التجديد، ولا تُحذف تلقائياً إلا بطلب صريح منك.'**
-  String get privacyRetentionBody;
-
-  /// UI text in presentation/screens/privacy_document_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'الخصوصية السريرية الكاملة'**
-  String get privacyTitle;
-
-  /// UI text in presentation/screens/privacy_document_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'آخر تحديث لهذه الوثيقة: يناير 2026 — متوافقة مع معايير HIPAA السريرية'**
-  String get privacyLastUpdated;
-
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   /// UI text in presentation/screens/profile_screen.dart
   ///
   /// In ar, this message translates to:
@@ -4842,11 +4643,7 @@ abstract class AppLocalizations {
   /// UI text in presentation/widgets/offline_capability_panel.dart
   ///
   /// In ar, this message translates to:
-<<<<<<< HEAD
   /// **'تُحفظ التغييرات على هاتفك، وتُرسل عند عودة الاتصال.'**
-=======
-  /// **'يتم حفظ التغييرات بقاعدة بيانات الهاتف المشفرة'**
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   String get offlinePanelLogMeasurementsDesc;
 
   /// UI text in presentation/widgets/offline_capability_panel.dart
@@ -5053,11 +4850,7 @@ abstract class AppLocalizations {
   /// **'اسم المستخدم أو كلمة المرور غير صحيحة.'**
   String get loginErrorInvalid;
 
-<<<<<<< HEAD
   /// Shown while sign-in is locked after 5 wrong passwords (423). {time} is the wait left, counting down as minutes:seconds (API guide 3.1).
-=======
-  /// No description provided for @loginErrorLocked.
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   ///
   /// In ar, this message translates to:
   /// **'تم إيقاف الدخول مؤقتًا بعد عدة محاولات خاطئة. حاول بعد {time}.'**
@@ -6065,15 +5858,12 @@ abstract class AppLocalizations {
   /// **'تذكير القياس الأسبوعي'**
   String get weighInReminderChannel;
 
-<<<<<<< HEAD
   /// Android notification channel name for the server's pushes: plan, notes, appointments and reminders (API guide 10.4).
   ///
   /// In ar, this message translates to:
   /// **'إشعارات أخصائيك وخطتك'**
   String get pushChannelName;
 
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   /// Title of the local weekly weigh-in reminder.
   ///
   /// In ar, this message translates to:
@@ -6097,7 +5887,6 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'تعذّر حفظ الإعداد. تحقق من اتصالك ثم حاول مرة أخرى.'**
   String get notificationSettingsSaveFailed;
-<<<<<<< HEAD
 
   /// Patient app design spec
   ///
@@ -7946,8 +7735,6 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'لحد ما يجهز الربط، سجّل نومك وقياساتك من التطبيق مباشرة.'**
   String get healthSyncMeanwhile;
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 }
 
 class _AppLocalizationsDelegate

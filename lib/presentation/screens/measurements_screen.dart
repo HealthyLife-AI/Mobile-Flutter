@@ -1,15 +1,9 @@
-<<<<<<< HEAD
 import '../widgets/measurement_schedule_card.dart';
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../core/di/app_dependencies.dart';
-<<<<<<< HEAD
 import '../../core/errors/failure.dart';
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 import '../../core/navigation/app_page_route.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_radius.dart';
@@ -21,10 +15,7 @@ import '../../l10n/l10n.dart';
 import '../bloc/measurements/measurements_cubit.dart';
 import '../bloc/nutritionist/nutritionist_cubit.dart';
 import '../widgets/app_header_bar.dart';
-<<<<<<< HEAD
 import '../widgets/confirm_action_sheet.dart';
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 import '../widgets/gradient_cta_button.dart';
 import '../widgets/load_error_view.dart';
 import '../widgets/segmented_sliding_tabs.dart';
@@ -111,10 +102,7 @@ class _MeasurementsViewState extends State<_MeasurementsView> {
     return ListView(
       padding: const EdgeInsets.fromLTRB(18, 16, 18, 24),
       children: [
-<<<<<<< HEAD
         const MeasurementScheduleCard(padding: EdgeInsets.only(bottom: 16)),
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
         if (snapshot.isEmpty) ...[
           Container(
             padding: const EdgeInsets.all(16),
@@ -346,13 +334,10 @@ class _MeasurementsViewState extends State<_MeasurementsView> {
             ],
           ),
         ),
-<<<<<<< HEAD
         if (snapshot.savedEntries.isNotEmpty) ...[
           const SizedBox(height: 18),
           _ReadingsHistory(readings: snapshot.savedEntries),
         ],
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
         const SizedBox(height: 20),
         GradientCtaButton(
           label: l10n.measurementsLogDaily,
@@ -370,7 +355,6 @@ class _MeasurementsViewState extends State<_MeasurementsView> {
   }
 }
 
-<<<<<<< HEAD
 /// The newest readings, clinic and the patient's own (7.2). The patient's own
 /// can be deleted while the server allows it (7.3); a clinic reading cannot.
 class _ReadingsHistory extends StatelessWidget {
@@ -469,8 +453,6 @@ class _ReadingsHistory extends StatelessWidget {
   }
 }
 
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 class _Legend extends StatelessWidget {
   final bool ring;
   final String label;

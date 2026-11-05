@@ -1,8 +1,5 @@
-<<<<<<< HEAD
 import 'dart:async';
 
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 import 'package:flutter_test/flutter_test.dart';
 import 'package:healthylife_ai/core/errors/failure.dart';
 import 'package:healthylife_ai/core/errors/result.dart';
@@ -55,15 +52,12 @@ class _FakeRepository implements NotificationRepository {
     bulk.add(ids);
     return failWith != null ? Failed(failWith!) : const Success(null);
   }
-<<<<<<< HEAD
 
   /// The server's unread count. Null: not known, so the rows count.
   int? unread;
 
   @override
   Future<Result<int?>> unreadCount() async => Success(unread);
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 }
 
 void main() {
@@ -213,7 +207,6 @@ void main() {
     expect(cubit.state.status, NotificationsStatus.initial);
     expect(cubit.state.groups, isEmpty);
   });
-<<<<<<< HEAD
 
   group('the unread badge (10.2)', () {
     test('counts every page, from the server', () async {
@@ -277,6 +270,4 @@ void main() {
       await changes.close();
     });
   });
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 }

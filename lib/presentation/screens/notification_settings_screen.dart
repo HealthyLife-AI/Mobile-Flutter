@@ -304,7 +304,6 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
     }
   }
 
-<<<<<<< HEAD
   /// Icon, title and description of a category, or null for one the app
   /// has no words for.
   static (IconData, String, String)? _categoryRow(
@@ -343,8 +342,6 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
         _ => null,
       };
 
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -386,7 +383,6 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
             const SizedBox(height: 14),
 
             // ───────── المفاتيح ─────────
-<<<<<<< HEAD
             // The categories the server returned, in its order (spec).
             for (final (i, key) in _prefs.categoryOrder.indexed)
               if (_categoryRow(context, key)
@@ -404,56 +400,6 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
                 ),
                 const SizedBox(height: 12),
               ],
-=======
-            _Reveal(
-              animation: _r1,
-              dy: 0.25,
-              child: _ToggleCard(
-                icon: Icons.restaurant_rounded,
-                title: context.l10n.notificationSettingsMeals,
-                subtitle: context.l10n.notificationSettingsMealsDesc,
-                value: _prefs.meals,
-                onChanged: (v) => _save(_prefs.copyWith(meals: v)),
-              ),
-            ),
-            const SizedBox(height: 12),
-            _Reveal(
-              animation: _r2,
-              dy: 0.25,
-              child: _ToggleCard(
-                icon: Icons.monitor_weight_outlined,
-                title: context.l10n.notificationSettingsMeasurements,
-                subtitle: context.l10n.notificationSettingsMeasurementsDesc,
-                value: _prefs.measurements,
-                onChanged: (v) => _save(_prefs.copyWith(measurements: v)),
-              ),
-            ),
-            const SizedBox(height: 12),
-            _Reveal(
-              animation: _r3,
-              dy: 0.25,
-              child: _ToggleCard(
-                icon: Icons.medical_services_outlined,
-                title: context.l10n.notificationCategoryNutritionist,
-                subtitle: context.l10n.notificationSettingsNutritionistDesc,
-                value: _prefs.nutritionist,
-                onChanged: (v) => _save(_prefs.copyWith(nutritionist: v)),
-              ),
-            ),
-            const SizedBox(height: 12),
-            _Reveal(
-              animation: _r3,
-              dy: 0.25,
-              child: _ToggleCard(
-                icon: Icons.auto_fix_high_rounded,
-                title: context.l10n.notificationCategoryPlanUpdates,
-                subtitle: context.l10n.notificationSettingsPlanUpdatesDesc,
-                value: _prefs.plan,
-                onChanged: (v) => _save(_prefs.copyWith(plan: v)),
-              ),
-            ),
-            const SizedBox(height: 12),
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 
             // ───────── أوقات عدم الإزعاج ─────────
             _Reveal(

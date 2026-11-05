@@ -23,7 +23,6 @@ class _ScriptedAppointments implements AppointmentRepository {
 
   @override
   Future<void> refreshReminders() async {}
-<<<<<<< HEAD
 
   /// Each cancel answers with this, or the appointment as cancelled.
   Failure? cancelFailure;
@@ -49,8 +48,6 @@ class _ScriptedAppointments implements AppointmentRepository {
   Future<Result<Appointment>> reschedule(
           Appointment appointment, AppointmentSlot slot) =>
       throw UnimplementedError();
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 }
 
 Appointment _visit(int id) => Appointment(

@@ -72,7 +72,6 @@ class AppointmentRepositoryImpl implements AppointmentRepository, PatientCache {
   }
 
   @override
-<<<<<<< HEAD
   Future<Result<AppointmentSlots>> getSlots(AppointmentType type) => guard(
         () async => AppointmentDto.slotsFromJson(
             await _remote.fetchSlots(AppointmentDto.typeValue(type)), type),
@@ -112,8 +111,6 @@ class AppointmentRepositoryImpl implements AppointmentRepository, PatientCache {
   }
 
   @override
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   Future<void> forgetPatientData() async {
     await _storage.remove(StorageKeys.appointmentsUpcoming);
     await _storage.remove(StorageKeys.appointmentsPast);

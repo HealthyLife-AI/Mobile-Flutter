@@ -8,11 +8,8 @@ import '../widgets/app_header_bar.dart' show AppHeaderBar;
 import '../../core/navigation/logout_flow.dart';
 
 import '../widgets/directional_icon.dart';
-<<<<<<< HEAD
 import '../widgets/external_link.dart';
 import '../widgets/privacy_policy.dart';
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 import '../../l10n/l10n.dart';
 
 /// حول التطبيق — هوية التطبيق، قائمة الشفافية والمعايير الطبية،
@@ -485,10 +482,7 @@ class _LegalItem {
 class _LegalCard extends StatelessWidget {
   const _LegalCard();
 
-<<<<<<< HEAD
 
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   static List<_LegalItem> _items(AppLocalizations l10n) => [
         _LegalItem(
           icon: Icons.health_and_safety_outlined,
@@ -496,11 +490,8 @@ class _LegalCard extends StatelessWidget {
           tint: const Color(0xFFE3F5F7),
           title: l10n.aboutPrivacyPolicyTitle,
           subtitle: l10n.aboutPrivacyPolicySubtitle,
-<<<<<<< HEAD
           // `policy_url` from GET /me/consent (API guide 4).
           open: openPrivacyPolicy,
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
         ),
         _LegalItem(
           icon: Icons.description_outlined,
@@ -515,10 +506,7 @@ class _LegalCard extends StatelessWidget {
           tint: const Color(0xFFE0F6EC),
           title: l10n.aboutLicensesTitle,
           subtitle: l10n.aboutLicensesSubtitle,
-<<<<<<< HEAD
           open: (context) => showLicensePage(context: context),
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
         ),
         _LegalItem(
           icon: Icons.headset_mic_outlined,
@@ -526,11 +514,8 @@ class _LegalCard extends StatelessWidget {
           tint: const Color(0xFFECEAFA),
           title: l10n.aboutSupportTitle,
           subtitle: l10n.aboutSupportSubtitle,
-<<<<<<< HEAD
           // Support is the nutritionist, on WhatsApp (9.1).
           open: openNutritionistWhatsApp,
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
         ),
       ];
 
@@ -606,7 +591,6 @@ class _LegalRow extends StatelessWidget {
               ],
             ),
           ),
-<<<<<<< HEAD
           if (open != null) ...[
             const SizedBox(width: 8),
             Icon(
@@ -617,16 +601,6 @@ class _LegalRow extends StatelessWidget {
               size: 20,
             ),
           ],
-=======
-          const SizedBox(width: 8),
-          Icon(
-            directionalIcon(context,
-                rtl: Icons.chevron_left_rounded,
-                ltr: Icons.chevron_right_rounded),
-            color: AppColors.textSecondary,
-            size: 20,
-          ),
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
         ],
       ),
     );

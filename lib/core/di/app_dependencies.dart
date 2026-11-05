@@ -17,18 +17,14 @@ import '../../data/repositories/meal_log_repository_impl.dart';
 import '../../data/repositories/meal_plan_repository_impl.dart';
 import '../../data/repositories/measurement_repository_impl.dart';
 import '../../data/repositories/nutritionist_repository_impl.dart';
-<<<<<<< HEAD
 import '../../data/repositories/password_help_contact.dart';
 import '../../data/repositories/privacy_policy_link.dart';
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 import '../../data/repositories/appointment_repository_impl.dart';
 import '../../data/repositories/progress_repository_impl.dart';
 import '../../data/repositories/review_repository_impl.dart';
 import '../../data/repositories/notification_preferences_repository_impl.dart';
 import '../../data/repositories/notification_repository_impl.dart';
 import '../../data/repositories/settings_repository_impl.dart';
-<<<<<<< HEAD
 import '../../data/repositories/cached_response.dart';
 import '../../data/repositories/engagement_repository_impl.dart';
 import '../../data/repositories/health_records_repository_impl.dart';
@@ -36,18 +32,13 @@ import '../../data/repositories/patient_care_repository_impl.dart';
 import '../../domain/repositories/engagement_repository.dart';
 import '../../domain/repositories/patient_care_repository.dart';
 import '../state/change_signal.dart';
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 import '../../data/services/flutter_device_timezone.dart';
 import '../../data/services/local_appointment_reminder_scheduler.dart';
 import '../../data/services/local_reminder_notifications.dart';
 import '../../data/services/firebase_push_registrar.dart';
 import '../../data/services/notification_preferences_sync.dart';
 import '../../data/services/notification_read_receipt.dart';
-<<<<<<< HEAD
 import '../../data/services/push_channel.dart';
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 import '../../data/services/system_notification_permissions.dart';
 import '../../data/services/weigh_in_reminder.dart';
 import '../navigation/dropped_write_notice.dart';
@@ -142,7 +133,6 @@ class AppDependencies {
   /// Raised by a plan push (API guide 10.3), so the plan is read again.
   final PlanChangeSignal planChanges = PlanChangeSignal();
 
-<<<<<<< HEAD
   /// Raised after a reading is saved: the server moves the measurement
   /// schedule then, so it is read again.
   final ChangeSignal measurementChanges = ChangeSignal();
@@ -156,8 +146,6 @@ class AppDependencies {
   /// its unread badge are read again (API guide 10.4).
   final ChangeSignal notificationChanges = ChangeSignal();
 
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   final MealPlanRemoteDataSource? _mealPlanSource;
   final NotificationDataSource? _notificationSource;
   final ApiClient? _apiOverride;
@@ -194,23 +182,16 @@ class AppDependencies {
     storage: storage,
     api: api,
     onDropped: showDroppedWriteNotice,
-<<<<<<< HEAD
     // A saved meal log's server id, so it can be deleted later (6.4).
     onSaved: (write, response) => _mealLog.recordSaved(write, response),
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   );
 
   late final AuthRemoteDataSource _authRemote = AuthRemoteDataSource(api);
 
-<<<<<<< HEAD
   late final PushRegistrar push = FirebasePushRegistrar(
     api: api,
     prepareChannel: () => createPushChannel(_reminderNotifications, settings),
   );
-=======
-  late final PushRegistrar push = FirebasePushRegistrar(api: api);
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 
   /// Reads/requests the OS notification permission and opens the system
   /// settings page. Used by the notification settings and onboarding screens;
@@ -247,7 +228,6 @@ class AppDependencies {
     local: session,
     coordinator: _coordinator,
     push: push,
-<<<<<<< HEAD
     onAccountDeleted: passwordHelp.forget,
     onConsent: (consent) => privacyPolicy.remember(consent.policyUrl),
   );
@@ -259,9 +239,6 @@ class AppDependencies {
   /// The nutritionist's WhatsApp number for the forgot-password message
   /// (3.6). It outlives the session, so it is not in [_patientCaches].
   late final PasswordHelpContact passwordHelp = PasswordHelpContact(storage);
-=======
-  );
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   late final SettingsRepository settings = SettingsRepositoryImpl(storage);
   late final MealPlanRepositoryImpl _mealPlan = MealPlanRepositoryImpl(
     storage,
@@ -274,11 +251,7 @@ class AppDependencies {
   // The patient-scoped repositories are kept as their concrete types too, so
   // [_patientCaches] can clear them.
   late final MealLogRepositoryImpl _mealLog =
-<<<<<<< HEAD
       MealLogRepositoryImpl(storage, offlineQueue, api);
-=======
-      MealLogRepositoryImpl(storage, offlineQueue);
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   late final MealLogRepository mealLog = _mealLog;
 
   late final MeasurementRepositoryImpl _measurement = MeasurementRepositoryImpl(
@@ -289,12 +262,8 @@ class AppDependencies {
   late final MeasurementRepository measurement = _measurement;
 
   late final NutritionistRepositoryImpl _nutritionist =
-<<<<<<< HEAD
       NutritionistRepositoryImpl(storage, NutritionistRemoteDataSource(api),
           passwordHelp: passwordHelp);
-=======
-      NutritionistRepositoryImpl(storage, NutritionistRemoteDataSource(api));
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   late final NutritionistRepository nutritionist = _nutritionist;
 
   late final HealthProfileRepositoryImpl _healthProfile =
@@ -310,14 +279,9 @@ class AppDependencies {
   late final ProgressRepository progress = _progressData;
 
   /// The device's own reminders as local notifications (API guide 10.6):
-<<<<<<< HEAD
   /// appointments and the weekly weigh-in share the plugin, which also
   /// creates the push channel (10.4).
   late final FlutterReminderNotifications _reminderNotifications =
-=======
-  /// appointments and the weekly weigh-in share the plugin.
-  late final ReminderNotifications _reminderNotifications =
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
       FlutterReminderNotifications();
 
   late final AppointmentReminderScheduler _appointmentReminders =
@@ -355,7 +319,6 @@ class AppDependencies {
   );
   late final NotificationRepository notification = _notification;
 
-<<<<<<< HEAD
   // ── Patient-app spec features (phases 1–4) ─────────────────────────────
 
   CachedResponse _kept(String key) => CachedResponse(storage, key);
@@ -398,8 +361,6 @@ class AppDependencies {
       WellbeingRepositoryImpl(api, _kept(StorageKeys.wellbeing));
   late final WellbeingRepository wellbeing = _wellbeing;
 
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   /// Everything that holds this patient's data on the device. Cleared when the
   /// session ends (2.5). The offline queue comes first, so nothing is sent
   /// while the rest is being cleared.
@@ -415,7 +376,6 @@ class AppDependencies {
     _appointmentsData,
     _notification,
     _notificationPreferences,
-<<<<<<< HEAD
     _schedule,
     _quickRequests,
     _checkins,
@@ -424,8 +384,6 @@ class AppDependencies {
     _today,
     _posts,
     _wellbeing,
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
     StoredPatientData(
       storage,
       const [StorageKeys.session],
@@ -437,11 +395,7 @@ class AppDependencies {
   late final ChangePasswordUseCase changePassword = ChangePasswordUseCase(auth);
   late final LogMealUseCase logMeal = LogMealUseCase(mealLog);
   late final SaveMeasurementUseCase saveMeasurement =
-<<<<<<< HEAD
       SaveMeasurementUseCase(measurement, onSaved: measurementChanges.notify);
-=======
-      SaveMeasurementUseCase(measurement);
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   late final SearchFoodsUseCase searchFoods = SearchFoodsUseCase(food);
 
   /// Whether the signed-in patient already has readings on the server (7.2).

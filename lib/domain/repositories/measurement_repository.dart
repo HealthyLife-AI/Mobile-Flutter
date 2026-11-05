@@ -9,7 +9,6 @@ abstract interface class MeasurementRepository {
   /// Validates + persists a new reading (weights/circumferences already
   /// validated by the use case; range enforcement also happens there).
   Future<Result<MeasurementSnapshot>> saveEntry(MeasurementEntry entry);
-<<<<<<< HEAD
 
   /// Deletes one of the patient's own readings (API guide 7.3) and returns the
   /// readings left. A reading still waiting in the offline queue is taken out
@@ -17,6 +16,4 @@ abstract interface class MeasurementRepository {
   /// reading_not_deletable`) and one past its window (`403 log_locked`); a
   /// reading it no longer has (404) counts as deleted.
   Future<Result<MeasurementSnapshot>> deleteEntry(MeasurementEntry entry);
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 }

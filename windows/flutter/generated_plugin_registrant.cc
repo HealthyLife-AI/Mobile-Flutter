@@ -6,37 +6,25 @@
 
 #include "generated_plugin_registrant.h"
 
-<<<<<<< HEAD
 #include <file_selector_windows/file_selector_windows.h>
 #include <firebase_core/firebase_core_plugin_c_api.h>
 #include <flutter_secure_storage_windows/flutter_secure_storage_windows_plugin.h>
 #include <flutter_timezone/flutter_timezone_plugin_c_api.h>
 #include <pdfx/pdfx_plugin.h>
-=======
-#include <firebase_core/firebase_core_plugin_c_api.h>
-#include <flutter_secure_storage_windows/flutter_secure_storage_windows_plugin.h>
-#include <flutter_timezone/flutter_timezone_plugin_c_api.h>
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 #include <permission_handler_windows/permission_handler_windows_plugin.h>
 #include <url_launcher_windows/url_launcher_windows.h>
 
 void RegisterPlugins(flutter::PluginRegistry* registry) {
-<<<<<<< HEAD
   FileSelectorWindowsRegisterWithRegistrar(
       registry->GetRegistrarForPlugin("FileSelectorWindows"));
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   FirebaseCorePluginCApiRegisterWithRegistrar(
       registry->GetRegistrarForPlugin("FirebaseCorePluginCApi"));
   FlutterSecureStorageWindowsPluginRegisterWithRegistrar(
       registry->GetRegistrarForPlugin("FlutterSecureStorageWindowsPlugin"));
   FlutterTimezonePluginCApiRegisterWithRegistrar(
       registry->GetRegistrarForPlugin("FlutterTimezonePluginCApi"));
-<<<<<<< HEAD
   PdfxPluginRegisterWithRegistrar(
       registry->GetRegistrarForPlugin("PdfxPlugin"));
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   PermissionHandlerWindowsPluginRegisterWithRegistrar(
       registry->GetRegistrarForPlugin("PermissionHandlerWindowsPlugin"));
   UrlLauncherWindowsRegisterWithRegistrar(

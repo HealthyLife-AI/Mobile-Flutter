@@ -36,7 +36,6 @@ dependencies:
   flutter_timezone: ^5.1.1
   timezone: ^0.11.2
   url_launcher: ^6.3.3
-<<<<<<< HEAD
   # Medical report upload (spec phase 4): camera and gallery, resized to
   # ~2000 px at 80% JPEG quality before upload (iPhone HEIC included).
   image_picker: ^1.2.4
@@ -44,8 +43,6 @@ dependencies:
   file_picker: ^13.3.1
   # Shows a PDF report inside the app from memory (no file kept on disk).
   pdfx: ^2.11.0
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -57,18 +54,14 @@ dev_dependencies:
   # Critical user-journey tests (requires a connected device or emulator).
   integration_test:
     sdk: flutter
-<<<<<<< HEAD
   # Generates the app icon (Android, iOS); settings at the end of this file.
   flutter_launcher_icons: ^0.14.4
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 
 flutter:
   uses-material-design: true
   generate: true
   assets:
     - assets/images/
-<<<<<<< HEAD
   # Cairo (SIL OFL 1.1, see assets/fonts/OFL.txt): the family the design
   # spec names (AppTextStyles.fontFamily). Static faces, one per weight the
   # app uses, so FontWeight picks the real face instead of a synthetic one.
@@ -99,18 +92,3 @@ flutter_launcher_icons:
   adaptive_icon_foreground: "assets/icon/app_icon_foreground.png"
   # The foreground is already padded.
   adaptive_icon_foreground_inset: 0
-=======
-  # Tajawal (SIL OFL 1.1, see assets/fonts/OFL.txt) — the family
-  # AppTextStyles.fontFamily requests; covers Arabic and Latin. No 600 face
-  # ships, so w600 styles resolve to the Bold (700) face.
-  fonts:
-    - family: Tajawal
-      fonts:
-        - asset: assets/fonts/Tajawal-Regular.ttf
-        - asset: assets/fonts/Tajawal-Medium.ttf
-          weight: 500
-        - asset: assets/fonts/Tajawal-Bold.ttf
-          weight: 700
-        - asset: assets/fonts/Tajawal-ExtraBold.ttf
-          weight: 800
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a

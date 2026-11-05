@@ -34,7 +34,6 @@ abstract final class StorageKeys {
   static const mealPlan = 'meal_plan.v1';
   static const nutritionist = 'nutritionist.v1';
 
-<<<<<<< HEAD
   /// The nutritionist's WhatsApp number for the forgot-password message
   /// (3.6). Kept after the session ends; removed when the account is deleted
   /// by `PasswordHelpContact`.
@@ -44,8 +43,6 @@ abstract final class StorageKeys {
   /// kept after the session ends by `PrivacyPolicyLink`.
   static const privacyPolicyUrl = 'privacy_policy_url.v1';
 
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   /// The last `GET /me/reviews` answer, kept for offline reading. Cleared at
   /// sign-out by `ReviewRepositoryImpl`.
   static const reviews = 'reviews.v1';
@@ -60,7 +57,6 @@ abstract final class StorageKeys {
   static const appointmentsUpcoming = 'appointments_upcoming.v1';
   static const appointmentsPast = 'appointments_past.v1';
   static const pendingWrites = 'pending_writes.v1';
-<<<<<<< HEAD
 
   /// The last answers of the patient-app spec endpoints, kept for offline
   /// reading. Cleared at sign-out through their repositories (2.5).
@@ -72,8 +68,6 @@ abstract final class StorageKeys {
   static const today = 'today.v1';
   static const postsFirstPage = 'posts_first_page.v1';
   static const wellbeing = 'wellbeing.v1';
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 }
 
 /// Key-value persistence abstraction. UI and repositories depend on THIS

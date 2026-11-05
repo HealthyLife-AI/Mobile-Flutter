@@ -1,8 +1,5 @@
-<<<<<<< HEAD
 import 'dart:async';
 
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -11,10 +8,7 @@ import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_radius.dart';
 import '../../core/theme/app_text_styles.dart';
 import '../bloc/auth/auth_cubit.dart';
-<<<<<<< HEAD
 import '../widgets/forgot_password_dialog.dart';
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 import '../widgets/gradient_cta_button.dart';
 
 import '../../l10n/l10n.dart';
@@ -34,7 +28,6 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _password = TextEditingController();
   bool _obscure = true;
 
-<<<<<<< HEAD
   /// Ticks once a second while sign-in is locked (423), so the wait counts
   /// down (3.1).
   Timer? _lockTicker;
@@ -48,16 +41,11 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void dispose() {
     _lockTicker?.cancel();
-=======
-  @override
-  void dispose() {
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
     _username.dispose();
     _password.dispose();
     super.dispose();
   }
 
-<<<<<<< HEAD
   void _followLock(Failure? failure) {
     _lockTicker?.cancel();
     _lockTicker = null;
@@ -69,8 +57,6 @@ class _LoginScreenState extends State<LoginScreen> {
     });
   }
 
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   void _submit() {
     FocusScope.of(context).unfocus();
     context.read<AuthCubit>().signIn(
@@ -79,47 +65,21 @@ class _LoginScreenState extends State<LoginScreen> {
         );
   }
 
-<<<<<<< HEAD
-=======
-  void _showForgotPassword() {
-    showDialog<void>(
-      context: context,
-      builder: (dialogContext) => AlertDialog(
-        title: Text(context.l10n.passwordForgot),
-        content: Text(context.l10n.loginForgotBody),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(dialogContext).pop(),
-            child: Text(context.l10n.commonClose),
-          ),
-        ],
-      ),
-    );
-  }
-
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
       body: SafeArea(
-<<<<<<< HEAD
         child: BlocConsumer<AuthCubit, AuthState>(
           listenWhen: (previous, next) => previous.failure != next.failure,
           listener: (context, state) => _followLock(state.failure),
-=======
-        child: BlocBuilder<AuthCubit, AuthState>(
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
           builder: (context, state) {
             final l10n = context.l10n;
             final failure = state.failure;
             final message =
                 failure == null ? null : _messageFor(context, failure);
-<<<<<<< HEAD
             final locked =
                 _lockedUntil(failure)?.isAfter(DateTime.now()) ?? false;
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 
             return ListView(
               padding: const EdgeInsets.fromLTRB(22, 24, 22, 24),
@@ -208,20 +168,12 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: 22),
                 GradientCtaButton(
                   label: l10n.loginCta,
-<<<<<<< HEAD
                   onPressed: state.busy || locked ? null : _submit,
-=======
-                  onPressed: state.busy ? null : _submit,
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
                 ),
                 const SizedBox(height: 8),
                 Center(
                   child: TextButton(
-<<<<<<< HEAD
                     onPressed: () => showForgotPasswordDialog(context),
-=======
-                    onPressed: _showForgotPassword,
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
                     child: Text(l10n.passwordForgot,
                         style: AppTextStyles.pillLabel),
                   ),
@@ -246,30 +198,20 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 }
 
-<<<<<<< HEAD
 /// Maps a sign-in failure to a message. The API's own English text is never
 /// shown. Null once a lock (423) has run out: the patient can try again.
 String? _messageFor(BuildContext context, Failure failure) {
-=======
-/// Maps a sign-in failure to a message. The API's own English text is never shown.
-String _messageFor(BuildContext context, Failure failure) {
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   final l10n = context.l10n;
   return switch (failure) {
     ValidationFailure() => l10n.loginErrorRequired,
     NetworkFailure() => l10n.commonOfflineBody,
-<<<<<<< HEAD
     ApiFailure(statusCode: 423) => _lockedMessage(context, failure),
-=======
-    ApiFailure(statusCode: 423, :final body) => _lockedMessage(context, body),
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
     ApiFailure(statusCode: 429) => l10n.loginErrorRateLimited,
     ApiFailure(statusCode: 401) => l10n.loginErrorInvalid,
     _ => l10n.loginErrorGeneric,
   };
 }
 
-<<<<<<< HEAD
 /// When a locked sign-in (423) opens again: `locked_until`, ISO UTC (3.1).
 DateTime? _lockedUntil(Failure? failure) {
   if (failure is! ApiFailure || failure.statusCode != 423) return null;
@@ -293,15 +235,6 @@ String? _lockedMessage(BuildContext context, Failure failure) {
 (int, String) lockCountdown(Duration left) {
   final total = (left.inMilliseconds / 1000).ceil();
   return (total ~/ 60, (total % 60).toString().padLeft(2, '0'));
-=======
-String _lockedMessage(BuildContext context, Map<String, dynamic> body) {
-  final raw = body['locked_until'];
-  final until = raw is String ? DateTime.tryParse(raw) : null;
-  if (until == null) return context.l10n.loginErrorGeneric;
-  final time = MaterialLocalizations.of(context)
-      .formatTimeOfDay(TimeOfDay.fromDateTime(until.toLocal()));
-  return context.l10n.loginErrorLocked(time);
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 }
 
 class _InputBox extends StatelessWidget {

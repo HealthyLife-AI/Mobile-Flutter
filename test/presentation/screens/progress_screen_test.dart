@@ -178,18 +178,11 @@ void main() {
     expect(find.text('-4 سم'), findsNothing);
   });
 
-<<<<<<< HEAD
   testWidgets('the next appointment shows only when known', (tester) async {
     await open(tester, _answers());
     expect(find.text('مناقشة التقييم عبر الواتساب مباشرة'), findsNothing);
     // Quick contact replaces the WhatsApp button (spec, phase 1): always on.
     expect(find.text('تواصل سريع مع أخصائيتك'), findsOneWidget);
-=======
-  testWidgets('WhatsApp and the next appointment show only when known',
-      (tester) async {
-    await open(tester, _answers());
-    expect(find.text('مناقشة التقييم عبر الواتساب مباشرة'), findsNothing);
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
     expect(find.textContaining('موعدك القادم'), findsNothing);
     expect(find.textContaining('الأحد القادم'), findsNothing);
   });
@@ -215,12 +208,8 @@ void main() {
     expect(find.text('على المسار'), findsOneWidget);
   });
 
-<<<<<<< HEAD
   testWidgets('with a booking, quick contact shows instead of WhatsApp',
       (tester) async {
-=======
-  testWidgets('with a number and a booking, both show', (tester) async {
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
     await open(
       tester,
       _answers(whatsapp: '+970599123456', appointments: [
@@ -234,12 +223,8 @@ void main() {
       ]),
     );
 
-<<<<<<< HEAD
     expect(find.text('مناقشة التقييم عبر الواتساب مباشرة'), findsNothing);
     expect(find.text('تواصل سريع مع أخصائيتك'), findsOneWidget);
-=======
-    expect(find.text('مناقشة التقييم عبر الواتساب مباشرة'), findsOneWidget);
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
     expect(find.textContaining('موعدك القادم'), findsOneWidget);
   });
 }

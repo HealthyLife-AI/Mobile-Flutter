@@ -101,12 +101,8 @@ List<FoodCategoryGroup> planSwapGroups(BuildContext context, PlanMeal meal) {
     for (final item in meal.items)
       FoodCategoryGroup(title: item.food.name, options: [
         option(item, original: true),
-<<<<<<< HEAD
         // Economical and no-cook alternatives first (spec, phase 4).
         for (final alt in item.alternativesByEase) option(alt),
-=======
-        for (final alt in item.alternatives) option(alt),
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
       ]),
   ];
 }

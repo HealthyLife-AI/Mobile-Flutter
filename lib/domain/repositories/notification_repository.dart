@@ -10,11 +10,8 @@ abstract interface class NotificationRepository {
   Future<Result<void>> markRead(String id);
 
   Future<Result<void>> markAllRead(List<String> ids);
-<<<<<<< HEAD
 
   /// Unread rows on every page, from the server (API guide 10.2). Null when
   /// the count is not known; the screens then count the rows they have.
   Future<Result<int?>> unreadCount();
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 }

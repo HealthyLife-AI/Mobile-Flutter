@@ -14,12 +14,9 @@ class MeasurementRemoteDataSource {
     final raw = await _api.get('me/measurements');
     return MeasurementDto.readingsFromJson(raw);
   }
-<<<<<<< HEAD
 
   /// `DELETE /me/measurements/{id}` (7.3). Answers 204.
   Future<void> delete(String id) async {
     await _api.delete('me/measurements/${Uri.encodeComponent(id)}');
   }
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 }

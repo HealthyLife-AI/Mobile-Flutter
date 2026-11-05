@@ -40,7 +40,6 @@ abstract final class MeasurementDto {
       hipCm: _number(json['hip_cm']),
       thighCm: _number(json['thigh_cm']),
       armCm: _number(json['arm_cm']),
-<<<<<<< HEAD
       deletableUntil: json['deletable_until'] is String
           ? DateTime.tryParse(json['deletable_until'] as String)
           : null,
@@ -50,11 +49,6 @@ abstract final class MeasurementDto {
   /// The id of the reading that [write] shows while it waits in the queue.
   static String waitingId(PendingWrite write) => 'waiting-${write.id}';
 
-=======
-    );
-  }
-
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   /// A reading the patient made offline, read back from its queued `POST`
   /// body. It is marked [MeasurementEntry.pending] until the server confirms
   /// it. Null when the body has no date.
@@ -64,11 +58,7 @@ abstract final class MeasurementDto {
     final date = recorded is String ? DateTime.tryParse(recorded) : null;
     if (date == null) return null;
     return MeasurementEntry(
-<<<<<<< HEAD
       id: waitingId(write),
-=======
-      id: 'waiting-${write.id}',
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
       recordedAt: DateTime(date.year, date.month, date.day),
       source: ReadingSource.selfReported,
       pending: true,

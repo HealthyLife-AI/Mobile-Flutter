@@ -8,16 +8,12 @@ import '../../domain/entities/nutritionist_entities.dart';
 import '../../domain/repositories/nutritionist_repository.dart';
 import '../datasources/nutritionist_remote_data_source.dart';
 import '../models/nutritionist_dto.dart';
-<<<<<<< HEAD
 import 'password_help_contact.dart';
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 
 /// The patient's nutritionist from `GET /me/nutritionist` (API guide 9.1).
 ///
 /// The last answer is kept on the device, so the profile still shows without a
 /// connection. The copy is cleared at sign-out with the rest of the patient's
-<<<<<<< HEAD
 /// data (2.5). Only the WhatsApp number outlives it, in [PasswordHelpContact]
 /// (3.6).
 class NutritionistRepositoryImpl
@@ -25,31 +21,19 @@ class NutritionistRepositoryImpl
   NutritionistRepositoryImpl(this._storage, this._remote,
       {PasswordHelpContact? passwordHelp})
       : _passwordHelp = passwordHelp;
-=======
-/// data (2.5).
-class NutritionistRepositoryImpl
-    implements NutritionistRepository, PatientCache {
-  NutritionistRepositoryImpl(this._storage, this._remote);
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 
   static const DefaultAppLogger _log = DefaultAppLogger();
 
   final StorageService _storage;
   final NutritionistRemoteDataSource _remote;
-<<<<<<< HEAD
   final PasswordHelpContact? _passwordHelp;
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 
   @override
   Future<Result<NutritionistProfile>> getProfile() => guard(() async {
         try {
           final profile = await _remote.fetch();
           await _remember(profile);
-<<<<<<< HEAD
           await _passwordHelp?.remember(profile.whatsappNumber);
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
           return profile;
         } on NetworkException {
           // No connection: show the last answer, when there is one.

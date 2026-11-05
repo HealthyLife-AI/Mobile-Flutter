@@ -1,16 +1,8 @@
-<<<<<<< HEAD
 Copyright 2009 The Cairo Project Authors (https://github.com/Gue3bara/Cairo)
 
 This Font Software is licensed under the SIL Open Font License, Version 1.1.
 This license is copied below, and is also available with a FAQ at:
 https://openfontlicense.org
-=======
-Copyright 2018 Boutros International. (http://www.boutrosfonts.com)
-
-This Font Software is licensed under the SIL Open Font License, Version 1.1.
-This license is copied below, and is also available with a FAQ at:
-http://scripts.sil.org/OFL
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 
 
 -----------------------------------------------------------

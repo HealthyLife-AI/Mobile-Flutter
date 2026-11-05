@@ -76,11 +76,8 @@ NotificationEntry _at(String id, DateTime? at) => NotificationEntry(
     );
 
 void main() {
-<<<<<<< HEAD
   _unreadCountTests();
 
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   group('NotificationDto', () {
     test('reads a server row', () {
       final entry = NotificationDto.fromJson(_row(41))!;
@@ -244,7 +241,6 @@ void main() {
     });
   });
 }
-<<<<<<< HEAD
 
 void _unreadCountTests() {
   test('the unread count is read from its own endpoint (10.2)', () async {
@@ -261,5 +257,3 @@ void _unreadCountTests() {
         throwsA(isA<ParseException>()));
   });
 }
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a

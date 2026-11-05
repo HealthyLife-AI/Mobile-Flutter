@@ -51,21 +51,14 @@ class OfflineQueue implements PatientCache {
     DateTime Function()? clock,
     Future<void> Function(Duration delay)? pause,
     void Function(DroppedWrite write)? onDropped,
-<<<<<<< HEAD
     Future<void> Function(PendingWrite write, Object? response)? onSaved,
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
     this.minGap = const Duration(milliseconds: 500),
   })  : _storage = storage,
         _api = api,
         _clock = clock ?? DateTime.now,
         _pause = pause ?? _delay,
-<<<<<<< HEAD
         _onDropped = onDropped,
         _onSaved = onSaved;
-=======
-        _onDropped = onDropped;
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 
   final StorageService _storage;
   final ApiClient _api;
@@ -76,14 +69,11 @@ class OfflineQueue implements PatientCache {
   /// it (API guide 14.2).
   final void Function(DroppedWrite write)? _onDropped;
 
-<<<<<<< HEAD
   /// Told about each write the server saved, with its answer (the saved
   /// object), before the write leaves the queue. A meal log keeps the
   /// server's id this way, so it can be deleted later (6.4).
   final Future<void> Function(PendingWrite write, Object? response)? _onSaved;
 
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   /// Gap between two sends in one flush. The limit is 120 requests a minute
   /// (1.4).
   final Duration minGap;
@@ -92,12 +82,9 @@ class OfflineQueue implements PatientCache {
 
   Future<void> _storageLock = Future<void>.value();
   Future<OfflineQueueReport>? _flushing;
-<<<<<<< HEAD
 
   /// Set while [paused] runs. A flush asked for meanwhile starts after it.
   Future<void>? _hold;
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   int _sequence = 0;
 
   static Future<void> _delay(Duration delay) => Future<void>.delayed(delay);
@@ -127,7 +114,6 @@ class OfflineQueue implements PatientCache {
   /// Forgets every queued write. Called when the session ends.
   Future<void> clear() => _edit((_) => const []);
 
-<<<<<<< HEAD
   /// Takes the writes that match [test] out of the queue, unsent, and returns
   /// them. Use it inside [paused], so none of them is being sent meanwhile.
   Future<List<PendingWrite>> removeWhere(
@@ -161,8 +147,6 @@ class OfflineQueue implements PatientCache {
     }
   }
 
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   @override
   Future<void> forgetPatientData() => clear();
 
@@ -178,12 +162,9 @@ class OfflineQueue implements PatientCache {
 
   Future<OfflineQueueReport> _runSafely() async {
     try {
-<<<<<<< HEAD
       for (var hold = _hold; hold != null; hold = _hold) {
         await hold;
       }
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
       return await _run();
     } on StorageException catch (error) {
       _log.warn('Queued writes could not be updated', error: error);
@@ -215,14 +196,9 @@ class OfflineQueue implements PatientCache {
       if (paced) await _pause(minGap);
       paced = true;
 
-<<<<<<< HEAD
       final (:decision, :response) = await _trySend(head);
       if (decision == null) {
         await _notifySaved(head, response);
-=======
-      final decision = await _trySend(head);
-      if (decision == null) {
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
         await _replace(head.id, null);
         sent++;
         continue;
@@ -257,7 +233,6 @@ class OfflineQueue implements PatientCache {
     }
   }
 
-<<<<<<< HEAD
   /// Sends one write. The decision is null when the server saved it, and the
   /// response is its answer; otherwise the decision says what to do next.
   Future<({SyncDecision? decision, Object? response})> _trySend(
@@ -285,19 +260,6 @@ class OfflineQueue implements PatientCache {
       await notify(write, response);
     } catch (error) {
       _log.warn('A saved write could not be reported', error: error);
-=======
-  /// Sends one write. Returns null when the server saved it, or the decision
-  /// about what to do next when it did not.
-  Future<SyncDecision?> _trySend(PendingWrite write) async {
-    try {
-      await _api.post(write.path, body: write.body);
-      return null;
-    } on AppException catch (error) {
-      return decideSync(write: write, error: error, now: _clock());
-    } on Object catch (error) {
-      _log.warn('Unexpected error while sending a queued write', error: error);
-      return SyncWait(backoffFor(write.attempts));
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
     }
   }
 

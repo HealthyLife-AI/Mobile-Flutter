@@ -77,7 +77,6 @@ class MeasurementRepositoryImpl implements MeasurementRepository, PatientCache {
   }
 
   @override
-<<<<<<< HEAD
   Future<Result<MeasurementSnapshot>> deleteEntry(
       MeasurementEntry entry) async {
     final deleted = await guard(() async {
@@ -98,8 +97,6 @@ class MeasurementRepositoryImpl implements MeasurementRepository, PatientCache {
   }
 
   @override
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   Future<void> forgetPatientData() async {
     _cache = null;
     await _storage.remove(StorageKeys.measurementReadings);

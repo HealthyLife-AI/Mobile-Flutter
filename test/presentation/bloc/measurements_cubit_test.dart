@@ -16,13 +16,10 @@ class _Repository implements MeasurementRepository {
   @override
   Future<Result<MeasurementSnapshot>> saveEntry(MeasurementEntry entry) =>
       throw UnimplementedError();
-<<<<<<< HEAD
 
   @override
   Future<Result<MeasurementSnapshot>> deleteEntry(MeasurementEntry entry) =>
       throw UnimplementedError();
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 }
 
 MeasurementSnapshot snapshotOf(List<MeasurementEntry> readings) =>

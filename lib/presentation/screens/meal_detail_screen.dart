@@ -1,7 +1,4 @@
-<<<<<<< HEAD
 import '../widgets/spec_ui.dart';
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
@@ -790,10 +787,7 @@ class _OptionTile extends StatelessWidget {
                             context.l10n
                                 .mealDetailReplaces(_short(replacesName)),
                             filled: false),
-<<<<<<< HEAD
                       ...foodTagBadges(context.l10n, option.planItem),
-=======
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
                     ],
                   ),
                   if (hasDesc) ...[

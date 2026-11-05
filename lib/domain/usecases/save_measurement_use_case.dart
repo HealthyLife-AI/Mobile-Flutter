@@ -7,16 +7,12 @@ import '../repositories/measurement_repository.dart';
 /// the widget, so it is enforced no matter which screen submits (API guide
 /// 7.1).
 class SaveMeasurementUseCase {
-<<<<<<< HEAD
   SaveMeasurementUseCase(this._repository, {void Function()? onSaved})
       : _onSaved = onSaved;
 
   /// Told after every saved reading: the server moves the measurement
   /// schedule then, so it is read again.
   final void Function()? _onSaved;
-=======
-  SaveMeasurementUseCase(this._repository);
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 
   /// Accepted weight in kg, both ends included (7.1).
   static const (int, int) weightRangeKg = (20, 300);
@@ -60,13 +56,9 @@ class SaveMeasurementUseCase {
     if (errors.isNotEmpty) {
       return Failed(ValidationFailure(fieldErrors: errors));
     }
-<<<<<<< HEAD
     final result = await _repository.saveEntry(entry);
     if (result.failureOrNull == null) _onSaved?.call();
     return result;
-=======
-    return _repository.saveEntry(entry);
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
   }
 
   static bool _outside(double value, (int, int) range) =>

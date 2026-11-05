@@ -23,10 +23,6 @@ import 'package:healthylife_ai/presentation/screens/language_settings_screen.dar
 import 'package:healthylife_ai/presentation/screens/login_screen.dart';
 import 'package:healthylife_ai/presentation/screens/notification_settings_screen.dart';
 import 'package:healthylife_ai/presentation/screens/onboarding_screen.dart';
-<<<<<<< HEAD
-=======
-import 'package:healthylife_ai/presentation/screens/privacy_document_screen.dart';
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 import 'package:healthylife_ai/presentation/screens/profile_screen.dart';
 import 'package:healthylife_ai/presentation/widgets/app_header_bar.dart';
 
@@ -58,21 +54,12 @@ Future<void> _pumpApp(WidgetTester tester, AppDependencies deps,
 BuildContext _homeContext(WidgetTester tester) =>
     tester.element(find.byType(_ProbeHome, skipOffstage: false));
 
-<<<<<<< HEAD
 /// Loads the bundled Cairo faces under the family the app requests, so
 /// layouts measure real glyphs instead of the test font's full-em boxes.
 Future<void> _loadAppFont() async {
   final loader = FontLoader('Cairo');
   for (final face in ['Regular', 'Medium', 'Bold', 'ExtraBold']) {
     final bytes = File('assets/fonts/Cairo-$face.ttf').readAsBytesSync();
-=======
-/// Loads the bundled Tajawal faces under the family the app requests, so
-/// layouts measure real glyphs instead of the test font's full-em boxes.
-Future<void> _loadTajawal() async {
-  final loader = FontLoader('Tajawal');
-  for (final face in ['Regular', 'Medium', 'Bold', 'ExtraBold']) {
-    final bytes = File('assets/fonts/Tajawal-$face.ttf').readAsBytesSync();
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
     loader.addFont(Future.value(ByteData.sublistView(bytes)));
   }
   await loader.load();
@@ -98,11 +85,7 @@ void main() {
   final ar = lookupAppLocalizations(const Locale('ar'));
   final en = lookupAppLocalizations(const Locale('en'));
 
-<<<<<<< HEAD
   setUpAll(_loadAppFont);
-=======
-  setUpAll(_loadTajawal);
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
 
   group('locale defaults', () {
     testWidgets('a fresh installation starts in Arabic, right to left',
@@ -504,10 +487,6 @@ void main() {
       'login': () => const LoginScreen(),
       'notification settings': () => const NotificationSettingsScreen(),
       'onboarding': () => const OnboardingScreen(),
-<<<<<<< HEAD
-=======
-      'privacy document': () => const PrivacyDocumentScreen(),
->>>>>>> 80d1dd472531cb331f5eb32effd9a02afec5507a
       'profile': () => const ProfileScreen(),
     };
 
