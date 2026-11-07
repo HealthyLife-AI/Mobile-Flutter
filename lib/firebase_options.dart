@@ -6,6 +6,10 @@ import 'package:flutter/foundation.dart'
 
 /// Default [FirebaseOptions] for use with your Firebase apps.
 ///
+/// Project `healthylife-3ce36`: the project the backend sends pushes from.
+/// Android reads the same project from `android/app/google-services.json`,
+/// so the native app and these options agree.
+///
 /// Example:
 /// ```dart
 /// import 'firebase_options.dart';
@@ -17,7 +21,10 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      return web;
+      throw UnsupportedError(
+        'DefaultFirebaseOptions have not been configured for web - '
+        'you can reconfigure this by running the FlutterFire CLI again.',
+      );
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -25,9 +32,15 @@ class DefaultFirebaseOptions {
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
-        return macos;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for macos - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.windows:
-        return windows;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for windows - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.linux:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for linux - '
@@ -40,49 +53,20 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyCzTKxCLmK1x8FpaR64HVH8wkVv3LPYgDI',
-    appId: '1:120917179187:web:732b4063acd51f332c5c46',
-    messagingSenderId: '120917179187',
-    projectId: 'healthylife-bb685',
-    authDomain: 'healthylife-bb685.firebaseapp.com',
-    storageBucket: 'healthylife-bb685.firebasestorage.app',
-    measurementId: 'G-NDTEVGRMEG',
-  );
-
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyBVKUVqFt6LGYOknTnVN6PaagdtEaQr0m4',
-    appId: '1:120917179187:android:3662602f4ce3170c2c5c46',
-    messagingSenderId: '120917179187',
-    projectId: 'healthylife-bb685',
-    storageBucket: 'healthylife-bb685.firebasestorage.app',
+    apiKey: 'AIzaSyC4eizd1QxkCqL7bKgCWM3yiMLGa3gg9SM',
+    appId: '1:17284017886:android:d30d72a5177f3b2e9a1c4f',
+    messagingSenderId: '17284017886',
+    projectId: 'healthylife-3ce36',
+    storageBucket: 'healthylife-3ce36.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyBI3s5wV0Khg-WZiJCnhn7N5tTjVt82XK0',
-    appId: '1:120917179187:ios:5c8e5b2543059a1c2c5c46',
-    messagingSenderId: '120917179187',
-    projectId: 'healthylife-bb685',
-    storageBucket: 'healthylife-bb685.firebasestorage.app',
-    iosBundleId: 'com.example.healthylife',
-  );
-
-  static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyBI3s5wV0Khg-WZiJCnhn7N5tTjVt82XK0',
-    appId: '1:120917179187:ios:5c8e5b2543059a1c2c5c46',
-    messagingSenderId: '120917179187',
-    projectId: 'healthylife-bb685',
-    storageBucket: 'healthylife-bb685.firebasestorage.app',
-    iosBundleId: 'com.example.healthylife',
-  );
-
-  static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyCzTKxCLmK1x8FpaR64HVH8wkVv3LPYgDI',
-    appId: '1:120917179187:web:bc47d011dd4458d32c5c46',
-    messagingSenderId: '120917179187',
-    projectId: 'healthylife-bb685',
-    authDomain: 'healthylife-bb685.firebaseapp.com',
-    storageBucket: 'healthylife-bb685.firebasestorage.app',
-    measurementId: 'G-SFJJW3YB6E',
+    apiKey: 'AIzaSyC763B9aQu9Ef4LF2kOs-CjG08phzJrbJY',
+    appId: '1:17284017886:ios:e1669820cc1404dc9a1c4f',
+    messagingSenderId: '17284017886',
+    projectId: 'healthylife-3ce36',
+    storageBucket: 'healthylife-3ce36.firebasestorage.app',
+    iosBundleId: 'com.healthylife.app',
   );
 }
