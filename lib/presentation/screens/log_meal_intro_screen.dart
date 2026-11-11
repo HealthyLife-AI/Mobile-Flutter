@@ -177,7 +177,7 @@ class _LogMealIntroScreenState extends State<LogMealIntroScreen>
               badgeColor: AppColors.accentGreen,
               icon: Icons.apple,
               iconTint: AppColors.accentGreenBg,
-              notesTint: AppColors.accentGreenBg.withOpacity(.5),
+              notesTint: AppColors.accentGreenBg.withValues(alpha: .5),
               blobTint: AppColors.accentGreenBg,
               title: context.l10n.foodSearchAteOffPlan,
               description: context.l10n.logMealOffPlanDesc,
@@ -246,16 +246,17 @@ class _LogMealIntroScreenState extends State<LogMealIntroScreen>
               height: 44,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: AppColors.primary.withOpacity(.3),
+                color: AppColors.primary.withValues(alpha: .3),
                 boxShadow: [
                   BoxShadow(
-                      color: const Color(0xFFFFC15A).withOpacity(glow),
+                      color: const Color(0xFFFFC15A).withValues(alpha: glow),
                       blurRadius: 12 + 10 * breathe,
                       spreadRadius: 1 + 2 * breathe)
                 ],
               ),
               child: Icon(Icons.lightbulb_outline_rounded,
-                  color: AppColors.textPrimary.withOpacity(.55 + .45 * flicker),
+                  color: AppColors.textPrimary
+                      .withValues(alpha: .55 + .45 * flicker),
                   size: 22),
             );
           },
@@ -393,7 +394,7 @@ class _IntroOptionCardState extends State<_IntroOptionCard> {
               borderRadius: BorderRadius.circular(AppRadius.card),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(_down ? .03 : .07),
+                  color: Colors.black.withValues(alpha: _down ? .03 : .07),
                   blurRadius: _down ? 10 : 22,
                   offset: Offset(0, _down ? 3 : 9),
                 ),
@@ -554,9 +555,9 @@ class _IntroOptionCardState extends State<_IntroOptionCard> {
                       child: DecoratedBox(
                         decoration: BoxDecoration(
                           gradient: LinearGradient(colors: [
-                            Colors.white.withOpacity(0),
-                            Colors.white.withOpacity(.55),
-                            Colors.white.withOpacity(0)
+                            Colors.white.withValues(alpha: 0),
+                            Colors.white.withValues(alpha: .55),
+                            Colors.white.withValues(alpha: 0)
                           ]),
                         ),
                       ),

@@ -779,9 +779,9 @@ class _EnergyBarState extends State<_EnergyBar>
                                 child: DecoratedBox(
                                   decoration: BoxDecoration(
                                     gradient: LinearGradient(colors: [
-                                      Colors.white.withOpacity(0),
-                                      Colors.white.withOpacity(.45),
-                                      Colors.white.withOpacity(0),
+                                      Colors.white.withValues(alpha: 0),
+                                      Colors.white.withValues(alpha: .45),
+                                      Colors.white.withValues(alpha: 0),
                                     ]),
                                   ),
                                 ),
@@ -1231,7 +1231,7 @@ class _AddMealButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(AppRadius.card),
             boxShadow: [
               BoxShadow(
-                  color: AppColors.primary.withOpacity(.28),
+                  color: AppColors.primary.withValues(alpha: .28),
                   blurRadius: 16,
                   offset: const Offset(0, 6)),
             ],
@@ -1311,7 +1311,7 @@ BoxDecoration _cardDecoration() => BoxDecoration(
       border: Border.all(color: AppColors.border),
       boxShadow: [
         BoxShadow(
-            color: Colors.black.withOpacity(.04),
+            color: Colors.black.withValues(alpha: .04),
             blurRadius: 12,
             offset: const Offset(0, 4)),
       ],

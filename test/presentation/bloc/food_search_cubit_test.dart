@@ -66,8 +66,8 @@ FoodSearchCubit _cubit(_ScriptedFoods foods,
 
 void main() {
   test('the allergy groups are the approved ones, without other', () async {
-    final profile = _ScriptedProfile(Success(PatientHealthProfile(
-      allergies: const [
+    final profile = _ScriptedProfile(const Success(PatientHealthProfile(
+      allergies: [
         AllergyItem(
           label: 'المكسرات',
           group: 'tree_nuts',
@@ -93,11 +93,11 @@ void main() {
 
   test('a profile that cannot be read leaves the badge off, and search works',
       () async {
-    final foods = _ScriptedFoods()..results.add(Success([_apples]));
+    final foods = _ScriptedFoods()..results.add(const Success([_apples]));
     final cubit = _cubit(
       foods,
       healthProfile: _ScriptedProfile(
-        Failed<PatientHealthProfile>(const NetworkFailure()),
+        const Failed<PatientHealthProfile>(NetworkFailure()),
       ),
     );
     addTearDown(cubit.close);
@@ -115,7 +115,7 @@ void main() {
   test(
       'a search runs once two letters are typed, and a shorter one is not sent',
       () async {
-    final foods = _ScriptedFoods()..results.add(Success([_apples]));
+    final foods = _ScriptedFoods()..results.add(const Success([_apples]));
     final cubit = _cubit(foods);
     addTearDown(cubit.close);
 
@@ -133,7 +133,7 @@ void main() {
   test('a failed search keeps the failure, for the error view to show',
       () async {
     final foods = _ScriptedFoods()
-      ..results.add(Failed<List<SearchableFood>>(const NetworkFailure()));
+      ..results.add(const Failed<List<SearchableFood>>(NetworkFailure()));
     final cubit = _cubit(foods);
     addTearDown(cubit.close);
 

@@ -97,7 +97,7 @@ void main() {
   });
 
   test('offline, the search fails as a network problem', () async {
-    api.answer = NetworkException(
+    api.answer = const NetworkException(
       'no connection',
       kind: NetworkFailureKind.offline,
     );

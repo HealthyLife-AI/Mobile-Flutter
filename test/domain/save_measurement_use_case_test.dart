@@ -25,7 +25,7 @@ class _Repository implements MeasurementRepository {
   @override
   Future<Result<MeasurementSnapshot>> saveEntry(MeasurementEntry entry) async {
     saved.add(entry);
-    return Success(_snapshot);
+    return const Success(_snapshot);
   }
 
   @override

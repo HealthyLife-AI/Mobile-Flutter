@@ -20,7 +20,7 @@ final AppLocalizations ar = lookupAppLocalizations(const Locale('ar'));
 
 /// Only `deleteAccount` is used here. The answer is set by each test.
 class _FakeAuth implements AuthRepository {
-  Result<void> deleteResult = Success<void>(null);
+  Result<void> deleteResult = const Success<void>(null);
   int deleteCalls = 0;
   String? lastPassword;
 
@@ -91,7 +91,7 @@ class _FakePreferences implements PreferencesSync {
 }
 
 /// Shows the screen in Arabic, with a real [AuthCubit] over [auth].
-Future<AuthCubit> pumpScreen(WidgetTester tester, _FakeAuth auth) async {
+Future<AuthCubit> _pumpScreen(WidgetTester tester, _FakeAuth auth) async {
   final cubit = AuthCubit(
     auth: auth,
     signIn: SignInUseCase(auth),
@@ -138,7 +138,7 @@ Future<void> deleteWith(WidgetTester tester, String password) async {
 void main() {
   testWidgets('delete stays off until a password is typed', (tester) async {
     final auth = _FakeAuth();
-    await pumpScreen(tester, auth);
+    await _pumpScreen(tester, auth);
 
     expect(tester.widget<ElevatedButton>(deleteButton).onPressed, isNull);
 
@@ -151,7 +151,7 @@ void main() {
 
   testWidgets('cancelling the confirmation sends nothing', (tester) async {
     final auth = _FakeAuth();
-    await pumpScreen(tester, auth);
+    await _pumpScreen(tester, auth);
 
     await tester.enterText(find.byType(TextField), 'secret-pass');
     await tester.pump();
@@ -171,8 +171,8 @@ void main() {
       'a wrong password (422) is shown under the field and the patient '
       'stays signed in', (tester) async {
     final auth = _FakeAuth()
-      ..deleteResult = Failed(const ApiFailure(statusCode: 422));
-    final cubit = await pumpScreen(tester, auth);
+      ..deleteResult = const Failed(ApiFailure(statusCode: 422));
+    final cubit = await _pumpScreen(tester, auth);
 
     await deleteWith(tester, 'wrong-pass');
 
@@ -187,8 +187,8 @@ void main() {
   testWidgets('too many attempts (429) shows the rate-limit message',
       (tester) async {
     final auth = _FakeAuth()
-      ..deleteResult = Failed(const ApiFailure(statusCode: 429));
-    await pumpScreen(tester, auth);
+      ..deleteResult = const Failed(ApiFailure(statusCode: 429));
+    await _pumpScreen(tester, auth);
 
     await deleteWith(tester, 'secret-pass');
 
@@ -196,8 +196,8 @@ void main() {
   });
 
   testWidgets('no connection shows the offline message', (tester) async {
-    final auth = _FakeAuth()..deleteResult = Failed(const NetworkFailure());
-    await pumpScreen(tester, auth);
+    final auth = _FakeAuth()..deleteResult = const Failed(NetworkFailure());
+    await _pumpScreen(tester, auth);
 
     await deleteWith(tester, 'secret-pass');
 
@@ -206,8 +206,8 @@ void main() {
 
   testWidgets('any other failure shows the generic message', (tester) async {
     final auth = _FakeAuth()
-      ..deleteResult = Failed(const ServerFailure(statusCode: 500));
-    await pumpScreen(tester, auth);
+      ..deleteResult = const Failed(ServerFailure(statusCode: 500));
+    await _pumpScreen(tester, auth);
 
     await deleteWith(tester, 'secret-pass');
 
@@ -216,7 +216,7 @@ void main() {
 
   testWidgets('a deleted account signs out and shows no error', (tester) async {
     final auth = _FakeAuth();
-    final cubit = await pumpScreen(tester, auth);
+    final cubit = await _pumpScreen(tester, auth);
 
     await deleteWith(tester, 'secret-pass');
 

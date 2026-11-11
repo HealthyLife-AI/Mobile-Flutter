@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:healthylife_ai/core/navigation/push_destination.dart';
 import 'package:healthylife_ai/core/navigation/push_tap_router.dart';
 
 /// Holds post-frame callbacks until a test runs a frame.
@@ -39,7 +38,8 @@ void main() {
         events.add('mark:$id');
         if (failMarks) throw StateError('offline');
       },
-      open: (destination, {reviewId, postId}) => events.add('open:${destination.name}'),
+      open: (destination, {reviewId, postId}) =>
+          events.add('open:${destination.name}'),
       afterFrame: frames.schedule,
     );
   });
@@ -150,7 +150,8 @@ void main() {
     final read = Completer<void>();
     final inFlight = PushTapRouter(
       markRead: (_) => read.future,
-      open: (destination, {reviewId, postId}) => events.add('open:${destination.name}'),
+      open: (destination, {reviewId, postId}) =>
+          events.add('open:${destination.name}'),
       afterFrame: frames.schedule,
     );
     inFlight.updateGate(PushGate.open);

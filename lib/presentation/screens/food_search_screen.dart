@@ -73,7 +73,7 @@ class FoodSearchScreen extends StatelessWidget {
 }
 
 class _FoodSearchView extends StatefulWidget {
-  const _FoodSearchView({super.key});
+  const _FoodSearchView();
 
   @override
   State<_FoodSearchView> createState() => _FoodSearchViewState();
@@ -342,7 +342,7 @@ class _FoodSearchViewState extends State<_FoodSearchView>
                               boxShadow: [
                                 BoxShadow(
                                     color: const Color(0xFFE5484D)
-                                        .withOpacity(.5 * s),
+                                        .withValues(alpha: .5 * s),
                                     blurRadius: 6,
                                     spreadRadius: 2 * s)
                               ],
@@ -378,7 +378,7 @@ class _FoodSearchViewState extends State<_FoodSearchView>
       decoration: BoxDecoration(
         color: _softMint,
         borderRadius: BorderRadius.circular(AppRadius.card),
-        border: Border.all(color: AppColors.primary.withOpacity(.06)),
+        border: Border.all(color: AppColors.primary.withValues(alpha: .06)),
         boxShadow: [
           BoxShadow(
               color: AppColors.primary.withValues(alpha: 0.06),
@@ -404,7 +404,8 @@ class _FoodSearchViewState extends State<_FoodSearchView>
                   borderRadius: BorderRadius.circular(14),
                   boxShadow: [
                     BoxShadow(
-                        color: AppColors.primary.withOpacity(.18 + .16 * glow),
+                        color: AppColors.primary
+                            .withValues(alpha: .18 + .16 * glow),
                         blurRadius: 10 + 8 * glow,
                         spreadRadius: 1)
                   ],
@@ -475,7 +476,7 @@ class _FoodSearchViewState extends State<_FoodSearchView>
           borderRadius: BorderRadius.circular(AppRadius.pill),
           border: Border.all(
               color: focused
-                  ? AppColors.primary.withOpacity(.55)
+                  ? AppColors.primary.withValues(alpha: .55)
                   : Colors.transparent,
               width: 1.5),
           boxShadow: [
@@ -584,7 +585,7 @@ class _FoodSearchViewState extends State<_FoodSearchView>
                 boxShadow: active
                     ? [
                         BoxShadow(
-                            color: AppColors.primary.withOpacity(.28),
+                            color: AppColors.primary.withValues(alpha: .28),
                             blurRadius: 12,
                             offset: const Offset(0, 4))
                       ]
@@ -741,7 +742,7 @@ class _ResultRowState extends State<_ResultRow>
                     borderRadius: BorderRadius.circular(AppRadius.cardSmall),
                     boxShadow: [
                       BoxShadow(
-                          color: Colors.black.withOpacity(.04),
+                          color: Colors.black.withValues(alpha: .04),
                           blurRadius: 12,
                           offset: const Offset(0, 4))
                     ],
@@ -921,7 +922,7 @@ class _CantFindItCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: _softMint,
         borderRadius: BorderRadius.circular(AppRadius.card),
-        border: Border.all(color: AppColors.primary.withOpacity(.06)),
+        border: Border.all(color: AppColors.primary.withValues(alpha: .06)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -958,7 +959,7 @@ class _CantFindItCard extends StatelessWidget {
                               boxShadow: [
                                 BoxShadow(
                                     color: const Color(0xFF19D3A2)
-                                        .withOpacity(.5 * s),
+                                        .withValues(alpha: .5 * s),
                                     blurRadius: 6,
                                     spreadRadius: 2 * s)
                               ],

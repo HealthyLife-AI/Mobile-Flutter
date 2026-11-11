@@ -18,7 +18,8 @@ const NutritionistProfile _profile = NutritionistProfile(name: 'د. أمل');
 
 void main() {
   test('a successful load ends in success with the profile', () async {
-    final repository = _ScriptedRepository()..results.add(Success(_profile));
+    final repository = _ScriptedRepository()
+      ..results.add(const Success(_profile));
     final cubit = NutritionistCubit(repository);
     addTearDown(cubit.close);
 
@@ -30,8 +31,8 @@ void main() {
 
   test('a failed refresh keeps the profile already on screen', () async {
     final repository = _ScriptedRepository()
-      ..results.add(Success(_profile))
-      ..results.add(Failed(const NetworkFailure()));
+      ..results.add(const Success(_profile))
+      ..results.add(const Failed(NetworkFailure()));
     final cubit = NutritionistCubit(repository);
     addTearDown(cubit.close);
 
@@ -45,7 +46,7 @@ void main() {
   test('a failure with nothing before it shows the error and no data',
       () async {
     final repository = _ScriptedRepository()
-      ..results.add(Failed(const NetworkFailure()));
+      ..results.add(const Failed(NetworkFailure()));
     final cubit = NutritionistCubit(repository);
     addTearDown(cubit.close);
 

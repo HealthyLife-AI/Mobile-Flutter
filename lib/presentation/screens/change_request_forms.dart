@@ -479,7 +479,6 @@ mixin _RequestFormState<T extends StatefulWidget> on State<T> {
 
 class _FormScaffold extends StatelessWidget {
   const _FormScaffold({
-    super.key,
     required this.title,
     required this.busy,
     required this.formError,
@@ -525,7 +524,7 @@ class _FormScaffold extends StatelessWidget {
 
 /// A label above a field.
 class _LabelledField extends StatelessWidget {
-  const _LabelledField({super.key, required this.label, required this.child});
+  const _LabelledField({required this.label, required this.child});
 
   final String label;
   final Widget child;
@@ -558,7 +557,6 @@ InputDecoration _decoration(String? error) => InputDecoration(
 
 class _TextInput extends StatelessWidget {
   const _TextInput({
-    super.key,
     required this.label,
     required this.controller,
     this.error,
@@ -588,7 +586,6 @@ class _TextInput extends StatelessWidget {
 
 class _Dropdown extends StatelessWidget {
   const _Dropdown({
-    super.key,
     required this.label,
     required this.value,
     required this.options,
@@ -607,7 +604,7 @@ class _Dropdown extends StatelessWidget {
     return _LabelledField(
       label: label,
       child: DropdownButtonFormField<String>(
-        value: value,
+        initialValue: value,
         isExpanded: true,
         decoration: _decoration(error),
         items: [
@@ -622,7 +619,6 @@ class _Dropdown extends StatelessWidget {
 
 class _DateInput extends StatelessWidget {
   const _DateInput({
-    super.key,
     required this.label,
     required this.value,
     required this.onPick,

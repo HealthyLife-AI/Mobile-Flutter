@@ -40,9 +40,9 @@ class HealthSyncScreen extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      _Badge(
+                      const _Badge(
                           icon: Icons.favorite_rounded,
-                          color: const Color(0xFFFF5A6E)),
+                          color: Color(0xFFFF5A6E)),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10),
                         child: Icon(Icons.sync_alt_rounded,

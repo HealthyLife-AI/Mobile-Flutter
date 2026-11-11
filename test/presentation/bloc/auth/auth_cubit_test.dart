@@ -13,17 +13,18 @@ import 'package:healthylife_ai/presentation/bloc/auth/auth_cubit.dart';
 
 /// Every answer the cubit can get from the repository is set by the test.
 class _FakeAuth implements AuthRepository {
-  Result<StoredSession?> session = Success<StoredSession?>(null);
-  Result<void> refresh = Success<void>(null);
-  Result<PatientUser> me = Failed(const UnexpectedFailure());
-  Result<ConsentStatus> consent = Success(ConsentStatus(isRequired: false));
-  Result<StoredSession> signInResult = Failed(const UnexpectedFailure());
+  Result<StoredSession?> session = const Success<StoredSession?>(null);
+  Result<void> refresh = const Success<void>(null);
+  Result<PatientUser> me = const Failed(UnexpectedFailure());
+  Result<ConsentStatus> consent =
+      const Success(ConsentStatus(isRequired: false));
+  Result<StoredSession> signInResult = const Failed(UnexpectedFailure());
   Result<ConsentStatus> acceptResult =
-      Success(ConsentStatus(isRequired: false));
-  Result<PatientUser> changePasswordResult = Failed(const UnexpectedFailure());
-  Result<void> deleteResult = Success<void>(null);
-  Result<void> signOutResult = Success<void>(null);
-  Result<void> markResult = Success<void>(null);
+      const Success(ConsentStatus(isRequired: false));
+  Result<PatientUser> changePasswordResult = const Failed(UnexpectedFailure());
+  Result<void> deleteResult = const Success<void>(null);
+  Result<void> signOutResult = const Success<void>(null);
+  Result<void> markResult = const Success<void>(null);
 
   int signInCalls = 0;
   int signOutCalls = 0;
@@ -155,7 +156,7 @@ ConsentStatus consentRequiring(String version) =>
 Future<void> flush() => Future<void>.delayed(Duration.zero);
 
 /// Signs the harness in as a patient who is already on the app shell.
-Future<void> startSignedIn(_Harness h, {bool onboarded = true}) async {
+Future<void> _startSignedIn(_Harness h, {bool onboarded = true}) async {
   final session = storedSession(onboarded: onboarded);
   h.auth.session = Success<StoredSession?>(session);
   h.auth.me = Success(session.user);
@@ -183,7 +184,7 @@ void main() {
 
     test('a rejected refresh ends the session and says why', () async {
       h.auth.session = Success<StoredSession?>(storedSession());
-      h.auth.refresh = Failed(const ApiFailure(statusCode: 401));
+      h.auth.refresh = const Failed(ApiFailure(statusCode: 401));
 
       await h.cubit.start();
       await flush();
@@ -195,7 +196,7 @@ void main() {
 
     test('an offline start uses the cached session', () async {
       h.auth.session = Success<StoredSession?>(storedSession());
-      h.auth.refresh = Failed(const NetworkFailure());
+      h.auth.refresh = const Failed(NetworkFailure());
 
       await h.cubit.start();
 
@@ -204,7 +205,7 @@ void main() {
     });
 
     test('a patient who is consented and onboarded reaches the app', () async {
-      await startSignedIn(h);
+      await _startSignedIn(h);
       await flush();
 
       expect(h.cubit.state.status, AuthStatus.ready);
@@ -238,7 +239,7 @@ void main() {
 
     test('a patient who has not finished onboarding goes to the wizard',
         () async {
-      await startSignedIn(h, onboarded: false);
+      await _startSignedIn(h, onboarded: false);
 
       expect(h.cubit.state.status, AuthStatus.onboarding);
     });
@@ -260,7 +261,7 @@ void main() {
         () async {
       h.auth.session = Success<StoredSession?>(storedSession());
       h.auth.me = Success(storedSession().user);
-      h.auth.consent = Failed(ApiFailure(
+      h.auth.consent = const Failed(ApiFailure(
         statusCode: 403,
         code: 'follow_up_ended',
         body: {
@@ -286,7 +287,7 @@ void main() {
     test('a wrong password keeps the sign-in screen and shows the failure',
         () async {
       await h.cubit.start(); // no stored session: sign-in is shown
-      h.auth.signInResult = Failed(const ApiFailure(statusCode: 401));
+      h.auth.signInResult = const Failed(ApiFailure(statusCode: 401));
 
       await h.cubit.signIn(username: 'sara.k', password: 'wrong');
 
@@ -370,9 +371,9 @@ void main() {
   group('session events from the network stack', () {
     test('consent required mid-session returns the patient to consent',
         () async {
-      await startSignedIn(h);
+      await _startSignedIn(h);
 
-      h.events.emit(SessionEvent(
+      h.events.emit(const SessionEvent(
         SessionEventType.consentRequired,
         body: {'required': true, 'current_version': 'v2'},
       ));
@@ -385,7 +386,7 @@ void main() {
     test('consent required while signed out is ignored', () async {
       await h.cubit.start();
 
-      h.events.emit(SessionEvent(
+      h.events.emit(const SessionEvent(
         SessionEventType.consentRequired,
         body: {'required': true, 'current_version': 'v2'},
       ));
@@ -395,9 +396,9 @@ void main() {
     });
 
     test('follow-up ended mid-session shows the follow-up screen', () async {
-      await startSignedIn(h);
+      await _startSignedIn(h);
 
-      h.events.emit(SessionEvent(
+      h.events.emit(const SessionEvent(
         SessionEventType.followUpEnded,
         body: {'message': 'ended'},
       ));
@@ -408,7 +409,7 @@ void main() {
     });
 
     test('an expired session mid-session signs out and says why', () async {
-      await startSignedIn(h);
+      await _startSignedIn(h);
 
       h.events.emit(const SessionEvent(SessionEventType.expired));
       await flush();
@@ -430,7 +431,7 @@ void main() {
 
   group('account (API guide 3.5 and 13)', () {
     test('changing the password stores the updated user', () async {
-      await startSignedIn(h, onboarded: true);
+      await _startSignedIn(h, onboarded: true);
       h.auth.changePasswordResult =
           Success(storedSession(temporary: false).user);
 
@@ -457,7 +458,7 @@ void main() {
     });
 
     test('deleting the account signs out on success', () async {
-      await startSignedIn(h);
+      await _startSignedIn(h);
 
       final result = await h.cubit.deleteAccount(password: 'current');
 
@@ -466,8 +467,8 @@ void main() {
     });
 
     test('a failed deletion keeps the patient signed in', () async {
-      await startSignedIn(h);
-      h.auth.deleteResult = Failed(const ApiFailure(statusCode: 422));
+      await _startSignedIn(h);
+      h.auth.deleteResult = const Failed(ApiFailure(statusCode: 422));
 
       final result = await h.cubit.deleteAccount(password: 'wrong');
 
@@ -476,8 +477,8 @@ void main() {
     });
 
     test('signing out returns to sign-in even when the server fails', () async {
-      await startSignedIn(h);
-      h.auth.signOutResult = Failed(const NetworkFailure());
+      await _startSignedIn(h);
+      h.auth.signOutResult = const Failed(NetworkFailure());
 
       await h.cubit.signOut();
 
@@ -492,7 +493,7 @@ void main() {
       h.auth.me = Success(storedSession().user);
       h.auth.consent = Success(consentRequiring('v1'));
       await h.cubit.start();
-      h.auth.acceptResult = Success(ConsentStatus(
+      h.auth.acceptResult = const Success(ConsentStatus(
         isRequired: false,
         currentVersion: 'v1',
       ));
@@ -509,7 +510,7 @@ void main() {
       await h.cubit.start();
 
       h.auth.consent = Success(consentRequiring('v2'));
-      h.auth.acceptResult = Failed(ApiFailure(
+      h.auth.acceptResult = const Failed(ApiFailure(
         statusCode: 409,
         code: 'consent_version_mismatch',
         body: {'current_version': 'v2'},
@@ -525,7 +526,7 @@ void main() {
 
   group('onboarding wizard', () {
     test('finishing the wizard opens the app and saves the flag', () async {
-      await startSignedIn(h, onboarded: false);
+      await _startSignedIn(h, onboarded: false);
 
       await h.cubit.completeOnboarding();
 

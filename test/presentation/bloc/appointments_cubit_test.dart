@@ -119,7 +119,7 @@ void main() {
     final repo = _ScriptedAppointments()
       ..answers.addAll([
         Future.value(Success([_visit(1)])),
-        Future.value(Failed<List<Appointment>>(const NetworkFailure())),
+        Future.value(const Failed<List<Appointment>>(NetworkFailure())),
       ]);
     final cubit = AppointmentsCubit(repo);
     addTearDown(cubit.close);
