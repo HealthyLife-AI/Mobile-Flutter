@@ -49,6 +49,13 @@ Future<void> main() async {
   final dependencies = await _createDependencies();
   _listenForPushTaps(dependencies);
 
+  final app = HealthyLifeApp(dependencies: dependencies);
+  // `kDebugMode` is a compile-time constant, so a release or profile build
+  // takes the first branch and the preview package is compiled out of it.
+  if (!kDebugMode) {
+    runApp(app);
+    return;
+  }
   runApp(
     // The preview is a desktop/web tool for trying phone sizes: it is on only
     // in debug builds there. On a real phone it would wrap the app in a
@@ -56,7 +63,7 @@ Future<void> main() async {
     // the keyboard and text fields lag. Disabled, `DevicePreview` falls
     // through to `builder`, so the app is the untouched widget tree.
     DevicePreview(
-      enabled: kDebugMode && _isDesktopOrWeb,
+      enabled: _isDesktopOrWeb,
       // Curated rather than the full `Devices.all` list: the sizes this app
       // actually has to survive, smallest first.
       devices: [
@@ -73,12 +80,11 @@ Future<void> main() async {
       // does NOT read that menu: its language is the in-app setting
       // (Profile → language), the single source of truth for the locale.
       availableLocales: const [Locale('ar'), Locale('en')],
-      builder: (context) => HealthyLifeApp(dependencies: dependencies),
+      builder: (context) => app,
     ),
   );
 }
 
-/// Where the device preview is useful: a desktop window or a browser.
 final bool _isDesktopOrWeb = kIsWeb ||
     switch (defaultTargetPlatform) {
       TargetPlatform.windows ||
@@ -359,7 +365,10 @@ class HealthyLifeApp extends StatelessWidget {
                 .read<AppDependencies>()
                 .weighInReminder
                 .plan(state.snapshot!)),
-            child: DevicePreview.appBuilder(context, child),
+            // Debug builds only, like the wrapper in `main`.
+            child: kDebugMode
+                ? DevicePreview.appBuilder(context, child)
+                : child ?? const SizedBox.shrink(),
           ),
         ),
       ),

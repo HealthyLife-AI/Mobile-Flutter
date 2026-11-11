@@ -40,3 +40,47 @@ jobs:
 
       - name: Test
         run: flutter test
+
+  android-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: 3.41.8
+          cache: true
+
+      - name: Dependencies
+        run: flutter pub get
+
+      - name: Debug APK
+        run: flutter build apk --debug
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: app-debug-apk
+          path: build/app/outputs/flutter-apk/app-debug.apk
+          retention-days: 7
+
+      # CI has no android/key.properties, so a plain release build must stop
+      # with the signing message instead of using the debug key.
+      - name: Release build refuses to sign with the debug key
+        run: |
+          if flutter build apk --release > release.log 2>&1; then
+            echo "A release build without key.properties succeeded."
+            exit 1
+          fi
+          grep -q "Release signing is not set up" release.log
+
+      - name: Release build for internal testing (debug key, on request)
+        env:
+          ORG_GRADLE_PROJECT_allowDebugSigning: "true"
+        run: flutter build apk --release
