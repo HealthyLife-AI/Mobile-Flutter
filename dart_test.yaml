@@ -1,0 +1,6 @@
+# Screenshot tests (test/goldens) show today's date, so they are regenerated on
+# purpose and never compared in a normal run:
+#   flutter test --run-skipped --tags golden --update-goldens test/goldens
+tags:
+  golden:
+    skip: "Screenshots are regenerated on purpose; see test/goldens."
