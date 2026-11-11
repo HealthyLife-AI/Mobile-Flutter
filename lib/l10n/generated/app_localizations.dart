@@ -4247,8 +4247,8 @@ abstract class AppLocalizations {
   /// Notification text in data/services/local_appointment_reminder_scheduler.dart
   ///
   /// In ar, this message translates to:
-  /// **'موعدك يبدأ بعد ٥ دقائق'**
-  String get appointmentReminderFiveMinutes;
+  /// **'موعدك يبدأ بعد 15 دقيقة'**
+  String get appointmentReminderFifteenMinutes;
 
   /// UI text in presentation/screens/schedule_calls_screen.dart
   ///

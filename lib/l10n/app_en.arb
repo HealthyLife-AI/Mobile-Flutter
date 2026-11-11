@@ -705,7 +705,7 @@
   "appointmentReminderTitle": "Upcoming appointment",
   "appointmentReminderDay": "Your appointment is in 24 hours",
   "appointmentReminderHour": "Your appointment is in 1 hour",
-  "appointmentReminderFiveMinutes": "Your appointment starts in 5 minutes",
+  "appointmentReminderFifteenMinutes": "Your appointment starts in 15 minutes",
   "callsTypeFollowUp": "Follow-up session",
   "callsTypeQuickConsult": "Quick consultation",
   "callsTypeOther": "Appointment",

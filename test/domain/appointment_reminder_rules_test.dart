@@ -23,19 +23,19 @@ void main() {
   final now = DateTime.utc(2026, 10, 14, 6);
 
   group('planAppointmentReminders (API guide 10.6)', () {
-    test('a booked appointment gets reminders 24 h, 1 h and 5 min before it',
+    test('a booked appointment gets reminders 24 h, 1 h and 15 min before it',
         () {
       final planned = planAppointmentReminders([_appointment(7, start)], now);
 
       expect(planned.map((r) => r.lead), [
         ReminderLead.oneDay,
         ReminderLead.oneHour,
-        ReminderLead.fiveMinutes,
+        ReminderLead.fifteenMinutes,
       ]);
       expect(planned.map((r) => r.at), [
         DateTime.utc(2026, 10, 14, 7),
         DateTime.utc(2026, 10, 15, 6),
-        DateTime.utc(2026, 10, 15, 6, 55),
+        DateTime.utc(2026, 10, 15, 6, 45),
       ]);
     });
 
@@ -46,10 +46,25 @@ void main() {
         now,
       );
 
-      expect(planned.map((r) => r.lead), [ReminderLead.fiveMinutes]);
+      expect(planned.map((r) => r.lead), [ReminderLead.fifteenMinutes]);
     });
 
-    test('an appointment less than five minutes away has none left', () {
+    test('the last reminder fires fifteen minutes before the start', () {
+      final start = now.add(const Duration(minutes: 40));
+      final planned = planAppointmentReminders([_appointment(7, start)], now);
+      expect(planned.single.lead, ReminderLead.fifteenMinutes);
+      expect(planned.single.at, start.subtract(const Duration(minutes: 15)));
+    });
+
+    test('an appointment ten minutes away gets no reminder', () {
+      final planned = planAppointmentReminders(
+        [_appointment(7, now.add(const Duration(minutes: 10)))],
+        now,
+      );
+      expect(planned, isEmpty);
+    });
+
+    test('an appointment less than fifteen minutes away has none left', () {
       final planned = planAppointmentReminders(
         [_appointment(7, now.add(const Duration(minutes: 4)))],
         now,

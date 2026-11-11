@@ -49,14 +49,14 @@ void main() {
 
       await scheduler.replaceAll([
         reminder(7, ReminderLead.oneHour, start),
-        reminder(7, ReminderLead.fiveMinutes,
-            start.add(const Duration(minutes: 55))),
+        reminder(7, ReminderLead.fifteenMinutes,
+            start.add(const Duration(minutes: 45))),
       ]);
 
       expect(notifications.calls, ['schedule', 'schedule']);
       expect(notifications.shown.map((s) => s.at), [
         start,
-        start.add(const Duration(minutes: 55)),
+        start.add(const Duration(minutes: 45)),
       ]);
     });
 
@@ -88,7 +88,7 @@ void main() {
       await scheduler.replaceAll([
         reminder(7, ReminderLead.oneDay, start),
         reminder(7, ReminderLead.oneHour, start),
-        reminder(7, ReminderLead.fiveMinutes, start),
+        reminder(7, ReminderLead.fifteenMinutes, start),
       ]);
 
       expect(notifications.shown.map((s) => s.title),
@@ -96,7 +96,7 @@ void main() {
       expect(notifications.shown.map((s) => s.body), [
         en.appointmentReminderDay,
         en.appointmentReminderHour,
-        en.appointmentReminderFiveMinutes,
+        en.appointmentReminderFifteenMinutes,
       ]);
     });
 
@@ -153,7 +153,7 @@ void main() {
       final ids = {
         reminderNotificationId('appointment-7-oneDay'),
         reminderNotificationId('appointment-7-oneHour'),
-        reminderNotificationId('appointment-7-fiveMinutes'),
+        reminderNotificationId('appointment-7-fifteenMinutes'),
         reminderNotificationId('appointment-8-oneHour'),
       };
 
@@ -161,7 +161,7 @@ void main() {
     });
 
     test('the number fits a 32-bit Android notification id', () {
-      final id = reminderNotificationId('appointment-2147483647-fiveMinutes');
+      final id = reminderNotificationId('appointment-2147483647-fifteenMinutes');
 
       expect(id, greaterThanOrEqualTo(0));
       expect(id, lessThanOrEqualTo(0x7fffffff));

@@ -252,23 +252,23 @@ void main() {
       expect(planned.map((r) => r.lead), [
         ReminderLead.oneDay,
         ReminderLead.oneHour,
-        ReminderLead.fiveMinutes,
+        ReminderLead.fifteenMinutes,
       ]);
       expect(planned.map((r) => r.at.toUtc()), [
         DateTime.utc(2026, 10, 14, 7),
         DateTime.utc(2026, 10, 15, 6),
-        DateTime.utc(2026, 10, 15, 6, 55),
+        DateTime.utc(2026, 10, 15, 6, 45),
       ]);
     });
 
-    test('an appointment an hour away keeps only its five-minute reminder',
+    test('an appointment an hour away keeps only its fifteen-minute reminder',
         () async {
       api.answer = [_item(8, '2026-10-14T10:00:00+03:00')];
 
       await planning.getAppointments(scope: AppointmentScope.upcoming);
 
       expect(scheduler.replacements.single.map((r) => r.lead),
-          [ReminderLead.fiveMinutes]);
+          [ReminderLead.fifteenMinutes]);
     });
 
     test('the past list does not touch the reminders', () async {

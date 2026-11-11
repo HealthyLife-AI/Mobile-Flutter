@@ -4,7 +4,7 @@ import 'entities/appointment_entities.dart';
 enum ReminderLead {
   oneDay(Duration(hours: 24)),
   oneHour(Duration(hours: 1)),
-  fiveMinutes(Duration(minutes: 5));
+  fifteenMinutes(Duration(minutes: 15));
 
   const ReminderLead(this.before);
 
@@ -35,7 +35,7 @@ class PlannedReminder {
 ///
 /// Only booked appointments get reminders. A reminder whose time is not after
 /// [now] is left out, so an appointment that is an hour away gets its
-/// five-minute reminder and no others. The result is ordered by time.
+/// fifteen-minute reminder and no others. The result is ordered by time.
 List<PlannedReminder> planAppointmentReminders(
   Iterable<Appointment> appointments,
   DateTime now,
