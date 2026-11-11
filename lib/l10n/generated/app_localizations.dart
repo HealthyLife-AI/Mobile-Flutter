@@ -3005,7 +3005,7 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/onboarding_health_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'حدّد أي حالات صحية تم تشخيصك بها، لتصل إلى أخصائيك ويراعيها في خطتك.'**
+  /// **'اختيار الحالات الصحية المشخّصة يوصلها إلى الأخصائي لمراعاتها في الخطة.'**
   String get onboardingHealthConditionsNote;
 
   /// UI text in presentation/screens/onboarding_health_screen.dart
@@ -3071,7 +3071,7 @@ abstract class AppLocalizations {
   /// Line of the quick request that carries the chronic conditions chosen in onboarding to the nutritionist (the API has no field for them).
   ///
   /// In ar, this message translates to:
-  /// **'الأمراض المزمنة: {list}'**
+  /// **'الحالات الصحية (من الإعداد الأولي): {list}'**
   String onboardingHealthRequestConditions(String list);
 
   /// Line of the same quick request with the notes typed in onboarding.
@@ -7729,6 +7729,108 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'لحد ما يجهز الربط، سجّل نومك وقياساتك من التطبيق مباشرة.'**
   String get healthSyncMeanwhile;
+
+  /// Health condition label; follows the server's ConditionCodes.
+  ///
+  /// In ar, this message translates to:
+  /// **'سكري النوع الأول'**
+  String get conditionDiabetesType1;
+
+  /// Health condition label; follows the server's ConditionCodes.
+  ///
+  /// In ar, this message translates to:
+  /// **'سكري النوع الثاني'**
+  String get conditionDiabetesType2;
+
+  /// Health condition label; follows the server's ConditionCodes.
+  ///
+  /// In ar, this message translates to:
+  /// **'سكري الحمل'**
+  String get conditionGestationalDiabetes;
+
+  /// Health condition label; follows the server's ConditionCodes.
+  ///
+  /// In ar, this message translates to:
+  /// **'مقاومة الإنسولين'**
+  String get conditionInsulinResistance;
+
+  /// Health condition label; follows the server's ConditionCodes.
+  ///
+  /// In ar, this message translates to:
+  /// **'ما قبل السكري'**
+  String get conditionPrediabetes;
+
+  /// Health condition label; follows the server's ConditionCodes.
+  ///
+  /// In ar, this message translates to:
+  /// **'ارتفاع ضغط الدم'**
+  String get conditionHypertension;
+
+  /// Health condition label; follows the server's ConditionCodes.
+  ///
+  /// In ar, this message translates to:
+  /// **'أمراض الكلى'**
+  String get conditionKidneyDisease;
+
+  /// Health condition label; follows the server's ConditionCodes.
+  ///
+  /// In ar, this message translates to:
+  /// **'أمراض الكبد'**
+  String get conditionLiverDisease;
+
+  /// Health condition label; follows the server's ConditionCodes.
+  ///
+  /// In ar, this message translates to:
+  /// **'السرطان'**
+  String get conditionCancer;
+
+  /// Health condition label; follows the server's ConditionCodes.
+  ///
+  /// In ar, this message translates to:
+  /// **'الداء البطني (السيلياك)'**
+  String get conditionCeliac;
+
+  /// Health condition label; follows the server's ConditionCodes.
+  ///
+  /// In ar, this message translates to:
+  /// **'احتباس السوائل'**
+  String get conditionFluidRetention;
+
+  /// Health condition label; follows the server's ConditionCodes.
+  ///
+  /// In ar, this message translates to:
+  /// **'أخرى'**
+  String get conditionOther;
+
+  /// Onboarding health step.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا توجد حالات صحية مشخّصة'**
+  String get onboardingHealthNoConditions;
+
+  /// Onboarding health step.
+  ///
+  /// In ar, this message translates to:
+  /// **'لا توجد حساسية غذائية معروفة'**
+  String get onboardingHealthNoAllergies;
+
+  /// Onboarding health step.
+  ///
+  /// In ar, this message translates to:
+  /// **'اسم الحالة، مثل: قصور الغدة الدرقية'**
+  String get onboardingHealthOtherConditionHint;
+
+  /// Shown when the conditions and notes do not fit in the note to the nutritionist. Nothing is cut.
+  ///
+  /// In ar, this message translates to:
+  /// **'النص أطول من المسموح بمقدار {count} حرفاً. اختصر الملاحظات أو اسم الحالة لإرسالها كاملة إلى الأخصائي.'**
+  String onboardingHealthNoteTooLong(int count);
+
+  /// Between the items of a list written in one line.
+  ///
+  /// In ar, this message translates to:
+  /// **'، '**
+  String get commonListSeparator;
 }
 
 class _AppLocalizationsDelegate

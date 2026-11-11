@@ -1752,7 +1752,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String onboardingHealthRequestConditions(String list) {
-    return 'Chronic conditions: $list';
+    return 'Health conditions (from onboarding): $list';
   }
 
   @override
@@ -4519,4 +4519,58 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get healthSyncMeanwhile =>
       'Until then, log your sleep and measurements in the app.';
+
+  @override
+  String get conditionDiabetesType1 => 'Type 1 diabetes';
+
+  @override
+  String get conditionDiabetesType2 => 'Type 2 diabetes';
+
+  @override
+  String get conditionGestationalDiabetes => 'Gestational diabetes';
+
+  @override
+  String get conditionInsulinResistance => 'Insulin resistance';
+
+  @override
+  String get conditionPrediabetes => 'Prediabetes';
+
+  @override
+  String get conditionHypertension => 'High blood pressure';
+
+  @override
+  String get conditionKidneyDisease => 'Kidney disease';
+
+  @override
+  String get conditionLiverDisease => 'Liver disease';
+
+  @override
+  String get conditionCancer => 'Cancer';
+
+  @override
+  String get conditionCeliac => 'Coeliac disease';
+
+  @override
+  String get conditionFluidRetention => 'Fluid retention';
+
+  @override
+  String get conditionOther => 'Other';
+
+  @override
+  String get onboardingHealthNoConditions => 'No diagnosed health conditions';
+
+  @override
+  String get onboardingHealthNoAllergies => 'No known food allergies';
+
+  @override
+  String get onboardingHealthOtherConditionHint =>
+      'Name of the condition, e.g. underactive thyroid';
+
+  @override
+  String onboardingHealthNoteTooLong(int count) {
+    return 'The text is $count characters over the limit. Shorten the notes or the condition name so all of it reaches your specialist.';
+  }
+
+  @override
+  String get commonListSeparator => ', ';
 }

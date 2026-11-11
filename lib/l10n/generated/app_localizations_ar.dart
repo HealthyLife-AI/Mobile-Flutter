@@ -1683,7 +1683,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get onboardingHealthConditionsNote =>
-      'حدّد أي حالات صحية تم تشخيصك بها، لتصل إلى أخصائيك ويراعيها في خطتك.';
+      'اختيار الحالات الصحية المشخّصة يوصلها إلى الأخصائي لمراعاتها في الخطة.';
 
   @override
   String get onboardingHealthConfidentialNote =>
@@ -1722,7 +1722,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String onboardingHealthRequestConditions(String list) {
-    return 'الأمراض المزمنة: $list';
+    return 'الحالات الصحية (من الإعداد الأولي): $list';
   }
 
   @override
@@ -4484,4 +4484,58 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get healthSyncMeanwhile =>
       'لحد ما يجهز الربط، سجّل نومك وقياساتك من التطبيق مباشرة.';
+
+  @override
+  String get conditionDiabetesType1 => 'سكري النوع الأول';
+
+  @override
+  String get conditionDiabetesType2 => 'سكري النوع الثاني';
+
+  @override
+  String get conditionGestationalDiabetes => 'سكري الحمل';
+
+  @override
+  String get conditionInsulinResistance => 'مقاومة الإنسولين';
+
+  @override
+  String get conditionPrediabetes => 'ما قبل السكري';
+
+  @override
+  String get conditionHypertension => 'ارتفاع ضغط الدم';
+
+  @override
+  String get conditionKidneyDisease => 'أمراض الكلى';
+
+  @override
+  String get conditionLiverDisease => 'أمراض الكبد';
+
+  @override
+  String get conditionCancer => 'السرطان';
+
+  @override
+  String get conditionCeliac => 'الداء البطني (السيلياك)';
+
+  @override
+  String get conditionFluidRetention => 'احتباس السوائل';
+
+  @override
+  String get conditionOther => 'أخرى';
+
+  @override
+  String get onboardingHealthNoConditions => 'لا توجد حالات صحية مشخّصة';
+
+  @override
+  String get onboardingHealthNoAllergies => 'لا توجد حساسية غذائية معروفة';
+
+  @override
+  String get onboardingHealthOtherConditionHint =>
+      'اسم الحالة، مثل: قصور الغدة الدرقية';
+
+  @override
+  String onboardingHealthNoteTooLong(int count) {
+    return 'النص أطول من المسموح بمقدار $count حرفاً. اختصر الملاحظات أو اسم الحالة لإرسالها كاملة إلى الأخصائي.';
+  }
+
+  @override
+  String get commonListSeparator => '، ';
 }
