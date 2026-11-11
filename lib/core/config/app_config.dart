@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 
 /// Compile-time application configuration.
 ///
@@ -44,14 +43,4 @@ class AppConfig {
   /// A `Retry-After` longer than this is not waited for automatically; the
   /// screen shows the wait instead.
   static const Duration maxAutoRetryAfter = Duration(seconds: 10);
-
-  /// Simulated network latency for the remaining mock data sources so loading
-  /// states are observable in the UI.
-  static const Duration mockLatency = Duration(milliseconds: 650);
-
-  /// Only affects the mock repositories that are not wired to the API yet.
-  /// Authentication always talks to the real API.
-  @visibleForTesting
-  static const bool useMockData =
-      bool.fromEnvironment('USE_MOCK_DATA', defaultValue: true);
 }

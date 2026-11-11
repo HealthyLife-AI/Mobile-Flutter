@@ -1,4 +1,5 @@
 import '../../core/config/app_version.dart';
+import '../../core/config/feature_flags.dart';
 import 'food_preferences_screen.dart';
 import 'my_requests_screen.dart';
 import 'posts_screens.dart';
@@ -186,11 +187,12 @@ class _ProfileScreenState extends State<ProfileScreen>
             context.l10n.profileAchievements,
             context.l10n.profileAchievementsSubtitle,
             () => const AchievementsScreen()),
-        _NavItem(
-            Icons.favorite_border_rounded,
-            context.l10n.healthSyncTitle,
-            context.l10n.profileHealthSyncSubtitle,
-            () => const HealthSyncScreen()),
+        if (FeatureFlags.healthSync)
+          _NavItem(
+              Icons.favorite_border_rounded,
+              context.l10n.healthSyncTitle,
+              context.l10n.profileHealthSyncSubtitle,
+              () => const HealthSyncScreen()),
         _NavItem(
             Icons.mark_email_unread_outlined,
             context.l10n.profileNotificationLog,

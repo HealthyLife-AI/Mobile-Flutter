@@ -1,8 +1,6 @@
-import '../../core/config/app_config.dart';
 import '../../core/errors/app_exception.dart';
 import '../../core/network/api_client.dart';
 import '../../domain/entities/notification_entities.dart';
-import '../mock/notification_mock_data.dart';
 import '../models/json_read.dart';
 import '../models/notification_dto.dart';
 
@@ -96,33 +94,4 @@ class HttpNotificationDataSource implements NotificationDataSource {
     close();
     return groups;
   }
-}
-
-/// The demo feed. Reads are not sent anywhere.
-class MockNotificationDataSource implements NotificationDataSource {
-  const MockNotificationDataSource({this.latency = AppConfig.mockLatency});
-
-  final Duration latency;
-
-  /// The whole demo feed is page 1.
-  @override
-  Future<NotificationPage> fetchPage(int page) async {
-    await Future<void>.delayed(latency);
-    if (page > 1) return const NotificationPage([]);
-    // Defensive copies: repositories must never mutate the shared mock feed.
-    return NotificationPage(NotificationMockData.groups
-        .map((g) => NotificationDateGroup(
-            label: g.label, items: List.unmodifiable(g.items)))
-        .toList());
-  }
-
-  @override
-  Future<void> markRead(String id) async {}
-
-  @override
-  Future<void> markAllRead() async {}
-
-  /// The demo feed is one page, so its own rows are the count.
-  @override
-  Future<int?> unreadCount() async => null;
 }
