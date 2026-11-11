@@ -191,7 +191,9 @@ class AppLocalizationsEn extends AppLocalizations {
       'Patient follow-up and clinical nutrition platform';
 
   @override
-  String get aboutVersion => 'Version 1.0.0 (Build 240)';
+  String aboutVersion(String version) {
+    return 'Version $version';
+  }
 
   @override
   String get aboutDescription =>
@@ -1143,7 +1145,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Smart one-tap swap for equivalent alternatives';
 
   @override
-  String get logMealFromPlanFooter => 'Continue to choose the meal (P-21)';
+  String get logMealFromPlanFooter => 'Continue to choose the meal';
 
   @override
   String get logMealFlexibleBadge => 'Flexible search & logging';
@@ -1161,8 +1163,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'No need to feel guilty — flexibility is a key part of success';
 
   @override
-  String get logMealOffPlanFooter =>
-      'Continue to search and calculate grams (P-22)';
+  String get logMealOffPlanFooter => 'Continue to search and calculate grams';
 
   @override
   String get logMealPrivacyNote => 'Only your nutritionist sees your meal log.';
@@ -1472,7 +1473,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get measurementEntryNoFuture => 'No future dates';
 
   @override
-  String get measurementEntryToday => 'Today, Sun 21 Sep 2025';
+  String measurementEntryToday(String date) {
+    return 'Today, $date';
+  }
 
   @override
   String get measurementEntrySuggestedTime =>
@@ -2120,7 +2123,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profileLanguageBadge => 'English';
 
   @override
-  String get profileVersion => 'Version 1.0.0';
+  String profileVersion(String version) {
+    return 'Version $version';
+  }
 
   @override
   String get profileUpgradeRequired =>
@@ -2138,7 +2143,9 @@ class AppLocalizationsEn extends AppLocalizations {
       'Logging out requires confirmation so your latest measurements are synced';
 
   @override
-  String get profilePatientCode => 'Patient code: HL-0042';
+  String profilePatientCode(String code) {
+    return 'Patient code: $code';
+  }
 
   @override
   String get profileFollowingClinic => 'Following clinic';
@@ -2335,9 +2342,6 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get progressDiscussWhatsApp =>
       'Discuss the evaluation directly on WhatsApp';
-
-  @override
-  String get quantityFreshFruit => 'Fresh fruit';
 
   @override
   String quantityKcalPerGrams(Object kcal, Object grams) {
