@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'core/di/app_dependencies.dart';
 import 'core/logging/app_logger.dart';
+import 'core/logging/crash_reporter.dart';
 import 'core/navigation/app_navigator.dart';
 import 'core/navigation/app_router.dart';
 import 'core/navigation/push_destination.dart';
@@ -36,6 +37,8 @@ Future<void> main() async {
     // Pushes that arrive while the app is closed or in the background. Must be
     // registered before runApp.
     FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
+    // Crash reports: off in debug, and an error's type and stack only.
+    await CrashReporter(const CrashlyticsSink()).install();
   } catch (error, stackTrace) {
     const DefaultAppLogger().error(
       'Firebase initialization failed; running without Firebase',

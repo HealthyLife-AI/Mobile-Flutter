@@ -44,6 +44,7 @@ dependencies:
   # Shows a PDF report inside the app from memory (no file kept on disk).
   pdfx: ^2.11.0
   package_info_plus: ^10.2.2
+  firebase_crashlytics: ^4.3.10
 dev_dependencies:
   flutter_test:
     sdk: flutter
