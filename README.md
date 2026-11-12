@@ -357,8 +357,9 @@ New push types are routed in `lib/core/navigation/push_destination.dart`.
   backend's pushes stop reaching the app. To regenerate them:
   `flutterfire configure --project=healthylife-3ce36 --platforms=android,ios`.
 - Android signing: create an upload keystore and `android/key.properties`
-  (`storeFile`, `storePassword`, `keyAlias`, `keyPassword`). Without it the
-  release build is signed with the debug key.
+  (`storeFile`, `storePassword`, `keyAlias`, `keyPassword`). Without it a
+  release build stops with a message. For an internal test build signed with
+  the debug key, pass `-PallowDebugSigning=true` (Google Play refuses it).
 - iOS: enable the Push Notifications capability and Background Modes →
   Remote notifications in Xcode, and upload the APNs key to Firebase.
 - Build: `flutter build appbundle --release --obfuscate --split-debug-info=build/symbols`
