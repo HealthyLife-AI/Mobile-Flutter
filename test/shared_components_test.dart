@@ -160,8 +160,8 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.text('حول التطبيق'), findsOneWidget);
 
-      // Arabic: the design's back glyph (mirrored arrow_forward, i.e. ←).
-      await tester.tap(find.byIcon(Icons.arrow_forward_rounded));
+      // Arabic: the standard back glyph, which Flutter mirrors in RTL.
+      await tester.tap(find.byIcon(Icons.arrow_back_rounded));
       await tester.pumpAndSettle();
       expect(find.text('حول التطبيق'), findsNothing);
       expect(find.text('go'), findsOneWidget);

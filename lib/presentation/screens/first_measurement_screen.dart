@@ -11,8 +11,8 @@ import '../widgets/app_header_bar.dart';
 import '../../core/navigation/app_page_route.dart';
 import 'measurement_guide_screen.dart';
 
-import '../widgets/directional_icon.dart';
 import '../../l10n/l10n.dart';
+import '../widgets/directional_icon.dart';
 
 const _tintBox = Color(0xFFF3F6FC); // خلفية الصناديق الفاتحة في التصميم
 const _iconBlue = Color(0xFFE3ECFA);
@@ -500,10 +500,7 @@ class _FirstMeasurementScreenState extends State<FirstMeasurementScreen>
                     0),
                 child: child,
               ),
-              child: Icon(
-                  directionalIcon(context,
-                      rtl: Icons.chevron_left_rounded,
-                      ltr: Icons.chevron_right_rounded),
+              child: const Icon(Icons.chevron_right_rounded,
                   color: AppColors.textSecondary),
             ),
           ]),

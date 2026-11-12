@@ -577,7 +577,7 @@
       }
     }
   },
-  "demoDateFriday19Sep2025": "الجمعة، ١٩ سبتمبر ٢٠٢٥",
+  "demoDateFriday19Sep2025": "الجمعة، 19 سبتمبر 2025",
   "@demoDateFriday19Sep2025": {
     "description": "UI text in presentation/screens/first_measurement_screen.dart"
   },
@@ -1569,7 +1569,7 @@
   "@guideComingFeature": {
     "description": "UI text in presentation/screens/measurement_guide_screen.dart"
   },
-  "guideVideoComingSoon": "🎬 قريباً: فيديو إرشادي قصير (١٠ ثوان) لكل قياس لتسهيل المتابعة العملية المباشرة.",
+  "guideVideoComingSoon": "🎬 قريباً: فيديو إرشادي قصير (10 ثوان) لكل قياس لتسهيل المتابعة العملية المباشرة.",
   "@guideVideoComingSoon": {
     "description": "UI text in presentation/screens/measurement_guide_screen.dart"
   },
@@ -2278,7 +2278,7 @@
   "@onboardingNotificationsLater": {
     "description": "UI text in presentation/screens/onboarding_notifications_screen.dart"
   },
-  "onboardingStepProgress": "خطوة ٣ من ٣ ({percent}%)",
+  "onboardingStepProgress": "خطوة 3 من 3 ({percent}%)",
   "@onboardingStepProgress": {
     "description": "UI text in presentation/screens/onboarding_notifications_screen.dart",
     "placeholders": {
@@ -2323,7 +2323,7 @@
   "@onboardingPlanDescription": {
     "description": "UI text in presentation/screens/onboarding_screen.dart"
   },
-  "onboardingBadgeApproved": "١٠٠٪ معتمد طبياً ومبني على التحاليل",
+  "onboardingBadgeApproved": "100% معتمد طبياً ومبني على التحاليل",
   "@onboardingBadgeApproved": {
     "description": "UI text in presentation/screens/onboarding_screen.dart"
   },
@@ -2395,7 +2395,7 @@
   "@passwordRequirements": {
     "description": "UI text in presentation/screens/password_settings_screen.dart"
   },
-  "passwordRuleMinLength8": "٨ أحرف على الأقل",
+  "passwordRuleMinLength8": "8 أحرف على الأقل",
   "@passwordRuleMinLength8": {
     "description": "UI text in presentation/screens/password_settings_screen.dart"
   },
@@ -2459,7 +2459,7 @@
   "@planPreparingExpectedTime": {
     "description": "UI text in presentation/screens/plan_preparing_screen.dart"
   },
-  "planPreparingWithin24h": "خلال ٢٤ ساعة عمل من تسجيل قياساتك الأولية",
+  "planPreparingWithin24h": "خلال 24 ساعة عمل من تسجيل قياساتك الأولية",
   "@planPreparingWithin24h": {
     "description": "UI text in presentation/screens/plan_preparing_screen.dart"
   },
@@ -2488,7 +2488,7 @@
   "@planPreparingContactWhatsApp": {
     "description": "UI text in presentation/screens/plan_preparing_screen.dart"
   },
-  "planPreparingHours": "متاح طوال أيام العمل الرسمية من ٩:٠٠ ص حتى ٦:٠٠ م",
+  "planPreparingHours": "متاح طوال أيام العمل الرسمية من 9:00 ص حتى 6:00 م",
   "@planPreparingHours": {
     "description": "UI text in presentation/screens/plan_preparing_screen.dart"
   },
@@ -2941,7 +2941,7 @@
   },
   "quantityStepAdd": "{value}+",
   "@quantityStepAdd": {
-    "description": "Floating badge after tapping + on the grams stepper. The Arabic order renders as +١٠ in RTL.",
+    "description": "Floating badge after tapping + on the grams stepper. The Arabic order renders as +10 in RTL.",
     "placeholders": {
       "value": {
         "type": "String"
@@ -3026,7 +3026,7 @@
   "@appointmentReminderTitle": {
     "description": "Notification text in data/services/local_appointment_reminder_scheduler.dart"
   },
-  "appointmentReminderDay": "موعدك بعد ٢٤ ساعة",
+  "appointmentReminderDay": "موعدك بعد 24 ساعة",
   "@appointmentReminderDay": {
     "description": "Notification text in data/services/local_appointment_reminder_scheduler.dart"
   },
@@ -4154,7 +4154,7 @@
   "@quickRequestSent": {
     "description": "Patient app design spec"
   },
-  "quickRequestLimit": "وصلت لحد الطلبات اليوم (٥). جرّب بكرة أو احكي مع أخصائيتك بموعدك القادم.",
+  "quickRequestLimit": "وصلت لحد الطلبات اليوم (5). جرّب بكرة أو احكي مع أخصائيتك بموعدك القادم.",
   "@quickRequestLimit": {
     "description": "Patient app design spec"
   },
@@ -4697,7 +4697,7 @@
   "@reportFromPdf": {
     "description": "Patient app design spec"
   },
-  "reportFileHint": "صور (JPG، PNG، WebP) أو PDF، لحد ١٠ ميغابايت.",
+  "reportFileHint": "صور (JPG، PNG، WebP) أو PDF، لحد 10 ميغابايت.",
   "@reportFileHint": {
     "description": "Patient app design spec"
   },
@@ -4713,7 +4713,7 @@
   "@reportUploaded": {
     "description": "Patient app design spec"
   },
-  "reportErrorTooLarge": "الملف أكبر من ١٠ ميغابايت. صوّر بدقة أقل أو اختر ملفًا أصغر.",
+  "reportErrorTooLarge": "الملف أكبر من 10 ميغابايت. صوّر بدقة أقل أو اختر ملفًا أصغر.",
   "@reportErrorTooLarge": {
     "description": "Patient app design spec"
   },
@@ -4725,7 +4725,7 @@
   "@reportErrorInvalidImage": {
     "description": "Patient app design spec"
   },
-  "reportErrorLimit": "وصلت لحد ٣٠ تقرير، احذف تقريرًا قديمًا.",
+  "reportErrorLimit": "وصلت لحد 30 تقرير، احذف تقريرًا قديمًا.",
   "@reportErrorLimit": {
     "description": "Patient app design spec"
   },
@@ -4845,11 +4845,11 @@
   "@wellbeingErrorFuture": {
     "description": "Patient app design spec"
   },
-  "wellbeingErrorOld": "بتقدر تعدّل آخر ٧ أيام بس.",
+  "wellbeingErrorOld": "بتقدر تعدّل آخر 7 أيام بس.",
   "@wellbeingErrorOld": {
     "description": "Patient app design spec"
   },
-  "wellbeingLast7": "آخر ٧ ليالي",
+  "wellbeingLast7": "آخر 7 ليالي",
   "@wellbeingLast7": {
     "description": "Patient app design spec"
   },
@@ -4973,11 +4973,11 @@
   "@achvFirstMealBody": {
     "description": "Patient app design spec"
   },
-  "achvStreak3": "٣ أيام ورا بعض",
+  "achvStreak3": "3 أيام ورا بعض",
   "@achvStreak3": {
     "description": "Patient app design spec"
   },
-  "achvStreak3Body": "سجّلت وجباتك ٣ أيام متتالية",
+  "achvStreak3Body": "سجّلت وجباتك 3 أيام متتالية",
   "@achvStreak3Body": {
     "description": "Patient app design spec"
   },
@@ -4985,15 +4985,15 @@
   "@achvStreak7": {
     "description": "Patient app design spec"
   },
-  "achvStreak7Body": "سجّلت وجباتك ٧ أيام متتالية",
+  "achvStreak7Body": "سجّلت وجباتك 7 أيام متتالية",
   "@achvStreak7Body": {
     "description": "Patient app design spec"
   },
-  "achvDays30": "٣٠ يوم تسجيل",
+  "achvDays30": "30 يوم تسجيل",
   "@achvDays30": {
     "description": "Patient app design spec"
   },
-  "achvDays30Body": "سجّلت وجباتك بـ٣٠ يومًا مختلفًا",
+  "achvDays30Body": "سجّلت وجباتك بـ30 يومًا مختلفًا",
   "@achvDays30Body": {
     "description": "Patient app design spec"
   },
@@ -5009,19 +5009,19 @@
   "@achvFiveReadings": {
     "description": "Patient app design spec"
   },
-  "achvFiveReadingsBody": "سجّلت ٥ قياسات",
+  "achvFiveReadingsBody": "سجّلت 5 قياسات",
   "@achvFiveReadingsBody": {
     "description": "Patient app design spec"
   },
-  "achvFirstKilosLoss": "أول ٢ كغ",
+  "achvFirstKilosLoss": "أول 2 كغ",
   "@achvFirstKilosLoss": {
     "description": "Patient app design spec"
   },
-  "achvFirstKilosGain": "أول ٢ كغ زيادة",
+  "achvFirstKilosGain": "أول 2 كغ زيادة",
   "@achvFirstKilosGain": {
     "description": "Patient app design spec"
   },
-  "achvFirstKilosBody": "تغيّر وزنك ٢ كغ باتجاه هدفك",
+  "achvFirstKilosBody": "تغيّر وزنك 2 كغ باتجاه هدفك",
   "@achvFirstKilosBody": {
     "description": "Patient app design spec"
   },

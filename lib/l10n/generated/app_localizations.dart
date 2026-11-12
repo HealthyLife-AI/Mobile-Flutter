@@ -1031,7 +1031,7 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/first_measurement_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'الجمعة، ١٩ سبتمبر ٢٠٢٥'**
+  /// **'الجمعة، 19 سبتمبر 2025'**
   String get demoDateFriday19Sep2025;
 
   /// UI text in presentation/screens/first_measurement_screen.dart
@@ -2345,7 +2345,7 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/measurement_guide_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'🎬 قريباً: فيديو إرشادي قصير (١٠ ثوان) لكل قياس لتسهيل المتابعة العملية المباشرة.'**
+  /// **'🎬 قريباً: فيديو إرشادي قصير (10 ثوان) لكل قياس لتسهيل المتابعة العملية المباشرة.'**
   String get guideVideoComingSoon;
 
   /// UI text in presentation/screens/measurement_guide_screen.dart
@@ -3281,7 +3281,7 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/onboarding_notifications_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'خطوة ٣ من ٣ ({percent}%)'**
+  /// **'خطوة 3 من 3 ({percent}%)'**
   String onboardingStepProgress(Object percent);
 
   /// UI text in presentation/screens/onboarding_notifications_screen.dart
@@ -3341,7 +3341,7 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/onboarding_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'١٠٠٪ معتمد طبياً ومبني على التحاليل'**
+  /// **'100% معتمد طبياً ومبني على التحاليل'**
   String get onboardingBadgeApproved;
 
   /// UI text in presentation/screens/onboarding_screen.dart
@@ -3449,7 +3449,7 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/password_settings_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'٨ أحرف على الأقل'**
+  /// **'8 أحرف على الأقل'**
   String get passwordRuleMinLength8;
 
   /// UI text in presentation/screens/password_settings_screen.dart
@@ -3545,7 +3545,7 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/plan_preparing_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'خلال ٢٤ ساعة عمل من تسجيل قياساتك الأولية'**
+  /// **'خلال 24 ساعة عمل من تسجيل قياساتك الأولية'**
   String get planPreparingWithin24h;
 
   /// UI text in presentation/screens/plan_preparing_screen.dart
@@ -3581,7 +3581,7 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/plan_preparing_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'متاح طوال أيام العمل الرسمية من ٩:٠٠ ص حتى ٦:٠٠ م'**
+  /// **'متاح طوال أيام العمل الرسمية من 9:00 ص حتى 6:00 م'**
   String get planPreparingHours;
 
   /// Plan preparing: clinic line. gender: other | unknown.
@@ -4124,7 +4124,7 @@ abstract class AppLocalizations {
   /// **'تفاحة متوسطة الحجم تعادل تقريباً {apple} غرام، بينما كف اليد المنبسط يعادل حوالي {palm} غرام من اللحوم أو الأرز المطبوخ، يمكنك دوماً التقدير بالتقريب دون قلق.'**
   String quantityEstimateBody(Object apple, Object palm);
 
-  /// Floating badge after tapping + on the grams stepper. The Arabic order renders as +١٠ in RTL.
+  /// Floating badge after tapping + on the grams stepper. The Arabic order renders as +10 in RTL.
   ///
   /// In ar, this message translates to:
   /// **'{value}+'**
@@ -4235,7 +4235,7 @@ abstract class AppLocalizations {
   /// Notification text in data/services/local_appointment_reminder_scheduler.dart
   ///
   /// In ar, this message translates to:
-  /// **'موعدك بعد ٢٤ ساعة'**
+  /// **'موعدك بعد 24 ساعة'**
   String get appointmentReminderDay;
 
   /// Notification text in data/services/local_appointment_reminder_scheduler.dart
@@ -6203,7 +6203,7 @@ abstract class AppLocalizations {
   /// Patient app design spec
   ///
   /// In ar, this message translates to:
-  /// **'وصلت لحد الطلبات اليوم (٥). جرّب بكرة أو احكي مع أخصائيتك بموعدك القادم.'**
+  /// **'وصلت لحد الطلبات اليوم (5). جرّب بكرة أو احكي مع أخصائيتك بموعدك القادم.'**
   String get quickRequestLimit;
 
   /// Patient app design spec
@@ -6857,7 +6857,7 @@ abstract class AppLocalizations {
   /// Patient app design spec
   ///
   /// In ar, this message translates to:
-  /// **'صور (JPG، PNG، WebP) أو PDF، لحد ١٠ ميغابايت.'**
+  /// **'صور (JPG، PNG، WebP) أو PDF، لحد 10 ميغابايت.'**
   String get reportFileHint;
 
   /// Patient app design spec
@@ -6881,7 +6881,7 @@ abstract class AppLocalizations {
   /// Patient app design spec
   ///
   /// In ar, this message translates to:
-  /// **'الملف أكبر من ١٠ ميغابايت. صوّر بدقة أقل أو اختر ملفًا أصغر.'**
+  /// **'الملف أكبر من 10 ميغابايت. صوّر بدقة أقل أو اختر ملفًا أصغر.'**
   String get reportErrorTooLarge;
 
   /// Patient app design spec
@@ -6899,7 +6899,7 @@ abstract class AppLocalizations {
   /// Patient app design spec
   ///
   /// In ar, this message translates to:
-  /// **'وصلت لحد ٣٠ تقرير، احذف تقريرًا قديمًا.'**
+  /// **'وصلت لحد 30 تقرير، احذف تقريرًا قديمًا.'**
   String get reportErrorLimit;
 
   /// Patient app design spec
@@ -7079,13 +7079,13 @@ abstract class AppLocalizations {
   /// Patient app design spec
   ///
   /// In ar, this message translates to:
-  /// **'بتقدر تعدّل آخر ٧ أيام بس.'**
+  /// **'بتقدر تعدّل آخر 7 أيام بس.'**
   String get wellbeingErrorOld;
 
   /// Patient app design spec
   ///
   /// In ar, this message translates to:
-  /// **'آخر ٧ ليالي'**
+  /// **'آخر 7 ليالي'**
   String get wellbeingLast7;
 
   /// Patient app design spec
@@ -7229,13 +7229,13 @@ abstract class AppLocalizations {
   /// Patient app design spec
   ///
   /// In ar, this message translates to:
-  /// **'٣ أيام ورا بعض'**
+  /// **'3 أيام ورا بعض'**
   String get achvStreak3;
 
   /// Patient app design spec
   ///
   /// In ar, this message translates to:
-  /// **'سجّلت وجباتك ٣ أيام متتالية'**
+  /// **'سجّلت وجباتك 3 أيام متتالية'**
   String get achvStreak3Body;
 
   /// Patient app design spec
@@ -7247,19 +7247,19 @@ abstract class AppLocalizations {
   /// Patient app design spec
   ///
   /// In ar, this message translates to:
-  /// **'سجّلت وجباتك ٧ أيام متتالية'**
+  /// **'سجّلت وجباتك 7 أيام متتالية'**
   String get achvStreak7Body;
 
   /// Patient app design spec
   ///
   /// In ar, this message translates to:
-  /// **'٣٠ يوم تسجيل'**
+  /// **'30 يوم تسجيل'**
   String get achvDays30;
 
   /// Patient app design spec
   ///
   /// In ar, this message translates to:
-  /// **'سجّلت وجباتك بـ٣٠ يومًا مختلفًا'**
+  /// **'سجّلت وجباتك بـ30 يومًا مختلفًا'**
   String get achvDays30Body;
 
   /// Patient app design spec
@@ -7283,25 +7283,25 @@ abstract class AppLocalizations {
   /// Patient app design spec
   ///
   /// In ar, this message translates to:
-  /// **'سجّلت ٥ قياسات'**
+  /// **'سجّلت 5 قياسات'**
   String get achvFiveReadingsBody;
 
   /// Patient app design spec
   ///
   /// In ar, this message translates to:
-  /// **'أول ٢ كغ'**
+  /// **'أول 2 كغ'**
   String get achvFirstKilosLoss;
 
   /// Patient app design spec
   ///
   /// In ar, this message translates to:
-  /// **'أول ٢ كغ زيادة'**
+  /// **'أول 2 كغ زيادة'**
   String get achvFirstKilosGain;
 
   /// Patient app design spec
   ///
   /// In ar, this message translates to:
-  /// **'تغيّر وزنك ٢ كغ باتجاه هدفك'**
+  /// **'تغيّر وزنك 2 كغ باتجاه هدفك'**
   String get achvFirstKilosBody;
 
   /// Patient app design spec

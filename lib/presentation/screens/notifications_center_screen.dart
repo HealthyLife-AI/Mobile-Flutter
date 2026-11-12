@@ -15,7 +15,6 @@ import '../widgets/app_header_bar.dart';
 import '../widgets/gradient_cta_button.dart';
 import '../widgets/load_error_view.dart';
 
-import '../widgets/directional_icon.dart';
 import '../../l10n/l10n.dart';
 import '../widgets/state_views.dart';
 
@@ -804,11 +803,7 @@ class _TipsFooterCard extends StatelessWidget {
           ],
         ),
         child: Row(children: [
-          Icon(
-              directionalIcon(context,
-                  rtl: Icons.chevron_left_rounded,
-                  ltr: Icons.chevron_right_rounded),
-              color: AppColors.primary),
+          const Icon(Icons.chevron_right_rounded, color: AppColors.primary),
           Expanded(
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.end, children: [

@@ -17,10 +17,9 @@ extension AppLocalizationsContext on BuildContext {
   /// True while the app runs in Arabic (the default language).
   bool get isArabic => Localizations.localeOf(this).languageCode == 'ar';
 
-  /// [value] with its digits written the way the active language writes them:
-  /// Arabic-Indic in Arabic (exactly what the screens rendered before
-  /// localization), Western in English. Only digits change — separators and
-  /// any other characters are left as they are.
-  String localizeDigits(Object value) =>
-      isArabic ? toArabicDigits(value) : '$value';
+  /// [value] with Latin digits (0-9) in both languages. Other digits, such as
+  /// the Arabic-Indic ones a platform date can carry, are converted; every
+  /// other character is left as it is. Kept as a method on the context so a
+  /// change of rule stays one line.
+  String localizeDigits(Object value) => toLatinDigits(value);
 }

@@ -8,7 +8,6 @@ import '../widgets/app_header_bar.dart' show AppHeaderBar;
 import '../widgets/app_version_text.dart';
 import '../../core/navigation/logout_flow.dart';
 
-import '../widgets/directional_icon.dart';
 import '../widgets/external_link.dart';
 import '../widgets/privacy_policy.dart';
 import '../../l10n/l10n.dart';
@@ -591,10 +590,8 @@ class _LegalRow extends StatelessWidget {
           ),
           if (open != null) ...[
             const SizedBox(width: 8),
-            Icon(
-              directionalIcon(context,
-                  rtl: Icons.chevron_left_rounded,
-                  ltr: Icons.chevron_right_rounded),
+            const Icon(
+              Icons.chevron_right_rounded,
               color: AppColors.textSecondary,
               size: 20,
             ),

@@ -172,9 +172,9 @@ void main() {
     await open(tester, _answers());
 
     // Waist 90 → 88 cm; the design's 78 cm and −4 cm are gone.
-    expect(find.text('٨٨'), findsOneWidget);
-    expect(find.text('−٢ سم'), findsOneWidget);
-    expect(find.text('٧٨'), findsNothing);
+    expect(find.text('88'), findsOneWidget);
+    expect(find.text('−2 سم'), findsOneWidget);
+    expect(find.text('78'), findsNothing);
     expect(find.text('-4 سم'), findsNothing);
   });
 

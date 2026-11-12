@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'package:healthylife_ai/core/utils/formatters.dart';
 import 'package:healthylife_ai/l10n/l10n.dart';
 
 /// A bare [MaterialApp] wired with the app's localizations, for mounting a
@@ -14,15 +15,17 @@ MaterialApp localizedApp({
   Locale locale = const Locale('ar'),
   ThemeData? theme,
   bool debugShowCheckedModeBanner = true,
-}) =>
-    MaterialApp(
-      debugShowCheckedModeBanner: debugShowCheckedModeBanner,
-      theme: theme,
-      locale: locale,
-      supportedLocales: AppLocalizations.supportedLocales,
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
-      home: home,
-    );
+}) {
+  useLatinDigits(); // as `main` does: Latin digits in Arabic dates too
+  return MaterialApp(
+    debugShowCheckedModeBanner: debugShowCheckedModeBanner,
+    theme: theme,
+    locale: locale,
+    supportedLocales: AppLocalizations.supportedLocales,
+    localizationsDelegates: AppLocalizations.localizationsDelegates,
+    home: home,
+  );
+}
 
 /// Asserts that the laid-out glyphs of the [Text] found by [text] hug the
 /// start edge of their box: the right edge in RTL, the left edge in LTR.

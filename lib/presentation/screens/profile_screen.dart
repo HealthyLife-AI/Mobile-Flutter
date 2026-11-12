@@ -31,9 +31,9 @@ import 'health_record_screen.dart';
 import '../../core/navigation/app_page_route.dart';
 import '../../core/navigation/logout_flow.dart';
 
-import '../widgets/directional_icon.dart';
 import '../widgets/person_avatar.dart';
 import '../../l10n/l10n.dart';
+import '../widgets/directional_icon.dart';
 
 // ───────────────────────── ألوان إضافية مأخوذة من التصميم ─────────────────────────
 const Color _kMint = Color(0xFF5EE0B0);
@@ -911,12 +911,8 @@ class _SettingsTileState extends State<_SettingsTile> {
                 duration: const Duration(milliseconds: 200),
                 curve: Curves.easeOut,
                 offset: Offset(_pressed ? -0.5 * rtlDesignSign(context) : 0, 0),
-                child: Icon(
-                    directionalIcon(context,
-                        rtl: Icons.chevron_left_rounded,
-                        ltr: Icons.chevron_right_rounded),
-                    size: 22,
-                    color: AppColors.textSecondary),
+                child: const Icon(Icons.chevron_right_rounded,
+                    size: 22, color: AppColors.textSecondary),
               ),
             ],
           ]),

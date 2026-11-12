@@ -8,7 +8,6 @@ import '../widgets/gradient_cta_button.dart';
 import 'login_screen.dart';
 import '../../core/navigation/app_page_route.dart';
 
-import '../widgets/directional_icon.dart';
 import '../../l10n/l10n.dart';
 
 class _BadgeItem {
@@ -472,12 +471,8 @@ class _PillButtonState extends State<_PillButton> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         if (widget.showArrow) ...[
-                          Icon(
-                              directionalIcon(context,
-                                  rtl: Icons.arrow_back_rounded,
-                                  ltr: Icons.arrow_forward_rounded),
-                              color: Colors.white,
-                              size: 18),
+                          const Icon(Icons.arrow_forward_rounded,
+                              color: Colors.white, size: 18),
                           const SizedBox(width: 8),
                         ],
                         Text(
