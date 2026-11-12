@@ -677,7 +677,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get foodSearchTryAnother =>
-      'جرّبي كلمة أخرى أو اطلبي إضافة الصنف من الأسفل';
+      'جرّب كلمة أخرى أو اطلب إضافة الصنف من الأسفل';
 
   @override
   String get foodSearchNotFound => 'لم تجد ما تبحث عنه؟';
@@ -691,8 +691,8 @@ class AppLocalizationsAr extends AppLocalizations {
     String _temp0 = intl.Intl.selectLogic(
       gender,
       {
-        'male': 'أخصائيك $name بانتظارك',
-        'female': 'أخصائيتك $name بانتظارك',
+        'male': 'أخصائي التغذية $name بانتظارك',
+        'female': 'أخصائية التغذية $name بانتظارك',
         'unknown': 'أخصائي التغذية بانتظارك',
         'other': '$name بانتظارك',
       },
@@ -1891,13 +1891,13 @@ class AppLocalizationsAr extends AppLocalizations {
   String get passwordErrorMinLength => 'اجعلي كلمة المرور 8 أحرف على الأقل';
 
   @override
-  String get passwordErrorUppercase => 'أضيفي حرفًا كبيرًا واحدًا على الأقل';
+  String get passwordErrorUppercase => 'أضف حرفًا كبيرًا واحدًا على الأقل';
 
   @override
-  String get passwordErrorDigit => 'أضيفي رقمًا واحدًا على الأقل';
+  String get passwordErrorDigit => 'أضف رقمًا واحدًا على الأقل';
 
   @override
-  String get passwordErrorSpecial => 'أضيفي رمزًا خاصًا واحدًا على الأقل';
+  String get passwordErrorSpecial => 'أضف رمزًا خاصًا واحدًا على الأقل';
 
   @override
   String get passwordErrorMismatch => 'أكدي كلمة المرور الجديدة بشكل مطابق';
@@ -3386,7 +3386,7 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
-  String get planInstructionsTitle => 'تعليمات أخصائيتك';
+  String get planInstructionsTitle => 'تعليمات أخصائي التغذية';
 
   @override
   String get planActivitiesTitle => 'النشاط البدني';
@@ -3494,7 +3494,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String scheduleSetBy(String interval) {
-    return 'حددته أخصائيتك: $interval';
+    return 'حدّده أخصائي التغذية: $interval';
   }
 
   @override
@@ -3537,20 +3537,21 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get scheduleLateBody =>
-      'سجّل وزنك الآن عشان أخصائيتك تتابع تقدمك بدقة.';
+      'سجّل وزنك الآن ليتابع أخصائي التغذية تقدمك بدقة.';
 
   @override
-  String get quickContactTitle => 'صار عندك ظرف؟';
+  String get quickContactTitle => 'هل طرأ ظرف خاص؟';
 
   @override
-  String get quickContactSubtitle => 'مناسبة، أكل مش متوفر، شراهة مفاجئة…';
+  String get quickContactSubtitle =>
+      'مناسبة، أو طعام غير متوفر، أو شهية مفاجئة…';
 
   @override
   String get quickContactBody =>
-      'احكي لأخصائيتك بسرعة، وبترد عليك بتعديل أو بديل يناسب ظرفك.';
+      'أرسل طلباً سريعاً إلى أخصائي التغذية، وسيردّ عليك بتعديل أو بديل يناسب ظرفك.';
 
   @override
-  String get quickContactButton => 'تواصل سريع مع أخصائيتك';
+  String get quickContactButton => 'تواصل سريع مع أخصائي التغذية';
 
   @override
   String get myRequestsLink => 'طلباتي';
@@ -3564,11 +3565,11 @@ class AppLocalizationsAr extends AppLocalizations {
   String get quickRequestTitle => 'تواصل سريع';
 
   @override
-  String get quickRequestQuestion => 'شو اللي صاير معك؟';
+  String get quickRequestQuestion => 'ما الذي حدث؟';
 
   @override
   String get quickRequestIntro =>
-      'اختر سببًا واحدًا، وأخصائيتك بترد عليك بتعديل أو بديل.';
+      'اختر سبباً واحداً، وسيردّ أخصائي التغذية بتعديل أو بديل.';
 
   @override
   String get reasonSpecialOccasion => 'مناسبة خاصة';
@@ -3577,7 +3578,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get reasonSpecialOccasionHint => 'عرس، جمعة عيلة، عزومة';
 
   @override
-  String get reasonFoodUnavailable => 'الأكل مش متوفر';
+  String get reasonFoodUnavailable => 'الطعام غير متوفر';
 
   @override
   String get reasonFoodUnavailableHint => 'بدي بديل سريع من الموجود عندي';
@@ -3589,7 +3590,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get reasonCravingHint => 'جوع قوي أو رغبة بأكل معين';
 
   @override
-  String get reasonCannotContinue => 'مش قادر ألتزم';
+  String get reasonCannotContinue => 'لا أستطيع الالتزام';
 
   @override
   String get reasonCannotContinueHint => 'الخطة صعبة عليّ هالفترة';
@@ -3598,7 +3599,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get reasonOther => 'سبب آخر';
 
   @override
-  String get reasonOtherHint => 'اكتب لأخصائيتك باختصار';
+  String get reasonOtherHint => 'اكتب لأخصائي التغذية باختصار';
 
   @override
   String get reasonUnknown => 'طلب';
@@ -3618,21 +3619,21 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get quickRequestResponseTime =>
-      'أخصائيتك بترد عادة خلال يوم. للحالات الطارئة أو الأعراض المقلقة راجع الطبيب مباشرة.';
+      'يردّ أخصائي التغذية عادة خلال يوم. للحالات الطارئة أو الأعراض المقلقة، راجع الطبيب مباشرة.';
 
   @override
   String get quickRequestSend => 'إرسال الطلب';
 
   @override
-  String get quickRequestSent => 'وصل طلبك لأخصائيتك';
+  String get quickRequestSent => 'وصل طلبك إلى أخصائي التغذية';
 
   @override
   String get quickRequestLimit =>
-      'وصلت لحد الطلبات اليوم (5). جرّب بكرة أو احكي مع أخصائيتك بموعدك القادم.';
+      'بلغت حدّ الطلبات اليوم (5). جرّب غداً أو ناقش الأمر في موعدك القادم.';
 
   @override
   String get quickRequestOffline =>
-      'لا يوجد اتصال. الطلب ما انبعت، جرّب لما يرجع الإنترنت.';
+      'لا يوجد اتصال. لم يُرسل الطلب، جرّب عند عودة الإنترنت.';
 
   @override
   String get myRequestsTitle => 'طلباتي';
@@ -3657,21 +3658,22 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
-  String get requestAwaitingReply => 'بانتظار رد أخصائيتك';
+  String get requestAwaitingReply => 'بانتظار ردّ أخصائي التغذية';
 
   @override
   String requestReplyFrom(String date) {
-    return 'رد أخصائيتك • $date';
+    return 'ردّ أخصائي التغذية • $date';
   }
 
   @override
-  String get requestReplyLabel => 'رد أخصائيتك';
+  String get requestReplyLabel => 'ردّ أخصائي التغذية';
 
   @override
   String get myRequestsEmpty => 'ما أرسلت أي طلب بعد';
 
   @override
-  String get myRequestsEmptyBody => 'لو صار عندك ظرف، احكي لأخصائيتك من هون.';
+  String get myRequestsEmptyBody =>
+      'عند حدوث ظرف خاص، يمكنك إرسال طلب سريع من هنا.';
 
   @override
   String get checkinTitle => 'استبيان قصير';
@@ -3687,7 +3689,7 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
-  String get checkinChooseAny => 'اختر كل اللي ينطبق عليك';
+  String get checkinChooseAny => 'اختر كل ما ينطبق عليك';
 
   @override
   String checkinLimitReached(String max) {
@@ -3695,32 +3697,34 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
-  String get checkinTextHint => 'اكتب لأخصائيتك باختصار…';
+  String get checkinTextHint => 'اكتب لأخصائي التغذية باختصار…';
 
   @override
   String get checkinSubmit => 'إرسال الاستبيان';
 
   @override
-  String get checkinThanks => 'شكرًا! وصلت إجاباتك لأخصائيتك';
+  String get checkinThanks => 'شكراً! وصلت إجاباتك إلى أخصائي التغذية';
 
   @override
-  String get checkinExpired => 'انتهت مدة هذا الاستبيان، بيوصلك الجاي بموعده.';
+  String get checkinExpired =>
+      'انتهت مدة هذا الاستبيان، وسيصلك التالي في موعده.';
 
   @override
-  String get checkinNone => 'ما في استبيان حاليًا';
+  String get checkinNone => 'لا يوجد استبيان حالياً';
 
   @override
   String get checkinNoneBody =>
-      'لما ترسل أخصائيتك استبيانًا جديدًا بيوصلك تذكير.';
+      'عندما يرسل أخصائي التغذية استبياناً جديداً سيصلك تذكير.';
 
   @override
   String get foodPrefsTitle => 'أكلاتي';
 
   @override
-  String get foodPrefsNotAllergy => 'مش حساسية';
+  String get foodPrefsNotAllergy => 'ليست حساسية';
 
   @override
-  String get foodPrefsNotAllergyBody => 'بس عشان تكون خطتك على ذوقك وأسهل عليك';
+  String get foodPrefsNotAllergyBody =>
+      'فقط لتكون خطتك أقرب إلى ذوقك وأسهل عليك';
 
   @override
   String get foodPrefsSearchHint => 'ابحث عن أكلة…';
@@ -3746,7 +3750,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get foodPrefsEmpty => 'ما ضفت شي بعد';
 
   @override
-  String get foodPrefsFromNutritionist => 'من أخصائيتك';
+  String get foodPrefsFromNutritionist => 'من أخصائي التغذية';
 
   @override
   String foodPrefsRemove(String name) {
@@ -3833,10 +3837,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get reminderActionLog => 'سجّل';
 
   @override
-  String get postsTitle => 'نصائح أخصائيتك';
+  String get postsTitle => 'نصائح أخصائي التغذية';
 
   @override
-  String get postsEmpty => 'لسا ما في نصائح من أخصائيتك';
+  String get postsEmpty => 'لا توجد نصائح من أخصائي التغذية بعد';
 
   @override
   String get postsNew => 'جديدة';
@@ -3845,10 +3849,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get postsPinned => 'مثبّتة';
 
   @override
-  String get postFromNutritionist => 'من أخصائيتك';
+  String get postFromNutritionist => 'من أخصائي التغذية';
 
   @override
-  String get postUnavailable => 'هالنصيحة مش متوفرة';
+  String get postUnavailable => 'هذه النصيحة غير متوفرة';
 
   @override
   String get weightInsightTitle => 'تفسير تغيّر الوزن';
@@ -3876,11 +3880,11 @@ class AppLocalizationsAr extends AppLocalizations {
   String get notificationSettingsMorningDesc => 'ملخص يومك وتذكيراته كل صباح';
 
   @override
-  String get notificationSettingsEducation => 'نصائح أخصائيتك';
+  String get notificationSettingsEducation => 'نصائح أخصائي التغذية';
 
   @override
   String get notificationSettingsEducationDesc =>
-      'لما تنشر أخصائيتك نصيحة جديدة إلك';
+      'عند نشر أخصائي التغذية نصيحة جديدة لك';
 
   @override
   String get reportsTitle => 'تقاريري الطبية';
@@ -3905,16 +3909,17 @@ class AppLocalizationsAr extends AppLocalizations {
   String get reportsConsentTitle => 'قبل ما ترفع تقاريرك';
 
   @override
-  String get reportsConsentOnce => 'مرة وحدة بس';
+  String get reportsConsentOnce => 'مرة واحدة فقط';
 
   @override
   String get reportsConsentEncrypted => 'تقاريرك بتنحفظ مشفّرة.';
 
   @override
-  String get reportsConsentOnlyNutritionist => 'ما بيشوفها غير أخصائيتك.';
+  String get reportsConsentOnlyNutritionist =>
+      'لا يراه أحد غير أخصائي التغذية.';
 
   @override
-  String get reportsConsentDelete => 'بتقدر تحذف أي تقرير وقت ما بدك.';
+  String get reportsConsentDelete => 'يمكنك حذف أي تقرير في أي وقت.';
 
   @override
   String get reportsConsentNoAi => 'ما بنستعملها بأي ذكاء اصطناعي.';
@@ -3957,19 +3962,19 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
-  String get reportReviewed => 'راجعته أخصائيتك';
+  String get reportReviewed => 'راجعه أخصائي التغذية';
 
   @override
   String get reportAwaitingReview => 'بانتظار المراجعة';
 
   @override
-  String get reportNutritionistNote => 'ملاحظة أخصائيتك';
+  String get reportNutritionistNote => 'ملاحظة أخصائي التغذية';
 
   @override
   String get reportDelete => 'حذف';
 
   @override
-  String get reportDeleteTitle => 'بدك تحذف التقرير؟';
+  String get reportDeleteTitle => 'حذف التقرير؟';
 
   @override
   String get reportCannotShow => 'ما قدرنا نعرض هالملف';
@@ -4014,7 +4019,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get reportUpload => 'رفع التقرير';
 
   @override
-  String get reportUploaded => 'انرفع التقرير لأخصائيتك';
+  String get reportUploaded => 'رُفع التقرير إلى أخصائي التغذية';
 
   @override
   String get reportErrorTooLarge =>
@@ -4048,10 +4053,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get wellbeingTonight => 'الليلة';
 
   @override
-  String get wellbeingPreviousNight => 'الليلة اللي قبل';
+  String get wellbeingPreviousNight => 'الليلة السابقة';
 
   @override
-  String get wellbeingNextNight => 'الليلة اللي بعد';
+  String get wellbeingNextNight => 'الليلة التالية';
 
   @override
   String get wellbeingHoursQuestion => 'كم ساعة نمت؟';
@@ -4069,7 +4074,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get wellbeingQualityQuestion => 'كيف كان نومك؟';
 
   @override
-  String get wellbeingQualityGood => 'منيح';
+  String get wellbeingQualityGood => 'جيدة';
 
   @override
   String get wellbeingQualityOk => 'عادي';
@@ -4093,13 +4098,13 @@ class AppLocalizationsAr extends AppLocalizations {
   String get wellbeingMoodQuestion => 'مزاجك';
 
   @override
-  String get wellbeingMoodGood => 'منيح';
+  String get wellbeingMoodGood => 'جيد';
 
   @override
   String get wellbeingMoodOk => 'عادي';
 
   @override
-  String get wellbeingMoodLow => 'مش منيح';
+  String get wellbeingMoodLow => 'منخفض';
 
   @override
   String get wellbeingNote => 'ملاحظة (اختياري)';
@@ -4108,16 +4113,16 @@ class AppLocalizationsAr extends AppLocalizations {
   String get wellbeingNoteHint => 'مثلًا: ضغط شغل هالأسبوع.';
 
   @override
-  String get wellbeingDeleteNight => 'حذف تسجيل هالليلة';
+  String get wellbeingDeleteNight => 'حذف تسجيل هذه الليلة';
 
   @override
-  String get wellbeingDeleteTitle => 'بدك تحذف تسجيل هالليلة؟';
+  String get wellbeingDeleteTitle => 'حذف تسجيل هذه الليلة؟';
 
   @override
-  String get wellbeingErrorFuture => 'ما بتقدر تسجّل ليوم ما إجا بعد.';
+  String get wellbeingErrorFuture => 'لا يمكن التسجيل ليوم لم يأتِ بعد.';
 
   @override
-  String get wellbeingErrorOld => 'بتقدر تعدّل آخر 7 أيام بس.';
+  String get wellbeingErrorOld => 'يمكن تعديل آخر 7 أيام فقط.';
 
   @override
   String get wellbeingLast7 => 'آخر 7 ليالي';
@@ -4134,7 +4139,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get wellbeingWeekdayLetters => 'ن ث ر خ ج س ح';
 
   @override
-  String get profilePostsSubtitle => 'نصائح كتبتها أخصائيتك إلك';
+  String get profilePostsSubtitle => 'نصائح كتبها أخصائي التغذية لك';
 
   @override
   String get profileRequestsSubtitle => 'طلبات التواصل السريع وردودها';
@@ -4146,7 +4151,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get profileWellbeingSubtitle => 'سجّل نومك وتوترك ومزاجك';
 
   @override
-  String get profileAppointmentsSubtitle => 'مواعيدك مع أخصائيتك';
+  String get profileAppointmentsSubtitle => 'مواعيدك مع أخصائي التغذية';
 
   @override
   String get profileAchievementsSubtitle => 'إنجازاتك من تسجيلاتك الفعلية';
@@ -4169,7 +4174,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get achvHeroStart =>
-      'سجّل وجبتك الأولى وقياسك الأول، وبتبلّش إنجازاتك تبين هون.';
+      'سجّل وجبتك الأولى وقياسك الأول، وستبدأ إنجازاتك بالظهور هنا.';
 
   @override
   String get achvHeroKeepGoing =>
@@ -4435,19 +4440,19 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get healthSyncHeroBody =>
-      'خطواتك ونومك ووزنك بيوصلوا لحالهم، فبتسجّل أقل وأخصائيتك بتشوف صورة أوضح.';
+      'تصل خطواتك ونومك ووزنك تلقائياً، فتسجّل أقل ويرى أخصائي التغذية صورة أوضح.';
 
   @override
   String get healthSyncComingSoon => 'قريبًا';
 
   @override
-  String get healthSyncWhatTitle => 'شو اللي بيتزامن';
+  String get healthSyncWhatTitle => 'ما الذي يُزامَن';
 
   @override
   String get healthSyncSteps => 'الخطوات اليومية';
 
   @override
-  String get healthSyncStepsBody => 'عشان تشوف نشاطك جنب خطة النشاط البدني';
+  String get healthSyncStepsBody => 'لترى نشاطك بجانب خطة النشاط البدني';
 
   @override
   String get healthSyncSleep => 'ساعات النوم';
@@ -4469,11 +4474,11 @@ class AppLocalizationsAr extends AppLocalizations {
       'التطبيق بيقرأ بس، وما بيكتب شي بتطبيق الصحة.';
 
   @override
-  String get healthSyncPrivacyChoice => 'إنت بتختار شو يوصل، بند بند.';
+  String get healthSyncPrivacyChoice => 'أنت من يختار ما يصل، بنداً بنداً.';
 
   @override
   String get healthSyncPrivacyStop =>
-      'بتقدر توقف الربط بأي وقت من إعدادات جهازك.';
+      'يمكنك إيقاف الربط في أي وقت من إعدادات جهازك.';
 
   @override
   String get healthSyncMeanwhile =>

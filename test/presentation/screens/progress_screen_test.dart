@@ -182,7 +182,7 @@ void main() {
     await open(tester, _answers());
     expect(find.text('مناقشة التقييم عبر الواتساب مباشرة'), findsNothing);
     // Quick contact replaces the WhatsApp button (spec, phase 1): always on.
-    expect(find.text('تواصل سريع مع أخصائيتك'), findsOneWidget);
+    expect(find.text('تواصل سريع مع أخصائي التغذية'), findsOneWidget);
     expect(find.textContaining('موعدك القادم'), findsNothing);
     expect(find.textContaining('الأحد القادم'), findsNothing);
   });
@@ -224,7 +224,7 @@ void main() {
     );
 
     expect(find.text('مناقشة التقييم عبر الواتساب مباشرة'), findsNothing);
-    expect(find.text('تواصل سريع مع أخصائيتك'), findsOneWidget);
+    expect(find.text('تواصل سريع مع أخصائي التغذية'), findsOneWidget);
     expect(find.textContaining('موعدك القادم'), findsOneWidget);
   });
 }

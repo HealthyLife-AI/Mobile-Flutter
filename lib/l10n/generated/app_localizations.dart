@@ -1307,7 +1307,7 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/food_search_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'جرّبي كلمة أخرى أو اطلبي إضافة الصنف من الأسفل'**
+  /// **'جرّب كلمة أخرى أو اطلب إضافة الصنف من الأسفل'**
   String get foodSearchTryAnother;
 
   /// UI text in presentation/screens/food_search_screen.dart
@@ -1325,7 +1325,7 @@ abstract class AppLocalizations {
   /// Food search help card. gender: male | female | other | unknown (profile not loaded).
   ///
   /// In ar, this message translates to:
-  /// **'{gender, select, male{أخصائيك {name} بانتظارك} female{أخصائيتك {name} بانتظارك} unknown{أخصائي التغذية بانتظارك} other{{name} بانتظارك}}'**
+  /// **'{gender, select, male{أخصائي التغذية {name} بانتظارك} female{أخصائية التغذية {name} بانتظارك} unknown{أخصائي التغذية بانتظارك} other{{name} بانتظارك}}'**
   String foodSearchSpecialistWaiting(String gender, String name);
 
   /// UI text in presentation/screens/food_search_screen.dart
@@ -3371,19 +3371,19 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/password_settings_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'أضيفي حرفًا كبيرًا واحدًا على الأقل'**
+  /// **'أضف حرفًا كبيرًا واحدًا على الأقل'**
   String get passwordErrorUppercase;
 
   /// UI text in presentation/screens/password_settings_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'أضيفي رقمًا واحدًا على الأقل'**
+  /// **'أضف رقمًا واحدًا على الأقل'**
   String get passwordErrorDigit;
 
   /// UI text in presentation/screens/password_settings_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'أضيفي رمزًا خاصًا واحدًا على الأقل'**
+  /// **'أضف رمزًا خاصًا واحدًا على الأقل'**
   String get passwordErrorSpecial;
 
   /// UI text in presentation/screens/password_settings_screen.dart
@@ -5909,7 +5909,7 @@ abstract class AppLocalizations {
   /// Patient app design spec
   ///
   /// In ar, this message translates to:
-  /// **'تعليمات أخصائيتك'**
+  /// **'تعليمات أخصائي التغذية'**
   String get planInstructionsTitle;
 
   /// Patient app design spec
@@ -6005,7 +6005,7 @@ abstract class AppLocalizations {
   /// Patient app design spec
   ///
   /// In ar, this message translates to:
-  /// **'حددته أخصائيتك: {interval}'**
+  /// **'حدّده أخصائي التغذية: {interval}'**
   String scheduleSetBy(String interval);
 
   /// Patient app design spec
@@ -6035,31 +6035,31 @@ abstract class AppLocalizations {
   /// Patient app design spec
   ///
   /// In ar, this message translates to:
-  /// **'سجّل وزنك الآن عشان أخصائيتك تتابع تقدمك بدقة.'**
+  /// **'سجّل وزنك الآن ليتابع أخصائي التغذية تقدمك بدقة.'**
   String get scheduleLateBody;
 
   /// Patient app design spec
   ///
   /// In ar, this message translates to:
-  /// **'صار عندك ظرف؟'**
+  /// **'هل طرأ ظرف خاص؟'**
   String get quickContactTitle;
 
   /// Patient app design spec
   ///
   /// In ar, this message translates to:
-  /// **'مناسبة، أكل مش متوفر، شراهة مفاجئة…'**
+  /// **'مناسبة، أو طعام غير متوفر، أو شهية مفاجئة…'**
   String get quickContactSubtitle;
 
   /// Patient app design spec
   ///
   /// In ar, this message translates to:
-  /// **'احكي لأخصائيتك بسرعة، وبترد عليك بتعديل أو بديل يناسب ظرفك.'**
+  /// **'أرسل طلباً سريعاً إلى أخصائي التغذية، وسيردّ عليك بتعديل أو بديل يناسب ظرفك.'**
   String get quickContactBody;
 
   /// Patient app design spec
   ///
   /// In ar, this message translates to:
-  /// **'تواصل سريع مع أخصائيتك'**
+  /// **'تواصل سريع مع أخصائي التغذية'**
   String get quickContactButton;
 
   /// Patient app design spec
@@ -6083,13 +6083,13 @@ abstract class AppLocalizations {
   /// Patient app design spec
   ///
   /// In ar, this message translates to:
-  /// **'شو اللي صاير معك؟'**
+  /// **'ما الذي حدث؟'**
   String get quickRequestQuestion;
 
   /// Patient app design spec
   ///
   /// In ar, this message translates to:
-  /// **'اختر سببًا واحدًا، وأخصائيتك بترد عليك بتعديل أو بديل.'**
+  /// **'اختر سبباً واحداً، وسيردّ أخصائي التغذية بتعديل أو بديل.'**
   String get quickRequestIntro;
 
   /// Patient app design spec
@@ -6107,7 +6107,7 @@ abstract class AppLocalizations {
   /// Patient app design spec
   ///
   /// In ar, this message translates to:
-  /// **'الأكل مش متوفر'**
+  /// **'الطعام غير متوفر'**
   String get reasonFoodUnavailable;
 
   /// Patient app design spec
@@ -6131,7 +6131,7 @@ abstract class AppLocalizations {
   /// Patient app design spec
   ///
   /// In ar, this message translates to:
-  /// **'مش قادر ألتزم'**
+  /// **'لا أستطيع الالتزام'**
   String get reasonCannotContinue;
 
   /// Patient app design spec
@@ -6149,7 +6149,7 @@ abstract class AppLocalizations {
   /// Patient app design spec
   ///
   /// In ar, this message translates to:
-  /// **'اكتب لأخصائيتك باختصار'**
+  /// **'اكتب لأخصائي التغذية باختصار'**
   String get reasonOtherHint;
 
   /// Patient app design spec
@@ -6185,7 +6185,7 @@ abstract class AppLocalizations {
   /// Patient app design spec
   ///
   /// In ar, this message translates to:
-  /// **'أخصائيتك بترد عادة خلال يوم. للحالات الطارئة أو الأعراض المقلقة راجع الطبيب مباشرة.'**
+  /// **'يردّ أخصائي التغذية عادة خلال يوم. للحالات الطارئة أو الأعراض المقلقة، راجع الطبيب مباشرة.'**
   String get quickRequestResponseTime;
 
   /// Patient app design spec
@@ -6197,19 +6197,19 @@ abstract class AppLocalizations {
   /// Patient app design spec
   ///
   /// In ar, this message translates to:
-  /// **'وصل طلبك لأخصائيتك'**
+  /// **'وصل طلبك إلى أخصائي التغذية'**
   String get quickRequestSent;
 
   /// Patient app design spec
   ///
   /// In ar, this message translates to:
-  /// **'وصلت لحد الطلبات اليوم (5). جرّب بكرة أو احكي مع أخصائيتك بموعدك القادم.'**
+  /// **'بلغت حدّ الطلبات اليوم (5). جرّب غداً أو ناقش الأمر في موعدك القادم.'**
   String get quickRequestLimit;
 
   /// Patient app design spec
   ///
   /// In ar, this message translates to:
-  /// **'لا يوجد اتصال. الطلب ما انبعت، جرّب لما يرجع الإنترنت.'**
+  /// **'لا يوجد اتصال. لم يُرسل الطلب، جرّب عند عودة الإنترنت.'**
   String get quickRequestOffline;
 
   /// Patient app design spec
@@ -6251,19 +6251,19 @@ abstract class AppLocalizations {
   /// Patient app design spec
   ///
   /// In ar, this message translates to:
-  /// **'بانتظار رد أخصائيتك'**
+  /// **'بانتظار ردّ أخصائي التغذية'**
   String get requestAwaitingReply;
 
   /// Patient app design spec
   ///
   /// In ar, this message translates to:
-  /// **'رد أخصائيتك • {date}'**
+  /// **'ردّ أخصائي التغذية • {date}'**
   String requestReplyFrom(String date);
 
   /// Patient app design spec
   ///
   /// In ar, this message translates to:
-  /// **'رد أخصائيتك'**
+  /// **'ردّ أخصائي التغذية'**
   String get requestReplyLabel;
 
   /// Patient app design spec
@@ -6275,7 +6275,7 @@ abstract class AppLocalizations {
   /// Patient app design spec
   ///
   /// In ar, this message translates to:
-  /// **'لو صار عندك ظرف، احكي لأخصائيتك من هون.'**
+  /// **'عند حدوث ظرف خاص، يمكنك إرسال طلب سريع من هنا.'**
   String get myRequestsEmptyBody;
 
   /// Patient app design spec
@@ -6299,7 +6299,7 @@ abstract class AppLocalizations {
   /// Patient app design spec
   ///
   /// In ar, this message translates to:
-  /// **'اختر كل اللي ينطبق عليك'**
+  /// **'اختر كل ما ينطبق عليك'**
   String get checkinChooseAny;
 
   /// Patient app design spec
@@ -6311,7 +6311,7 @@ abstract class AppLocalizations {
   /// Patient app design spec
   ///
   /// In ar, this message translates to:
-  /// **'اكتب لأخصائيتك باختصار…'**
+  /// **'اكتب لأخصائي التغذية باختصار…'**
   String get checkinTextHint;
 
   /// Patient app design spec
@@ -6323,25 +6323,25 @@ abstract class AppLocalizations {
   /// Patient app design spec
   ///
   /// In ar, this message translates to:
-  /// **'شكرًا! وصلت إجاباتك لأخصائيتك'**
+  /// **'شكراً! وصلت إجاباتك إلى أخصائي التغذية'**
   String get checkinThanks;
 
   /// Patient app design spec
   ///
   /// In ar, this message translates to:
-  /// **'انتهت مدة هذا الاستبيان، بيوصلك الجاي بموعده.'**
+  /// **'انتهت مدة هذا الاستبيان، وسيصلك التالي في موعده.'**
   String get checkinExpired;
 
   /// Patient app design spec
   ///
   /// In ar, this message translates to:
-  /// **'ما في استبيان حاليًا'**
+  /// **'لا يوجد استبيان حالياً'**
   String get checkinNone;
 
   /// Patient app design spec
   ///
   /// In ar, this message translates to:
-  /// **'لما ترسل أخصائيتك استبيانًا جديدًا بيوصلك تذكير.'**
+  /// **'عندما يرسل أخصائي التغذية استبياناً جديداً سيصلك تذكير.'**
   String get checkinNoneBody;
 
   /// Patient app design spec
@@ -6353,13 +6353,13 @@ abstract class AppLocalizations {
   /// Patient app design spec
   ///
   /// In ar, this message translates to:
-  /// **'مش حساسية'**
+  /// **'ليست حساسية'**
   String get foodPrefsNotAllergy;
 
   /// Patient app design spec
   ///
   /// In ar, this message translates to:
-  /// **'بس عشان تكون خطتك على ذوقك وأسهل عليك'**
+  /// **'فقط لتكون خطتك أقرب إلى ذوقك وأسهل عليك'**
   String get foodPrefsNotAllergyBody;
 
   /// Patient app design spec
@@ -6407,7 +6407,7 @@ abstract class AppLocalizations {
   /// Patient app design spec
   ///
   /// In ar, this message translates to:
-  /// **'من أخصائيتك'**
+  /// **'من أخصائي التغذية'**
   String get foodPrefsFromNutritionist;
 
   /// Patient app design spec
@@ -6539,13 +6539,13 @@ abstract class AppLocalizations {
   /// Patient app design spec
   ///
   /// In ar, this message translates to:
-  /// **'نصائح أخصائيتك'**
+  /// **'نصائح أخصائي التغذية'**
   String get postsTitle;
 
   /// Patient app design spec
   ///
   /// In ar, this message translates to:
-  /// **'لسا ما في نصائح من أخصائيتك'**
+  /// **'لا توجد نصائح من أخصائي التغذية بعد'**
   String get postsEmpty;
 
   /// Patient app design spec
@@ -6563,13 +6563,13 @@ abstract class AppLocalizations {
   /// Patient app design spec
   ///
   /// In ar, this message translates to:
-  /// **'من أخصائيتك'**
+  /// **'من أخصائي التغذية'**
   String get postFromNutritionist;
 
   /// Patient app design spec
   ///
   /// In ar, this message translates to:
-  /// **'هالنصيحة مش متوفرة'**
+  /// **'هذه النصيحة غير متوفرة'**
   String get postUnavailable;
 
   /// Patient app design spec
@@ -6617,13 +6617,13 @@ abstract class AppLocalizations {
   /// Patient app design spec
   ///
   /// In ar, this message translates to:
-  /// **'نصائح أخصائيتك'**
+  /// **'نصائح أخصائي التغذية'**
   String get notificationSettingsEducation;
 
   /// Patient app design spec
   ///
   /// In ar, this message translates to:
-  /// **'لما تنشر أخصائيتك نصيحة جديدة إلك'**
+  /// **'عند نشر أخصائي التغذية نصيحة جديدة لك'**
   String get notificationSettingsEducationDesc;
 
   /// Patient app design spec
@@ -6665,7 +6665,7 @@ abstract class AppLocalizations {
   /// Patient app design spec
   ///
   /// In ar, this message translates to:
-  /// **'مرة وحدة بس'**
+  /// **'مرة واحدة فقط'**
   String get reportsConsentOnce;
 
   /// Patient app design spec
@@ -6677,13 +6677,13 @@ abstract class AppLocalizations {
   /// Patient app design spec
   ///
   /// In ar, this message translates to:
-  /// **'ما بيشوفها غير أخصائيتك.'**
+  /// **'لا يراه أحد غير أخصائي التغذية.'**
   String get reportsConsentOnlyNutritionist;
 
   /// Patient app design spec
   ///
   /// In ar, this message translates to:
-  /// **'بتقدر تحذف أي تقرير وقت ما بدك.'**
+  /// **'يمكنك حذف أي تقرير في أي وقت.'**
   String get reportsConsentDelete;
 
   /// Patient app design spec
@@ -6761,7 +6761,7 @@ abstract class AppLocalizations {
   /// Patient app design spec
   ///
   /// In ar, this message translates to:
-  /// **'راجعته أخصائيتك'**
+  /// **'راجعه أخصائي التغذية'**
   String get reportReviewed;
 
   /// Patient app design spec
@@ -6773,7 +6773,7 @@ abstract class AppLocalizations {
   /// Patient app design spec
   ///
   /// In ar, this message translates to:
-  /// **'ملاحظة أخصائيتك'**
+  /// **'ملاحظة أخصائي التغذية'**
   String get reportNutritionistNote;
 
   /// Patient app design spec
@@ -6785,7 +6785,7 @@ abstract class AppLocalizations {
   /// Patient app design spec
   ///
   /// In ar, this message translates to:
-  /// **'بدك تحذف التقرير؟'**
+  /// **'حذف التقرير؟'**
   String get reportDeleteTitle;
 
   /// Patient app design spec
@@ -6875,7 +6875,7 @@ abstract class AppLocalizations {
   /// Patient app design spec
   ///
   /// In ar, this message translates to:
-  /// **'انرفع التقرير لأخصائيتك'**
+  /// **'رُفع التقرير إلى أخصائي التغذية'**
   String get reportUploaded;
 
   /// Patient app design spec
@@ -6941,13 +6941,13 @@ abstract class AppLocalizations {
   /// Patient app design spec
   ///
   /// In ar, this message translates to:
-  /// **'الليلة اللي قبل'**
+  /// **'الليلة السابقة'**
   String get wellbeingPreviousNight;
 
   /// Patient app design spec
   ///
   /// In ar, this message translates to:
-  /// **'الليلة اللي بعد'**
+  /// **'الليلة التالية'**
   String get wellbeingNextNight;
 
   /// Patient app design spec
@@ -6983,7 +6983,7 @@ abstract class AppLocalizations {
   /// Patient app design spec
   ///
   /// In ar, this message translates to:
-  /// **'منيح'**
+  /// **'جيدة'**
   String get wellbeingQualityGood;
 
   /// Patient app design spec
@@ -7031,7 +7031,7 @@ abstract class AppLocalizations {
   /// Patient app design spec
   ///
   /// In ar, this message translates to:
-  /// **'منيح'**
+  /// **'جيد'**
   String get wellbeingMoodGood;
 
   /// Patient app design spec
@@ -7043,7 +7043,7 @@ abstract class AppLocalizations {
   /// Patient app design spec
   ///
   /// In ar, this message translates to:
-  /// **'مش منيح'**
+  /// **'منخفض'**
   String get wellbeingMoodLow;
 
   /// Patient app design spec
@@ -7061,25 +7061,25 @@ abstract class AppLocalizations {
   /// Patient app design spec
   ///
   /// In ar, this message translates to:
-  /// **'حذف تسجيل هالليلة'**
+  /// **'حذف تسجيل هذه الليلة'**
   String get wellbeingDeleteNight;
 
   /// Patient app design spec
   ///
   /// In ar, this message translates to:
-  /// **'بدك تحذف تسجيل هالليلة؟'**
+  /// **'حذف تسجيل هذه الليلة؟'**
   String get wellbeingDeleteTitle;
 
   /// Patient app design spec
   ///
   /// In ar, this message translates to:
-  /// **'ما بتقدر تسجّل ليوم ما إجا بعد.'**
+  /// **'لا يمكن التسجيل ليوم لم يأتِ بعد.'**
   String get wellbeingErrorFuture;
 
   /// Patient app design spec
   ///
   /// In ar, this message translates to:
-  /// **'بتقدر تعدّل آخر 7 أيام بس.'**
+  /// **'يمكن تعديل آخر 7 أيام فقط.'**
   String get wellbeingErrorOld;
 
   /// Patient app design spec
@@ -7109,7 +7109,7 @@ abstract class AppLocalizations {
   /// Patient app design spec
   ///
   /// In ar, this message translates to:
-  /// **'نصائح كتبتها أخصائيتك إلك'**
+  /// **'نصائح كتبها أخصائي التغذية لك'**
   String get profilePostsSubtitle;
 
   /// Patient app design spec
@@ -7133,7 +7133,7 @@ abstract class AppLocalizations {
   /// Patient app design spec
   ///
   /// In ar, this message translates to:
-  /// **'مواعيدك مع أخصائيتك'**
+  /// **'مواعيدك مع أخصائي التغذية'**
   String get profileAppointmentsSubtitle;
 
   /// Patient app design spec
@@ -7169,7 +7169,7 @@ abstract class AppLocalizations {
   /// Patient app design spec
   ///
   /// In ar, this message translates to:
-  /// **'سجّل وجبتك الأولى وقياسك الأول، وبتبلّش إنجازاتك تبين هون.'**
+  /// **'سجّل وجبتك الأولى وقياسك الأول، وستبدأ إنجازاتك بالظهور هنا.'**
   String get achvHeroStart;
 
   /// Patient app design spec
@@ -7649,7 +7649,7 @@ abstract class AppLocalizations {
   /// Patient app design spec
   ///
   /// In ar, this message translates to:
-  /// **'خطواتك ونومك ووزنك بيوصلوا لحالهم، فبتسجّل أقل وأخصائيتك بتشوف صورة أوضح.'**
+  /// **'تصل خطواتك ونومك ووزنك تلقائياً، فتسجّل أقل ويرى أخصائي التغذية صورة أوضح.'**
   String get healthSyncHeroBody;
 
   /// Patient app design spec
@@ -7661,7 +7661,7 @@ abstract class AppLocalizations {
   /// Patient app design spec
   ///
   /// In ar, this message translates to:
-  /// **'شو اللي بيتزامن'**
+  /// **'ما الذي يُزامَن'**
   String get healthSyncWhatTitle;
 
   /// Patient app design spec
@@ -7673,7 +7673,7 @@ abstract class AppLocalizations {
   /// Patient app design spec
   ///
   /// In ar, this message translates to:
-  /// **'عشان تشوف نشاطك جنب خطة النشاط البدني'**
+  /// **'لترى نشاطك بجانب خطة النشاط البدني'**
   String get healthSyncStepsBody;
 
   /// Patient app design spec
@@ -7715,13 +7715,13 @@ abstract class AppLocalizations {
   /// Patient app design spec
   ///
   /// In ar, this message translates to:
-  /// **'إنت بتختار شو يوصل، بند بند.'**
+  /// **'أنت من يختار ما يصل، بنداً بنداً.'**
   String get healthSyncPrivacyChoice;
 
   /// Patient app design spec
   ///
   /// In ar, this message translates to:
-  /// **'بتقدر توقف الربط بأي وقت من إعدادات جهازك.'**
+  /// **'يمكنك إيقاف الربط في أي وقت من إعدادات جهازك.'**
   String get healthSyncPrivacyStop;
 
   /// Patient app design spec
