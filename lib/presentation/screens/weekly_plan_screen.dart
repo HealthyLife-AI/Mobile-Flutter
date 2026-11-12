@@ -281,7 +281,7 @@ class _WeeklyPlanScreenState extends State<WeeklyPlanScreen> {
                     children: [
                       Text(context.localizeDigits(totals.calories.round()),
                           style: AppTextStyles.metricLarge
-                              .copyWith(color: AppColors.primary)),
+                              .copyWith(color: AppColors.primaryInk)),
                       const SizedBox(width: 6),
                       Padding(
                           padding: const EdgeInsets.only(top: 10),

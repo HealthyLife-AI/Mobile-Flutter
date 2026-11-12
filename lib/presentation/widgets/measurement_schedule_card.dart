@@ -144,7 +144,7 @@ class _UpcomingCard extends StatelessWidget {
                 Text(fullDayLabel(context, schedule.nextDueOn),
                     textAlign: TextAlign.center,
                     style: AppTextStyles.metricMedium
-                        .copyWith(color: AppColors.primary, fontSize: 20)),
+                        .copyWith(color: AppColors.primaryInk, fontSize: 20)),
                 if (last != null)
                   Text(l10n.scheduleLastReading(shortDateLabel(context, last!)),
                       style: AppTextStyles.tiny),

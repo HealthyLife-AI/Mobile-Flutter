@@ -269,7 +269,7 @@ class _SpecialistCard extends StatelessWidget {
                         borderRadius: BorderRadius.circular(AppRadius.pill)),
                     child: Text(tag,
                         style: const TextStyle(
-                            fontSize: 10, color: AppColors.primary))),
+                            fontSize: 10, color: AppColors.primaryInk))),
               ]),
               const SizedBox(height: 2),
               Text(caption, style: AppTextStyles.caption),

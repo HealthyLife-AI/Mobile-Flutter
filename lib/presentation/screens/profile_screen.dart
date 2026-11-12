@@ -344,7 +344,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                   BorderRadius.circular(AppRadius.pill)),
                           child: Text(context.l10n.profileLanguageBadge,
                               style: const TextStyle(
-                                  fontSize: 11, color: AppColors.primary)),
+                                  fontSize: 11, color: AppColors.primaryInk)),
                         ),
                         onTap: () => _go(const LanguageSettingsScreen()),
                       ),
@@ -676,7 +676,7 @@ class _ActiveChip extends StatelessWidget {
         Text(context.l10n.healthRecordActive,
             style: const TextStyle(
                 fontSize: 11,
-                color: AppColors.primary,
+                color: AppColors.primaryInk,
                 fontWeight: FontWeight.w600)),
       ]),
     );
@@ -699,7 +699,7 @@ class _CodePill extends StatelessWidget {
           color: _kLavender,
           child: Text(context.l10n.profilePatientCode(code),
               style: AppTextStyles.caption.copyWith(
-                  color: AppColors.primary, fontWeight: FontWeight.w600)),
+                  color: AppColors.primaryInk, fontWeight: FontWeight.w600)),
         ),
         Positioned.fill(
           child: IgnorePointer(

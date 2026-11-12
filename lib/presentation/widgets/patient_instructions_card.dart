@@ -69,7 +69,7 @@ class _PatientInstructionsCardState extends State<PatientInstructionsCard> {
                 child: TextButton.icon(
                   onPressed: () => setState(() => _expanded = !_expanded),
                   style: TextButton.styleFrom(
-                    foregroundColor: AppColors.primary,
+                    foregroundColor: AppColors.primaryInk,
                     padding: const EdgeInsets.symmetric(horizontal: 4),
                   ),
                   icon: Icon(
@@ -80,7 +80,7 @@ class _PatientInstructionsCardState extends State<PatientInstructionsCard> {
                   label: Text(
                     _expanded ? l10n.commonShowLess : l10n.commonShowAll,
                     style: AppTextStyles.secondary.copyWith(
-                        color: AppColors.primary, fontWeight: FontWeight.w600),
+                        color: AppColors.primaryInk, fontWeight: FontWeight.w600),
                   ),
                 ),
               ),

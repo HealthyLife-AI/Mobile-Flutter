@@ -257,7 +257,7 @@ class _QuantitySelectorScreenState extends State<QuantitySelectorScreen>
                                     (_grams / 100).toStringAsFixed(2))),
                             key: ValueKey(_grams),
                             style: AppTextStyles.caption.copyWith(
-                                color: AppColors.primary,
+                                color: AppColors.primaryInk,
                                 fontWeight: FontWeight.w600),
                           ),
                         ),
@@ -281,7 +281,7 @@ class _QuantitySelectorScreenState extends State<QuantitySelectorScreen>
                             builder: (_, v, __) => Text(
                               context.localizeDigits(v.round()),
                               style: AppTextStyles.metricLarge.copyWith(
-                                  fontSize: 46, color: AppColors.primary),
+                                  fontSize: 46, color: AppColors.primaryInk),
                             ),
                           ),
                         ),
@@ -538,7 +538,7 @@ class _QuantitySelectorScreenState extends State<QuantitySelectorScreen>
                         .commonGramsValue(context.localizeDigits(_grams)),
                     key: ValueKey(_grams),
                     style: AppTextStyles.caption.copyWith(
-                        color: AppColors.primary, fontWeight: FontWeight.w600)),
+                        color: AppColors.primaryInk, fontWeight: FontWeight.w600)),
               ),
             ),
           ]),

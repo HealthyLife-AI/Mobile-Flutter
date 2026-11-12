@@ -333,7 +333,7 @@ class _HoursStepper extends StatelessWidget {
           icon: Icon(icon),
           style: IconButton.styleFrom(
             backgroundColor: AppColors.primaryTint,
-            foregroundColor: AppColors.primary,
+            foregroundColor: AppColors.primaryInk,
             minimumSize: const Size(48, 48),
           ),
         );
@@ -351,7 +351,7 @@ class _HoursStepper extends StatelessWidget {
               children: [
                 Text(value == null ? '—' : text(value),
                     style: AppTextStyles.metricLarge
-                        .copyWith(color: AppColors.primary)),
+                        .copyWith(color: AppColors.primaryInk)),
                 Text(l10n.wellbeingHoursUnit, style: AppTextStyles.caption),
               ],
             ),

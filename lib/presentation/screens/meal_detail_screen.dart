@@ -280,7 +280,7 @@ class _TopRow extends StatelessWidget {
             style: AppTextStyles.caption.copyWith(
                 fontSize: 13,
                 fontWeight: FontWeight.w600,
-                color: AppColors.primary),
+                color: AppColors.primaryInk),
           ),
         ),
       ],
@@ -441,7 +441,7 @@ class _CaloriesCard extends StatelessWidget {
                   children: [
                     Text(context.l10n.mealDetailTotalCalories,
                         style: AppTextStyles.caption.copyWith(
-                            color: AppColors.primary,
+                            color: AppColors.primaryInk,
                             fontWeight: FontWeight.w500)),
                     const SizedBox(height: 4),
                     Row(
@@ -454,7 +454,7 @@ class _CaloriesCard extends StatelessWidget {
                           style: const TextStyle(
                               fontSize: 38,
                               fontWeight: FontWeight.w800,
-                              color: AppColors.primary,
+                              color: AppColors.primaryInk,
                               height: 1.1),
                         ),
                         const SizedBox(width: 8),
@@ -803,7 +803,7 @@ class _OptionTile extends StatelessWidget {
                         TextSpan(
                           text: context.l10n.commonGramsValue(option.grams),
                           style: const TextStyle(
-                              color: AppColors.primary,
+                              color: AppColors.primaryInk,
                               fontWeight: FontWeight.w700),
                         ),
                         const TextSpan(text: '  •  '),

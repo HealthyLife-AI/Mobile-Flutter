@@ -50,7 +50,7 @@ class _LiveUpdateBadgeState extends State<LiveUpdateBadge>
         const SizedBox(width: 6),
         Text(widget.label ?? context.l10n.mealLoggedInstantUpdate,
             style: AppTextStyles.caption.copyWith(
-                color: AppColors.primary, fontWeight: FontWeight.w600)),
+                color: AppColors.primaryInk, fontWeight: FontWeight.w600)),
       ]),
     );
   }

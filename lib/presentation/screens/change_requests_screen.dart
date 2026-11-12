@@ -303,7 +303,7 @@ class _ItemRow extends StatelessWidget {
                   padding: const EdgeInsets.only(top: 4),
                   child: Text(pendingLabel!,
                       style: AppTextStyles.caption.copyWith(
-                          color: AppColors.primary,
+                          color: AppColors.primaryInk,
                           fontWeight: FontWeight.w700)),
                 ),
             ],

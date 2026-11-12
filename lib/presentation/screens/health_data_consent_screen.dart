@@ -223,7 +223,7 @@ class _HealthDataConsentScreenState extends State<HealthDataConsentScreen> {
               border: Border.all(color: AppColors.border),
             ),
             child: Text(context.l10n.consentConfidentialVerified,
-                style: const TextStyle(fontSize: 10, color: AppColors.primary)),
+                style: const TextStyle(fontSize: 10, color: AppColors.primaryInk)),
           ),
         ]),
         const SizedBox(height: 10),

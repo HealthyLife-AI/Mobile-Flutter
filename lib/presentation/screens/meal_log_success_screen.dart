@@ -215,7 +215,7 @@ class _MealLogSuccessScreenState extends State<MealLogSuccessScreen>
                           icon: const Icon(Icons.add_rounded, size: 18),
                           label: Text(context.l10n.mealLoggedLogAnother),
                           style: TextButton.styleFrom(
-                              foregroundColor: AppColors.primary),
+                              foregroundColor: AppColors.primaryInk),
                         ),
                       ],
                     ]),
@@ -265,7 +265,7 @@ class _MealLogSuccessScreenState extends State<MealLogSuccessScreen>
             const SizedBox(width: 8),
             Text(context.l10n.mealLoggedInstantUpdate,
                 style: AppTextStyles.caption.copyWith(
-                    color: AppColors.primary, fontWeight: FontWeight.w600)),
+                    color: AppColors.primaryInk, fontWeight: FontWeight.w600)),
           ]),
         ),
         const Spacer(),
@@ -446,7 +446,7 @@ class _MealLogSuccessScreenState extends State<MealLogSuccessScreen>
               style: const TextStyle(
                   fontSize: 11.5,
                   fontWeight: FontWeight.w700,
-                  color: AppColors.primary),
+                  color: AppColors.primaryInk),
             ),
           ),
         ]),
@@ -466,7 +466,7 @@ class _MealLogSuccessScreenState extends State<MealLogSuccessScreen>
                       .round()
                       .clamp(0, 100))),
               style: AppTextStyles.caption.copyWith(
-                  color: AppColors.primary, fontWeight: FontWeight.w600),
+                  color: AppColors.primaryInk, fontWeight: FontWeight.w600),
             ),
           ]),
           const SizedBox(height: 8),
@@ -538,7 +538,7 @@ class _MealLogSuccessScreenState extends State<MealLogSuccessScreen>
               _countdownLabel,
               key: ValueKey(_countdownLabel),
               style: AppTextStyles.caption.copyWith(
-                  color: AppColors.primary, fontWeight: FontWeight.w600),
+                  color: AppColors.primaryInk, fontWeight: FontWeight.w600),
             ),
           ),
         ]),

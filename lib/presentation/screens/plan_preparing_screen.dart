@@ -224,7 +224,7 @@ class _PlanPreparingScreenState extends State<PlanPreparingScreen>
                             Text(
                               context.l10n.planPreparingReview,
                               style: AppTextStyles.caption.copyWith(
-                                  color: AppColors.primary,
+                                  color: AppColors.primaryInk,
                                   fontWeight: FontWeight.w700),
                             ),
                             const Spacer(),
@@ -848,7 +848,7 @@ class _ActiveBadge extends StatelessWidget {
             style: const TextStyle(
                 fontSize: 11,
                 fontWeight: FontWeight.w700,
-                color: AppColors.primary)),
+                color: AppColors.primaryInk)),
       ]),
     );
   }

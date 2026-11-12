@@ -556,7 +556,7 @@ class _MiniBadge extends StatelessWidget {
           borderRadius: BorderRadius.circular(AppRadius.pill)),
       child: Text(label,
           style: AppTextStyles.caption
-              .copyWith(color: AppColors.primary, fontWeight: FontWeight.w700)),
+              .copyWith(color: AppColors.primaryInk, fontWeight: FontWeight.w700)),
     );
   }
 }

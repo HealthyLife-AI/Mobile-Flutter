@@ -123,7 +123,7 @@ class _OnboardingMeasurementsScreenState
                               Navigator.of(sheetContext).pop(selectedWeight),
                           child: Text(context.l10n.commonConfirm,
                               style: const TextStyle(
-                                  color: AppColors.primary,
+                                  color: AppColors.primaryInk,
                                   fontWeight: FontWeight.w700)),
                         ),
                       ],
@@ -636,7 +636,7 @@ class _CircumferenceField extends StatelessWidget {
                 color: AppColors.primaryTint, shape: BoxShape.circle),
             child: Text('$index',
                 style: AppTextStyles.caption.copyWith(
-                    color: AppColors.primary, fontWeight: FontWeight.w700)),
+                    color: AppColors.primaryInk, fontWeight: FontWeight.w700)),
           ),
           const SizedBox(width: 10),
           Expanded(

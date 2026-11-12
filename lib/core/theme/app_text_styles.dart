@@ -83,7 +83,7 @@ class AppTextStyles {
     fontFamily: fontFamily,
     fontWeight: FontWeight.w600,
     fontSize: 12,
-    color: AppColors.primary,
+    color: AppColors.primaryInk,
   );
 
   static const TextStyle ctaText = TextStyle(

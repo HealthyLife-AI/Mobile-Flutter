@@ -431,7 +431,7 @@ class _FoodSearchViewState extends State<_FoodSearchView>
                     style: const TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.w700,
-                        color: AppColors.primary),
+                        color: AppColors.primaryInk),
                   ),
                 ),
                 const SizedBox(width: 6),
@@ -653,7 +653,7 @@ class _FoodSearchViewState extends State<_FoodSearchView>
                   .foodSearchFoodsCount(count, context.localizeDigits(count)),
               key: ValueKey(count),
               style: AppTextStyles.caption.copyWith(
-                  color: AppColors.primary, fontWeight: FontWeight.w600),
+                  color: AppColors.primaryInk, fontWeight: FontWeight.w600),
             ),
           ),
         ),
@@ -988,7 +988,7 @@ class _CantFindItCard extends StatelessWidget {
                         style: const TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w600,
-                            color: AppColors.primary)),
+                            color: AppColors.primaryInk)),
                   ],
                 ),
               ),

@@ -626,7 +626,7 @@ class _IntroOptionCardState extends State<_IntroOptionCard> {
           Expanded(
             child: Text(w.footer,
                 style: AppTextStyles.caption.copyWith(
-                    color: AppColors.primary, fontWeight: FontWeight.w600)),
+                    color: AppColors.primaryInk, fontWeight: FontWeight.w600)),
           ),
           Transform.translate(
             offset: Offset(-6 * n + (_down ? -6 : 0), 0),

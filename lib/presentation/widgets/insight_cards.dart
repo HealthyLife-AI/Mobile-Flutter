@@ -109,7 +109,7 @@ class _ScenarioRow extends StatelessWidget {
               children: [
                 Text(l10n.weeksCount(weeks, context.localizeDigits(weeks)),
                     style: AppTextStyles.body.copyWith(
-                        color: AppColors.primary, fontWeight: FontWeight.w700)),
+                        color: AppColors.primaryInk, fontWeight: FontWeight.w700)),
                 if (date != null)
                   Text(l10n.projectionAbout(shortDateLabel(context, date)),
                       style: AppTextStyles.tiny),

@@ -124,7 +124,7 @@ class _ProfileContent extends StatelessWidget {
               style: const TextStyle(
                   fontSize: 11.5,
                   fontWeight: FontWeight.w700,
-                  color: AppColors.primary),
+                  color: AppColors.primaryInk),
             ),
           ]),
         ),
@@ -242,7 +242,7 @@ class _ProfileCard extends StatelessWidget {
                                         l10n.specialistLicensed,
                                         style: const TextStyle(
                                             fontSize: 10,
-                                            color: AppColors.primary,
+                                            color: AppColors.primaryInk,
                                             fontWeight: FontWeight.w700),
                                       ),
                                     ]),
@@ -458,7 +458,7 @@ class _SpecialistAvatar extends StatelessWidget {
             child: Text(
               initial,
               style: AppTextStyles.h1
-                  .copyWith(color: AppColors.primary, fontSize: 24),
+                  .copyWith(color: AppColors.primaryInk, fontSize: 24),
             ),
           ),
           PositionedDirectional(
