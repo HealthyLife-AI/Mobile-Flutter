@@ -14,9 +14,8 @@ import '../bloc/meal_log/meal_log_cubit.dart';
 import '../bloc/nutritionist/nutritionist_cubit.dart';
 import '../meal_plan_view.dart';
 import '../widgets/load_error_view.dart';
-import 'meal_log_success_screen.dart';
+import '../widgets/meal_logged_snack.dart';
 import '../widgets/app_header_bar.dart';
-import '../../core/navigation/app_page_route.dart';
 
 import '../../l10n/l10n.dart';
 
@@ -72,8 +71,9 @@ class _MealDetailScreenState extends State<MealDetailScreen>
   }
 
   /// Marks the plan meal as eaten, with the food picked in each group (the
-  /// planned item or an alternative). The success screen opens once the log
-  /// is kept on the device; the server copy goes through the offline queue.
+  /// planned item or an alternative). Once the log is kept on the device (the
+  /// server copy goes through the offline queue) the screen closes and a short
+  /// confirmation with an undo appears.
   Future<void> _logPlanned(Meal meal, List<FoodCategoryGroup> groups) async {
     if (_logging) return;
     HapticFeedback.mediumImpact();
@@ -94,8 +94,14 @@ class _MealDetailScreenState extends State<MealDetailScreen>
       ));
       return;
     }
-    Navigator.of(context)
-        .push(AppPageRoute(builder: (_) => MealLogSuccessScreen(entry: entry)));
+    // A short confirmation with an undo, where the patient came from, in
+    // place of a full success screen.
+    final messenger = ScaffoldMessenger.of(context);
+    final cubit = context.read<MealLogCubit>();
+    final l10n = context.l10n;
+    Navigator.of(context).pop();
+    showMealLoggedSnack(
+        messenger: messenger, cubit: cubit, l10n: l10n, entry: entry);
   }
 
   @override

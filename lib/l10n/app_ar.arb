@@ -5408,5 +5408,30 @@
   "stateErrorTitle": "تعذّر تحميل الصفحة",
   "@stateErrorTitle": {
     "description": "Title of a page that could not load (LoadErrorView)."
+  },
+  "mealAte": "أكلتها",
+  "@mealAte": {
+    "description": "One-tap meal logging on Home."
+  },
+  "mealDetailsAndSwaps": "التفاصيل والبدائل",
+  "@mealDetailsAndSwaps": {
+    "description": "One-tap meal logging on Home."
+  },
+  "mealLoggedSnack": "تم تسجيل {meal}",
+  "@mealLoggedSnack": {
+    "description": "Confirmation after a planned meal is logged; the name is the meal, such as the lunch.",
+    "placeholders": {
+      "meal": {
+        "type": "String"
+      }
+    }
+  },
+  "mealUndo": "تراجع",
+  "@mealUndo": {
+    "description": "One-tap meal logging on Home."
+  },
+  "mealUndoFailed": "تعذّر التراجع. يمكنك حذف الوجبة من سجل اليوم.",
+  "@mealUndoFailed": {
+    "description": "One-tap meal logging on Home."
   }
 }
