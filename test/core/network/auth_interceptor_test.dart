@@ -179,7 +179,7 @@ void main() {
       final rig = _Rig(
         rejectOld,
         refresh: (_) async =>
-            throw ApiException('refresh token used', statusCode: 401),
+            throw const ApiException('refresh token used', statusCode: 401),
       );
       final seen = <SessionEventType>[];
       final subscription = rig.events.stream.listen((e) => seen.add(e.type));

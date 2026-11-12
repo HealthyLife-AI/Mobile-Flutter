@@ -139,7 +139,7 @@ class _QuantitySelectorScreenState extends State<QuantitySelectorScreen>
         borderRadius: BorderRadius.circular(AppRadius.card),
         boxShadow: [
           BoxShadow(
-              color: Colors.black.withOpacity(.04),
+              color: Colors.black.withValues(alpha: .04),
               blurRadius: 14,
               offset: const Offset(0, 5))
         ],
@@ -243,7 +243,7 @@ class _QuantitySelectorScreenState extends State<QuantitySelectorScreen>
                         borderRadius: BorderRadius.circular(AppRadius.pill),
                         boxShadow: [
                           BoxShadow(
-                              color: Colors.black.withOpacity(.04),
+                              color: Colors.black.withValues(alpha: .04),
                               blurRadius: 8)
                         ],
                       ),
@@ -337,7 +337,7 @@ class _QuantitySelectorScreenState extends State<QuantitySelectorScreen>
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-              color: Colors.black.withOpacity(.05),
+              color: Colors.black.withValues(alpha: .05),
               blurRadius: 14,
               offset: const Offset(0, 5))
         ],
@@ -482,7 +482,7 @@ class _QuantitySelectorScreenState extends State<QuantitySelectorScreen>
                             BorderRadius.circular(AppRadius.cardSmall),
                         boxShadow: [
                           BoxShadow(
-                              color: AppColors.primary.withOpacity(.3),
+                              color: AppColors.primary.withValues(alpha: .3),
                               blurRadius: 12,
                               offset: const Offset(0, 4))
                         ],
@@ -565,7 +565,7 @@ class _QuantitySelectorScreenState extends State<QuantitySelectorScreen>
               thumbShape: const RoundSliderThumbShape(
                   enabledThumbRadius: 11, elevation: 3),
               overlayShape: const RoundSliderOverlayShape(overlayRadius: 22),
-              overlayColor: AppColors.primary.withOpacity(0.15),
+              overlayColor: AppColors.primary.withValues(alpha: 0.15),
               trackShape: const RoundedRectSliderTrackShape(),
             ),
             child: Slider(
@@ -595,7 +595,7 @@ class _QuantitySelectorScreenState extends State<QuantitySelectorScreen>
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-          color: AppColors.primaryTint.withOpacity(.55),
+          color: AppColors.primaryTint.withValues(alpha: .55),
           borderRadius: BorderRadius.circular(AppRadius.card)),
       child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
         // المصباح: توهج أصفر ناعم يتنفّس
@@ -607,11 +607,12 @@ class _QuantitySelectorScreenState extends State<QuantitySelectorScreen>
               width: 40,
               height: 40,
               decoration: BoxDecoration(
-                color: AppColors.primary.withOpacity(.28),
+                color: AppColors.primary.withValues(alpha: .28),
                 borderRadius: BorderRadius.circular(12),
                 boxShadow: [
                   BoxShadow(
-                      color: const Color(0xFFFFC15A).withOpacity(.12 + .28 * s),
+                      color: const Color(0xFFFFC15A)
+                          .withValues(alpha: .12 + .28 * s),
                       blurRadius: 10 + 8 * s,
                       spreadRadius: 1)
                 ],
@@ -731,7 +732,7 @@ class _Blob extends StatelessWidget {
       height: size,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        gradient: RadialGradient(colors: [color, color.withOpacity(0)]),
+        gradient: RadialGradient(colors: [color, color.withValues(alpha: 0)]),
       ),
     );
   }
@@ -796,7 +797,7 @@ class _StepperButtonState extends State<_StepperButton> {
             boxShadow: widget.filled
                 ? [
                     BoxShadow(
-                        color: AppColors.primary.withOpacity(.3),
+                        color: AppColors.primary.withValues(alpha: .3),
                         blurRadius: 12,
                         offset: const Offset(0, 4))
                   ]

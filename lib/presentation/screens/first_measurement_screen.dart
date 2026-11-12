@@ -100,7 +100,7 @@ class _FirstMeasurementScreenState extends State<FirstMeasurementScreen>
 
   List<BoxShadow> get _shadow => [
         BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 14,
             offset: const Offset(0, 4)),
       ];
@@ -263,7 +263,7 @@ class _FirstMeasurementScreenState extends State<FirstMeasurementScreen>
                         shape: BoxShape.circle,
                         gradient: RadialGradient(colors: [
                           AppColors.primaryTint,
-                          AppColors.primaryTint.withOpacity(0.0),
+                          AppColors.primaryTint.withValues(alpha: 0.0),
                         ]),
                       ),
                     ),
@@ -279,7 +279,7 @@ class _FirstMeasurementScreenState extends State<FirstMeasurementScreen>
                 height: 46,
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.55),
+                    color: Colors.white.withValues(alpha: 0.55),
                     shape: BoxShape.circle),
                 child: const Icon(Icons.monitor_weight_outlined,
                     color: AppColors.primary, size: 24),
@@ -403,11 +403,12 @@ class _FirstMeasurementScreenState extends State<FirstMeasurementScreen>
               width: 42,
               height: 42,
               decoration: BoxDecoration(
-                color: AppColors.primary.withOpacity(0.28),
+                color: AppColors.primary.withValues(alpha: 0.28),
                 shape: BoxShape.circle,
                 boxShadow: [
                   BoxShadow(
-                      color: AppColors.primary.withOpacity(0.10 + 0.18 * glow),
+                      color: AppColors.primary
+                          .withValues(alpha: 0.10 + 0.18 * glow),
                       blurRadius: 6 + 8 * glow),
                 ],
               ),
@@ -565,7 +566,7 @@ class _WaitingIllustration extends StatelessWidget {
                       height: 170,
                       decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: AppColors.primaryTint.withOpacity(0.35)),
+                          color: AppColors.primaryTint.withValues(alpha: 0.35)),
                     ),
                   ),
                 ),
@@ -595,7 +596,8 @@ class _WaitingIllustration extends StatelessWidget {
                       height: 84,
                       decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: const Color(0xFFD2F4E6).withOpacity(0.85)),
+                          color:
+                              const Color(0xFFD2F4E6).withValues(alpha: 0.85)),
                       alignment: Alignment.center,
                       child: Container(
                         width: 26,
@@ -648,7 +650,7 @@ class _WaitingIllustration extends StatelessWidget {
                       height: 46,
                       decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: AppColors.primaryTint.withOpacity(0.9)),
+                          color: AppColors.primaryTint.withValues(alpha: 0.9)),
                       alignment: Alignment.center,
                       child: Container(
                         width: 22,
@@ -736,7 +738,7 @@ class _Ripple extends StatelessWidget {
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             border: Border.all(
-                color: AppColors.primary.withOpacity((1 - t) * 0.45),
+                color: AppColors.primary.withValues(alpha: (1 - t) * 0.45),
                 width: 1.5),
           ),
         ),
@@ -781,7 +783,7 @@ class _PathPainter extends CustomPainter {
     if (travel >= 0) {
       final p = a + dir * (total * travel);
       canvas.drawCircle(
-          p, 7, Paint()..color = AppColors.primary.withOpacity(0.18));
+          p, 7, Paint()..color = AppColors.primary.withValues(alpha: 0.18));
       canvas.drawCircle(p, 3.6, Paint()..color = AppColors.primary);
     }
   }

@@ -60,10 +60,11 @@ class _FixedSettings implements SettingsRepository {
 
   @override
   Future<Result<void>> setThemeMode(ThemeMode mode) async =>
-      Success<void>(null);
+      const Success<void>(null);
 
   @override
-  Future<Result<void>> setLocale(Locale? locale) async => Success<void>(null);
+  Future<Result<void>> setLocale(Locale? locale) async =>
+      const Success<void>(null);
 }
 
 /// Answers the device's timezone name, or fails when [fails] is set.
@@ -177,7 +178,7 @@ void main() {
   test('a failed retry is logged and does not throw', () async {
     final api = _RecordingApi([
       const ApiException('bad zone', statusCode: 422, code: 'invalid_timezone'),
-      NetworkException('offline', kind: NetworkFailureKind.offline),
+      const NetworkException('offline', kind: NetworkFailureKind.offline),
     ]);
 
     await expectLater(
@@ -211,7 +212,7 @@ void main() {
 
   test('never throws, even when the server cannot be reached', () async {
     final api = _RecordingApi([
-      NetworkException('offline', kind: NetworkFailureKind.offline),
+      const NetworkException('offline', kind: NetworkFailureKind.offline),
     ]);
 
     await expectLater(
@@ -278,7 +279,7 @@ void main() {
 
     test('after a failed sync the next resume sends the settings', () async {
       final api = _RecordingApi([
-        NetworkException('offline', kind: NetworkFailureKind.offline),
+        const NetworkException('offline', kind: NetworkFailureKind.offline),
       ]);
       final sync = _sync(api: api, timezone: _ChangingTimezone('Asia/Hebron'));
 

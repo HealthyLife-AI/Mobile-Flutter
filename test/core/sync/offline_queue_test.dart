@@ -81,8 +81,8 @@ void main() {
   test('a lost connection keeps the write and waits for the backoff', () async {
     final queue = queueFor();
     await queue.enqueue(path: 'me/measurements', body: {'weight_kg': 80});
-    api.script
-        .add(NetworkException('offline', kind: NetworkFailureKind.offline));
+    api.script.add(
+        const NetworkException('offline', kind: NetworkFailureKind.offline));
 
     final first = await queue.flush();
 
@@ -108,7 +108,7 @@ void main() {
     await queue.enqueue(path: 'me/measurements', body: {'weight_kg': 80});
     await queue.enqueue(path: 'me/measurements', body: {'weight_kg': 81});
     api.script.addAll([
-      ApiException('old', statusCode: 422, code: 'entry_too_old'),
+      const ApiException('old', statusCode: 422, code: 'entry_too_old'),
       null,
     ]);
 
@@ -129,7 +129,7 @@ void main() {
       'idempotency_key': 'k-1',
     });
     api.script.addAll([
-      ApiException('invalid', statusCode: 422, body: {
+      const ApiException('invalid', statusCode: 422, body: {
         'errors': {
           'meal_item_id': ['not on the plan']
         },
@@ -151,7 +151,7 @@ void main() {
       'meal_item_id': 55,
       'idempotency_key': 'k-1',
     });
-    final refusal = ApiException('invalid', statusCode: 422, body: {
+    const refusal = ApiException('invalid', statusCode: 422, body: {
       'errors': {
         'meal_item_id': ['not on the plan']
       },
@@ -174,7 +174,7 @@ void main() {
       'idempotency_key': 'k-2',
     });
     api.script.addAll([
-      ApiException('future', statusCode: 422, body: {
+      const ApiException('future', statusCode: 422, body: {
         'errors': {
           'logged_at': ['must not be in the future']
         },
@@ -195,7 +195,7 @@ void main() {
       'logged_at': '2026-10-07T10:35:00.000Z',
     });
     now = now.add(const Duration(hours: 1));
-    api.script.add(ApiException('future', statusCode: 422, body: {
+    api.script.add(const ApiException('future', statusCode: 422, body: {
       'errors': {
         'logged_at': ['must not be in the future']
       },
@@ -211,7 +211,8 @@ void main() {
     final reported = <DroppedWrite>[];
     final queue = queueFor(onDropped: reported.add);
     await queue.enqueue(path: 'me/measurements', body: {'weight_kg': 80});
-    api.script.add(ApiException('old', statusCode: 422, code: 'entry_too_old'));
+    api.script
+        .add(const ApiException('old', statusCode: 422, code: 'entry_too_old'));
 
     await queue.flush();
 
@@ -224,7 +225,7 @@ void main() {
     await queue.enqueue(path: 'me/measurements', body: {'weight_kg': 80});
     await queue.enqueue(path: 'me/measurements', body: {'weight_kg': 81});
     api.script.addAll([
-      ApiException('old', statusCode: 422, code: 'entry_too_old'),
+      const ApiException('old', statusCode: 422, code: 'entry_too_old'),
       null,
     ]);
 
@@ -237,8 +238,8 @@ void main() {
   test('consent_required pauses the queue and keeps the write', () async {
     final queue = queueFor();
     await queue.enqueue(path: 'me/measurements', body: {'weight_kg': 80});
-    api.script.add(
-        ApiException('consent', statusCode: 403, code: 'consent_required'));
+    api.script.add(const ApiException('consent',
+        statusCode: 403, code: 'consent_required'));
 
     final report = await queue.flush();
 
@@ -250,8 +251,8 @@ void main() {
   test('follow_up_ended stops the queue and keeps the write', () async {
     final queue = queueFor();
     await queue.enqueue(path: 'me/measurements', body: {'weight_kg': 80});
-    api.script
-        .add(ApiException('ended', statusCode: 403, code: 'follow_up_ended'));
+    api.script.add(
+        const ApiException('ended', statusCode: 403, code: 'follow_up_ended'));
 
     final report = await queue.flush();
 
@@ -262,7 +263,8 @@ void main() {
   test('a locked measurement is dropped and reported as locked', () async {
     final queue = queueFor();
     await queue.enqueue(path: 'me/measurements', body: {'weight_kg': 80});
-    api.script.add(ApiException('locked', statusCode: 403, code: 'log_locked'));
+    api.script
+        .add(const ApiException('locked', statusCode: 403, code: 'log_locked'));
 
     final report = await queue.flush();
 
@@ -273,8 +275,8 @@ void main() {
   test('429 uses Retry-After for the next attempt', () async {
     final queue = queueFor();
     await queue.enqueue(path: 'me/measurements', body: {'weight_kg': 80});
-    api.script.add(ApiException('slow down',
-        statusCode: 429, retryAfter: const Duration(seconds: 30)));
+    api.script.add(const ApiException('slow down',
+        statusCode: 429, retryAfter: Duration(seconds: 30)));
 
     final report = await queue.flush();
 
@@ -285,11 +287,11 @@ void main() {
   test('repeated server errors back off further each time', () async {
     final queue = queueFor();
     await queue.enqueue(path: 'me/measurements', body: {'weight_kg': 80});
-    api.script.add(ServerException('down', statusCode: 503));
+    api.script.add(const ServerException('down', statusCode: 503));
     await queue.flush();
 
     now = now.add(const Duration(seconds: 2));
-    api.script.add(ServerException('down', statusCode: 503));
+    api.script.add(const ServerException('down', statusCode: 503));
     final second = await queue.flush();
 
     expect(second.retryAt, now.add(const Duration(seconds: 4)));
@@ -387,8 +389,8 @@ void main() {
     await queue.enqueue(path: 'me/meal-logs', body: {'idempotency_key': 'a'});
     await queue.enqueue(path: 'me/measurements', body: {'weight_kg': 80});
 
-    final removed = await queue.removeWhere(
-        (write) => write.body['idempotency_key'] == 'a');
+    final removed = await queue
+        .removeWhere((write) => write.body['idempotency_key'] == 'a');
 
     expect(removed.single.path, 'me/meal-logs');
     await queue.flush();

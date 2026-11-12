@@ -70,7 +70,7 @@ void main() {
     final repo = _ScriptedProgress()
       ..answers.addAll([
         Future.value(const Success(_snapshot)),
-        Future.value(Failed<ProgressSnapshot>(const NetworkFailure())),
+        Future.value(const Failed<ProgressSnapshot>(NetworkFailure())),
       ]);
     final cubit = ProgressCubit(repo, clock: () => now);
     addTearDown(cubit.close);

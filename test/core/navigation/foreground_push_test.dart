@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:healthylife_ai/core/navigation/foreground_push.dart';
-import 'package:healthylife_ai/core/navigation/push_destination.dart';
 import 'package:healthylife_ai/core/navigation/push_tap_router.dart';
 
 class _Notice {
@@ -22,7 +21,8 @@ void main() {
     events = [];
     taps = PushTapRouter(
       markRead: (id) async => events.add('mark:$id'),
-      open: (destination, {reviewId, postId}) => events.add('open:${destination.name}'),
+      open: (destination, {reviewId, postId}) =>
+          events.add('open:${destination.name}'),
       afterFrame: (callback) => callback(),
     );
     presenter = ForegroundPushPresenter(

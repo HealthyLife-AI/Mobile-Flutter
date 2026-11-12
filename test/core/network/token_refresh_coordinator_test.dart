@@ -97,8 +97,8 @@ void main() {
     final coordinator = build(store, (_) async {
       attempts++;
       if (attempts == 1) {
-        throw ApiException('slow down',
-            statusCode: 429, retryAfter: const Duration(milliseconds: 1));
+        throw const ApiException('slow down',
+            statusCode: 429, retryAfter: Duration(milliseconds: 1));
       }
       return _fresh;
     });
@@ -112,8 +112,8 @@ void main() {
     final store = _MemoryTokenStore(_old);
     final coordinator = build(
       store,
-      (_) async => throw ApiException('slow down',
-          statusCode: 429, retryAfter: const Duration(milliseconds: 1)),
+      (_) async => throw const ApiException('slow down',
+          statusCode: 429, retryAfter: Duration(milliseconds: 1)),
       maxAttempts: 2,
     );
 
@@ -133,7 +133,8 @@ void main() {
     final subscription = events.stream.listen((e) => seen.add(e.type));
     final coordinator = build(
       store,
-      (_) async => throw ApiException('refresh token used', statusCode: 401),
+      (_) async =>
+          throw const ApiException('refresh token used', statusCode: 401),
     );
 
     await expectLater(
@@ -153,8 +154,8 @@ void main() {
     final store = _MemoryTokenStore(_old);
     final coordinator = build(
       store,
-      (_) async =>
-          throw NetworkException('offline', kind: NetworkFailureKind.offline),
+      (_) async => throw const NetworkException('offline',
+          kind: NetworkFailureKind.offline),
     );
 
     await expectLater(

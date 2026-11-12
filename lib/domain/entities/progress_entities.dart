@@ -1,4 +1,5 @@
 /// What the progress screen shows, from `GET /me/progress` (API guide 8).
+library;
 
 /// One weight reading on the trend. [recordedAt] is the reading's calendar
 /// date, at local midnight. A date can have two readings: the clinic's and the

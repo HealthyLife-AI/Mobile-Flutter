@@ -254,7 +254,7 @@ class _MealLogSuccessScreenState extends State<MealLogSuccessScreen>
                     shape: BoxShape.circle,
                     boxShadow: [
                       BoxShadow(
-                          color: _mint.withOpacity(.55 * s),
+                          color: _mint.withValues(alpha: .55 * s),
                           blurRadius: 6 + 4 * s,
                           spreadRadius: 1 + 2 * s)
                     ],
@@ -330,8 +330,9 @@ class _MealLogSuccessScreenState extends State<MealLogSuccessScreen>
                   shape: BoxShape.circle,
                   boxShadow: [
                     BoxShadow(
-                      color: AppColors.primary.withOpacity(
-                          (.28 + .12 * s) * ring.clamp(0.0, 1.0).toDouble()),
+                      color: AppColors.primary.withValues(
+                          alpha: (.28 + .12 * s) *
+                              ring.clamp(0.0, 1.0).toDouble()),
                       blurRadius: 36 + 14 * s,
                       spreadRadius: 2 + 4 * s,
                     ),
@@ -399,7 +400,7 @@ class _MealLogSuccessScreenState extends State<MealLogSuccessScreen>
         border: Border.all(color: AppColors.hairline),
         boxShadow: [
           BoxShadow(
-              color: Colors.black.withOpacity(.05),
+              color: Colors.black.withValues(alpha: .05),
               blurRadius: 20,
               offset: const Offset(0, 8))
         ],
@@ -412,7 +413,8 @@ class _MealLogSuccessScreenState extends State<MealLogSuccessScreen>
             decoration: BoxDecoration(
               color: AppColors.primaryTint,
               borderRadius: BorderRadius.circular(14),
-              border: Border.all(color: AppColors.primary.withOpacity(.15)),
+              border:
+                  Border.all(color: AppColors.primary.withValues(alpha: .15)),
             ),
             child: const Icon(Icons.restaurant_rounded,
                 color: AppColors.primary, size: 22),
@@ -696,7 +698,7 @@ class _BurstPainter extends CustomPainter {
       final pos = center + dir * dist;
       final paint = Paint()
         ..color = _colors[i % _colors.length]
-            .withOpacity((1 - t).clamp(0.0, 1.0).toDouble())
+            .withValues(alpha: (1 - t).clamp(0.0, 1.0).toDouble())
         ..strokeCap = StrokeCap.round;
 
       if (i.isEven) {
@@ -733,8 +735,8 @@ class _RipplePainter extends CustomPainter {
         Paint()
           ..style = PaintingStyle.stroke
           ..strokeWidth = 2
-          ..color = AppColors.primary
-              .withOpacity((1 - p) * .3 * appear.clamp(0.0, 1.0).toDouble()),
+          ..color = AppColors.primary.withValues(
+              alpha: (1 - p) * .3 * appear.clamp(0.0, 1.0).toDouble()),
       );
     }
   }

@@ -54,7 +54,7 @@ void main() {
 
   test('a failed load is an error, with no notes to show', () async {
     final repo = _ScriptedReviews()
-      ..lists.add(Failed<List<NutritionistReview>>(const NetworkFailure()));
+      ..lists.add(const Failed<List<NutritionistReview>>(NetworkFailure()));
     final cubit = ReviewsCubit(repo);
     addTearDown(cubit.close);
 
@@ -117,7 +117,7 @@ void main() {
     final repo = _ScriptedReviews()
       ..lists.addAll([
         const Success([_review]),
-        Failed<List<NutritionistReview>>(const NetworkFailure()),
+        const Failed<List<NutritionistReview>>(NetworkFailure()),
       ]);
     final cubit = ReviewsCubit(repo);
     addTearDown(cubit.close);

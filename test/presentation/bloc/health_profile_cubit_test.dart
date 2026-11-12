@@ -39,7 +39,8 @@ const PatientHealthProfile _profile = PatientHealthProfile(
 
 void main() {
   test('a successful load ends in success with the profile', () async {
-    final repository = _ScriptedRepository()..results.add(Success(_profile));
+    final repository = _ScriptedRepository()
+      ..results.add(const Success(_profile));
     final cubit = HealthProfileCubit(repository);
     addTearDown(cubit.close);
 
@@ -51,8 +52,8 @@ void main() {
 
   test('a failed refresh keeps the profile already on screen', () async {
     final repository = _ScriptedRepository()
-      ..results.add(Success(_profile))
-      ..results.add(Failed(const NetworkFailure()));
+      ..results.add(const Success(_profile))
+      ..results.add(const Failed(NetworkFailure()));
     final cubit = HealthProfileCubit(repository);
     addTearDown(cubit.close);
 
@@ -66,7 +67,7 @@ void main() {
   test('a failure with nothing before it shows the error and no data',
       () async {
     final repository = _ScriptedRepository()
-      ..results.add(Failed(const NetworkFailure()));
+      ..results.add(const Failed(NetworkFailure()));
     final cubit = HealthProfileCubit(repository);
     addTearDown(cubit.close);
 
@@ -78,8 +79,8 @@ void main() {
 
   test('a request that is sent reads the profile again', () async {
     final repository = _ScriptedRepository()
-      ..results.add(Success(_profile))
-      ..results.add(Success(_profile));
+      ..results.add(const Success(_profile))
+      ..results.add(const Success(_profile));
     final cubit = HealthProfileCubit(repository);
     addTearDown(cubit.close);
     await cubit.load();
@@ -98,7 +99,7 @@ void main() {
   test('a refused request is returned and the profile is not read again',
       () async {
     final repository = _ScriptedRepository()
-      ..results.add(Success(_profile))
+      ..results.add(const Success(_profile))
       ..writeResult = const Failed<void>(ApiFailure(code: 'proposal_exists'));
     final cubit = HealthProfileCubit(repository);
     addTearDown(cubit.close);
@@ -118,8 +119,8 @@ void main() {
   test('a withdrawn request is removed and the profile is read again',
       () async {
     final repository = _ScriptedRepository()
-      ..results.add(Success(_profile))
-      ..results.add(Success(_profile));
+      ..results.add(const Success(_profile))
+      ..results.add(const Success(_profile));
     final cubit = HealthProfileCubit(repository);
     addTearDown(cubit.close);
     await cubit.load();

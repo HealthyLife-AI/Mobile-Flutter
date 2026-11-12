@@ -561,8 +561,9 @@ class _ReportUploadScreenState extends State<ReportUploadScreen> {
       }
       _take(bytes, name);
     } on Object {
-      if (mounted)
+      if (mounted) {
         showSpecSnack(context, context.l10n.reportPickFailed, error: true);
+      }
     }
   }
 
@@ -583,8 +584,9 @@ class _ReportUploadScreenState extends State<ReportUploadScreen> {
       final bytes = await picked.readAsBytes();
       if (mounted) _take(bytes, picked.name);
     } on Object {
-      if (mounted)
+      if (mounted) {
         showSpecSnack(context, context.l10n.reportPickFailed, error: true);
+      }
     }
   }
 

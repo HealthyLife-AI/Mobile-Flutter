@@ -43,7 +43,7 @@ void main() {
     test('no connection waits with backoff', () {
       final decision = _decide(
         _write(),
-        NetworkException('offline', kind: NetworkFailureKind.offline),
+        const NetworkException('offline', kind: NetworkFailureKind.offline),
       );
 
       expect(
@@ -55,7 +55,7 @@ void main() {
     test('a 5xx waits with backoff that grows with the failures', () {
       final decision = _decide(
         _write(attempts: 2),
-        ServerException('down', statusCode: 503),
+        const ServerException('down', statusCode: 503),
       );
 
       expect(

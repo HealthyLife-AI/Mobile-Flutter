@@ -1,6 +1,7 @@
 /// What the appointments screen shows, from `GET /me/appointments` (API guide
 /// 12.4). The server sends each time with the clinic's offset; the instant is
 /// kept and the screen shows it in the device's own time.
+library;
 
 /// Which list is asked for. `upcoming` is booked and in the future, soonest
 /// first. `past` is everything else, newest first.
