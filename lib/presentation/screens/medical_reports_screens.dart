@@ -20,6 +20,7 @@ import '../date_labels.dart';
 import '../widgets/app_header_bar.dart';
 import '../widgets/confirm_action_sheet.dart';
 import '../widgets/spec_ui.dart';
+import '../widgets/state_views.dart';
 
 String reportCategoryLabel(AppLocalizations l10n, ReportCategory c) =>
     switch (c) {
@@ -438,7 +439,7 @@ class _ReportViewerScreenState extends State<ReportViewerScreen> {
         ),
       );
     } else if (bytes == null) {
-      body = const Center(child: CircularProgressIndicator());
+      body = const ListSkeleton();
     } else if (pdf != null) {
       body = PdfViewPinch(controller: pdf);
     } else {

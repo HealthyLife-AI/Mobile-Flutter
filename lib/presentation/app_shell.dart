@@ -20,6 +20,7 @@ import 'screens/log_meal_intro_screen.dart';
 import '../core/navigation/app_page_route.dart';
 
 import '../l10n/l10n.dart';
+import 'widgets/state_views.dart';
 
 /// Bottom-nav shell. extendBody: true so the floating pill never sits
 /// flush against the screen edge (section 2.3).
@@ -119,7 +120,7 @@ class _AppShellState extends State<AppShell> with WidgetsBindingObserver {
             // Nothing to show and no way to decide: say so and offer a retry.
             // The patient is never dropped into the dashboard on a guess.
             return LoadErrorView(
-              message: loadFailureMessage(context, state.failure),
+              failure: state.failure,
               onRetry: () => context.read<MeasurementsCubit>().load(),
             );
         }
@@ -228,6 +229,6 @@ class _ProgressTabLoading extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(child: CircularProgressIndicator());
+    return const ListSkeleton();
   }
 }

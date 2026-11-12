@@ -25,6 +25,7 @@ import '../widgets/directional_icon.dart';
 import '../widgets/person_avatar.dart';
 import '../../l10n/l10n.dart';
 import '../bloc/auth/auth_cubit.dart';
+import '../widgets/state_views.dart';
 
 const _lav = Color(0xFFF6F8FE); // خلفية الصناديق الفاتحة
 const _lavGrey = Color(0xFFEEF1F8);
@@ -260,11 +261,11 @@ class _ProfileStatus extends StatelessWidget {
     final current = state;
     if (current is AsyncError<PatientHealthProfile>) {
       return LoadErrorView(
-        message: loadFailureMessage(context, current.failure),
+        failure: current.failure,
         onRetry: () => context.read<HealthProfileCubit>().load(),
       );
     }
-    return const Center(child: CircularProgressIndicator());
+    return const ListSkeleton();
   }
 }
 

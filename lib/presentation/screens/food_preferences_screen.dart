@@ -16,6 +16,7 @@ import '../bloc/meal_plan/meal_plan_cubit.dart';
 import '../widgets/app_header_bar.dart';
 import '../widgets/load_error_view.dart';
 import '../widgets/spec_ui.dart';
+import '../widgets/state_views.dart';
 
 /// "أكلاتي" — `GET` / `PUT /me/food-preferences`.
 ///
@@ -218,10 +219,10 @@ class _FoodPreferencesScreenState extends State<FoodPreferencesScreen> {
     final l10n = context.l10n;
     final Widget body;
     if (_loading) {
-      body = const Center(child: CircularProgressIndicator());
+      body = const ListSkeleton();
     } else if (_loadFailure != null) {
       body = LoadErrorView(
-          message: loadFailureMessage(context, _loadFailure), onRetry: _load);
+          failure: _loadFailure, onRetry: _load);
     } else {
       final suggestions = _suggestions();
       body = ListView(

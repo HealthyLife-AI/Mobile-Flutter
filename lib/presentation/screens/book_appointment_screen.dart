@@ -272,7 +272,7 @@ class _BookingViewState extends State<_BookingView> {
     if (slots == null) {
       if (state case AsyncError<AppointmentSlots>(:final failure)) {
         return LoadErrorView(
-          message: loadFailureMessage(context, failure),
+          failure: failure,
           onRetry: _reloadTimes,
         );
       }

@@ -15,6 +15,7 @@ import '../bloc/reviews/reviews_cubit.dart';
 import '../widgets/app_header_bar.dart';
 import '../widgets/gradient_cta_button.dart';
 import '../widgets/load_error_view.dart';
+import '../widgets/state_views.dart';
 
 /// «ملاحظات الأخصائي»: the nutritionist's notes, with «فهمت» and the tasks in
 /// them (API guide 9.2). Opened from the specialist profile, and from the push
@@ -94,11 +95,11 @@ class _ReviewsView extends StatelessWidget {
             if (state
                 case AsyncError<List<NutritionistReview>>(:final failure)) {
               return LoadErrorView(
-                message: loadFailureMessage(context, failure),
+                failure: failure,
                 onRetry: () => context.read<ReviewsCubit>().load(),
               );
             }
-            return const Center(child: CircularProgressIndicator());
+            return const ListSkeleton();
           }
           if (reviews.isEmpty) {
             return Center(

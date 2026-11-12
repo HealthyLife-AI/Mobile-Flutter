@@ -4541,4 +4541,10 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get loginPrivacyPolicy => 'سياسة الخصوصية';
+
+  @override
+  String get stateOfflineTitle => 'لا يوجد اتصال';
+
+  @override
+  String get stateErrorTitle => 'تعذّر تحميل الصفحة';
 }

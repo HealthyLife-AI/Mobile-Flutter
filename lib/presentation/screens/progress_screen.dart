@@ -29,6 +29,7 @@ import 'reviews_screen.dart';
 import '../widgets/directional_icon.dart';
 import '../widgets/person_avatar.dart';
 import '../../l10n/l10n.dart';
+import '../widgets/state_views.dart';
 
 /// متابعة التقدم والتقييم — specialist header, weight progress, weight
 /// trend chart, circumferences, the nutritionist's latest note with its key
@@ -176,11 +177,11 @@ class _ProgressBodyState extends State<_ProgressBody> {
     if (snapshot == null) {
       if (state case AsyncError<ProgressSnapshot>(:final failure)) {
         return LoadErrorView(
-          message: loadFailureMessage(context, failure),
+          failure: failure,
           onRetry: () => context.read<ProgressCubit>().load(),
         );
       }
-      return const Center(child: CircularProgressIndicator());
+      return const ListSkeleton();
     }
     if (snapshot.weightTrend.isEmpty) {
       return Center(
@@ -782,7 +783,7 @@ class _ProgressBodyState extends State<_ProgressBody> {
       body = Padding(
         padding: const EdgeInsets.only(top: 12),
         child: LoadErrorView(
-          message: loadFailureMessage(context, failure),
+          failure: failure,
           onRetry: () => context.read<ReviewsCubit>().load(),
         ),
       );

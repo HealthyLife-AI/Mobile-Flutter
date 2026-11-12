@@ -15,6 +15,7 @@ import '../health_profile_labels.dart';
 import '../widgets/app_header_bar.dart';
 import '../widgets/confirm_action_sheet.dart';
 import 'change_request_forms.dart';
+import '../widgets/state_views.dart';
 
 const _lav = Color(0xFFF6F8FE);
 
@@ -32,7 +33,7 @@ class ChangeRequestsScreen extends StatelessWidget {
         builder: (context, state) {
           final profile = state.dataOrNull;
           if (profile == null) {
-            return const Center(child: CircularProgressIndicator());
+            return const ListSkeleton();
           }
           return _RequestsList(profile: profile);
         },

@@ -13,6 +13,7 @@ import '../widgets/app_header_bar.dart';
 import '../widgets/load_error_view.dart';
 import '../widgets/spec_ui.dart';
 import 'quick_request_screen.dart';
+import '../widgets/state_views.dart';
 
 /// "طلباتي" — `GET /me/quick-requests`, newest first. Opening the screen reads
 /// the list, which marks the replies read on the server. No edit, no delete.
@@ -43,10 +44,10 @@ class _MyRequestsScreenState extends State<MyRequestsScreen> {
     if (requests == null) {
       body = state is AsyncError<List<QuickRequest>>
           ? LoadErrorView(
-              message: loadFailureMessage(context, state.failure),
+              failure: state.failure,
               onRetry: () => context.read<QuickRequestsCubit>().load(),
             )
-          : const Center(child: CircularProgressIndicator());
+          : const ListSkeleton();
     } else if (requests.isEmpty) {
       body = Center(
         child: SpecEmptyState(

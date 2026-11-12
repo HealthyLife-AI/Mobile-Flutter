@@ -7837,6 +7837,18 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'سياسة الخصوصية'**
   String get loginPrivacyPolicy;
+
+  /// Title of a page that could not load (LoadErrorView).
+  ///
+  /// In ar, this message translates to:
+  /// **'لا يوجد اتصال'**
+  String get stateOfflineTitle;
+
+  /// Title of a page that could not load (LoadErrorView).
+  ///
+  /// In ar, this message translates to:
+  /// **'تعذّر تحميل الصفحة'**
+  String get stateErrorTitle;
 }
 
 class _AppLocalizationsDelegate

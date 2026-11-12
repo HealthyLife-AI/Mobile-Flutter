@@ -42,7 +42,7 @@ class AppHeaderBar extends StatelessWidget implements PreferredSizeWidget {
   /// are already near-identical, so a divider only adds noise.
   final bool showDivider;
 
-  static const double _edgeSlot = 44;
+  static const double _edgeSlot = 48;
 
   const AppHeaderBar({
     super.key,
@@ -63,7 +63,7 @@ class AppHeaderBar extends StatelessWidget implements PreferredSizeWidget {
     // Both edge slots take the SAME width so the title stays optically
     // centred, and the slot grows with the action count so 2+ actions can
     // never overflow the 44px default.
-    final edgeWidth = math.max(_edgeSlot, actions.length * 40.0);
+    final edgeWidth = math.max(_edgeSlot, actions.length * 48.0);
 
     return AppBar(
       backgroundColor: AppColors.surface,
@@ -103,6 +103,7 @@ class AppHeaderBar extends StatelessWidget implements PreferredSizeWidget {
                           directionalIcon(context,
                               rtl: Icons.arrow_forward_rounded,
                               ltr: Icons.arrow_back_rounded),
+                      tooltip: MaterialLocalizations.of(context).backButtonTooltip,
                       onTap: onBack ?? () => Navigator.of(context).maybePop(),
                     )
                   : null,
@@ -155,14 +156,15 @@ class AppHeaderBar extends StatelessWidget implements PreferredSizeWidget {
 class _EdgeButton extends StatelessWidget {
   final IconData? icon;
   final VoidCallback? onTap;
+  final String? tooltip;
 
-  const _EdgeButton({this.icon, this.onTap});
+  const _EdgeButton({this.icon, this.onTap, this.tooltip});
 
   @override
   Widget build(BuildContext context) {
     final content = Icon(icon, color: AppColors.textSecondary, size: 20);
     if (onTap == null) return Center(child: content);
-    return Center(
+    final button = Center(
       child: TweenAnimationBuilder<double>(
         tween: Tween(begin: 0.92, end: 1),
         duration: const Duration(milliseconds: 520),
@@ -175,12 +177,14 @@ class _EdgeButton extends StatelessWidget {
           child: InkWell(
             borderRadius: BorderRadius.circular(12),
             onTap: onTap,
+            // 48dp: the touch-target minimum.
             child:
-                SizedBox(width: 40, height: 40, child: Center(child: content)),
+                SizedBox(width: 48, height: 48, child: Center(child: content)),
           ),
         ),
       ),
     );
+    return tooltip == null ? button : Tooltip(message: tooltip!, child: button);
   }
 }
 

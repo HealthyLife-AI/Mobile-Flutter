@@ -356,7 +356,7 @@ class _AppointmentsBody extends StatelessWidget {
     if (items == null) {
       if (state case AsyncError<List<Appointment>>(:final failure)) {
         return LoadErrorView(
-          message: loadFailureMessage(context, failure),
+          failure: failure,
           onRetry: () => context.read<AppointmentsCubit>().load(),
         );
       }
