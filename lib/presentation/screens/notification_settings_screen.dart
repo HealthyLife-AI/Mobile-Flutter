@@ -13,8 +13,8 @@ import '../../domain/repositories/notification_permissions.dart';
 import '../bloc/measurements/measurements_cubit.dart';
 import '../widgets/app_header_bar.dart';
 
-import '../widgets/directional_icon.dart';
 import '../../l10n/l10n.dart';
+import '../widgets/directional_icon.dart';
 
 // ───────────────────────── ألوان إضافية مأخوذة من التصميم ─────────────────────────
 const Color _kMint = Color(0xFF5EE0B0);
@@ -1089,12 +1089,8 @@ class _QuietRowState extends State<_QuietRow> {
                       color: _kLavender, shape: BoxShape.circle),
                   child: Transform.translate(
                     offset: Offset(-nudge * rtlDesignSign(context), 0),
-                    child: Icon(
-                        directionalIcon(context,
-                            rtl: Icons.chevron_left_rounded,
-                            ltr: Icons.chevron_right_rounded),
-                        size: 22,
-                        color: AppColors.primary),
+                    child: const Icon(Icons.chevron_right_rounded,
+                        size: 22, color: AppColors.primary),
                   ),
                 ),
               ]);

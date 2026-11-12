@@ -21,11 +21,11 @@ import '../widgets/app_header_bar.dart';
 import '../widgets/load_error_view.dart';
 import 'change_requests_screen.dart';
 
-import '../widgets/directional_icon.dart';
 import '../widgets/person_avatar.dart';
 import '../../l10n/l10n.dart';
 import '../bloc/auth/auth_cubit.dart';
 import '../widgets/state_views.dart';
+import '../widgets/directional_icon.dart';
 
 const _lav = Color(0xFFF6F8FE); // خلفية الصناديق الفاتحة
 const _lavGrey = Color(0xFFEEF1F8);
@@ -967,12 +967,8 @@ class _EditRequestRow extends StatelessWidget {
                     0),
                 child: child,
               ),
-              child: Icon(
-                  directionalIcon(context,
-                      rtl: Icons.chevron_left_rounded,
-                      ltr: Icons.chevron_right_rounded),
-                  size: 18,
-                  color: AppColors.primary),
+              child: const Icon(Icons.chevron_right_rounded,
+                  size: 18, color: AppColors.primary),
             ),
           ]),
         ),

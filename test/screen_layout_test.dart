@@ -140,9 +140,9 @@ void main() {
         findsOneWidget);
     // The nutritionist's plan, not demo content: its week (started two weeks
     // ago) and a food that only the plan contains.
-    expect(find.text('الأسبوع ٣ من الخطة'), findsOneWidget);
+    expect(find.text('الأسبوع 3 من الخطة'), findsOneWidget);
     // Today's total from the plan's summary_by_day (993 kcal).
-    expect(find.text('٩٩٣'), findsOneWidget);
+    expect(find.text('993'), findsOneWidget);
     await tester.scrollUntilVisible(find.text('صدر دجاج مشوي'), 300,
         scrollable: find
             .descendant(

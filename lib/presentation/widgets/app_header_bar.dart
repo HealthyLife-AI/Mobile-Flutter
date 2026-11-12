@@ -3,7 +3,6 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_text_styles.dart';
-import 'directional_icon.dart';
 
 /// The one header every pushed screen in the app uses.
 ///
@@ -33,8 +32,8 @@ class AppHeaderBar extends StatelessWidget implements PreferredSizeWidget {
   /// False only for a root tab destination (nothing to go back to).
   final bool showBack;
 
-  /// The back affordance sits on the START edge. Defaults to the design's
-  /// arrow, which points ← in both languages (see [directionalIcon]).
+  /// The back affordance sits on the START edge. Defaults to the standard
+  /// back arrow, which Flutter mirrors in RTL (→ in Arabic, ← in English).
   final IconData? backIcon;
   final VoidCallback? onBack;
 
@@ -99,10 +98,7 @@ class AppHeaderBar extends StatelessWidget implements PreferredSizeWidget {
               width: edgeWidth,
               child: showBack
                   ? _EdgeButton(
-                      icon: backIcon ??
-                          directionalIcon(context,
-                              rtl: Icons.arrow_forward_rounded,
-                              ltr: Icons.arrow_back_rounded),
+                      icon: backIcon ?? Icons.arrow_back_rounded,
                       tooltip: MaterialLocalizations.of(context).backButtonTooltip,
                       onTap: onBack ?? () => Navigator.of(context).maybePop(),
                     )

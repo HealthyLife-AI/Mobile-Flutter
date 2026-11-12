@@ -26,7 +26,6 @@ import '../widgets/gradient_cta_button.dart';
 import '../widgets/load_error_view.dart';
 import 'reviews_screen.dart';
 
-import '../widgets/directional_icon.dart';
 import '../widgets/person_avatar.dart';
 import '../../l10n/l10n.dart';
 import '../widgets/state_views.dart';
@@ -517,15 +516,27 @@ class _ProgressBodyState extends State<_ProgressBody> {
             child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(context.l10n.commonToday,
-                      style: const TextStyle(
-                          fontSize: 10.5,
-                          fontWeight: FontWeight.w700,
-                          color: AppColors.primaryInk)),
-                  for (final label in _axisLabels(context, cubit.days))
-                    Text(label,
+                  // Flexible, so a narrow phone shortens a label instead of
+                  // overflowing the row.
+                  Flexible(
+                    child: Text(context.l10n.commonToday,
+                        maxLines: 1,
+                        softWrap: false,
+                        overflow: TextOverflow.fade,
                         style: const TextStyle(
-                            fontSize: 10.5, color: AppColors.textSecondary)),
+                            fontSize: 10.5,
+                            fontWeight: FontWeight.w700,
+                            color: AppColors.primary)),
+                  ),
+                  for (final label in _axisLabels(context, cubit.days))
+                    Flexible(
+                      child: Text(label,
+                          maxLines: 1,
+                          softWrap: false,
+                          overflow: TextOverflow.fade,
+                          style: const TextStyle(
+                              fontSize: 10.5, color: AppColors.textSecondary)),
+                    ),
                 ]),
           ),
         ),
@@ -680,12 +691,7 @@ class _ProgressBodyState extends State<_ProgressBody> {
                       fontWeight: FontWeight.w700,
                       color: _teal)),
             ),
-            Icon(
-                directionalIcon(context,
-                    rtl: Icons.arrow_back_rounded,
-                    ltr: Icons.arrow_forward_rounded),
-                size: 18,
-                color: _teal),
+            const Icon(Icons.arrow_forward_rounded, size: 18, color: _teal),
           ]),
         ),
       ),

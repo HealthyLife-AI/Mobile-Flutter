@@ -138,7 +138,7 @@ void main() {
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 100));
 
-    expect(find.text('منذ ٥ دقائق'), findsOneWidget);
+    expect(find.text('منذ 5 دقائق'), findsOneWidget);
     expect(find.text('أمس'), findsOneWidget);
 
     await tester.tap(find.text('جديد'));

@@ -524,7 +524,7 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
-  String get demoDateFriday19Sep2025 => 'الجمعة، ١٩ سبتمبر ٢٠٢٥';
+  String get demoDateFriday19Sep2025 => 'الجمعة، 19 سبتمبر 2025';
 
   @override
   String get firstMeasurementBaselineSaved =>
@@ -1290,7 +1290,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get guideVideoComingSoon =>
-      '🎬 قريباً: فيديو إرشادي قصير (١٠ ثوان) لكل قياس لتسهيل المتابعة العملية المباشرة.';
+      '🎬 قريباً: فيديو إرشادي قصير (10 ثوان) لكل قياس لتسهيل المتابعة العملية المباشرة.';
 
   @override
   String get guideDoneBack => 'فهمت، العودة لتسجيل القياسات';
@@ -1846,7 +1846,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String onboardingStepProgress(Object percent) {
-    return 'خطوة ٣ من ٣ ($percent%)';
+    return 'خطوة 3 من 3 ($percent%)';
   }
 
   @override
@@ -1880,7 +1880,7 @@ class AppLocalizationsAr extends AppLocalizations {
       'احصل على نظام غذائي مخصص بالكامل يناسب طبيعة جسمك وحالتك الصحية، ومصمم مباشرة من أخصائي التغذية المتابع لك.';
 
   @override
-  String get onboardingBadgeApproved => '١٠٠٪ معتمد طبياً ومبني على التحاليل';
+  String get onboardingBadgeApproved => '100% معتمد طبياً ومبني على التحاليل';
 
   @override
   String get onboardingStartNow => 'ابدأ الآن';
@@ -1935,7 +1935,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get passwordRequirements => 'شروط كلمة المرور:';
 
   @override
-  String get passwordRuleMinLength8 => '٨ أحرف على الأقل';
+  String get passwordRuleMinLength8 => '8 أحرف على الأقل';
 
   @override
   String get passwordRuleSpecial => 'رمز خاص واحد على الأقل (!@#\$%)';
@@ -1987,7 +1987,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get planPreparingWithin24h =>
-      'خلال ٢٤ ساعة عمل من تسجيل قياساتك الأولية';
+      'خلال 24 ساعة عمل من تسجيل قياساتك الأولية';
 
   @override
   String get planPreparingReview => 'مراجعة طبية سريرية موثقة';
@@ -2010,7 +2010,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get planPreparingHours =>
-      'متاح طوال أيام العمل الرسمية من ٩:٠٠ ص حتى ٦:٠٠ م';
+      'متاح طوال أيام العمل الرسمية من 9:00 ص حتى 6:00 م';
 
   @override
   String planPreparingClinic(String gender, String name) {
@@ -2408,7 +2408,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get appointmentReminderTitle => 'موعد قادم';
 
   @override
-  String get appointmentReminderDay => 'موعدك بعد ٢٤ ساعة';
+  String get appointmentReminderDay => 'موعدك بعد 24 ساعة';
 
   @override
   String get appointmentReminderHour => 'موعدك بعد ساعة';
@@ -3634,7 +3634,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get quickRequestLimit =>
-      'وصلت لحد الطلبات اليوم (٥). جرّب بكرة أو احكي مع أخصائيتك بموعدك القادم.';
+      'وصلت لحد الطلبات اليوم (5). جرّب بكرة أو احكي مع أخصائيتك بموعدك القادم.';
 
   @override
   String get quickRequestOffline =>
@@ -4011,7 +4011,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get reportFromPdf => 'ملف PDF';
 
   @override
-  String get reportFileHint => 'صور (JPG، PNG، WebP) أو PDF، لحد ١٠ ميغابايت.';
+  String get reportFileHint => 'صور (JPG، PNG، WebP) أو PDF، لحد 10 ميغابايت.';
 
   @override
   String get reportPickFailed => 'ما قدرنا نفتح الملف، جرّب مرة ثانية.';
@@ -4024,7 +4024,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get reportErrorTooLarge =>
-      'الملف أكبر من ١٠ ميغابايت. صوّر بدقة أقل أو اختر ملفًا أصغر.';
+      'الملف أكبر من 10 ميغابايت. صوّر بدقة أقل أو اختر ملفًا أصغر.';
 
   @override
   String get reportErrorType => 'نوع الملف غير مدعوم.';
@@ -4033,7 +4033,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get reportErrorInvalidImage => 'الصورة تالفة، جرّب مرة ثانية.';
 
   @override
-  String get reportErrorLimit => 'وصلت لحد ٣٠ تقرير، احذف تقريرًا قديمًا.';
+  String get reportErrorLimit => 'وصلت لحد 30 تقرير، احذف تقريرًا قديمًا.';
 
   @override
   String get tagEconomical => 'اقتصادي';
@@ -4123,10 +4123,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get wellbeingErrorFuture => 'ما بتقدر تسجّل ليوم ما إجا بعد.';
 
   @override
-  String get wellbeingErrorOld => 'بتقدر تعدّل آخر ٧ أيام بس.';
+  String get wellbeingErrorOld => 'بتقدر تعدّل آخر 7 أيام بس.';
 
   @override
-  String get wellbeingLast7 => 'آخر ٧ ليالي';
+  String get wellbeingLast7 => 'آخر 7 ليالي';
 
   @override
   String get wellbeingHoursOfSleep => 'ساعات النوم';
@@ -4220,22 +4220,22 @@ class AppLocalizationsAr extends AppLocalizations {
   String get achvFirstMealBody => 'سجّلت أول وجبة';
 
   @override
-  String get achvStreak3 => '٣ أيام ورا بعض';
+  String get achvStreak3 => '3 أيام ورا بعض';
 
   @override
-  String get achvStreak3Body => 'سجّلت وجباتك ٣ أيام متتالية';
+  String get achvStreak3Body => 'سجّلت وجباتك 3 أيام متتالية';
 
   @override
   String get achvStreak7 => 'أسبوع كامل';
 
   @override
-  String get achvStreak7Body => 'سجّلت وجباتك ٧ أيام متتالية';
+  String get achvStreak7Body => 'سجّلت وجباتك 7 أيام متتالية';
 
   @override
-  String get achvDays30 => '٣٠ يوم تسجيل';
+  String get achvDays30 => '30 يوم تسجيل';
 
   @override
-  String get achvDays30Body => 'سجّلت وجباتك بـ٣٠ يومًا مختلفًا';
+  String get achvDays30Body => 'سجّلت وجباتك بـ30 يومًا مختلفًا';
 
   @override
   String get achvFirstReading => 'أول قياس';
@@ -4247,16 +4247,16 @@ class AppLocalizationsAr extends AppLocalizations {
   String get achvFiveReadings => 'ملتزم بالقياس';
 
   @override
-  String get achvFiveReadingsBody => 'سجّلت ٥ قياسات';
+  String get achvFiveReadingsBody => 'سجّلت 5 قياسات';
 
   @override
-  String get achvFirstKilosLoss => 'أول ٢ كغ';
+  String get achvFirstKilosLoss => 'أول 2 كغ';
 
   @override
-  String get achvFirstKilosGain => 'أول ٢ كغ زيادة';
+  String get achvFirstKilosGain => 'أول 2 كغ زيادة';
 
   @override
-  String get achvFirstKilosBody => 'تغيّر وزنك ٢ كغ باتجاه هدفك';
+  String get achvFirstKilosBody => 'تغيّر وزنك 2 كغ باتجاه هدفك';
 
   @override
   String get achvHalfway => 'نص الطريق';

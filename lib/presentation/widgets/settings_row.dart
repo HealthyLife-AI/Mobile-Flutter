@@ -134,10 +134,7 @@ class _SettingsRowState extends State<SettingsRow> {
                 AnimatedRotation(
                   turns: _pressed ? -0.02 * rtlDesignSign(context) : 0,
                   duration: const Duration(milliseconds: 180),
-                  child: Icon(
-                      directionalIcon(context,
-                          rtl: Icons.chevron_left_rounded,
-                          ltr: Icons.chevron_right_rounded),
+                  child: const Icon(Icons.chevron_right_rounded,
                       color: AppColors.iconMuted),
                 ),
               ],

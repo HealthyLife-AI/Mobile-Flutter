@@ -4,7 +4,6 @@ import '../../core/theme/app_radius.dart';
 import '../../core/theme/app_text_styles.dart';
 
 import '../../l10n/l10n.dart';
-import 'directional_icon.dart';
 
 /// Shared header for the post-activation onboarding wizard (Health Data →
 /// Initial Measurements → Notifications): back arrow, screen title,
@@ -31,12 +30,8 @@ class OnboardingStepHeader extends StatelessWidget {
       children: [
         Row(
           children: [
-            Icon(
-                directionalIcon(context,
-                    rtl: Icons.arrow_forward_rounded,
-                    ltr: Icons.arrow_back_rounded),
-                color: AppColors.textSecondary,
-                size: 18),
+            const Icon(Icons.arrow_back_rounded,
+                color: AppColors.textSecondary, size: 18),
             const SizedBox(width: 8),
             Expanded(
                 child: Text(title,

@@ -166,9 +166,9 @@ void main() {
             },
           ]));
       expect(find.text(_ar.planActivitiesTitle), findsOneWidget);
-      expect(find.text('٣٠ دقيقة'), findsOneWidget);
+      expect(find.text('30 دقيقة'), findsOneWidget);
       expect(find.text('مرتين يوميًا'), findsOneWidget);
-      expect(find.text('٥ أيام بالأسبوع'), findsOneWidget);
+      expect(find.text('5 أيام بالأسبوع'), findsOneWidget);
       expect(find.text('دقيقتين'), findsOneWidget);
       expect(find.text('مرة يوميًا'), findsOneWidget);
       expect(find.textContaining('بالأسبوع'), findsOneWidget,
@@ -237,7 +237,7 @@ void main() {
       expect(find.text(_ar.scheduleDueTitle), findsOneWidget);
       await tester.scrollUntilVisible(find.text(_ar.quickContactTitle), 300,
           scrollable: find.byType(Scrollable).first);
-      expect(find.text(_ar.requestsAwaiting('٢')), findsOneWidget);
+      expect(find.text(_ar.requestsAwaiting('2')), findsOneWidget);
       await _unmount(tester);
     });
 
@@ -346,7 +346,7 @@ void main() {
       await tester.tap(find.text('الميزانية'));
       await tester.tap(find.text('المزاج'));
       await _settle(tester);
-      expect(find.text(_ar.checkinLimitReached('٢')), findsOneWidget);
+      expect(find.text(_ar.checkinLimitReached('2')), findsOneWidget);
 
       await tester.tap(find.text('ولا شي'));
       await _settle(tester);
@@ -420,7 +420,7 @@ void main() {
           {'type': 'medical_reports'});
       expect(find.text('فحص السكر التراكمي'), findsOneWidget);
       expect(find.text(_ar.reportReviewed), findsOneWidget);
-      expect(find.text(_ar.reportsCount('١', '٣٠')), findsOneWidget);
+      expect(find.text(_ar.reportsCount('1', '30')), findsOneWidget);
       await _unmount(tester);
     });
   });

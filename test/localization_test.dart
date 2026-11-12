@@ -393,7 +393,7 @@ void main() {
 
   group('directionality', () {
     for (final (locale, direction, back) in [
-      (const Locale('ar'), TextDirection.rtl, Icons.arrow_forward_rounded),
+      (const Locale('ar'), TextDirection.rtl, Icons.arrow_back_rounded),
       (const Locale('en'), TextDirection.ltr, Icons.arrow_back_rounded),
     ]) {
       testWidgets(
@@ -422,8 +422,16 @@ void main() {
         final heading = find.text(l10n.aboutPrivacyPolicyTitle);
         expect(Directionality.of(tester.element(heading)), direction);
         expectTextHugsStartEdge(tester, heading, direction: direction);
-        // The header back arrow reads ← in both languages: Arabic keeps the
-        // design's mirrored arrow_forward, English uses arrow_back.
+        // The standard back arrow in both languages: Flutter mirrors
+        // arrow_back by itself in RTL, so it points right in Arabic and left
+        // in English.
+        expect(
+            tester
+                .widget<Icon>(find.descendant(
+                    of: find.byType(AppHeaderBar), matching: find.byIcon(back)))
+                .icon!
+                .matchTextDirection,
+            isTrue);
         expect(
             find.descendant(
                 of: find.byType(AppHeaderBar), matching: find.byIcon(back)),
@@ -432,20 +440,39 @@ void main() {
       });
     }
 
-    testWidgets('digits follow the language', (tester) async {
-      late String arDigits, enDigits;
+    testWidgets('digits are Latin in both languages', (tester) async {
+      final seen = <String, List<String>>{};
       for (final locale in const [Locale('ar'), Locale('en')]) {
         await tester.pumpWidget(localizedApp(
           locale: locale,
           home: Builder(builder: (context) {
-            final s = context.localizeDigits(1250);
-            locale.languageCode == 'ar' ? arDigits = s : enDigits = s;
+            seen[locale.languageCode] = [
+              context.localizeDigits(1250),
+              // A platform date can carry Arabic-Indic or Persian digits.
+              context.localizeDigits('١٢ نوفمبر ٢٠٢٦ ۱۲'),
+            ];
             return const SizedBox();
           }),
         ));
       }
-      expect(arDigits, '١٢٥٠');
-      expect(enDigits, '1250');
+      for (final language in ['ar', 'en']) {
+        expect(seen[language], ['1250', '12 نوفمبر 2026 12'], reason: language);
+      }
+    });
+
+    testWidgets('a date the platform formats has Latin digits in Arabic',
+        (tester) async {
+      late MaterialLocalizations material;
+      await tester.pumpWidget(localizedApp(
+        home: Builder(builder: (context) {
+          material = MaterialLocalizations.of(context);
+          return const SizedBox();
+        }),
+      ));
+      final date = material.formatFullDate(DateTime(2026, 11, 12));
+      expect(date, contains('12'));
+      expect(date, contains('2026'));
+      expect(RegExp('[\u0660-\u0669]').hasMatch(date), isFalse);
     });
   });
 

@@ -11,6 +11,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'core/di/app_dependencies.dart';
 import 'core/logging/app_logger.dart';
 import 'core/logging/crash_reporter.dart';
+import 'core/utils/formatters.dart';
 import 'core/navigation/app_navigator.dart';
 import 'core/navigation/app_router.dart';
 import 'core/navigation/push_destination.dart';
@@ -29,6 +30,7 @@ import 'presentation/screens/splash_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  useLatinDigits();
 
   try {
     await Firebase.initializeApp(

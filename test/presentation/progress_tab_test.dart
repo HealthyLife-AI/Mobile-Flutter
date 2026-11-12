@@ -83,7 +83,7 @@ void main() {
     expect(inPrompt(find.text('حان موعد قياسك الأسبوعي')), findsOneWidget);
     expect(inPrompt(find.text('آخر قياس مسجل')), findsOneWidget);
     // The real reading, not the design's sample.
-    expect(inPrompt(find.textContaining('١٩ سبتمبر ٢٠٢٥')), findsNothing);
+    expect(inPrompt(find.textContaining('19 سبتمبر 2025')), findsNothing);
     expect(inPrompt(find.textContaining('أكتوبر')), findsOneWidget);
   });
 

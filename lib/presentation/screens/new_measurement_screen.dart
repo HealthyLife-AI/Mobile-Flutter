@@ -14,7 +14,6 @@ import '../../l10n/l10n.dart';
 import '../bloc/nutritionist/nutritionist_cubit.dart';
 import '../widgets/app_header_bar.dart';
 import '../widgets/clinical_trust_footer.dart';
-import '../widgets/directional_icon.dart';
 import '../widgets/gradient_cta_button.dart';
 import 'measurement_guide_screen.dart';
 
@@ -326,12 +325,8 @@ class _MeasurementEntryScreenState extends State<MeasurementEntryScreen>
                       Text(context.l10n.measurementEntryView,
                           style: AppTextStyles.pillLabel),
                       const SizedBox(width: 4),
-                      Icon(
-                          directionalIcon(context,
-                              rtl: Icons.arrow_back_rounded,
-                              ltr: Icons.arrow_forward_rounded),
-                          size: 14,
-                          color: AppColors.primary),
+                      const Icon(Icons.arrow_forward_rounded,
+                          size: 14, color: AppColors.primary),
                     ],
                   ),
                 ),
