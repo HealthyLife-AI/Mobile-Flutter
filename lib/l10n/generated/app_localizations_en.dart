@@ -2450,8 +2450,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get appointmentReminderHour => 'Your appointment is in 1 hour';
 
   @override
-  String get appointmentReminderFiveMinutes =>
-      'Your appointment starts in 5 minutes';
+  String get appointmentReminderFifteenMinutes =>
+      'Your appointment starts in 15 minutes';
 
   @override
   String get callsTypeFollowUp => 'Follow-up session';

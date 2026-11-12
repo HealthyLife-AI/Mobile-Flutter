@@ -54,7 +54,7 @@ class LocalAppointmentReminderScheduler
 String _bodyFor(AppLocalizations copy, ReminderLead lead) => switch (lead) {
       ReminderLead.oneDay => copy.appointmentReminderDay,
       ReminderLead.oneHour => copy.appointmentReminderHour,
-      ReminderLead.fiveMinutes => copy.appointmentReminderFiveMinutes,
+      ReminderLead.fifteenMinutes => copy.appointmentReminderFifteenMinutes,
     };
 
 /// The notification number for a reminder [key]. The same key always gives the

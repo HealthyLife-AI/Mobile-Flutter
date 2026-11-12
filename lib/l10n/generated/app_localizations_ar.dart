@@ -2414,7 +2414,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get appointmentReminderHour => 'موعدك بعد ساعة';
 
   @override
-  String get appointmentReminderFiveMinutes => 'موعدك يبدأ بعد ٥ دقائق';
+  String get appointmentReminderFifteenMinutes => 'موعدك يبدأ بعد 15 دقيقة';
 
   @override
   String get callsTypeFollowUp => 'جلسة متابعة';

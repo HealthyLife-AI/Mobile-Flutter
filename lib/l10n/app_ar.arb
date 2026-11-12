@@ -3034,8 +3034,8 @@
   "@appointmentReminderHour": {
     "description": "Notification text in data/services/local_appointment_reminder_scheduler.dart"
   },
-  "appointmentReminderFiveMinutes": "موعدك يبدأ بعد ٥ دقائق",
-  "@appointmentReminderFiveMinutes": {
+  "appointmentReminderFifteenMinutes": "موعدك يبدأ بعد 15 دقيقة",
+  "@appointmentReminderFifteenMinutes": {
     "description": "Notification text in data/services/local_appointment_reminder_scheduler.dart"
   },
   "callsTypeFollowUp": "جلسة متابعة",
