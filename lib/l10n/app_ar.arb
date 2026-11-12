@@ -5433,5 +5433,25 @@
   "mealUndoFailed": "تعذّر التراجع. يمكنك حذف الوجبة من سجل اليوم.",
   "@mealUndoFailed": {
     "description": "One-tap meal logging on Home."
+  },
+  "logMealTabPlan": "من خطتي",
+  "@logMealTabPlan": {
+    "description": "The log-a-meal bottom sheet."
+  },
+  "logMealTabOffPlan": "خارج الخطة",
+  "@logMealTabOffPlan": {
+    "description": "The log-a-meal bottom sheet."
+  },
+  "logMealAllLogged": "تم تسجيل كل وجبات اليوم.",
+  "@logMealAllLogged": {
+    "description": "The log-a-meal bottom sheet."
+  },
+  "logMealOffPlanHint": "ابحث عن الطعام الذي تناولته وحدّد كميته بالغرام، وتُضاف سعراته إلى سجل اليوم.",
+  "@logMealOffPlanHint": {
+    "description": "The log-a-meal bottom sheet."
+  },
+  "logMealSearchFood": "البحث عن طعام",
+  "@logMealSearchFood": {
+    "description": "The log-a-meal bottom sheet."
   }
 }

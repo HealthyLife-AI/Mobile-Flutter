@@ -9,14 +9,13 @@ import '../../core/time/date_only.dart';
 import '../../domain/entities/notification_entities.dart';
 import '../bloc/notifications/notifications_cubit.dart';
 import '../notification_category_labels.dart';
-import 'log_meal_intro_screen.dart';
-import '../../core/navigation/app_page_route.dart';
 import '../widgets/app_header_bar.dart';
 import '../widgets/gradient_cta_button.dart';
 import '../widgets/load_error_view.dart';
 
 import '../../l10n/l10n.dart';
 import '../widgets/state_views.dart';
+import '../widgets/log_meal_sheet.dart';
 
 /// "التنبيهات" — the notification feed/inbox (distinct from
 /// [NotificationSettingsScreen], which configures *which* notifications get
@@ -665,8 +664,7 @@ class _LogNowButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => Navigator.of(context)
-          .push(AppPageRoute(builder: (_) => const LogMealIntroScreen())),
+      onTap: () => showLogMealSheet(context),
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
         decoration: BoxDecoration(

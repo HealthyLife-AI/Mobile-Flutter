@@ -5,7 +5,6 @@ import '../../l10n/l10n.dart';
 import '../../presentation/bloc/auth/auth_cubit.dart';
 import '../../presentation/bloc/measurements/measurements_cubit.dart';
 import '../../presentation/screens/health_record_screen.dart';
-import '../../presentation/screens/log_meal_intro_screen.dart';
 import '../../presentation/screens/notifications_center_screen.dart';
 import '../../presentation/screens/reviews_screen.dart';
 import '../../presentation/screens/schedule_calls_screen.dart';
@@ -19,6 +18,7 @@ import 'app_navigator.dart';
 import 'app_page_route.dart';
 import 'push_destination.dart';
 import 'push_tap_router.dart';
+import '../../presentation/widgets/log_meal_sheet.dart';
 
 /// The gate for push taps, from the auth state. A tap opens only when the
 /// shell is the root, so the splash and the sign-in flow are never covered.
@@ -48,7 +48,7 @@ void openPushDestination(PushDestination destination,
       _push(navigator, const ScheduleCallsScreen());
       break;
     case PushDestination.logMeal:
-      _push(navigator, const LogMealIntroScreen());
+      showLogMealSheet(navigator.context);
       break;
     case PushDestination.notes:
       _push(navigator, ReviewsScreen(focusReviewId: reviewId));

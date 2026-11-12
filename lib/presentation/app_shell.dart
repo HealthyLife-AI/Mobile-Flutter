@@ -16,11 +16,10 @@ import 'screens/daily_log_screen.dart';
 import 'screens/first_measurement_screen.dart';
 import 'screens/progress_screen.dart';
 import 'screens/profile_screen.dart';
-import 'screens/log_meal_intro_screen.dart';
-import '../core/navigation/app_page_route.dart';
 
 import '../l10n/l10n.dart';
 import 'widgets/state_views.dart';
+import 'widgets/log_meal_sheet.dart';
 
 /// Bottom-nav shell. extendBody: true so the floating pill never sits
 /// flush against the screen edge (section 2.3).
@@ -212,8 +211,7 @@ class _AppShellState extends State<AppShell> with WidgetsBindingObserver {
               backgroundColor: AppColors.primary,
               foregroundColor: Colors.white,
               elevation: 4,
-              onPressed: () => Navigator.of(context).push(
-                  AppPageRoute(builder: (_) => const LogMealIntroScreen())),
+              onPressed: () => showLogMealSheet(context),
               child: const Icon(Icons.add_rounded, size: 28),
             )
           : null,
