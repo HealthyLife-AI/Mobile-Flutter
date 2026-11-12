@@ -9,6 +9,7 @@ import '../../core/theme/app_radius.dart';
 import '../../core/theme/app_text_styles.dart';
 import '../bloc/auth/auth_cubit.dart';
 import '../widgets/forgot_password_dialog.dart';
+import '../widgets/privacy_policy.dart';
 import '../widgets/gradient_cta_button.dart';
 
 import '../../l10n/l10n.dart';
@@ -189,6 +190,16 @@ class _LoginScreenState extends State<LoginScreen> {
                         textAlign: TextAlign.center),
                   ),
                 ]),
+                // The policy is public, so it is read before signing in.
+                Center(
+                  child: TextButton(
+                    onPressed: () => openPrivacyPolicy(context),
+                    child: Text(l10n.loginPrivacyPolicy,
+                        style: AppTextStyles.caption.copyWith(
+                            color: AppColors.primary,
+                            decoration: TextDecoration.underline)),
+                  ),
+                ),
               ],
             );
           },

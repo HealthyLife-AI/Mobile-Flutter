@@ -4538,4 +4538,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get commonListSeparator => '، ';
+
+  @override
+  String get loginPrivacyPolicy => 'سياسة الخصوصية';
 }
