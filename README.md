@@ -349,10 +349,13 @@ New push types are routed in `lib/core/navigation/push_destination.dart`.
 
 ### Before a store release
 
-- Choose the final application id / bundle id (both are still
-  `com.example.healthylife`, which Google Play refuses), then register it in
-  Firebase and replace `android/app/google-services.json` and
-  `lib/firebase_options.dart` (`flutterfire configure`).
+- Application id / bundle id: `com.healthylife.app` (permanent once the
+  first build is uploaded to Google Play). Firebase project:
+  `healthylife-3ce36`, the one the backend sends pushes from. Android reads it
+  from `android/app/google-services.json` and Dart from
+  `lib/firebase_options.dart`; both must stay on this project, or the
+  backend's pushes stop reaching the app. To regenerate them:
+  `flutterfire configure --project=healthylife-3ce36 --platforms=android,ios`.
 - Android signing: create an upload keystore and `android/key.properties`
   (`storeFile`, `storePassword`, `keyAlias`, `keyPassword`). Without it the
   release build is signed with the debug key.
