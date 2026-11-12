@@ -18,6 +18,14 @@ void main() {
     expect(plist, isNot(contains('UISupportedInterfaceOrientations~ipad')));
   });
 
+  test('the minimum iOS version is the highest one a plugin needs', () {
+    // file_picker_darwin needs iOS 14; a lower target makes CocoaPods fail
+    // to resolve it, and the app cannot be built at all.
+    expect(
+        'IPHONEOS_DEPLOYMENT_TARGET = 14.0;'.allMatches(project), hasLength(3));
+    expect(project, isNot(contains('IPHONEOS_DEPLOYMENT_TARGET = 13.0;')));
+  });
+
   test('push notifications are declared', () {
     final entitlements =
         File('ios/Runner/Runner.entitlements').readAsStringSync();
