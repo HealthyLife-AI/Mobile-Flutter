@@ -278,7 +278,7 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
                         if (planState
                             case AsyncError<MealPlan?>(:final failure))
                           LoadErrorView(
-                            message: loadFailureMessage(context, failure),
+                            failure: failure,
                             onRetry: () => context.read<MealPlanCubit>().load(),
                           )
                         else

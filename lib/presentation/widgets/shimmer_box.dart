@@ -52,10 +52,12 @@ class _ShimmerBoxState extends State<ShimmerBox>
                 gradient: LinearGradient(
                   begin: Alignment(1 - 3 * t, 0),
                   end: Alignment(2.2 - 3 * t, 0),
+                  // A grey-teal base and a white sweep: visible on the canvas
+                  // and on a white card.
                   colors: const [
-                    AppColors.chipInactiveBg,
-                    Color(0xFFEDEBFA),
-                    AppColors.chipInactiveBg
+                    AppColors.neutralTrack,
+                    AppColors.surface,
+                    AppColors.neutralTrack
                   ],
                   stops: const [0.25, 0.5, 0.75],
                 ),

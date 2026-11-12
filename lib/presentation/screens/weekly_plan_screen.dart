@@ -21,6 +21,7 @@ import '../../core/navigation/app_page_route.dart';
 import '../widgets/app_header_bar.dart';
 
 import '../../l10n/l10n.dart';
+import '../widgets/state_views.dart';
 
 /// 4.4 Weekly Plan — week picker, macro summary, meal-slot list, all from the
 /// plan the nutritionist set (API guide 5.1). Each day shows the daily meals
@@ -81,13 +82,13 @@ class _WeeklyPlanScreenState extends State<WeeklyPlanScreen> {
       body = _planView(context, plan);
     } else if (planState case AsyncError<MealPlan?>(:final failure)) {
       body = LoadErrorView(
-        message: loadFailureMessage(context, failure),
+        failure: failure,
         onRetry: () => context.read<MealPlanCubit>().load(),
       );
     } else if (planState is AsyncSuccess<MealPlan?>) {
       body = const _NoPlan();
     } else {
-      body = const Center(child: CircularProgressIndicator());
+      body = const ListSkeleton();
     }
 
     return Scaffold(

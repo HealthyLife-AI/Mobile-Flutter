@@ -14,6 +14,7 @@ import '../date_labels.dart';
 import '../widgets/app_header_bar.dart';
 import '../widgets/confirm_action_sheet.dart';
 import '../widgets/spec_ui.dart';
+import '../widgets/state_views.dart';
 
 /// "النوم والمزاج" — `/me/wellbeing`, one entry per night.
 ///
@@ -173,7 +174,7 @@ class _WellbeingScreenState extends State<WellbeingScreen> {
       appBar: AppHeaderBar(title: l10n.wellbeingTitle),
       body: SafeArea(
         child: _loading
-            ? const Center(child: CircularProgressIndicator())
+            ? const ListSkeleton()
             : ListView(
                 padding: const EdgeInsets.fromLTRB(16, 12, 16, 32),
                 children: [

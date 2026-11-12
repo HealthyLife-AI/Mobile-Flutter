@@ -16,6 +16,7 @@ import '../widgets/load_error_view.dart';
 import 'reviews_screen.dart';
 
 import '../../l10n/l10n.dart';
+import '../widgets/state_views.dart';
 
 const Color _whatsapp = Color(0xFF25D366);
 const Color _mint = Color(0xFF7DF2D6);
@@ -51,11 +52,11 @@ class _SpecialistProfileView extends StatelessWidget {
           if (profile != null) return _ProfileContent(profile: profile);
           if (state is AsyncError<NutritionistProfile>) {
             return LoadErrorView(
-              message: loadFailureMessage(context, state.failure),
+              failure: state.failure,
               onRetry: () => context.read<NutritionistCubit>().load(),
             );
           }
-          return const Center(child: CircularProgressIndicator());
+          return const ListSkeleton();
         },
       ),
     );

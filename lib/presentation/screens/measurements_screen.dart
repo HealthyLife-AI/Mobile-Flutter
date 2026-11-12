@@ -21,6 +21,7 @@ import '../widgets/load_error_view.dart';
 import '../widgets/segmented_sliding_tabs.dart';
 import '../widgets/weight_trend_chart.dart';
 import 'new_measurement_screen.dart';
+import '../widgets/state_views.dart';
 
 /// Weight and body measurements (API guide 7.2): the current weight and its
 /// change, a trend chart that marks clinic readings, a circumference grid and
@@ -71,11 +72,11 @@ class _MeasurementsViewState extends State<_MeasurementsView> {
           if (snapshot != null) return _content(context, snapshot);
           if (state.status == MeasurementsStatus.error) {
             return LoadErrorView(
-              message: loadFailureMessage(context, state.failure),
+              failure: state.failure,
               onRetry: () => context.read<MeasurementsCubit>().load(),
             );
           }
-          return const Center(child: CircularProgressIndicator());
+          return const ListSkeleton();
         },
       ),
     );

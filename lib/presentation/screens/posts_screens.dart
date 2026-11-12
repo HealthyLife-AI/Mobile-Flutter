@@ -14,6 +14,7 @@ import '../date_labels.dart';
 import '../widgets/app_header_bar.dart';
 import '../widgets/load_error_view.dart';
 import '../widgets/spec_ui.dart';
+import '../widgets/state_views.dart';
 
 /// "نصائح أخصائيتك" — `GET /me/posts?page=N`, in the server's order (pinned
 /// first, then newest), 20 a page, the next page loaded near the end.
@@ -93,10 +94,10 @@ class _PostsScreenState extends State<PostsScreen> {
     final l10n = context.l10n;
     final Widget body;
     if (_posts.isEmpty && _loading) {
-      body = const Center(child: CircularProgressIndicator());
+      body = const ListSkeleton();
     } else if (_posts.isEmpty && _failure != null) {
       body = LoadErrorView(
-          message: loadFailureMessage(context, _failure), onRetry: _refresh);
+          failure: _failure, onRetry: _refresh);
     } else if (_posts.isEmpty) {
       body = Center(
         child: SpecEmptyState(
@@ -248,9 +249,9 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
     final Widget body;
     if (post == null) {
       body = _failure == null
-          ? const Center(child: CircularProgressIndicator())
+          ? const ListSkeleton()
           : LoadErrorView(
-              message: loadFailureMessage(context, _failure), onRetry: _load);
+              failure: _failure, onRetry: _load);
     } else {
       final published = post.publishedAt;
       body = ListView(

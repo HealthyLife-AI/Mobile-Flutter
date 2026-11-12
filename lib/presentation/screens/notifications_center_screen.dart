@@ -17,6 +17,7 @@ import '../widgets/load_error_view.dart';
 
 import '../widgets/directional_icon.dart';
 import '../../l10n/l10n.dart';
+import '../widgets/state_views.dart';
 
 /// "التنبيهات" — the notification feed/inbox (distinct from
 /// [NotificationSettingsScreen], which configures *which* notifications get
@@ -70,12 +71,12 @@ class _NotificationsCenterScreenState extends State<NotificationsCenterScreen> {
           builder: (context, state) {
             if (state.status == NotificationsStatus.loading &&
                 state.groups.isEmpty) {
-              return const Center(child: CircularProgressIndicator());
+              return const ListSkeleton();
             }
             if (state.status == NotificationsStatus.error &&
                 state.groups.isEmpty) {
               return LoadErrorView(
-                message: loadFailureMessage(context, state.failure),
+                failure: state.failure,
                 onRetry: () => context.read<NotificationsCubit>().load(),
               );
             }

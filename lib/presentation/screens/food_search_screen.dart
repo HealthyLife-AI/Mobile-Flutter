@@ -239,8 +239,7 @@ class _FoodSearchViewState extends State<_FoodSearchView>
                         child: state.status == FoodSearchStatus.error
                             ? LoadErrorView(
                                 key: const ValueKey('search-error'),
-                                message:
-                                    loadFailureMessage(context, state.failure),
+                                failure: state.failure,
                                 onRetry: () =>
                                     context.read<FoodSearchCubit>().refresh())
                             : _query.trim().length < 2

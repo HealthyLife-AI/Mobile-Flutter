@@ -39,6 +39,10 @@ import 'package:healthylife_ai/presentation/screens/quick_request_screen.dart';
 import 'package:healthylife_ai/presentation/screens/schedule_calls_screen.dart';
 import 'package:healthylife_ai/presentation/screens/weekly_plan_screen.dart';
 import 'package:healthylife_ai/presentation/screens/health_record_screen.dart';
+import 'package:healthylife_ai/core/errors/failure.dart';
+import 'package:healthylife_ai/presentation/widgets/app_header_bar.dart';
+import 'package:healthylife_ai/presentation/widgets/load_error_view.dart';
+import 'package:healthylife_ai/presentation/widgets/state_views.dart';
 
 import '../helpers/app_font.dart';
 import '../helpers/app_providers.dart';
@@ -417,5 +421,42 @@ void main() {
         'health record $t',
         (tester) => _shot(tester, '17_health_record', size,
             (_) => const HealthRecordScreen()));
+    testWidgets(
+        'state loading $t',
+        (tester) => _shot(
+            tester,
+            '18_state_loading',
+            size,
+            (_) => const Scaffold(
+                appBar: AppHeaderBar(title: 'الإشعارات'), body: ListSkeleton()),
+            signedIn: false));
+    testWidgets(
+        'state offline $t',
+        (tester) => _shot(
+            tester,
+            '19_state_offline',
+            size,
+            (_) => Scaffold(
+                appBar: const AppHeaderBar(title: 'الإشعارات'),
+                body: LoadErrorView(
+                    failure: const NetworkFailure(), onRetry: () {})),
+            signedIn: false));
+    testWidgets(
+        'state empty $t',
+        (tester) => _shot(
+            tester,
+            '20_state_empty',
+            size,
+            (_) => const Scaffold(
+                appBar: AppHeaderBar(title: 'طلباتي'),
+                body: EmptyState(
+                    title: 'لا توجد طلبات',
+                    message: 'ستظهر هنا طلباتك وردود أخصائيك.',
+                    icon: Icons.mark_email_unread_outlined,
+                    actionLabel: 'طلب جديد',
+                    onAction: _noop)),
+            signedIn: false));
   }
 }
+
+void _noop() {}

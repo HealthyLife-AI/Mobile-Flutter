@@ -5400,5 +5400,13 @@
   "loginPrivacyPolicy": "سياسة الخصوصية",
   "@loginPrivacyPolicy": {
     "description": "Link under the login form that opens the privacy policy on the website."
+  },
+  "stateOfflineTitle": "لا يوجد اتصال",
+  "@stateOfflineTitle": {
+    "description": "Title of a page that could not load (LoadErrorView)."
+  },
+  "stateErrorTitle": "تعذّر تحميل الصفحة",
+  "@stateErrorTitle": {
+    "description": "Title of a page that could not load (LoadErrorView)."
   }
 }

@@ -13,6 +13,7 @@ import '../bloc/patient_features_cubits.dart';
 import '../widgets/app_header_bar.dart';
 import '../widgets/load_error_view.dart';
 import '../widgets/spec_ui.dart';
+import '../widgets/state_views.dart';
 
 /// "استبيان قصير" — the periodic check-in (`/me/checkins/current`).
 ///
@@ -206,9 +207,9 @@ class _CheckinScreenState extends State<CheckinScreen> {
       appBar: AppHeaderBar(title: l10n.checkinTitle),
       body: SafeArea(
         child: switch (_phase) {
-          _Phase.loading => const Center(child: CircularProgressIndicator()),
+          _Phase.loading => const ListSkeleton(),
           _Phase.error => LoadErrorView(
-              message: loadFailureMessage(context, _failure), onRetry: _load),
+              failure: _failure, onRetry: _load),
           _Phase.none => Center(
               child: SpecEmptyState(
                   icon: Icons.assignment_turned_in_outlined,

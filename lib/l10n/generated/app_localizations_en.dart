@@ -4576,4 +4576,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get loginPrivacyPolicy => 'Privacy policy';
+
+  @override
+  String get stateOfflineTitle => 'No connection';
+
+  @override
+  String get stateErrorTitle => 'This page didn\'t load';
 }
