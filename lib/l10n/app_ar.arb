@@ -123,7 +123,7 @@
   "@aboutTransparencyTitle": {
     "description": "UI text in presentation/screens/about_app_screen.dart"
   },
-  "aboutCertifiedRegulations": "لوائح معتمدة",
+  "aboutCertifiedRegulations": "السياسات والشروط",
   "@aboutCertifiedRegulations": {
     "description": "UI text in presentation/screens/about_app_screen.dart"
   },
@@ -139,7 +139,7 @@
   "@aboutBrandName": {
     "description": "UI text in presentation/screens/about_app_screen.dart"
   },
-  "aboutTagline": "منصة المتابعة والتغذية العلاجية للمرضى",
+  "aboutTagline": "متابعة التغذية مع أخصائي التغذية",
   "@aboutTagline": {
     "description": "UI text in presentation/screens/about_app_screen.dart"
   },
@@ -152,7 +152,7 @@
       }
     }
   },
-  "aboutDescription": "تطبيق معتمد ومصمم لدعمك بالتعاون المباشر مع أخصائيك المعتمدة لتحقيق أهدافك الصحية المستدامة.",
+  "aboutDescription": "تطبيق يساعدك على متابعة خطتك الغذائية مع أخصائي التغذية.",
   "@aboutDescription": {
     "description": "UI text in presentation/screens/about_app_screen.dart"
   },
@@ -164,11 +164,11 @@
   "@aboutPrivacyPolicySubtitle": {
     "description": "UI text in presentation/screens/about_app_screen.dart"
   },
-  "aboutMedicalTermsTitle": "الشروط والأحكام الطبية",
+  "aboutMedicalTermsTitle": "شروط الاستخدام",
   "@aboutMedicalTermsTitle": {
     "description": "UI text in presentation/screens/about_app_screen.dart"
   },
-  "aboutMedicalTermsSubtitle": "إرشادات متابعة خطط الرعاية الصحية",
+  "aboutMedicalTermsSubtitle": "إرشادات استخدام التطبيق ومتابعة الخطة",
   "@aboutMedicalTermsSubtitle": {
     "description": "UI text in presentation/screens/about_app_screen.dart"
   },
@@ -200,7 +200,7 @@
   "@aboutEncryptionNote": {
     "description": "UI text in presentation/screens/about_app_screen.dart"
   },
-  "aboutLogoutNote": "سيتم إنهاء جلستك بأمان، مع الاحتفاظ بجميع سجلاتك وقياساتك في السجلات الطبية دون أي فقدان للبيانات.",
+  "aboutLogoutNote": "سيتم إنهاء جلستك بأمان، وتبقى سجلاتك وقياساتك محفوظة في حسابك.",
   "@aboutLogoutNote": {
     "description": "UI text in presentation/screens/about_app_screen.dart"
   },
@@ -240,7 +240,7 @@
   "@activationWelcome": {
     "description": "UI text in presentation/screens/activation_screen.dart"
   },
-  "activationSubtitle": "فعّلي وصولك الفوري إلى برنامج الرعاية السريرية",
+  "activationSubtitle": "تفعيل الوصول إلى برنامج المتابعة",
   "@activationSubtitle": {
     "description": "UI text in presentation/screens/activation_screen.dart"
   },
@@ -248,11 +248,11 @@
   "@activationCertified": {
     "description": "UI text in presentation/screens/activation_screen.dart"
   },
-  "activationSpecialistRole": "أخصائي التغذية العلاجية وإدارة الأيض",
+  "activationSpecialistRole": "أخصائي التغذية وإدارة الأيض",
   "@activationSpecialistRole": {
     "description": "UI text in presentation/screens/activation_screen.dart"
   },
-  "activationInvitedBy": "تمت دعوتك بواسطة أخصائي التغذية لربط ملفك الصحي وبدء خطتك الغذائية العلاجية المخصصة مباشرة.",
+  "activationInvitedBy": "تمت دعوتك بواسطة أخصائي التغذية لربط ملفك الصحي وبدء خطتك الغذائية.",
   "@activationInvitedBy": {
     "description": "UI text in presentation/screens/activation_screen.dart"
   },
@@ -548,7 +548,7 @@
   "@firstMeasurementHeadline": {
     "description": "UI text in presentation/screens/first_measurement_screen.dart"
   },
-  "firstMeasurementExplanation": "يتطلب رسم منحنى التقدم قياسين على الأقل لإظهار اتجاه التغير الحقيقي بدقة وموضوعية. تسجيلك القادم سيفعّل المخطط البياني فوراً.",
+  "firstMeasurementExplanation": "يتطلب رسم منحنى التقدم قياسين على الأقل لإظهار اتجاه التغيّر. تسجيلك القادم سيفعّل المخطط البياني.",
   "@firstMeasurementExplanation": {
     "description": "UI text in presentation/screens/first_measurement_screen.dart"
   },
@@ -560,7 +560,7 @@
   "@firstMeasurementBackToPlan": {
     "description": "UI text in presentation/screens/first_measurement_screen.dart"
   },
-  "firstMeasurementBaseline": "نقطة البداية المعتمدة",
+  "firstMeasurementBaseline": "نقطة البداية",
   "@firstMeasurementBaseline": {
     "description": "UI text in presentation/screens/first_measurement_screen.dart"
   },
@@ -585,7 +585,7 @@
   "@firstMeasurementBaselineSaved": {
     "description": "UI text in presentation/screens/first_measurement_screen.dart"
   },
-  "firstMeasurementJourneyNote": "قياس واحد يحدد نقطة انطلاقك، والقياس القادم هو ما يرسم رحلتك مع أخصائي التغذية خطوة بخطوة.",
+  "firstMeasurementJourneyNote": "قياس واحد يحدد نقطة البداية، والقياس القادم يبدأ برسم تقدمك مع أخصائي التغذية خطوة بخطوة.",
   "@firstMeasurementJourneyNote": {
     "description": "UI text in presentation/screens/first_measurement_screen.dart"
   },
@@ -669,7 +669,7 @@
   "@followUpEndedTitle": {
     "description": "UI text in presentation/screens/follow_up_ended_screen.dart"
   },
-  "followUpPlanCompleted": "اكتمال خطة المتابعة السريرية",
+  "followUpPlanCompleted": "اكتمال خطة المتابعة",
   "@followUpPlanCompleted": {
     "description": "UI text in presentation/screens/follow_up_ended_screen.dart"
   },
@@ -677,7 +677,7 @@
   "@followUpPeriodEnded": {
     "description": "UI text in presentation/screens/follow_up_ended_screen.dart"
   },
-  "followUpEndedMessage": "نتمنى أنك استمتعت بخطتك الصحية وحققت أهدافك! لقد انتهت فترة المتابعة الحالية مع أخصائي التغذية. للتجديد أو لاستكمال رحلتك العلاجية والحصول على خطة جديدة، يمكنك التواصل مباشرة وبكل سهولة.",
+  "followUpEndedMessage": "انتهت فترة المتابعة الحالية مع أخصائي التغذية. للتجديد أو لمتابعة نظامك الغذائي والحصول على خطة جديدة، يمكنك التواصل مباشرة.",
   "@followUpEndedMessage": {
     "description": "UI text in presentation/screens/follow_up_ended_screen.dart"
   },
@@ -685,7 +685,7 @@
   "@followUpSupervisor": {
     "description": "UI text in presentation/screens/follow_up_ended_screen.dart"
   },
-  "followUpSupervisingSpecialist": "أخصائي التغذية العلاجية المشرف عليك",
+  "followUpSupervisingSpecialist": "أخصائي التغذية المشرف عليك",
   "@followUpSupervisingSpecialist": {
     "description": "UI text in presentation/screens/follow_up_ended_screen.dart"
   },
@@ -701,7 +701,7 @@
   "@followUpViewFinalReport": {
     "description": "UI text in presentation/screens/follow_up_ended_screen.dart"
   },
-  "followUpTerms": "شروط الخدمة وسياسة الخصوصية للملفات الطبية",
+  "followUpTerms": "شروط الخدمة وسياسة الخصوصية للبيانات الصحية",
   "@followUpTerms": {
     "description": "UI text in presentation/screens/follow_up_ended_screen.dart"
   },
@@ -855,7 +855,7 @@
   "@consentExitTitle": {
     "description": "UI text in presentation/screens/health_data_consent_screen.dart"
   },
-  "consentExitMessage": "لن تتمكني من متابعة رحلتك العلاجية أو الوصول لخطتك الغذائية قبل الموافقة على شروط الخصوصية الصحية.",
+  "consentExitMessage": "لا يمكن متابعة الخطة الغذائية أو الوصول إليها قبل الموافقة على شروط الخصوصية الصحية.",
   "@consentExitMessage": {
     "description": "UI text in presentation/screens/health_data_consent_screen.dart"
   },
@@ -880,7 +880,7 @@
       }
     }
   },
-  "consentReadFullDocument": "قراءة وثيقة الخصوصية السريرية الكاملة",
+  "consentReadFullDocument": "قراءة وثيقة الخصوصية الكاملة",
   "@consentReadFullDocument": {
     "description": "UI text in presentation/screens/health_data_consent_screen.dart"
   },
@@ -892,7 +892,7 @@
   "@consentCta": {
     "description": "UI text in presentation/screens/health_data_consent_screen.dart"
   },
-  "consentPleaseAgree": "يُرجى الموافقة على الشروط السريرية للمتابعة",
+  "consentPleaseAgree": "يُرجى الموافقة على شروط الخصوصية للمتابعة",
   "@consentPleaseAgree": {
     "description": "UI text in presentation/screens/health_data_consent_screen.dart"
   },
@@ -904,7 +904,7 @@
   "@consentConfidentialVerified": {
     "description": "UI text in presentation/screens/health_data_consent_screen.dart"
   },
-  "consentDataUseNote": "بياناتك (سجل الوجبات، القياسات، والحالة الصحية) تصل لأخصائي التغذية المتابع لك فقط وتُستخدم لبناء خطتك الغذائية ومتابعة تقدمك السريري بأمان.",
+  "consentDataUseNote": "بياناتك (سجل الوجبات، القياسات، والحالة الصحية) تصل إلى أخصائي التغذية المتابع لك فقط، وتُستخدم لبناء خطتك الغذائية ومتابعة تقدمك.",
   "@consentDataUseNote": {
     "description": "UI text in presentation/screens/health_data_consent_screen.dart"
   },
@@ -912,11 +912,11 @@
   "@consentTitle": {
     "description": "UI text in presentation/screens/health_data_consent_screen.dart"
   },
-  "consentBeforeWeStart": "قبل أن نبدأ رحلتك الصحية",
+  "consentBeforeWeStart": "قبل أن نبدأ",
   "@consentBeforeWeStart": {
     "description": "UI text in presentation/screens/health_data_consent_screen.dart"
   },
-  "consentCommitment": "نحن نلتزم بحماية خصوصية بياناتك الصحية والسريرية بأقصى درجات الشفافية والأمان.",
+  "consentCommitment": "نلتزم بحماية خصوصية بياناتك الصحية.",
   "@consentCommitment": {
     "description": "UI text in presentation/screens/health_data_consent_screen.dart"
   },
@@ -928,7 +928,7 @@
   "@consentRevocable": {
     "description": "UI text in presentation/screens/health_data_consent_screen.dart"
   },
-  "healthRecordTitle": "السجل الطبي",
+  "healthRecordTitle": "السجل الصحي",
   "@healthRecordTitle": {
     "description": "UI text in presentation/screens/health_record_screen.dart"
   },
@@ -1022,7 +1022,7 @@
   "@healthRecordCurrentGoal": {
     "description": "UI text in presentation/screens/health_record_screen.dart"
   },
-  "healthRecordMedications": "الأدوية والمكملات اليومية المعتمدة",
+  "healthRecordMedications": "الأدوية والمكملات اليومية المسجّلة",
   "@healthRecordMedications": {
     "description": "UI text in presentation/screens/health_record_screen.dart"
   },
@@ -1038,15 +1038,15 @@
   "@offlineWriteDropped": {
     "description": "Snackbar when the server refuses a reading saved offline (API guide 14.2)"
   },
-  "healthRecordCertified": "السجل الطبي المعتمد",
+  "healthRecordCertified": "السجل الصحي",
   "@healthRecordCertified": {
     "description": "UI text in presentation/screens/health_record_screen.dart"
   },
-  "healthRecordDiagnosesNote": "التشخيصات والمحاذير لتخصيص خطتك بدقة",
+  "healthRecordDiagnosesNote": "الحالات الصحية والمحاذير التي تُراعى في خطتك",
   "@healthRecordDiagnosesNote": {
     "description": "UI text in presentation/screens/health_record_screen.dart"
   },
-  "healthRecordRequestChange": "طلب تعديل أو إضافة تقرير إلى السجل الطبي",
+  "healthRecordRequestChange": "طلب تعديل أو إضافة تقرير إلى السجل الصحي",
   "@healthRecordRequestChange": {
     "description": "UI text in presentation/screens/health_record_screen.dart"
   },
@@ -1059,7 +1059,7 @@
       }
     }
   },
-  "healthRecordStreakNote": "تسجيل الوجبات والنشاط الحركي اليومي بدقة، حافظ على شعلة الحماس!",
+  "healthRecordStreakNote": "تسجيل الوجبات والنشاط يومياً يحافظ على استمرارك.",
   "@healthRecordStreakNote": {
     "description": "UI text in presentation/screens/health_record_screen.dart"
   },
@@ -1270,7 +1270,7 @@
   "@homeLogMeal": {
     "description": "UI text in presentation/screens/home_dashboard_screen.dart"
   },
-  "homeHydrationTip": "شرب كوبين من الماء قبل كل وجبة يدعم الحرق المنتظم ويساعدك على الشعور بالشبع الهادئ. أنت تسيرين بوتيرة ممتازة!",
+  "homeHydrationTip": "شرب كوبين من الماء قبل الوجبة قد يساعد على الشعور بالشبع، والاستمرار على الخطة خطوة بعد خطوة.",
   "@homeHydrationTip": {
     "description": "UI text in presentation/screens/home_dashboard_screen.dart"
   },
@@ -1318,7 +1318,7 @@
   "@logMealIntro": {
     "description": "UI text in presentation/screens/log_meal_intro_screen.dart"
   },
-  "logMealPlannedBadge": "الوجبات المعتمدة",
+  "logMealPlannedBadge": "وجبات الخطة",
   "@logMealPlannedBadge": {
     "description": "UI text in presentation/screens/log_meal_intro_screen.dart"
   },
@@ -1326,7 +1326,7 @@
   "@logMealFromPlanTitle": {
     "description": "UI text in presentation/screens/log_meal_intro_screen.dart"
   },
-  "logMealFromPlanDesc": "تأكيد سريع لتناول إحدى وجباتك المجدولة في جدول اليوم (فطور، سناك، غداء، عشاء) مع إمكانية تعديل البدائل المعتمدة.",
+  "logMealFromPlanDesc": "تأكيد سريع لتناول إحدى وجبات جدول اليوم (فطور، سناك، غداء، عشاء) مع إمكانية اختيار البدائل المتاحة في الخطة.",
   "@logMealFromPlanDesc": {
     "description": "UI text in presentation/screens/log_meal_intro_screen.dart"
   },
@@ -1420,7 +1420,7 @@
   "@commonCaloriesUnit": {
     "description": "UI text in presentation/screens/meal_detail_screen.dart"
   },
-  "mealDetailApprovedBy": "{gender, select, male{وجبة متوازنة معتمدة من أخصائي التغذية {name}} female{وجبة متوازنة معتمدة من أخصائية التغذية {name}} unknown{وجبة متوازنة معتمدة من أخصائي التغذية} other{وجبة متوازنة معتمدة من {name}}}",
+  "mealDetailApprovedBy": "{gender, select, male{وجبة ضمن خطة أخصائي التغذية {name}} female{وجبة ضمن خطة أخصائية التغذية {name}} unknown{وجبة ضمن خطة أخصائي التغذية} other{وجبة ضمن خطة {name}}}",
   "@mealDetailApprovedBy": {
     "description": "Meal detail: who approved the meal. gender: male | female | other | unknown.",
     "placeholders": {
@@ -1490,7 +1490,7 @@
   "@mealLoggedTitle": {
     "description": "UI text in presentation/screens/meal_log_success_screen.dart"
   },
-  "mealLoggedBody": "تم تحديث سجل اليوم ومستوى التزامك الغذائي بنجاح وبدقة سريرية.",
+  "mealLoggedBody": "تم تحديث سجل اليوم.",
   "@mealLoggedBody": {
     "description": "UI text in presentation/screens/meal_log_success_screen.dart"
   },
@@ -1642,7 +1642,7 @@
   "@measurementsTrend": {
     "description": "UI text in presentation/screens/measurements_screen.dart"
   },
-  "measurementsClinicReading": "قياس العيادة (معتمد)",
+  "measurementsClinicReading": "قياس العيادة",
   "@measurementsClinicReading": {
     "description": "UI text in presentation/screens/measurements_screen.dart"
   },
@@ -1682,7 +1682,7 @@
   "@measurementsDeleteFailed": {
     "description": "A reading delete that failed for any other reason."
   },
-  "measurementsSyncNote": "تحديث البيانات متزامن مع قياسات العيادة وسجلك الشخصي بكل موثوقية.",
+  "measurementsSyncNote": "بياناتك متزامنة مع قياسات العيادة وسجلك الشخصي.",
   "@measurementsSyncNote": {
     "description": "UI text in presentation/screens/measurements_screen.dart"
   },
@@ -1720,7 +1720,7 @@
       }
     }
   },
-  "measurementsRegularNote": "تسجيلك المنتظم يمكّن أخصائي التغذية من تحليل نمطك بدقة ودعمك بالخيارات الأنسب دون أي ضغط أو تسرّع.",
+  "measurementsRegularNote": "التسجيل المنتظم يساعد أخصائي التغذية على متابعة نمطك واقتراح الخيارات الأنسب لك.",
   "@measurementsRegularNote": {
     "description": "UI text in presentation/screens/measurements_screen.dart"
   },
@@ -1850,7 +1850,7 @@
   "@measurementEntryPrivacyTitle": {
     "description": "UI text in presentation/screens/new_measurement_screen.dart"
   },
-  "measurementEntryPrivacyBody": "{gender, select, unknown{جميع بياناتك محمية وتصل بأمان لملفك الطبي المباشر لدى أخصائي التغذية دون أي أحكام أو تقييمات مسبقة، لتعديل خطتك بما يناسبك.} other{جميع بياناتك محمية وتصل بأمان لملفك الطبي المباشر لدى {name} دون أي أحكام أو تقييمات مسبقة، لتعديل خطتك بما يناسبك.}}",
+  "measurementEntryPrivacyBody": "{gender, select, unknown{بياناتك محمية وتصل إلى ملفك الصحي لدى أخصائي التغذية، ليُعدّل خطتك بما يناسبك.} other{بياناتك محمية وتصل إلى ملفك الصحي لدى {name}، ليُعدّل خطتك بما يناسبك.}}",
   "@measurementEntryPrivacyBody": {
     "description": "Measurement entry privacy note. gender: other | unknown.",
     "placeholders": {
@@ -2035,7 +2035,7 @@
       }
     }
   },
-  "notificationsClinicalUpdate": "تحديث سريري",
+  "notificationsClinicalUpdate": "تحديث من الأخصائي",
   "@notificationsClinicalUpdate": {
     "description": "UI text in presentation/screens/notifications_center_screen.dart"
   },
@@ -2174,7 +2174,7 @@
   "@onboardingMeasurementsYours": {
     "description": "UI text in presentation/screens/onboarding_measurements_screen.dart"
   },
-  "onboardingMeasurementsIntro": "أدخل وزنك وقياساتك اليوم لنبدأ بتتبع رحلتك الصحية مع الأخصائي بدقة واحترافية.",
+  "onboardingMeasurementsIntro": "أدخل وزنك وقياساتك اليوم لنبدأ متابعة تقدمك مع أخصائي التغذية.",
   "@onboardingMeasurementsIntro": {
     "description": "UI text in presentation/screens/onboarding_measurements_screen.dart"
   },
@@ -2214,7 +2214,7 @@
   "@onboardingMeasurementsIllustratedGuide": {
     "description": "UI text in presentation/screens/onboarding_measurements_screen.dart"
   },
-  "onboardingMeasurementsExtraNote": "قياسات إضافية تدعم دقة متابعة الأخصائي لمحيط الجسم ونسب توزيع الدهون بدقة.",
+  "onboardingMeasurementsExtraNote": "قياسات إضافية تساعد أخصائي التغذية على متابعة محيط الجسم.",
   "@onboardingMeasurementsExtraNote": {
     "description": "UI text in presentation/screens/onboarding_measurements_screen.dart"
   },
@@ -2266,7 +2266,7 @@
   "@onboardingNotificationsWeightReminders": {
     "description": "UI text in presentation/screens/onboarding_notifications_screen.dart"
   },
-  "onboardingNotificationsWeightRemindersDesc": "تذكير أسبوعي في الوقت الصباحي المثالي للقياس لمتابعة تطور نتائجك ومؤشراتك الحيوية بدقة.",
+  "onboardingNotificationsWeightRemindersDesc": "تذكير أسبوعي في الصباح لقياس الوزن ومتابعة تطوره.",
   "@onboardingNotificationsWeightRemindersDesc": {
     "description": "UI text in presentation/screens/onboarding_notifications_screen.dart"
   },
@@ -2303,7 +2303,7 @@
   "@onboardingTrackTitle": {
     "description": "UI text in presentation/screens/onboarding_screen.dart"
   },
-  "onboardingTrackDescription": "سجّل وجباتك اليومية ووزنك بدقة بالغرامات، واستفد من البدائل المتاحة لتسهيل التزامك بالنظام الغذائي دون حرمان.",
+  "onboardingTrackDescription": "تسجيل الوجبات اليومية والوزن بالغرام، مع البدائل التي أتاحها أخصائي التغذية في خطتك.",
   "@onboardingTrackDescription": {
     "description": "UI text in presentation/screens/onboarding_screen.dart"
   },
@@ -2319,11 +2319,11 @@
   "@onboardingPlanTitle": {
     "description": "UI text in presentation/screens/onboarding_screen.dart"
   },
-  "onboardingPlanDescription": "احصل على نظام غذائي مخصص بالكامل يناسب طبيعة جسمك وحالتك الصحية، ومصمم مباشرة من أخصائي التغذية المتابع لك.",
+  "onboardingPlanDescription": "نظام غذائي يعدّه لك أخصائي التغذية المتابع لك بحسب بياناتك وأهدافك.",
   "@onboardingPlanDescription": {
     "description": "UI text in presentation/screens/onboarding_screen.dart"
   },
-  "onboardingBadgeApproved": "100% معتمد طبياً ومبني على التحاليل",
+  "onboardingBadgeApproved": "خطة يعدّها أخصائي التغذية المتابع لك",
   "@onboardingBadgeApproved": {
     "description": "UI text in presentation/screens/onboarding_screen.dart"
   },
@@ -2403,7 +2403,7 @@
   "@passwordRuleSpecial": {
     "description": "UI text in presentation/screens/password_settings_screen.dart"
   },
-  "passwordLogoutOthersNote": "بعد تغيير كلمة المرور بنجاح، سيتم تسجيل خروجك من الأجهزة الأخرى تلقائياً لحماية حسابك الطبي وصحتك.",
+  "passwordLogoutOthersNote": "بعد تغيير كلمة المرور بنجاح، سيتم تسجيل خروجك من الأجهزة الأخرى تلقائياً لحماية حسابك.",
   "@passwordLogoutOthersNote": {
     "description": "UI text in presentation/screens/password_settings_screen.dart"
   },
@@ -2451,7 +2451,7 @@
   "@planPreparingTitle": {
     "description": "UI text in presentation/screens/plan_preparing_screen.dart"
   },
-  "planPreparingBody": "أخصائي التغذية العلاجية يُعدّ الآن جدولك الغذائي المخصص بدقة ليلائم أهدافك الصحية ونتائج قياساتك الأولية. سنرسل لك إشعاراً فور اعتماد الخطة لتجدها هنا.",
+  "planPreparingBody": "يُعدّ أخصائي التغذية الآن جدولك الغذائي بحسب أهدافك وقياساتك الأولية. سنرسل لك إشعاراً فور اعتماد الخطة لتجدها هنا.",
   "@planPreparingBody": {
     "description": "UI text in presentation/screens/plan_preparing_screen.dart"
   },
@@ -2463,7 +2463,7 @@
   "@planPreparingWithin24h": {
     "description": "UI text in presentation/screens/plan_preparing_screen.dart"
   },
-  "planPreparingReview": "مراجعة طبية سريرية موثقة",
+  "planPreparingReview": "يراجعها أخصائي التغذية",
   "@planPreparingReview": {
     "description": "UI text in presentation/screens/plan_preparing_screen.dart"
   },
@@ -2492,7 +2492,7 @@
   "@planPreparingHours": {
     "description": "UI text in presentation/screens/plan_preparing_screen.dart"
   },
-  "planPreparingClinic": "{gender, select, unknown{عيادة التغذية العلاجية} other{عيادة التغذية العلاجية • {name}}}",
+  "planPreparingClinic": "{gender, select, unknown{عيادة التغذية} other{عيادة التغذية • {name}}}",
   "@planPreparingClinic": {
     "description": "Plan preparing: clinic line. gender: other | unknown.",
     "placeholders": {
@@ -2516,7 +2516,7 @@
   "@profileMeasurementsSubtitle": {
     "description": "UI text in presentation/screens/profile_screen.dart"
   },
-  "profileHealthRecordSubtitle": "المستوى، الهدف، الأدوية والتشخيصات المعتمدة",
+  "profileHealthRecordSubtitle": "المستوى، الهدف، الأدوية والحالات المسجّلة",
   "@profileHealthRecordSubtitle": {
     "description": "UI text in presentation/screens/profile_screen.dart"
   },
@@ -2552,7 +2552,7 @@
   "@profileDietitian": {
     "description": "UI text in presentation/screens/profile_screen.dart"
   },
-  "profileDietitianName": "{gender, select, male{{name} (أخصائي التغذية العلاجية)} female{{name} (أخصائية التغذية العلاجية)} unknown{أخصائي التغذية العلاجية} other{{name}}}",
+  "profileDietitianName": "{gender, select, male{{name} (أخصائي التغذية)} female{{name} (أخصائية التغذية)} unknown{أخصائي التغذية} other{{name}}}",
   "@profileDietitianName": {
     "description": "Profile: the nutritionist row. gender: male | female | other | unknown.",
     "placeholders": {
@@ -2622,7 +2622,7 @@
   "@profileMore": {
     "description": "UI text in presentation/screens/profile_screen.dart"
   },
-  "profileMoreSubtitle": "القياسات، السجل الطبي، الإنجازات والمواعيد",
+  "profileMoreSubtitle": "القياسات، السجل الصحي، الإنجازات والمواعيد",
   "@profileMoreSubtitle": {
     "description": "UI text in presentation/screens/profile_screen.dart"
   },
@@ -2651,7 +2651,7 @@
   "@progressActiveFile": {
     "description": "UI text in presentation/screens/progress_screen.dart"
   },
-  "progressLiveSync": "مزامنة مباشرة مع العيادة",
+  "progressLiveSync": "متزامن مع العيادة",
   "@progressLiveSync": {
     "description": "UI text in presentation/screens/progress_screen.dart"
   },
@@ -2699,7 +2699,7 @@
   "@commonToday": {
     "description": "UI text in presentation/screens/progress_screen.dart"
   },
-  "progressClinicReading": "قياس العيادة المعتمد",
+  "progressClinicReading": "قياس العيادة",
   "@progressClinicReading": {
     "description": "UI text in presentation/screens/progress_screen.dart"
   },
@@ -2891,7 +2891,7 @@
       }
     }
   },
-  "quantityCalculatedNote": "القيمة محسوبة بالكامل وتُضاف بدقة إلى خطتك اليومية",
+  "quantityCalculatedNote": "القيمة محسوبة وتُضاف إلى سجل اليوم.",
   "@quantityCalculatedNote": {
     "description": "UI text in presentation/screens/quantity_selector_screen.dart"
   },
@@ -3114,11 +3114,11 @@
   "@specialistTitle": {
     "description": "UI text in presentation/screens/specialist_profile_screen.dart"
   },
-  "specialistProfileActive": "الملف الغذائي العلاجي نشط",
+  "specialistProfileActive": "الملف الغذائي نشط",
   "@specialistProfileActive": {
     "description": "UI text in presentation/screens/specialist_profile_screen.dart"
   },
-  "specialistCertified": "معتمد",
+  "specialistCertified": "أخصائي التغذية المتابع لك",
   "@specialistCertified": {
     "description": "UI text in presentation/screens/specialist_profile_screen.dart"
   },
@@ -3234,7 +3234,7 @@
   "@weeklyPlanProtein": {
     "description": "UI text in presentation/screens/weekly_plan_screen.dart"
   },
-  "weeklyPlanSummary": "خطة متوازنة لتعزيز الطاقة وحرق الدهون بإشراف أخصائي التغذية",
+  "weeklyPlanSummary": "خطتك كما وضعها أخصائي التغذية",
   "@weeklyPlanSummary": {
     "description": "UI text in presentation/screens/weekly_plan_screen.dart"
   },
@@ -4480,7 +4480,7 @@
   "@weightInsightTitle": {
     "description": "Patient app design spec"
   },
-  "weightInsightDisclaimer": "شرح مبني على تسجيلاتك، مش تشخيص.",
+  "weightInsightDisclaimer": "شرح مبني على تسجيلاتك، وليس تشخيصاً.",
   "@weightInsightDisclaimer": {
     "description": "Patient app design spec"
   },

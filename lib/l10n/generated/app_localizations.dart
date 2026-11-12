@@ -407,7 +407,7 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/about_app_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'لوائح معتمدة'**
+  /// **'السياسات والشروط'**
   String get aboutCertifiedRegulations;
 
   /// UI text in presentation/screens/about_app_screen.dart
@@ -431,7 +431,7 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/about_app_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'منصة المتابعة والتغذية العلاجية للمرضى'**
+  /// **'متابعة التغذية مع أخصائي التغذية'**
   String get aboutTagline;
 
   /// The installed app version, such as 1.0.0 (3).
@@ -443,7 +443,7 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/about_app_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'تطبيق معتمد ومصمم لدعمك بالتعاون المباشر مع أخصائيك المعتمدة لتحقيق أهدافك الصحية المستدامة.'**
+  /// **'تطبيق يساعدك على متابعة خطتك الغذائية مع أخصائي التغذية.'**
   String get aboutDescription;
 
   /// UI text in presentation/screens/about_app_screen.dart
@@ -461,13 +461,13 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/about_app_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'الشروط والأحكام الطبية'**
+  /// **'شروط الاستخدام'**
   String get aboutMedicalTermsTitle;
 
   /// UI text in presentation/screens/about_app_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'إرشادات متابعة خطط الرعاية الصحية'**
+  /// **'إرشادات استخدام التطبيق ومتابعة الخطة'**
   String get aboutMedicalTermsSubtitle;
 
   /// UI text in presentation/screens/about_app_screen.dart
@@ -515,7 +515,7 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/about_app_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'سيتم إنهاء جلستك بأمان، مع الاحتفاظ بجميع سجلاتك وقياساتك في السجلات الطبية دون أي فقدان للبيانات.'**
+  /// **'سيتم إنهاء جلستك بأمان، وتبقى سجلاتك وقياساتك محفوظة في حسابك.'**
   String get aboutLogoutNote;
 
   /// UI text in presentation/screens/achievements_screen.dart
@@ -575,7 +575,7 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/activation_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'فعّلي وصولك الفوري إلى برنامج الرعاية السريرية'**
+  /// **'تفعيل الوصول إلى برنامج المتابعة'**
   String get activationSubtitle;
 
   /// UI text in presentation/screens/activation_screen.dart
@@ -587,13 +587,13 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/activation_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'أخصائي التغذية العلاجية وإدارة الأيض'**
+  /// **'أخصائي التغذية وإدارة الأيض'**
   String get activationSpecialistRole;
 
   /// UI text in presentation/screens/activation_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'تمت دعوتك بواسطة أخصائي التغذية لربط ملفك الصحي وبدء خطتك الغذائية العلاجية المخصصة مباشرة.'**
+  /// **'تمت دعوتك بواسطة أخصائي التغذية لربط ملفك الصحي وبدء خطتك الغذائية.'**
   String get activationInvitedBy;
 
   /// UI text in presentation/screens/activation_screen.dart
@@ -995,7 +995,7 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/first_measurement_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'يتطلب رسم منحنى التقدم قياسين على الأقل لإظهار اتجاه التغير الحقيقي بدقة وموضوعية. تسجيلك القادم سيفعّل المخطط البياني فوراً.'**
+  /// **'يتطلب رسم منحنى التقدم قياسين على الأقل لإظهار اتجاه التغيّر. تسجيلك القادم سيفعّل المخطط البياني.'**
   String get firstMeasurementExplanation;
 
   /// UI text in presentation/screens/first_measurement_screen.dart
@@ -1013,7 +1013,7 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/first_measurement_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'نقطة البداية المعتمدة'**
+  /// **'نقطة البداية'**
   String get firstMeasurementBaseline;
 
   /// UI text in presentation/screens/first_measurement_screen.dart
@@ -1043,7 +1043,7 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/first_measurement_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'قياس واحد يحدد نقطة انطلاقك، والقياس القادم هو ما يرسم رحلتك مع أخصائي التغذية خطوة بخطوة.'**
+  /// **'قياس واحد يحدد نقطة البداية، والقياس القادم يبدأ برسم تقدمك مع أخصائي التغذية خطوة بخطوة.'**
   String get firstMeasurementJourneyNote;
 
   /// UI text in presentation/screens/first_measurement_screen.dart
@@ -1169,7 +1169,7 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/follow_up_ended_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'اكتمال خطة المتابعة السريرية'**
+  /// **'اكتمال خطة المتابعة'**
   String get followUpPlanCompleted;
 
   /// UI text in presentation/screens/follow_up_ended_screen.dart
@@ -1181,7 +1181,7 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/follow_up_ended_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'نتمنى أنك استمتعت بخطتك الصحية وحققت أهدافك! لقد انتهت فترة المتابعة الحالية مع أخصائي التغذية. للتجديد أو لاستكمال رحلتك العلاجية والحصول على خطة جديدة، يمكنك التواصل مباشرة وبكل سهولة.'**
+  /// **'انتهت فترة المتابعة الحالية مع أخصائي التغذية. للتجديد أو لمتابعة نظامك الغذائي والحصول على خطة جديدة، يمكنك التواصل مباشرة.'**
   String get followUpEndedMessage;
 
   /// UI text in presentation/screens/follow_up_ended_screen.dart
@@ -1193,7 +1193,7 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/follow_up_ended_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'أخصائي التغذية العلاجية المشرف عليك'**
+  /// **'أخصائي التغذية المشرف عليك'**
   String get followUpSupervisingSpecialist;
 
   /// UI text in presentation/screens/follow_up_ended_screen.dart
@@ -1217,7 +1217,7 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/follow_up_ended_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'شروط الخدمة وسياسة الخصوصية للملفات الطبية'**
+  /// **'شروط الخدمة وسياسة الخصوصية للبيانات الصحية'**
   String get followUpTerms;
 
   /// UI text in presentation/screens/food_search_screen.dart
@@ -1421,7 +1421,7 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/health_data_consent_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'لن تتمكني من متابعة رحلتك العلاجية أو الوصول لخطتك الغذائية قبل الموافقة على شروط الخصوصية الصحية.'**
+  /// **'لا يمكن متابعة الخطة الغذائية أو الوصول إليها قبل الموافقة على شروط الخصوصية الصحية.'**
   String get consentExitMessage;
 
   /// UI text in presentation/screens/health_data_consent_screen.dart
@@ -1451,7 +1451,7 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/health_data_consent_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'قراءة وثيقة الخصوصية السريرية الكاملة'**
+  /// **'قراءة وثيقة الخصوصية الكاملة'**
   String get consentReadFullDocument;
 
   /// UI text in presentation/screens/health_data_consent_screen.dart
@@ -1469,7 +1469,7 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/health_data_consent_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'يُرجى الموافقة على الشروط السريرية للمتابعة'**
+  /// **'يُرجى الموافقة على شروط الخصوصية للمتابعة'**
   String get consentPleaseAgree;
 
   /// UI text in presentation/screens/health_data_consent_screen.dart
@@ -1487,7 +1487,7 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/health_data_consent_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'بياناتك (سجل الوجبات، القياسات، والحالة الصحية) تصل لأخصائي التغذية المتابع لك فقط وتُستخدم لبناء خطتك الغذائية ومتابعة تقدمك السريري بأمان.'**
+  /// **'بياناتك (سجل الوجبات، القياسات، والحالة الصحية) تصل إلى أخصائي التغذية المتابع لك فقط، وتُستخدم لبناء خطتك الغذائية ومتابعة تقدمك.'**
   String get consentDataUseNote;
 
   /// UI text in presentation/screens/health_data_consent_screen.dart
@@ -1499,13 +1499,13 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/health_data_consent_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'قبل أن نبدأ رحلتك الصحية'**
+  /// **'قبل أن نبدأ'**
   String get consentBeforeWeStart;
 
   /// UI text in presentation/screens/health_data_consent_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'نحن نلتزم بحماية خصوصية بياناتك الصحية والسريرية بأقصى درجات الشفافية والأمان.'**
+  /// **'نلتزم بحماية خصوصية بياناتك الصحية.'**
   String get consentCommitment;
 
   /// UI text in presentation/screens/health_data_consent_screen.dart
@@ -1523,7 +1523,7 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/health_record_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'السجل الطبي'**
+  /// **'السجل الصحي'**
   String get healthRecordTitle;
 
   /// UI text in presentation/screens/health_record_screen.dart
@@ -1649,7 +1649,7 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/health_record_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'الأدوية والمكملات اليومية المعتمدة'**
+  /// **'الأدوية والمكملات اليومية المسجّلة'**
   String get healthRecordMedications;
 
   /// UI text in presentation/screens/health_record_screen.dart
@@ -1673,19 +1673,19 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/health_record_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'السجل الطبي المعتمد'**
+  /// **'السجل الصحي'**
   String get healthRecordCertified;
 
   /// UI text in presentation/screens/health_record_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'التشخيصات والمحاذير لتخصيص خطتك بدقة'**
+  /// **'الحالات الصحية والمحاذير التي تُراعى في خطتك'**
   String get healthRecordDiagnosesNote;
 
   /// UI text in presentation/screens/health_record_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'طلب تعديل أو إضافة تقرير إلى السجل الطبي'**
+  /// **'طلب تعديل أو إضافة تقرير إلى السجل الصحي'**
   String get healthRecordRequestChange;
 
   /// UI text in presentation/screens/health_record_screen.dart
@@ -1697,7 +1697,7 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/health_record_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'تسجيل الوجبات والنشاط الحركي اليومي بدقة، حافظ على شعلة الحماس!'**
+  /// **'تسجيل الوجبات والنشاط يومياً يحافظ على استمرارك.'**
   String get healthRecordStreakNote;
 
   /// UI text in presentation/screens/health_record_screen.dart
@@ -1967,7 +1967,7 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/home_dashboard_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'شرب كوبين من الماء قبل كل وجبة يدعم الحرق المنتظم ويساعدك على الشعور بالشبع الهادئ. أنت تسيرين بوتيرة ممتازة!'**
+  /// **'شرب كوبين من الماء قبل الوجبة قد يساعد على الشعور بالشبع، والاستمرار على الخطة خطوة بعد خطوة.'**
   String get homeHydrationTip;
 
   /// UI text in presentation/screens/language_settings_screen.dart
@@ -2039,7 +2039,7 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/log_meal_intro_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'الوجبات المعتمدة'**
+  /// **'وجبات الخطة'**
   String get logMealPlannedBadge;
 
   /// UI text in presentation/screens/log_meal_intro_screen.dart
@@ -2051,7 +2051,7 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/log_meal_intro_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'تأكيد سريع لتناول إحدى وجباتك المجدولة في جدول اليوم (فطور، سناك، غداء، عشاء) مع إمكانية تعديل البدائل المعتمدة.'**
+  /// **'تأكيد سريع لتناول إحدى وجبات جدول اليوم (فطور، سناك، غداء، عشاء) مع إمكانية اختيار البدائل المتاحة في الخطة.'**
   String get logMealFromPlanDesc;
 
   /// UI text in presentation/screens/log_meal_intro_screen.dart
@@ -2177,7 +2177,7 @@ abstract class AppLocalizations {
   /// Meal detail: who approved the meal. gender: male | female | other | unknown.
   ///
   /// In ar, this message translates to:
-  /// **'{gender, select, male{وجبة متوازنة معتمدة من أخصائي التغذية {name}} female{وجبة متوازنة معتمدة من أخصائية التغذية {name}} unknown{وجبة متوازنة معتمدة من أخصائي التغذية} other{وجبة متوازنة معتمدة من {name}}}'**
+  /// **'{gender, select, male{وجبة ضمن خطة أخصائي التغذية {name}} female{وجبة ضمن خطة أخصائية التغذية {name}} unknown{وجبة ضمن خطة أخصائي التغذية} other{وجبة ضمن خطة {name}}}'**
   String mealDetailApprovedBy(String gender, String name);
 
   /// UI text in presentation/screens/meal_detail_screen.dart
@@ -2255,7 +2255,7 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/meal_log_success_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'تم تحديث سجل اليوم ومستوى التزامك الغذائي بنجاح وبدقة سريرية.'**
+  /// **'تم تحديث سجل اليوم.'**
   String get mealLoggedBody;
 
   /// UI text in presentation/screens/meal_log_success_screen.dart
@@ -2435,7 +2435,7 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/measurements_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'قياس العيادة (معتمد)'**
+  /// **'قياس العيادة'**
   String get measurementsClinicReading;
 
   /// UI text in presentation/screens/measurements_screen.dart
@@ -2495,7 +2495,7 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/measurements_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'تحديث البيانات متزامن مع قياسات العيادة وسجلك الشخصي بكل موثوقية.'**
+  /// **'بياناتك متزامنة مع قياسات العيادة وسجلك الشخصي.'**
   String get measurementsSyncNote;
 
   /// UI text in presentation/screens/measurements_screen.dart
@@ -2537,7 +2537,7 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/measurements_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'تسجيلك المنتظم يمكّن أخصائي التغذية من تحليل نمطك بدقة ودعمك بالخيارات الأنسب دون أي ضغط أو تسرّع.'**
+  /// **'التسجيل المنتظم يساعد أخصائي التغذية على متابعة نمطك واقتراح الخيارات الأنسب لك.'**
   String get measurementsRegularNote;
 
   /// UI text in presentation/screens/measurements_screen.dart
@@ -2717,7 +2717,7 @@ abstract class AppLocalizations {
   /// Measurement entry privacy note. gender: other | unknown.
   ///
   /// In ar, this message translates to:
-  /// **'{gender, select, unknown{جميع بياناتك محمية وتصل بأمان لملفك الطبي المباشر لدى أخصائي التغذية دون أي أحكام أو تقييمات مسبقة، لتعديل خطتك بما يناسبك.} other{جميع بياناتك محمية وتصل بأمان لملفك الطبي المباشر لدى {name} دون أي أحكام أو تقييمات مسبقة، لتعديل خطتك بما يناسبك.}}'**
+  /// **'{gender, select, unknown{بياناتك محمية وتصل إلى ملفك الصحي لدى أخصائي التغذية، ليُعدّل خطتك بما يناسبك.} other{بياناتك محمية وتصل إلى ملفك الصحي لدى {name}، ليُعدّل خطتك بما يناسبك.}}'**
   String measurementEntryPrivacyBody(String gender, String name);
 
   /// UI text in presentation/screens/new_measurement_screen.dart
@@ -2939,7 +2939,7 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/notifications_center_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'تحديث سريري'**
+  /// **'تحديث من الأخصائي'**
   String get notificationsClinicalUpdate;
 
   /// UI text in presentation/screens/notifications_center_screen.dart
@@ -3125,7 +3125,7 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/onboarding_measurements_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'أدخل وزنك وقياساتك اليوم لنبدأ بتتبع رحلتك الصحية مع الأخصائي بدقة واحترافية.'**
+  /// **'أدخل وزنك وقياساتك اليوم لنبدأ متابعة تقدمك مع أخصائي التغذية.'**
   String get onboardingMeasurementsIntro;
 
   /// UI text in presentation/screens/onboarding_measurements_screen.dart
@@ -3185,7 +3185,7 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/onboarding_measurements_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'قياسات إضافية تدعم دقة متابعة الأخصائي لمحيط الجسم ونسب توزيع الدهون بدقة.'**
+  /// **'قياسات إضافية تساعد أخصائي التغذية على متابعة محيط الجسم.'**
   String get onboardingMeasurementsExtraNote;
 
   /// UI text in presentation/screens/onboarding_measurements_screen.dart
@@ -3263,7 +3263,7 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/onboarding_notifications_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'تذكير أسبوعي في الوقت الصباحي المثالي للقياس لمتابعة تطور نتائجك ومؤشراتك الحيوية بدقة.'**
+  /// **'تذكير أسبوعي في الصباح لقياس الوزن ومتابعة تطوره.'**
   String get onboardingNotificationsWeightRemindersDesc;
 
   /// UI text in presentation/screens/onboarding_notifications_screen.dart
@@ -3311,7 +3311,7 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/onboarding_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'سجّل وجباتك اليومية ووزنك بدقة بالغرامات، واستفد من البدائل المتاحة لتسهيل التزامك بالنظام الغذائي دون حرمان.'**
+  /// **'تسجيل الوجبات اليومية والوزن بالغرام، مع البدائل التي أتاحها أخصائي التغذية في خطتك.'**
   String get onboardingTrackDescription;
 
   /// UI text in presentation/screens/onboarding_screen.dart
@@ -3335,13 +3335,13 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/onboarding_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'احصل على نظام غذائي مخصص بالكامل يناسب طبيعة جسمك وحالتك الصحية، ومصمم مباشرة من أخصائي التغذية المتابع لك.'**
+  /// **'نظام غذائي يعدّه لك أخصائي التغذية المتابع لك بحسب بياناتك وأهدافك.'**
   String get onboardingPlanDescription;
 
   /// UI text in presentation/screens/onboarding_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'100% معتمد طبياً ومبني على التحاليل'**
+  /// **'خطة يعدّها أخصائي التغذية المتابع لك'**
   String get onboardingBadgeApproved;
 
   /// UI text in presentation/screens/onboarding_screen.dart
@@ -3461,7 +3461,7 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/password_settings_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'بعد تغيير كلمة المرور بنجاح، سيتم تسجيل خروجك من الأجهزة الأخرى تلقائياً لحماية حسابك الطبي وصحتك.'**
+  /// **'بعد تغيير كلمة المرور بنجاح، سيتم تسجيل خروجك من الأجهزة الأخرى تلقائياً لحماية حسابك.'**
   String get passwordLogoutOthersNote;
 
   /// UI text in presentation/screens/password_settings_screen.dart
@@ -3533,7 +3533,7 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/plan_preparing_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'أخصائي التغذية العلاجية يُعدّ الآن جدولك الغذائي المخصص بدقة ليلائم أهدافك الصحية ونتائج قياساتك الأولية. سنرسل لك إشعاراً فور اعتماد الخطة لتجدها هنا.'**
+  /// **'يُعدّ أخصائي التغذية الآن جدولك الغذائي بحسب أهدافك وقياساتك الأولية. سنرسل لك إشعاراً فور اعتماد الخطة لتجدها هنا.'**
   String get planPreparingBody;
 
   /// UI text in presentation/screens/plan_preparing_screen.dart
@@ -3551,7 +3551,7 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/plan_preparing_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'مراجعة طبية سريرية موثقة'**
+  /// **'يراجعها أخصائي التغذية'**
   String get planPreparingReview;
 
   /// UI text in presentation/screens/plan_preparing_screen.dart
@@ -3587,7 +3587,7 @@ abstract class AppLocalizations {
   /// Plan preparing: clinic line. gender: other | unknown.
   ///
   /// In ar, this message translates to:
-  /// **'{gender, select, unknown{عيادة التغذية العلاجية} other{عيادة التغذية العلاجية • {name}}}'**
+  /// **'{gender, select, unknown{عيادة التغذية} other{عيادة التغذية • {name}}}'**
   String planPreparingClinic(String gender, String name);
 
   /// UI text in presentation/screens/plan_preparing_screen.dart
@@ -3611,7 +3611,7 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/profile_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'المستوى، الهدف، الأدوية والتشخيصات المعتمدة'**
+  /// **'المستوى، الهدف، الأدوية والحالات المسجّلة'**
   String get profileHealthRecordSubtitle;
 
   /// UI text in presentation/screens/profile_screen.dart
@@ -3665,7 +3665,7 @@ abstract class AppLocalizations {
   /// Profile: the nutritionist row. gender: male | female | other | unknown.
   ///
   /// In ar, this message translates to:
-  /// **'{gender, select, male{{name} (أخصائي التغذية العلاجية)} female{{name} (أخصائية التغذية العلاجية)} unknown{أخصائي التغذية العلاجية} other{{name}}}'**
+  /// **'{gender, select, male{{name} (أخصائي التغذية)} female{{name} (أخصائية التغذية)} unknown{أخصائي التغذية} other{{name}}}'**
   String profileDietitianName(String gender, String name);
 
   /// UI text in presentation/screens/profile_screen.dart
@@ -3743,7 +3743,7 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/profile_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'القياسات، السجل الطبي، الإنجازات والمواعيد'**
+  /// **'القياسات، السجل الصحي، الإنجازات والمواعيد'**
   String get profileMoreSubtitle;
 
   /// UI text in presentation/screens/profile_screen.dart
@@ -3779,7 +3779,7 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/progress_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'مزامنة مباشرة مع العيادة'**
+  /// **'متزامن مع العيادة'**
   String get progressLiveSync;
 
   /// UI text in presentation/screens/progress_screen.dart
@@ -3851,7 +3851,7 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/progress_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'قياس العيادة المعتمد'**
+  /// **'قياس العيادة'**
   String get progressClinicReading;
 
   /// UI text in presentation/screens/progress_screen.dart
@@ -4079,7 +4079,7 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/quantity_selector_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'القيمة محسوبة بالكامل وتُضاف بدقة إلى خطتك اليومية'**
+  /// **'القيمة محسوبة وتُضاف إلى سجل اليوم.'**
   String get quantityCalculatedNote;
 
   /// UI text in presentation/screens/quantity_selector_screen.dart
@@ -4367,13 +4367,13 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/specialist_profile_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'الملف الغذائي العلاجي نشط'**
+  /// **'الملف الغذائي نشط'**
   String get specialistProfileActive;
 
   /// UI text in presentation/screens/specialist_profile_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'معتمد'**
+  /// **'أخصائي التغذية المتابع لك'**
   String get specialistCertified;
 
   /// UI text in presentation/screens/specialist_profile_screen.dart
@@ -4535,7 +4535,7 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/weekly_plan_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'خطة متوازنة لتعزيز الطاقة وحرق الدهون بإشراف أخصائي التغذية'**
+  /// **'خطتك كما وضعها أخصائي التغذية'**
   String get weeklyPlanSummary;
 
   /// UI text in presentation/widgets/connection_status_sheet.dart
@@ -6581,7 +6581,7 @@ abstract class AppLocalizations {
   /// Patient app design spec
   ///
   /// In ar, this message translates to:
-  /// **'شرح مبني على تسجيلاتك، مش تشخيص.'**
+  /// **'شرح مبني على تسجيلاتك، وليس تشخيصاً.'**
   String get weightInsightDisclaimer;
 
   /// Patient app design spec
