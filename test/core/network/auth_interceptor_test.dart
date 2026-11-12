@@ -131,6 +131,26 @@ void main() {
   });
 
   group('401 recovery', () {
+    test('a file upload is replayed after the refresh', () async {
+      // A multipart body can be sent once only; the replay needs its own
+      // copy, or a report uploaded with an expired token fails as "offline".
+      final rig = _Rig(rejectOld);
+
+      final response = await rig.dio.post<dynamic>(
+        'me/reports',
+        data: FormData.fromMap({
+          'title': 'CBC',
+          'file': MultipartFile.fromBytes([1, 2, 3], filename: 'cbc.pdf'),
+        }),
+      );
+
+      expect(response.statusCode, 200);
+      expect(rig.refreshCalls, ['r1']);
+      expect(rig.adapter.seen, hasLength(2));
+      expect(rig.adapter.seen.last.headers['Authorization'], 'Bearer new');
+      expect(rig.adapter.seen.last.data, isA<FormData>());
+    });
+
     test('a 401 refreshes once and replays the request with the new token',
         () async {
       final rig = _Rig(rejectOld);

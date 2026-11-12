@@ -147,8 +147,9 @@ class AuthCubit extends Cubit<AuthState> {
 
   // ───────────────────────── start-up (API guide 2.1) ─────────────────────────
 
-  /// Restores the stored session, rotates the tokens, loads the user and checks
-  /// consent. Offline, the cached session is used. The splash then calls
+  /// Restores the stored session, loads the user and checks consent. The
+  /// tokens are rotated only when the server rejects the access token.
+  /// Offline, the cached session is used. The splash then calls
   /// [finishLaunch] and opens the screen for the resulting status.
   Future<void> start() async {
     final stored = await _auth.readSession();
@@ -159,23 +160,12 @@ class AuthCubit extends Cubit<AuthState> {
       return;
     }
 
-    final refreshed = await _auth.refreshTokens();
-    if (isClosed) return;
-    final refreshFailure = refreshed.failureOrNull;
-    if (refreshFailure != null) {
-      if (_isSessionRejected(refreshFailure)) {
-        _moveTo(AuthStatus.signedOut, sessionEnded: true);
-      } else {
-        // Offline or server down: run on the cached session. The next data
-        // call reports a consent or follow-up change if one happened meanwhile.
-        await _routeSignedIn(
-          user: session.user,
-          onboardingCompleted: session.onboardingCompleted,
-        );
-      }
-      return;
-    }
-
+    // No refresh here. A refresh token is single use, and re-using one ends
+    // every session of the patient (API guide 2.3): rotating it on each
+    // start-up meant a lost answer on a weak connection signed the patient
+    // out at the next launch. `GET /auth/me` goes out with the stored access
+    // token; if that has expired, the 401 makes the network layer refresh
+    // once and replay the call.
     final me = await _auth.refreshMe();
     if (isClosed) return;
     final meFailure = me.failureOrNull;

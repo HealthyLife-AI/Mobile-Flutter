@@ -1,7 +1,6 @@
 import '../../core/errors/app_exception.dart';
 import '../../core/errors/exception_mapper.dart';
 import '../../core/errors/result.dart';
-import '../../core/network/token_refresh_coordinator.dart';
 import '../../domain/entities/auth_entities.dart';
 import '../../domain/repositories/auth_repository.dart';
 import '../../domain/repositories/push_registrar.dart';
@@ -21,20 +20,17 @@ class AuthRepositoryImpl implements AuthRepository {
   AuthRepositoryImpl({
     required AuthRemoteDataSource remote,
     required SessionLocalDataSource local,
-    required TokenRefreshCoordinator coordinator,
     required PushRegistrar push,
     Future<void> Function()? onAccountDeleted,
     Future<void> Function(ConsentStatus consent)? onConsent,
   })  : _remote = remote,
         _local = local,
-        _coordinator = coordinator,
         _push = push,
         _onAccountDeleted = onAccountDeleted,
         _onConsent = onConsent;
 
   final AuthRemoteDataSource _remote;
   final SessionLocalDataSource _local;
-  final TokenRefreshCoordinator _coordinator;
   final PushRegistrar _push;
 
   /// Removes what the device keeps after a session ends, such as the
@@ -72,11 +68,6 @@ class AuthRepositoryImpl implements AuthRepository {
         await _local.save(session);
         return session;
       }, context: 'AuthRepository.signIn');
-
-  @override
-  Future<Result<void>> refreshTokens() => guard(() async {
-        await _coordinator.recover();
-      }, context: 'AuthRepository.refreshTokens');
 
   @override
   Future<Result<PatientUser>> refreshMe() => guard(() async {

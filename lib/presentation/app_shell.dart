@@ -58,6 +58,8 @@ class _AppShellState extends State<AppShell> with WidgetsBindingObserver {
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state != AppLifecycleState.resumed) return;
+    // Writes made without a connection go out as soon as the app is back.
+    unawaited(context.read<AppDependencies>().offlineQueue.flush());
     unawaited(context.read<AppDependencies>().preferences.syncIfZoneChanged());
     unawaited(context.read<MealPlanCubit>().load());
     unawaited(context.read<NotificationsCubit>().load());

@@ -43,10 +43,6 @@ class _FakeAuth implements AuthRepository {
       throw UnimplementedError('not used by this test');
 
   @override
-  Future<Result<void>> refreshTokens() =>
-      throw UnimplementedError('not used by this test');
-
-  @override
   Future<Result<PatientUser>> refreshMe() =>
       throw UnimplementedError('not used by this test');
 

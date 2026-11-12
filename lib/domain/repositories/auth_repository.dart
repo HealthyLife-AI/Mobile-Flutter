@@ -16,9 +16,6 @@ abstract interface class AuthRepository {
     required String password,
   });
 
-  /// `POST /auth/refresh` through the single-flight coordinator.
-  Future<Result<void>> refreshTokens();
-
   /// `GET /auth/me`. Updates the cached user.
   Future<Result<PatientUser>> refreshMe();
 

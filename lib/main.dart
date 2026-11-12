@@ -161,7 +161,8 @@ Future<AppDependencies> _createDependencies() async {
         'Persistent storage unavailable; using in-memory storage',
         error: error,
         stackTrace: stackTrace);
-    return AppDependencies.inMemory();
+    // Still the real device: reminders and the queue's own retry stay on.
+    return AppDependencies.inMemory(onDevice: true);
   }
 }
 

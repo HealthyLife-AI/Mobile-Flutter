@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import '../../data/datasources/appointment_remote_data_source.dart';
 import '../../data/datasources/auth_remote_data_source.dart';
 import '../../data/datasources/food_remote_data_source.dart';
@@ -92,7 +94,9 @@ class AppDependencies {
     MealPlanRemoteDataSource? mealPlanSource,
     NotificationDataSource? notificationSource,
     ApiClient? api,
-  })  : _mealPlanSource = mealPlanSource,
+    required bool onDevice,
+  })  : _onDevice = onDevice,
+        _mealPlanSource = mealPlanSource,
         _notificationSource = notificationSource,
         _apiOverride = api;
 
@@ -101,7 +105,8 @@ class AppDependencies {
   static Future<AppDependencies> create() async {
     final storage = await SharedPrefsStorageService.init();
     await removeLegacyStorage(storage);
-    return AppDependencies._(storage: storage, vault: FlutterSecureVault());
+    return AppDependencies._(
+        storage: storage, vault: FlutterSecureVault(), onDevice: true);
   }
 
   /// Deterministic graph that persists nothing. Used by tests and as the
@@ -114,6 +119,7 @@ class AppDependencies {
     MealPlanRemoteDataSource? mealPlanSource,
     NotificationDataSource? notificationSource,
     ApiClient? api,
+    bool onDevice = false,
   }) =>
       AppDependencies._(
         storage: MemoryStorageService(),
@@ -121,10 +127,16 @@ class AppDependencies {
         mealPlanSource: mealPlanSource,
         notificationSource: notificationSource,
         api: api,
+        onDevice: onDevice,
       );
 
   final StorageService storage;
   final SecureVault vault;
+
+  /// True in the running app. False in tests, where no notification plugin
+  /// is registered and a timer left behind would outlive the test: the local
+  /// reminders are then silent and the queue plans no retry of its own.
+  final bool _onDevice;
 
   /// Session-wide events from the network stack: session expired, follow-up
   /// ended, consent required. The auth cubit listens to these.
@@ -184,13 +196,19 @@ class AppDependencies {
     onDropped: showDroppedWriteNotice,
     // A saved meal log's server id, so it can be deleted later (6.4).
     onSaved: (write, response) => _mealLog.recordSaved(write, response),
+    scheduleRetry: _onDevice ? Timer.new : null,
   );
 
   late final AuthRemoteDataSource _authRemote = AuthRemoteDataSource(api);
 
   late final PushRegistrar push = FirebasePushRegistrar(
     api: api,
-    prepareChannel: () => createPushChannel(_reminderNotifications, settings),
+    prepareChannel: () async {
+      final notifications = _reminderNotifications;
+      if (notifications is FlutterReminderNotifications) {
+        await createPushChannel(notifications, settings);
+      }
+    },
   );
 
   /// Reads/requests the OS notification permission and opens the system
@@ -226,7 +244,6 @@ class AppDependencies {
   late final AuthRepository auth = AuthRepositoryImpl(
     remote: _authRemote,
     local: session,
-    coordinator: _coordinator,
     push: push,
     onAccountDeleted: passwordHelp.forget,
     onConsent: (consent) => privacyPolicy.remember(consent.policyUrl),
@@ -281,8 +298,9 @@ class AppDependencies {
   /// The device's own reminders as local notifications (API guide 10.6):
   /// appointments and the weekly weigh-in share the plugin, which also
   /// creates the push channel (10.4).
-  late final FlutterReminderNotifications _reminderNotifications =
-      FlutterReminderNotifications();
+  late final ReminderNotifications _reminderNotifications = _onDevice
+      ? FlutterReminderNotifications()
+      : const SilentReminderNotifications();
 
   late final AppointmentReminderScheduler _appointmentReminders =
       LocalAppointmentReminderScheduler(_reminderNotifications, settings);
