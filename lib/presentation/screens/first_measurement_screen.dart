@@ -207,7 +207,7 @@ class _FirstMeasurementScreenState extends State<FirstMeasurementScreen>
                   onPressed: onViewProgress,
                   child: Text(l10n.measurementPromptViewProgress,
                       style: AppTextStyles.secondary
-                          .copyWith(color: AppColors.primary)),
+                          .copyWith(color: AppColors.primaryInk)),
                 ),
               ),
             ),
@@ -302,7 +302,7 @@ class _FirstMeasurementScreenState extends State<FirstMeasurementScreen>
                             ? l10n.measurementPromptWeeklyBadge
                             : l10n.firstMeasurementBaseline,
                         style: AppTextStyles.caption
-                            .copyWith(color: AppColors.primary)),
+                            .copyWith(color: AppColors.primaryInk)),
                   ]),
                   const SizedBox(height: 8),
                   Text(
@@ -486,7 +486,7 @@ class _FirstMeasurementScreenState extends State<FirstMeasurementScreen>
             Expanded(
               child: Text(context.l10n.firstMeasurementIllustratedGuide,
                   style: AppTextStyles.cardTitle
-                      .copyWith(color: AppColors.primary)),
+                      .copyWith(color: AppColors.primaryInk)),
             ),
             // سهم يتحرك نحو اتجاه الانتقال
             AnimatedBuilder(
@@ -698,7 +698,7 @@ class _WaitingIllustration extends StatelessWidget {
                                   maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
                                   style: const TextStyle(
-                                      fontSize: 12, color: AppColors.primary)),
+                                      fontSize: 12, color: AppColors.primaryInk)),
                             ),
                             const SizedBox(width: 6),
                             Transform.rotate(

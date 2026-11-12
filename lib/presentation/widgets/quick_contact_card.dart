@@ -50,7 +50,7 @@ class QuickContactCard extends StatelessWidget {
                 onPressed: () => openMyRequests(context),
                 child: Text(l10n.myRequestsLink,
                     style: AppTextStyles.secondary.copyWith(
-                        color: AppColors.primary, fontWeight: FontWeight.w700)),
+                        color: AppColors.primaryInk, fontWeight: FontWeight.w700)),
               ),
               if (open > 0)
                 StatusPill(l10n.requestsAwaiting(context.localizeDigits(open)),

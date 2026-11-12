@@ -173,7 +173,7 @@ class OfflineExplainerBody extends StatelessWidget {
                         borderRadius: BorderRadius.circular(AppRadius.pill)),
                     child: Text(context.l10n.offlinePanelLocally,
                         style: const TextStyle(
-                            fontSize: 10, color: AppColors.primary))),
+                            fontSize: 10, color: AppColors.primaryInk))),
                 const SizedBox(width: 8),
                 Text(context.l10n.offlinePanelModeActive,
                     style: AppTextStyles.cardTitle),

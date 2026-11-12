@@ -180,7 +180,7 @@ class _PostCard extends StatelessWidget {
                 const SizedBox(width: 6),
                 Text(l10n.postsNew,
                     style: AppTextStyles.caption.copyWith(
-                        color: AppColors.primary, fontWeight: FontWeight.w700)),
+                        color: AppColors.primaryInk, fontWeight: FontWeight.w700)),
                 if (published != null)
                   const Text(' • ', style: AppTextStyles.tiny),
               ],

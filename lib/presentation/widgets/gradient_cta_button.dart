@@ -208,7 +208,7 @@ class _AnimatedGradientCtaButtonState extends State<_AnimatedGradientCtaButton>
                   child: Text(
                     widget.label,
                     style: AppTextStyles.ctaText
-                        .copyWith(color: AppColors.primary),
+                        .copyWith(color: AppColors.primaryInk),
                   ),
                 ),
               ),

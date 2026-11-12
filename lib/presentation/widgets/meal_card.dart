@@ -223,7 +223,7 @@ class MealCard extends StatelessWidget {
                             meal.alternativesText,
                             textAlign: TextAlign.start,
                             style: AppTextStyles.caption
-                                .copyWith(color: AppColors.primary),
+                                .copyWith(color: AppColors.primaryInk),
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -283,7 +283,7 @@ class _CaloriesChip extends StatelessWidget {
           borderRadius: BorderRadius.circular(AppRadius.pill)),
       child: Text(context.l10n.commonKcalValue(calories),
           style: AppTextStyles.caption
-              .copyWith(color: AppColors.primary, fontWeight: FontWeight.w700)),
+              .copyWith(color: AppColors.primaryInk, fontWeight: FontWeight.w700)),
     );
   }
 }

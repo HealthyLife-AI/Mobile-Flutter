@@ -288,7 +288,7 @@ class _NextAppointmentCard extends StatelessWidget {
                   FilledButton.icon(
                     style: FilledButton.styleFrom(
                       backgroundColor: Colors.white,
-                      foregroundColor: AppColors.primary,
+                      foregroundColor: AppColors.primaryInk,
                       visualDensity: VisualDensity.compact,
                     ),
                     onPressed: () => openExternalLink(context, link),
@@ -427,14 +427,14 @@ class _AppointmentCard extends StatelessWidget {
               children: [
                 Text(context.localizeDigits('${start.day}'),
                     style: AppTextStyles.metricMedium
-                        .copyWith(color: AppColors.primary, height: 1.1)),
+                        .copyWith(color: AppColors.primaryInk, height: 1.1)),
                 Text(
                     DateFormat.MMM(Localizations.localeOf(context).toString())
                         .format(start),
                     maxLines: 1,
                     overflow: TextOverflow.clip,
                     style:
-                        AppTextStyles.tiny.copyWith(color: AppColors.primary)),
+                        AppTextStyles.tiny.copyWith(color: AppColors.primaryInk)),
               ],
             ),
           ),

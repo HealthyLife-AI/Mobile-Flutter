@@ -202,7 +202,7 @@ class _ReviewCard extends StatelessWidget {
                 Text(
                   ratingText,
                   style: AppTextStyles.caption.copyWith(
-                    color: AppColors.primary,
+                    color: AppColors.primaryInk,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
@@ -243,7 +243,7 @@ class _ReviewCard extends StatelessWidget {
                 Text(
                   l10n.reviewSeen,
                   style: AppTextStyles.caption.copyWith(
-                    color: AppColors.primary,
+                    color: AppColors.primaryInk,
                     fontWeight: FontWeight.w700,
                   ),
                 ),

@@ -477,12 +477,12 @@ void main() {
   });
 
   group('brand tokens', () {
-    test('primary is the design spec\'s #006572', () {
-      expect(AppColors.primary, const Color(0xFF006572));
+    test('primary is the brand teal #028090', () {
+      expect(AppColors.primary, const Color(0xFF028090));
     });
 
-    test('canvas is the design spec\'s #F6F9FF', () {
-      expect(AppColors.background, const Color(0xFFF6F9FF));
+    test('canvas is the brand canvas #F5FAF9', () {
+      expect(AppColors.background, const Color(0xFFF5FAF9));
       expect(AppColors.surface, Colors.white);
     });
 

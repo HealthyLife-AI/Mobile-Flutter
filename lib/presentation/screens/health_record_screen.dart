@@ -571,7 +571,7 @@ class _GoalCard extends StatelessWidget {
           Expanded(
             child: Text(l10n.healthRecordCurrentGoal,
                 style: AppTextStyles.sectionHeading
-                    .copyWith(color: AppColors.primary)),
+                    .copyWith(color: AppColors.primaryInk)),
           ),
         ]),
         const SizedBox(height: 12),
@@ -778,7 +778,7 @@ class _MedicationRow extends StatelessWidget {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: AppTextStyles.caption.copyWith(
-                      color: AppColors.primary, fontWeight: FontWeight.w700),
+                      color: AppColors.primaryInk, fontWeight: FontWeight.w700),
                 ),
               ),
             ),
@@ -788,7 +788,7 @@ class _MedicationRow extends StatelessWidget {
           const SizedBox(height: 8),
           Text(l10n.healthMedReviewedBy,
               style: AppTextStyles.caption.copyWith(
-                  color: AppColors.primary, fontWeight: FontWeight.w700)),
+                  color: AppColors.primaryInk, fontWeight: FontWeight.w700)),
           if (note != null) Text(note, style: AppTextStyles.caption),
         ],
       ]),

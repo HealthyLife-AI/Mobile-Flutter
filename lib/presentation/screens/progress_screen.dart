@@ -261,7 +261,7 @@ class _ProgressBodyState extends State<_ProgressBody> {
           const SizedBox(width: 6),
           Text(context.l10n.progressLiveSync,
               style: AppTextStyles.caption
-                  .copyWith(color: AppColors.primary, fontSize: 11)),
+                  .copyWith(color: AppColors.primaryInk, fontSize: 11)),
         ]),
         const SizedBox(height: 14),
         Container(
@@ -380,7 +380,7 @@ class _ProgressBodyState extends State<_ProgressBody> {
                 children: [
                   Text(_latestText(context, snapshot),
                       style: AppTextStyles.metricMedium.copyWith(
-                          color: AppColors.primary,
+                          color: AppColors.primaryInk,
                           fontSize: 26,
                           fontWeight: FontWeight.w800)),
                   const SizedBox(width: 4),
@@ -520,7 +520,7 @@ class _ProgressBodyState extends State<_ProgressBody> {
                       style: const TextStyle(
                           fontSize: 10.5,
                           fontWeight: FontWeight.w700,
-                          color: AppColors.primary)),
+                          color: AppColors.primaryInk)),
                   for (final label in _axisLabels(context, cubit.days))
                     Text(label,
                         style: const TextStyle(
@@ -733,7 +733,7 @@ class _ProgressBodyState extends State<_ProgressBody> {
                 Expanded(
                   child: Text(rating,
                       style: AppTextStyles.caption.copyWith(
-                          color: AppColors.primary,
+                          color: AppColors.primaryInk,
                           fontWeight: FontWeight.w700)),
                 ),
               ] else
@@ -760,7 +760,7 @@ class _ProgressBodyState extends State<_ProgressBody> {
             const SizedBox(width: 6),
             Text(l10n.reviewSeen,
                 style: AppTextStyles.caption.copyWith(
-                    color: AppColors.primary, fontWeight: FontWeight.w700)),
+                    color: AppColors.primaryInk, fontWeight: FontWeight.w700)),
           ])
         else
           GradientCtaButton(

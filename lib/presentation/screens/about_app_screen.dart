@@ -245,7 +245,7 @@ class _IdentityHero extends StatelessWidget {
                     style: AppTextStyles.pillLabel.copyWith(
                       fontSize: 13,
                       fontWeight: FontWeight.w700,
-                      color: AppColors.primary,
+                      color: AppColors.primaryInk,
                     ),
                   ),
                   const SizedBox(height: 8),
@@ -448,7 +448,7 @@ class _SectionLabel extends StatelessWidget {
           Text(
             trailing!,
             style: AppTextStyles.caption.copyWith(
-              color: AppColors.primary,
+              color: AppColors.primaryInk,
               fontWeight: FontWeight.w600,
             ),
           ),
@@ -646,7 +646,7 @@ class _StandardProtectionCard extends StatelessWidget {
                   context.l10n.aboutStandardHealthProtection,
                   textAlign: TextAlign.start,
                   style: AppTextStyles.cardTitle.copyWith(
-                    color: AppColors.primary,
+                    color: AppColors.primaryInk,
                     fontSize: 13,
                   ),
                 ),

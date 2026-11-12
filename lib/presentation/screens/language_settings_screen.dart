@@ -256,7 +256,7 @@ class _LanguageCard extends StatelessWidget {
                                   overflow: TextOverflow.ellipsis,
                                   style: const TextStyle(
                                     fontSize: 10,
-                                    color: AppColors.primary,
+                                    color: AppColors.primaryInk,
                                     fontWeight: FontWeight.w700,
                                   ),
                                 ),
@@ -332,7 +332,7 @@ class _LanguageCard extends StatelessWidget {
                         Text(
                           directionTag,
                           style: AppTextStyles.caption.copyWith(
-                            color: AppColors.primary,
+                            color: AppColors.primaryInk,
                             fontWeight: FontWeight.w700,
                             fontSize: 11,
                           ),

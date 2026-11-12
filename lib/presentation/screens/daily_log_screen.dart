@@ -1291,7 +1291,7 @@ class _WeeklyPlanButton extends StatelessWidget {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
-                        color: AppColors.primary,
+                        color: AppColors.primaryInk,
                         fontSize: 15,
                         fontWeight: FontWeight.w600)),
               ),

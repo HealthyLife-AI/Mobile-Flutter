@@ -554,7 +554,7 @@ class _PermissionCard extends StatelessWidget {
                             child: Text(badge!,
                                 style: AppTextStyles.caption.copyWith(
                                     fontSize: 11,
-                                    color: AppColors.primary,
+                                    color: AppColors.primaryInk,
                                     fontWeight: FontWeight.w600)),
                           ),
                       ],

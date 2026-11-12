@@ -646,7 +646,7 @@ class _StatRow extends StatelessWidget {
               borderRadius: BorderRadius.circular(AppRadius.pill)),
           child: Text(badge!,
               style: AppTextStyles.caption.copyWith(
-                  color: AppColors.primary, fontWeight: FontWeight.w700)),
+                  color: AppColors.primaryInk, fontWeight: FontWeight.w700)),
         ),
         const Spacer(),
       ] else

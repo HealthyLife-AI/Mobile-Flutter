@@ -698,7 +698,7 @@ class _MeasurementEntryScreenState extends State<MeasurementEntryScreen>
                       ),
                       child: Text(context.l10n.commonOptional,
                           style: const TextStyle(
-                              fontSize: 11, color: AppColors.primary)),
+                              fontSize: 11, color: AppColors.primaryInk)),
                     ),
                     AnimatedRotation(
                       turns: _circumferenceExpanded ? 0.5 : 0,

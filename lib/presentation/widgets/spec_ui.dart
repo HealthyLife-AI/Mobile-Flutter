@@ -355,7 +355,7 @@ class SpecSecondaryButton extends StatelessWidget {
         onPressed: onPressed,
         style: OutlinedButton.styleFrom(
           backgroundColor: AppColors.surface,
-          foregroundColor: AppColors.primary,
+          foregroundColor: AppColors.primaryInk,
           side: BorderSide(color: AppColors.primary.withValues(alpha: 0.4)),
           padding: const EdgeInsets.symmetric(horizontal: 16),
           shape: RoundedRectangleBorder(
@@ -375,7 +375,7 @@ class SpecSecondaryButton extends StatelessWidget {
                   style: (compact
                           ? AppTextStyles.pillLabel.copyWith(fontSize: 14)
                           : AppTextStyles.ctaText)
-                      .copyWith(color: AppColors.primary)),
+                      .copyWith(color: AppColors.primaryInk)),
             ),
           ],
         ),

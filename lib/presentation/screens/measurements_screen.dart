@@ -173,7 +173,7 @@ class _MeasurementsViewState extends State<_MeasurementsView> {
                           l10n.measurementsDeltaVsLast(context
                               .localizeDigits(delta.abs().toStringAsFixed(1))),
                           style: AppTextStyles.caption
-                              .copyWith(color: AppColors.primary)),
+                              .copyWith(color: AppColors.primaryInk)),
                     ]),
                   ),
                 ),

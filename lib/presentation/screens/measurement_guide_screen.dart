@@ -196,7 +196,7 @@ class _MeasurementGuideScreenState extends State<MeasurementGuideScreen> {
                 context.l10n.guideGeneralTips,
                 textAlign: TextAlign.start,
                 style: AppTextStyles.caption.copyWith(
-                    color: AppColors.primary,
+                    color: AppColors.primaryInk,
                     fontWeight: FontWeight.w500,
                     height: 1.8),
               ),
