@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:healthylife_ai/core/config/app_config.dart';
 import 'package:healthylife_ai/core/di/app_dependencies.dart';
 import 'package:healthylife_ai/core/theme/app_theme.dart';
 import 'package:healthylife_ai/presentation/screens/health_data_consent_screen.dart';
@@ -72,12 +73,19 @@ void main() {
     expect(opened, ['https://site.example/ar/privacy']);
   });
 
-  testWidgets('without an address, only says the policy is on the website',
-      (tester) async {
+  testWidgets(
+      'without a server address, opens the website page in the '
+      'language of the app, even before sign-in', (tester) async {
     await open(tester, AppDependencies.inMemory(api: ScriptedApi()));
 
-    expect(opened, isEmpty);
-    expect(find.text('سياسة الخصوصية متوفرة على موقعنا.'), findsOneWidget);
+    expect(opened, ['https://frontend-nextjs-phi-ten.vercel.app/ar/privacy']);
+  });
+
+  test('the website serves the policy in both languages', () {
+    expect(AppConfig.websitePrivacyUrl('ar').toString(),
+        'https://frontend-nextjs-phi-ten.vercel.app/ar/privacy');
+    expect(AppConfig.websitePrivacyUrl('en').toString(),
+        'https://frontend-nextjs-phi-ten.vercel.app/en/privacy');
   });
 
   testWidgets('the consent screen makes no claim the policy does not',

@@ -7831,6 +7831,12 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'، '**
   String get commonListSeparator;
+
+  /// Link under the login form that opens the privacy policy on the website.
+  ///
+  /// In ar, this message translates to:
+  /// **'سياسة الخصوصية'**
+  String get loginPrivacyPolicy;
 }
 
 class _AppLocalizationsDelegate

@@ -1378,5 +1378,6 @@
   "onboardingHealthNoAllergies": "No known food allergies",
   "onboardingHealthOtherConditionHint": "Name of the condition, e.g. underactive thyroid",
   "onboardingHealthNoteTooLong": "The text is {count} characters over the limit. Shorten the notes or the condition name so all of it reaches your specialist.",
-  "commonListSeparator": ", "
+  "commonListSeparator": ", ",
+  "loginPrivacyPolicy": "Privacy policy"
 }

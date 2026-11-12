@@ -5396,5 +5396,9 @@
   "commonListSeparator": "، ",
   "@commonListSeparator": {
     "description": "Between the items of a list written in one line."
+  },
+  "loginPrivacyPolicy": "سياسة الخصوصية",
+  "@loginPrivacyPolicy": {
+    "description": "Link under the login form that opens the privacy policy on the website."
   }
 }

@@ -1,4 +1,3 @@
-
 /// Compile-time application configuration.
 ///
 /// Public values only (URLs, timeouts, feature flags). Secrets must never be
@@ -18,10 +17,16 @@ class AppConfig {
     defaultValue: 'https://healthylife.apps.taqat.academy/api/v1',
   );
 
-  /// The public website, such as `https://example.com`. Optional: it is the
-  /// last fallback for the privacy policy when the server has never sent a
-  /// `policy_url` (API guide 4). Empty when not set.
-  static const String websiteUrl = String.fromEnvironment('WEBSITE_URL');
+  /// The public website. It serves the privacy policy (`/ar/privacy`,
+  /// `/en/privacy`) and the account-deletion page (`/ar/account-deletion`,
+  /// `/en/account-deletion`) without signing in, so the policy is reachable
+  /// from the login screen, before the server has ever sent a `policy_url`
+  /// (API guide 4). Pass `--dart-define=WEBSITE_URL=` (empty) to turn the
+  /// fallback off, or another address for a staging site.
+  static const String websiteUrl = String.fromEnvironment(
+    'WEBSITE_URL',
+    defaultValue: 'https://frontend-nextjs-phi-ten.vercel.app',
+  );
 
   /// The privacy policy on the website in [languageCode] (`/ar/privacy` or
   /// `/en/privacy`), or null when [websiteUrl] is not set.

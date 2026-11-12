@@ -4573,4 +4573,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get commonListSeparator => ', ';
+
+  @override
+  String get loginPrivacyPolicy => 'Privacy policy';
 }

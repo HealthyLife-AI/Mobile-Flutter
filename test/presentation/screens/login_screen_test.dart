@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:healthylife_ai/core/di/app_dependencies.dart';
 import 'package:healthylife_ai/core/errors/app_exception.dart';
@@ -87,5 +88,27 @@ void main() {
 
     expect(find.textContaining('اطلب من أخصائيك'), findsOneWidget);
     expect(find.text('فتح واتساب'), findsNothing);
+  });
+
+  testWidgets('the privacy policy opens from the login screen, before sign-in',
+      (tester) async {
+    const launcher = MethodChannel('plugins.flutter.io/url_launcher');
+    final opened = <String>[];
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(launcher, (call) async {
+      final url = (call.arguments as Map?)?['url'];
+      if (url is String) opened.add(url);
+      return true;
+    });
+    addTearDown(() => TestDefaultBinaryMessengerBinding
+        .instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(launcher, null));
+    await open(tester, ScriptedApi());
+
+    await tester.tap(find.text('سياسة الخصوصية'));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 300));
+
+    expect(opened, ['https://frontend-nextjs-phi-ten.vercel.app/ar/privacy']);
   });
 }
