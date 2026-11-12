@@ -1,0 +1,3 @@
+/* Shown by iOS in the permission prompts. */
+"NSCameraUsageDescription" = "HealthyLife uses the camera only when you choose to photograph a medical report to share with your nutritionist.";
+"NSPhotoLibraryUsageDescription" = "HealthyLife opens your photos only when you choose a medical report image to share with your nutritionist.";

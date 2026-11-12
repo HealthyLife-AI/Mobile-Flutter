@@ -84,3 +84,49 @@ jobs:
         env:
           ORG_GRADLE_PROJECT_allowDebugSigning: "true"
         run: flutter build apk --release
+
+  ios-build:
+    # A build without signing: it proves the Xcode project, the entitlements
+    # file, the localized strings and the privacy manifest are wired right.
+    # macOS minutes cost more than Linux, so it runs only when iOS files or
+    # the dependencies change.
+    runs-on: macos-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dorny/paths-filter@v3
+        id: ios
+        with:
+          filters: |
+            ios:
+              - 'ios/**'
+              - 'pubspec.yaml'
+              - 'pubspec.lock'
+              - '.github/workflows/flutter-checks.yml'
+
+      - uses: subosito/flutter-action@v2
+        if: steps.ios.outputs.ios == 'true'
+        with:
+          channel: stable
+          flutter-version: 3.41.8
+          cache: true
+
+      - name: Dependencies
+        if: steps.ios.outputs.ios == 'true'
+        run: flutter pub get
+
+      - name: iOS build without signing
+        if: steps.ios.outputs.ios == 'true'
+        run: flutter build ios --release --no-codesign
+
+      - name: The built app carries the privacy manifest, strings and entitlement
+        if: steps.ios.outputs.ios == 'true'
+        run: |
+          APP=build/ios/iphoneos/Runner.app
+          test -f "$APP/PrivacyInfo.xcprivacy"
+          test -f "$APP/ar.lproj/InfoPlist.strings"
+          test -f "$APP/en.lproj/InfoPlist.strings"
+          # The entitlement is applied when signing; unsigned builds keep it
+          # in the project, which the Dart test checks.
+          /usr/libexec/PlistBuddy -c "Print :UIBackgroundModes:0" "$APP/Info.plist" | grep -qx remote-notification
