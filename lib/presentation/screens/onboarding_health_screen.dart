@@ -6,8 +6,8 @@ import '../../core/errors/failure.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_radius.dart';
 import '../../core/theme/app_text_styles.dart';
-import '../../data/mock/health_profile_mock_data.dart';
 import '../../domain/change_request_rules.dart';
+import '../../domain/condition_codes.dart';
 import '../../domain/entities/patient_care_entities.dart';
 import '../../domain/entities/patient_health_profile_entities.dart';
 import '../health_profile_labels.dart';
@@ -26,8 +26,11 @@ import '../../l10n/l10n.dart';
 ///
 /// Nothing is chosen for the patient. On continue, each allergy and each
 /// medication goes to the nutritionist as a change request (API guide 11.2);
-/// they reach the profile once approved. The API has no field for chronic
-/// conditions or free notes, so those go together as one quick request.
+/// they reach the profile once approved. A patient cannot propose a condition
+/// through the API, so the conditions (the server's own codes, see
+/// domain/condition_codes.dart) and the free notes go together as one
+/// labelled quick request. That note is never cut: when it would not fit, the
+/// screen says so and nothing is sent.
 class OnboardingHealthScreen extends StatefulWidget {
   const OnboardingHealthScreen({super.key});
 
@@ -47,6 +50,8 @@ class _OnboardingHealthScreenState extends State<OnboardingHealthScreen> {
   final List<String> _medications = [];
   final TextEditingController _medicationController = TextEditingController();
   final TextEditingController _notesController = TextEditingController();
+  final TextEditingController _otherConditionController =
+      TextEditingController();
 
   /// What already reached the server, so trying again after a failure does
   /// not send it twice.
@@ -60,14 +65,22 @@ class _OnboardingHealthScreenState extends State<OnboardingHealthScreen> {
       if (group != 'other') group,
   ];
 
-  /// The notes field is short, so the conditions and the notes fit in one
-  /// quick request.
-  static const int _notesMaxLength = 100;
+  /// The coded conditions offered as cards; `other` has its own card with a
+  /// text field.
+  static final List<String> _conditions = [
+    for (final code in conditionCodes)
+      if (code != 'other') code,
+  ];
+
+  /// An upper bound for the notes field. The real limit is the whole note
+  /// ([_note]), which also carries the conditions.
+  static const int _notesMaxLength = 200;
 
   @override
   void dispose() {
     _medicationController.dispose();
     _notesController.dispose();
+    _otherConditionController.dispose();
     super.dispose();
   }
 
@@ -117,6 +130,14 @@ class _OnboardingHealthScreenState extends State<OnboardingHealthScreen> {
 
   Future<void> _continue() async {
     if (_sending) return;
+    final note = _note(context.l10n);
+    if (note != null && !note.fits) {
+      // Never cut what the patient wrote: ask for a shorter text instead.
+      showSpecSnack(
+          context, context.l10n.onboardingHealthNoteTooLong(note.excess),
+          error: true);
+      return;
+    }
     setState(() => _sending = true);
     final failure = await _sendHealthDetails();
     if (!mounted) return;
@@ -135,7 +156,7 @@ class _OnboardingHealthScreenState extends State<OnboardingHealthScreen> {
   /// nutritionist, counts as sent.
   Future<Failure?> _sendHealthDetails() async {
     final deps = context.read<AppDependencies>();
-    final note = _conditionsNote(context.l10n);
+    final note = _note(context.l10n)?.text;
     final jobs = <String, Future<Failure?> Function()>{
       for (final group in _groups)
         if (_selectedAllergies.contains(group))
@@ -176,24 +197,25 @@ class _OnboardingHealthScreenState extends State<OnboardingHealthScreen> {
     return null;
   }
 
-  /// The chronic conditions and the notes, as one quick request to the
+  /// The conditions and the notes, as one labelled quick request to the
   /// nutritionist. Null when there is neither.
-  String? _conditionsNote(AppLocalizations l10n) {
-    final conditions = [
-      for (final c in HealthProfileMockData.conditions)
-        if (c.id != 'none' && _selectedConditions.contains(c.id)) c.title,
-    ];
-    final notes = _notesController.text.trim();
-    if (conditions.isEmpty && notes.isEmpty) return null;
-    final note = [
-      if (conditions.isNotEmpty)
-        l10n.onboardingHealthRequestConditions(conditions.join('، ')),
-      if (notes.isNotEmpty) l10n.onboardingHealthRequestNotes(notes),
-    ].join('\n');
-    return note.length <= QuickRequestDraft.noteMaxLength
-        ? note
-        : note.substring(0, QuickRequestDraft.noteMaxLength);
-  }
+  OnboardingHealthNote? _note(AppLocalizations l10n) =>
+      OnboardingHealthNote.compose(
+        conditions: [
+          for (final code in _conditions)
+            if (_selectedConditions.contains(code))
+              conditionLabel(l10n, code) ?? code,
+        ],
+        other: _selectedConditions.contains('other')
+            ? conditionLabel(l10n, 'other')
+            : null,
+        otherText: _otherConditionController.text,
+        notes: _notesController.text,
+        separator: l10n.commonListSeparator,
+        conditionsLine: l10n.onboardingHealthRequestConditions,
+        notesLine: l10n.onboardingHealthRequestNotes,
+        maxLength: QuickRequestDraft.noteMaxLength,
+      );
 
   static IconData _groupIcon(String group) => switch (group) {
         'milk_lactose' => Icons.local_drink_outlined,
@@ -206,9 +228,12 @@ class _OnboardingHealthScreenState extends State<OnboardingHealthScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final bool canContinue = _selectedConditions.isNotEmpty && !_sending;
-    final noAllergy =
-        HealthProfileMockData.allergies.firstWhere((a) => a.id == 'none');
+    final otherChosen = _selectedConditions.contains('other');
+    // "Other" needs its text: the choice alone tells the nutritionist nothing.
+    final bool canContinue = _selectedConditions.isNotEmpty &&
+        (!otherChosen || _otherConditionController.text.trim().isNotEmpty) &&
+        !_sending;
+    final note = _note(context.l10n);
     return Scaffold(
       backgroundColor: AppColors.background,
       body: SafeArea(
@@ -265,14 +290,49 @@ class _OnboardingHealthScreenState extends State<OnboardingHealthScreen> {
                       ]),
                     ),
                     const SizedBox(height: 16),
-                    for (final c in HealthProfileMockData.conditions)
+                    for (final code in _conditions)
                       _SelectableCard(
-                        title: c.title,
-                        subtitle: c.subtitle,
-                        icon: c.icon,
-                        selected: _selectedConditions.contains(c.id),
-                        onTap: () => _toggleCondition(c.id),
+                        title: conditionLabel(context.l10n, code) ?? code,
+                        icon: Icons.medical_information_outlined,
+                        selected: _selectedConditions.contains(code),
+                        onTap: () => _toggleCondition(code),
                       ),
+                    _SelectableCard(
+                      title: context.l10n.conditionOther,
+                      icon: Icons.edit_note_rounded,
+                      selected: otherChosen,
+                      onTap: () => _toggleCondition('other'),
+                    ),
+                    if (otherChosen)
+                      Container(
+                        margin: const EdgeInsets.only(bottom: 10),
+                        padding: const EdgeInsets.symmetric(horizontal: 14),
+                        decoration: BoxDecoration(
+                            color: AppColors.surface,
+                            borderRadius:
+                                BorderRadius.circular(AppRadius.cardSmall),
+                            border: Border.all(color: AppColors.border)),
+                        child: TextField(
+                          key: const Key('other-condition'),
+                          controller: _otherConditionController,
+                          maxLength: OnboardingHealthNote.otherMaxLength,
+                          textAlign: TextAlign.start,
+                          onChanged: (_) => setState(() {}),
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            counterText: '',
+                            hintText:
+                                context.l10n.onboardingHealthOtherConditionHint,
+                            hintStyle: AppTextStyles.caption,
+                          ),
+                        ),
+                      ),
+                    _SelectableCard(
+                      title: context.l10n.onboardingHealthNoConditions,
+                      icon: Icons.shield_outlined,
+                      selected: _selectedConditions.contains('none'),
+                      onTap: () => _toggleCondition('none'),
+                    ),
                     const SizedBox(height: 22),
                     Row(children: [
                       const Text('🍽', style: TextStyle(fontSize: 18)),
@@ -298,9 +358,8 @@ class _OnboardingHealthScreenState extends State<OnboardingHealthScreen> {
                         onTap: () => _toggleAllergy(group),
                       ),
                     _SelectableCard(
-                      title: noAllergy.title,
-                      subtitle: noAllergy.subtitle,
-                      icon: noAllergy.icon,
+                      title: context.l10n.onboardingHealthNoAllergies,
+                      icon: Icons.star_border_rounded,
                       selected: _selectedAllergies.contains('none'),
                       onTap: () => _toggleAllergy('none'),
                     ),
@@ -443,6 +502,7 @@ class _OnboardingHealthScreenState extends State<OnboardingHealthScreen> {
                         maxLines: 3,
                         maxLength: _notesMaxLength,
                         textAlign: TextAlign.start,
+                        onChanged: (_) => setState(() {}),
                         decoration: InputDecoration(
                           isDense: true,
                           border: InputBorder.none,
@@ -452,6 +512,15 @@ class _OnboardingHealthScreenState extends State<OnboardingHealthScreen> {
                         ),
                       ),
                     ),
+                    if (note != null && !note.fits) ...[
+                      const SizedBox(height: 8),
+                      Text(
+                        key: const Key('note-too-long'),
+                        context.l10n.onboardingHealthNoteTooLong(note.excess),
+                        style: AppTextStyles.caption
+                            .copyWith(color: AppColors.danger),
+                      ),
+                    ],
                     const ClinicalTrustFooter(),
                   ],
                 ),
@@ -494,14 +563,12 @@ class _MiniBadge extends StatelessWidget {
 
 class _SelectableCard extends StatelessWidget {
   final String title;
-  final String? subtitle;
   final IconData icon;
   final bool selected;
   final VoidCallback onTap;
 
   const _SelectableCard({
     required this.title,
-    this.subtitle,
     required this.icon,
     required this.selected,
     required this.onTap,
@@ -540,10 +607,6 @@ class _SelectableCard extends StatelessWidget {
                 Text(title,
                     style: AppTextStyles.body
                         .copyWith(fontWeight: FontWeight.w700)),
-                if (subtitle case final subtitle?) ...[
-                  const SizedBox(height: 2),
-                  Text(subtitle, style: AppTextStyles.caption),
-                ],
               ],
             ),
           ),

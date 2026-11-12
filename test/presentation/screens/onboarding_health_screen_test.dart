@@ -3,6 +3,10 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:healthylife_ai/core/di/app_dependencies.dart';
 import 'package:healthylife_ai/core/errors/app_exception.dart';
 import 'package:healthylife_ai/core/theme/app_theme.dart';
+import 'package:healthylife_ai/domain/condition_codes.dart';
+import 'package:healthylife_ai/domain/entities/patient_care_entities.dart';
+import 'package:healthylife_ai/l10n/l10n.dart';
+import 'package:healthylife_ai/presentation/health_profile_labels.dart';
 import 'package:healthylife_ai/presentation/screens/onboarding_health_screen.dart';
 import 'package:healthylife_ai/presentation/screens/onboarding_notifications_screen.dart';
 import 'package:healthylife_ai/presentation/widgets/gradient_cta_button.dart';
@@ -40,7 +44,7 @@ void main() {
   /// Fills the step: one condition, one allergy as an intolerance, one
   /// medication and a note.
   Future<void> fill(WidgetTester tester) async {
-    await tester.tap(find.text('السكري (النوع الأول / الثاني)'));
+    await tester.tap(find.text('سكري النوع الثاني'));
     await tester.tap(find.text('البيض'));
     await tester.pump();
     await tester.tap(find.text('عدم تحمّل'));
@@ -86,7 +90,8 @@ void main() {
     ]);
     final request = api.to('POST', 'me/quick-requests').single.body! as Map;
     expect(request['reason'], 'other');
-    expect(request['note'], contains('السكري'));
+    expect(request['note'], contains('سكري النوع الثاني'));
+    expect(request['note'], startsWith('الحالات الصحية (من الإعداد الأولي):'));
     expect(request['note'], contains('عملية مرارة سابقة'));
     expect(find.byType(OnboardingNotificationsScreen), findsOneWidget);
   });
@@ -129,7 +134,7 @@ void main() {
     });
     await open(tester, api);
 
-    await tester.tap(find.text('لا توجد لدي أي أمراض مزمنة'));
+    await tester.tap(find.text('لا توجد حالات صحية مشخّصة'));
     await tester.tap(find.text('البيض'));
     await tester.pump();
     await tester.tap(find.byType(GradientCtaButton));
@@ -138,5 +143,130 @@ void main() {
     expect(api.to('POST', 'me/quick-requests'), isEmpty,
         reason: 'no condition and no note: nothing to tell');
     expect(find.byType(OnboardingNotificationsScreen), findsOneWidget);
+  });
+
+  group('conditions', () {
+    final ar = lookupAppLocalizations(const Locale('ar'));
+    final en = lookupAppLocalizations(const Locale('en'));
+
+    test('are the server\'s codes, each with a label in both languages', () {
+      // The same list, in the same order, as ConditionCodes::CODES in the
+      // backend (app/Support/ConditionCodes.php).
+      expect(conditionCodes, [
+        'diabetes_type1',
+        'diabetes_type2',
+        'gestational_diabetes',
+        'insulin_resistance',
+        'prediabetes',
+        'hypertension',
+        'kidney_disease',
+        'liver_disease',
+        'cancer',
+        'celiac',
+        'fluid_retention',
+        'other',
+      ]);
+      for (final code in conditionCodes) {
+        expect(conditionLabel(ar, code), isNotNull, reason: code);
+        expect(conditionLabel(en, code), isNotNull, reason: code);
+      }
+    });
+
+    testWidgets('every coded condition is offered, and nothing else',
+        (tester) async {
+      await open(tester, ScriptedApi());
+      for (final code in conditionCodes) {
+        expect(find.text(conditionLabel(ar, code)!), findsOneWidget,
+            reason: code);
+      }
+      // Conditions the server has no code for are typed under "other".
+      expect(find.textContaining('PCOS'), findsNothing);
+      expect(find.textContaining('IBS'), findsNothing);
+    });
+
+    testWidgets('"other" needs its text, which reaches the nutritionist',
+        (tester) async {
+      final api = ScriptedApi({
+        'POST me/quick-requests': {
+          'id': 9,
+          'reason': 'other',
+          'status': 'open'
+        },
+      });
+      await open(tester, api);
+
+      await tester.tap(find.text(ar.conditionOther));
+      await tester.pump();
+      expect(cta(tester).onPressed, isNull,
+          reason: 'the choice alone says nothing');
+
+      await tester.enterText(
+          find.byKey(const Key('other-condition')), 'قصور الغدة الدرقية');
+      await tester.pump();
+      cta(tester).onPressed!();
+      await settle(tester);
+
+      final request = api.to('POST', 'me/quick-requests').single.body! as Map;
+      expect(request['note'], contains('أخرى: قصور الغدة الدرقية'));
+      expect(find.byType(OnboardingNotificationsScreen), findsOneWidget);
+    });
+
+    testWidgets('a note that does not fit is not sent, and nothing is cut',
+        (tester) async {
+      final api = ScriptedApi({
+        'POST me/quick-requests': {
+          'id': 9,
+          'reason': 'other',
+          'status': 'open'
+        },
+      });
+      await open(tester, api);
+
+      // Every condition, plus long notes: more than one note can carry.
+      for (final code in conditionCodes) {
+        await tester.tap(find.text(conditionLabel(ar, code)!));
+      }
+      await tester.pump();
+      await tester.enterText(
+          find.byKey(const Key('other-condition')), 'قصور الغدة الدرقية');
+      final notes = 'ملاحظة ' * 20;
+      await tester.enterText(find.byType(TextField).last, notes);
+      await tester.pump();
+
+      expect(find.byKey(const Key('note-too-long')), findsOneWidget);
+      cta(tester).onPressed!();
+      await settle(tester);
+      expect(api.to('POST', 'me/quick-requests'), isEmpty);
+      expect(find.byType(OnboardingNotificationsScreen), findsNothing);
+
+      // Shorter notes fit, and the whole text goes out.
+      await tester.enterText(find.byType(TextField).last, 'حامل');
+      await tester.pump();
+      expect(find.byKey(const Key('note-too-long')), findsNothing);
+      cta(tester).onPressed!();
+      await settle(tester);
+      final note = (api.to('POST', 'me/quick-requests').single.body!
+          as Map)['note'] as String;
+      expect(note.length, lessThanOrEqualTo(QuickRequestDraft.noteMaxLength));
+      expect(note, contains('قصور الغدة الدرقية'));
+      expect(note, endsWith('ملاحظات: حامل'));
+    });
+
+    test('every coded condition together still leaves room for "other"', () {
+      for (final l10n in [ar, en]) {
+        final note = OnboardingHealthNote.compose(
+          conditions: [
+            for (final code in conditionCodes)
+              if (code != 'other') conditionLabel(l10n, code)!,
+          ],
+          other: conditionLabel(l10n, 'other'),
+          otherText: 'x' * OnboardingHealthNote.otherMaxLength,
+          separator: l10n.commonListSeparator,
+          conditionsLine: l10n.onboardingHealthRequestConditions,
+          notesLine: l10n.onboardingHealthRequestNotes,
+        )!;
+        expect(note.fits, isTrue, reason: '${note.text.length} characters');
+      }
+    });
   });
 }

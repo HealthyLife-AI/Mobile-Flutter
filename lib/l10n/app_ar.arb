@@ -2079,7 +2079,7 @@
   "@onboardingHealthConditions": {
     "description": "UI text in presentation/screens/onboarding_health_screen.dart"
   },
-  "onboardingHealthConditionsNote": "حدّد أي حالات صحية تم تشخيصك بها، لتصل إلى أخصائيك ويراعيها في خطتك.",
+  "onboardingHealthConditionsNote": "اختيار الحالات الصحية المشخّصة يوصلها إلى الأخصائي لمراعاتها في الخطة.",
   "@onboardingHealthConditionsNote": {
     "description": "UI text in presentation/screens/onboarding_health_screen.dart"
   },
@@ -2123,7 +2123,7 @@
   "@onboardingHealthAllergyClass": {
     "description": "Above the allergy class chips (API guide 11.2: class is required). One class for every allergy chosen in onboarding."
   },
-  "onboardingHealthRequestConditions": "الأمراض المزمنة: {list}",
+  "onboardingHealthRequestConditions": "الحالات الصحية (من الإعداد الأولي): {list}",
   "@onboardingHealthRequestConditions": {
     "description": "Line of the quick request that carries the chronic conditions chosen in onboarding to the nutritionist (the API has no field for them).",
     "placeholders": {
@@ -5323,5 +5323,78 @@
   "healthSyncMeanwhile": "لحد ما يجهز الربط، سجّل نومك وقياساتك من التطبيق مباشرة.",
   "@healthSyncMeanwhile": {
     "description": "Patient app design spec"
+  },
+  "conditionDiabetesType1": "سكري النوع الأول",
+  "@conditionDiabetesType1": {
+    "description": "Health condition label; follows the server's ConditionCodes."
+  },
+  "conditionDiabetesType2": "سكري النوع الثاني",
+  "@conditionDiabetesType2": {
+    "description": "Health condition label; follows the server's ConditionCodes."
+  },
+  "conditionGestationalDiabetes": "سكري الحمل",
+  "@conditionGestationalDiabetes": {
+    "description": "Health condition label; follows the server's ConditionCodes."
+  },
+  "conditionInsulinResistance": "مقاومة الإنسولين",
+  "@conditionInsulinResistance": {
+    "description": "Health condition label; follows the server's ConditionCodes."
+  },
+  "conditionPrediabetes": "ما قبل السكري",
+  "@conditionPrediabetes": {
+    "description": "Health condition label; follows the server's ConditionCodes."
+  },
+  "conditionHypertension": "ارتفاع ضغط الدم",
+  "@conditionHypertension": {
+    "description": "Health condition label; follows the server's ConditionCodes."
+  },
+  "conditionKidneyDisease": "أمراض الكلى",
+  "@conditionKidneyDisease": {
+    "description": "Health condition label; follows the server's ConditionCodes."
+  },
+  "conditionLiverDisease": "أمراض الكبد",
+  "@conditionLiverDisease": {
+    "description": "Health condition label; follows the server's ConditionCodes."
+  },
+  "conditionCancer": "السرطان",
+  "@conditionCancer": {
+    "description": "Health condition label; follows the server's ConditionCodes."
+  },
+  "conditionCeliac": "الداء البطني (السيلياك)",
+  "@conditionCeliac": {
+    "description": "Health condition label; follows the server's ConditionCodes."
+  },
+  "conditionFluidRetention": "احتباس السوائل",
+  "@conditionFluidRetention": {
+    "description": "Health condition label; follows the server's ConditionCodes."
+  },
+  "conditionOther": "أخرى",
+  "@conditionOther": {
+    "description": "Health condition label; follows the server's ConditionCodes."
+  },
+  "onboardingHealthNoConditions": "لا توجد حالات صحية مشخّصة",
+  "@onboardingHealthNoConditions": {
+    "description": "Onboarding health step."
+  },
+  "onboardingHealthNoAllergies": "لا توجد حساسية غذائية معروفة",
+  "@onboardingHealthNoAllergies": {
+    "description": "Onboarding health step."
+  },
+  "onboardingHealthOtherConditionHint": "اسم الحالة، مثل: قصور الغدة الدرقية",
+  "@onboardingHealthOtherConditionHint": {
+    "description": "Onboarding health step."
+  },
+  "onboardingHealthNoteTooLong": "النص أطول من المسموح بمقدار {count} حرفاً. اختصر الملاحظات أو اسم الحالة لإرسالها كاملة إلى الأخصائي.",
+  "@onboardingHealthNoteTooLong": {
+    "description": "Shown when the conditions and notes do not fit in the note to the nutritionist. Nothing is cut.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "commonListSeparator": "، ",
+  "@commonListSeparator": {
+    "description": "Between the items of a list written in one line."
   }
 }

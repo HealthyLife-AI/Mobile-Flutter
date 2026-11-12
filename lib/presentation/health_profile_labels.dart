@@ -62,6 +62,23 @@ String medicationDetails(
   ].join(' · ');
 }
 
+/// The label of a server condition code (domain/condition_codes.dart).
+String? conditionLabel(AppLocalizations l10n, String code) => switch (code) {
+      'diabetes_type1' => l10n.conditionDiabetesType1,
+      'diabetes_type2' => l10n.conditionDiabetesType2,
+      'gestational_diabetes' => l10n.conditionGestationalDiabetes,
+      'insulin_resistance' => l10n.conditionInsulinResistance,
+      'prediabetes' => l10n.conditionPrediabetes,
+      'hypertension' => l10n.conditionHypertension,
+      'kidney_disease' => l10n.conditionKidneyDisease,
+      'liver_disease' => l10n.conditionLiverDisease,
+      'cancer' => l10n.conditionCancer,
+      'celiac' => l10n.conditionCeliac,
+      'fluid_retention' => l10n.conditionFluidRetention,
+      'other' => l10n.conditionOther,
+      _ => null,
+    };
+
 String? allergyGroupLabel(AppLocalizations l10n, String group) =>
     switch (group) {
       'tree_nuts' => l10n.healthAllergyGroupTreeNuts,
