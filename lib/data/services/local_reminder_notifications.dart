@@ -55,7 +55,9 @@ class FlutterReminderNotifications implements ReminderNotifications {
     if (_prepared) return;
     await _plugin.initialize(
       settings: const InitializationSettings(
-        android: AndroidInitializationSettings('@mipmap/ic_launcher'),
+        // A flat, one-colour drawable (res/drawable/ic_stat_notification.xml);
+        // the launcher icon would show as a white square.
+        android: AndroidInitializationSettings('ic_stat_notification'),
         iOS: DarwinInitializationSettings(
           requestAlertPermission: false,
           requestBadgePermission: false,

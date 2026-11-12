@@ -59,15 +59,48 @@ android {
 
     buildTypes {
         release {
-            // The upload key when key.properties exists. Without it the build
-            // falls back to the debug key, which Google Play refuses: fine
-            // for a local release build, never for the store.
+            // The upload key when key.properties exists. Without it a release
+            // build fails (see the check below) unless it was asked for on
+            // purpose with -PallowDebugSigning=true: an internal test build
+            // signed with the debug key, which Google Play refuses.
             signingConfig = if (keystorePropertiesFile.exists()) {
                 signingConfigs.getByName("release")
             } else {
                 signingConfigs.getByName("debug")
             }
         }
+    }
+}
+
+// A release build never falls back to the debug key silently.
+val allowDebugSigning =
+    (project.findProperty("allowDebugSigning") as String?)?.toBoolean() ?: false
+
+gradle.taskGraph.whenReady {
+    val buildsRelease = allTasks.any { task ->
+        task.project == project &&
+            (task.name.startsWith("assemble") || task.name.startsWith("bundle") ||
+                task.name.startsWith("package")) &&
+            task.name.contains("Release")
+    }
+    if (buildsRelease && !keystorePropertiesFile.exists()) {
+        if (!allowDebugSigning) {
+            throw GradleException(
+                "Release signing is not set up: android/key.properties is missing.\n" +
+                    "Create it (storeFile, storePassword, keyAlias, keyPassword) " +
+                    "to sign with the upload key.\n" +
+                    "For an internal test build signed with the DEBUG key, " +
+                    "pass -PallowDebugSigning=true."
+            )
+        }
+        logger.warn(
+            "\n" +
+                "WARNING ============================================================\n" +
+                "WARNING  This RELEASE build is signed with the DEBUG key.\n" +
+                "WARNING  (-PallowDebugSigning=true, android/key.properties missing)\n" +
+                "WARNING  Internal testing only. Google Play will refuse it.\n" +
+                "WARNING ============================================================\n"
+        )
     }
 }
 

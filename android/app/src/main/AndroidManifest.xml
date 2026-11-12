@@ -8,7 +8,13 @@
     <application
         android:label="HealthyLife"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+        android:allowBackup="false"
+        android:fullBackupContent="false"
+        android:dataExtractionRules="@xml/data_extraction_rules">
+        <!-- No backup: the app keeps health data and a device-bound session
+             key. Android 12+ reads data_extraction_rules; older versions
+             read the two attributes above. -->
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -49,6 +55,14 @@
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="healthylife_updates" />
+        <!-- Pushes carry no icon either: without these FCM uses the launcher
+             icon, which the status bar shows as a white square. -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_stat_notification" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/notification_accent" />
         <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
         <meta-data
