@@ -14,7 +14,6 @@ import 'package:healthylife_ai/presentation/bloc/auth/auth_cubit.dart';
 /// Every answer the cubit can get from the repository is set by the test.
 class _FakeAuth implements AuthRepository {
   Result<StoredSession?> session = const Success<StoredSession?>(null);
-  Result<void> refresh = const Success<void>(null);
   Result<PatientUser> me = const Failed(UnexpectedFailure());
   Result<ConsentStatus> consent =
       const Success(ConsentStatus(isRequired: false));
@@ -41,9 +40,6 @@ class _FakeAuth implements AuthRepository {
     signInCalls++;
     return signInResult;
   }
-
-  @override
-  Future<Result<void>> refreshTokens() async => refresh;
 
   @override
   Future<Result<PatientUser>> refreshMe() async => me;
@@ -182,9 +178,11 @@ void main() {
       expect(h.cubit.state.sessionEnded, isFalse);
     });
 
-    test('a rejected refresh ends the session and says why', () async {
+    test('a rejected session ends and says why', () async {
+      // The access token had expired and the refresh behind `/auth/me` was
+      // refused: the call comes back as a 401.
       h.auth.session = Success<StoredSession?>(storedSession());
-      h.auth.refresh = const Failed(ApiFailure(statusCode: 401));
+      h.auth.me = const Failed(ApiFailure(statusCode: 401));
 
       await h.cubit.start();
       await flush();
@@ -196,7 +194,8 @@ void main() {
 
     test('an offline start uses the cached session', () async {
       h.auth.session = Success<StoredSession?>(storedSession());
-      h.auth.refresh = const Failed(NetworkFailure());
+      h.auth.me = const Failed(NetworkFailure());
+      h.auth.consent = const Failed(NetworkFailure());
 
       await h.cubit.start();
 

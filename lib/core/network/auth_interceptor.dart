@@ -76,6 +76,9 @@ class AuthInterceptor extends Interceptor {
       final fresh = await coordinator.recover(rejectedAccessToken: rejected);
       options.headers['Authorization'] = 'Bearer $fresh';
       options.extra[kAuthRetriedKey] = true;
+      // A multipart body is a one-shot stream: the replay sends a copy.
+      final body = options.data;
+      if (body is FormData) options.data = body.clone();
       handler.resolve(await dio.fetch<dynamic>(options));
     } on DioException catch (retryError) {
       handler.next(retryError);

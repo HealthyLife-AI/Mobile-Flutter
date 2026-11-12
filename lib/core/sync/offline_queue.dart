@@ -52,8 +52,10 @@ class OfflineQueue implements PatientCache {
     Future<void> Function(Duration delay)? pause,
     void Function(DroppedWrite write)? onDropped,
     Future<void> Function(PendingWrite write, Object? response)? onSaved,
+    Timer Function(Duration delay, void Function() run)? scheduleRetry,
     this.minGap = const Duration(milliseconds: 500),
   })  : _storage = storage,
+        _scheduleRetry = scheduleRetry,
         _api = api,
         _clock = clock ?? DateTime.now,
         _pause = pause ?? _delay,
@@ -77,6 +79,12 @@ class OfflineQueue implements PatientCache {
   /// Gap between two sends in one flush. The limit is 120 requests a minute
   /// (1.4).
   final Duration minGap;
+
+  /// Starts a timer. When given, a flush that stops to wait (no connection, a
+  /// server error, a 429) comes back by itself at the time it named, so a
+  /// write made offline goes out while the app stays open.
+  final Timer Function(Duration delay, void Function() run)? _scheduleRetry;
+  Timer? _retry;
 
   static const DefaultAppLogger _log = DefaultAppLogger();
 
@@ -148,15 +156,41 @@ class OfflineQueue implements PatientCache {
   }
 
   @override
-  Future<void> forgetPatientData() => clear();
+  Future<void> forgetPatientData() {
+    _retry?.cancel();
+    _retry = null;
+    return clear();
+  }
 
   /// Sends the queued writes in order and reports what happened. Only one
   /// flush runs at a time: a call made during a flush gets that flush's
   /// result. Storage failures are logged and reported as a wait, so this does
   /// not throw.
   Future<OfflineQueueReport> flush() {
-    return _flushing ??= _runSafely().whenComplete(() {
+    return _flushing ??= _runSafely().then((report) {
+      _planRetry(report);
+      return report;
+    }).whenComplete(() {
       _flushing = null;
+    });
+  }
+
+  /// Comes back at [OfflineQueueReport.retryAt] when the flush stopped to
+  /// wait. A halt that needs the patient (consent, sign-in) plans nothing.
+  void _planRetry(OfflineQueueReport report) {
+    _retry?.cancel();
+    _retry = null;
+    final schedule = _scheduleRetry;
+    final at = report.retryAt;
+    if (schedule == null ||
+        at == null ||
+        report.halt != QueueHalt.waitingForRetry) {
+      return;
+    }
+    final wait = at.difference(_clock());
+    _retry = schedule(wait.isNegative ? Duration.zero : wait, () {
+      _retry = null;
+      unawaited(flush());
     });
   }
 

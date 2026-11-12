@@ -131,3 +131,28 @@ class FlutterReminderNotifications implements ReminderNotifications {
     await _plugin.cancelAll();
   }
 }
+
+/// Reminders that go nowhere, for a graph that runs off the device (tests):
+/// the notification plugin has no platform side there.
+class SilentReminderNotifications implements ReminderNotifications {
+  const SilentReminderNotifications();
+
+  @override
+  Future<void> schedule({
+    required int id,
+    required DateTime at,
+    required String channelName,
+    required String title,
+    required String body,
+    String channelId = appointmentChannelId,
+  }) async {}
+
+  @override
+  Future<List<int>> scheduledIds() async => const [];
+
+  @override
+  Future<void> cancel(int id) async {}
+
+  @override
+  Future<void> cancelAll() async {}
+}

@@ -411,4 +411,98 @@ void main() {
     await pause;
     expect((await flush).sent, 1);
   });
+
+  group('coming back after a wait', () {
+    late List<Duration> planned;
+    late List<void Function()> wakeUps;
+    late List<bool> cancelled;
+
+    OfflineQueue retrying() {
+      planned = [];
+      wakeUps = [];
+      cancelled = [];
+      return OfflineQueue(
+        storage: storage,
+        api: api,
+        clock: () => now,
+        pause: (_) async {},
+        scheduleRetry: (delay, run) {
+          planned.add(delay);
+          wakeUps.add(run);
+          final index = cancelled.length;
+          cancelled.add(false);
+          return _FakeTimer(() => cancelled[index] = true);
+        },
+      );
+    }
+
+    test('a write that could not go out is sent again by itself', () async {
+      final queue = retrying();
+      api.script.add(
+          const NetworkException('offline', kind: NetworkFailureKind.offline));
+      await queue.enqueue(path: 'me/meal-logs', body: {'idempotency_key': 'a'});
+
+      final first = await queue.flush();
+      expect(first.halt, QueueHalt.waitingForRetry);
+      expect(planned, [first.retryAt!.difference(now)]);
+      expect(await queue.pendingCount(), 1);
+
+      // The connection is back when the timer fires.
+      now = first.retryAt!;
+      wakeUps.single();
+      await pumpEventQueue();
+
+      expect(await queue.pendingCount(), 0);
+      expect(api.posts, hasLength(2));
+      expect(planned, hasLength(1), reason: 'nothing left to wait for');
+    });
+
+    test('a queue that empties plans nothing', () async {
+      final queue = retrying();
+      await queue.enqueue(path: 'me/meal-logs', body: {'idempotency_key': 'a'});
+
+      await queue.flush();
+
+      expect(planned, isEmpty);
+    });
+
+    test('a halt that needs the patient plans nothing', () async {
+      final queue = retrying();
+      api.script.add(const ApiException('consent',
+          statusCode: 403, code: 'consent_required'));
+      await queue.enqueue(path: 'me/meal-logs', body: {'idempotency_key': 'a'});
+
+      final report = await queue.flush();
+
+      expect(report.halt, QueueHalt.consentRequired);
+      expect(planned, isEmpty);
+    });
+
+    test('signing out cancels the planned retry', () async {
+      final queue = retrying();
+      api.script.add(
+          const NetworkException('offline', kind: NetworkFailureKind.offline));
+      await queue.enqueue(path: 'me/meal-logs', body: {'idempotency_key': 'a'});
+      await queue.flush();
+
+      await queue.forgetPatientData();
+
+      expect(cancelled, [true]);
+    });
+  });
+}
+
+class _FakeTimer implements Timer {
+  _FakeTimer(this._onCancel);
+
+  final void Function() _onCancel;
+
+  @override
+  void cancel() => _onCancel();
+
+  @override
+  bool get isActive => true;
+
+  @override
+  int get tick => 0;
 }
