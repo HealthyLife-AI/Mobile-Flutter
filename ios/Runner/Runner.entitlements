@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<!-- Push notifications (Firebase Cloud Messaging through APNs). The value
+	     is "development" here; signing a build for the App Store or TestFlight
+	     replaces it with "production". It needs the Push Notifications
+	     capability on the app id and an APNs key in the Firebase project. -->
+	<key>aps-environment</key>
+	<string>development</string>
+</dict>
+</plist>

@@ -360,7 +360,12 @@ New push types are routed in `lib/core/navigation/push_destination.dart`.
   (`storeFile`, `storePassword`, `keyAlias`, `keyPassword`). Without it a
   release build stops with a message. For an internal test build signed with
   the debug key, pass `-PallowDebugSigning=true` (Google Play refuses it).
-- iOS: enable the Push Notifications capability and Background Modes →
-  Remote notifications in Xcode, and upload the APNs key to Firebase.
+- iOS: the project already declares push (`Runner.entitlements`, with
+  `aps-environment`, and Background Modes → Remote notifications). What is
+  still needed from the Apple account: the Push Notifications capability on
+  the app id `com.healthylife.app`, an APNs key uploaded to the Firebase
+  project, and signing. iPhone only, portrait only; the camera and photo
+  texts are in `ar.lproj` and `en.lproj`; `PrivacyInfo.xcprivacy` lists what
+  the app collects (keep it in step with `docs/store/data-safety.md`).
 - Build: `flutter build appbundle --release --obfuscate --split-debug-info=build/symbols`
   and `flutter build ipa --release`.
