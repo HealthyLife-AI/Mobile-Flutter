@@ -1,3 +1,4 @@
+import '../../core/config/app_version.dart';
 import 'food_preferences_screen.dart';
 import 'my_requests_screen.dart';
 import 'posts_screens.dart';
@@ -99,9 +100,15 @@ class _ProfileScreenState extends State<ProfileScreen>
   Animation<double> _iv(double b, double e, [Curve c = Curves.easeOutCubic]) =>
       CurvedAnimation(parent: _enter, curve: Interval(b, e, curve: c));
 
+  /// The installed version, such as `1.0.0 (3)`; null until it is read.
+  String? _version;
+
   @override
   void initState() {
     super.initState();
+    AppVersion.label().then((version) {
+      if (mounted && version != null) setState(() => _version = version);
+    });
     _enter = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 2300))
       ..forward();
@@ -347,9 +354,9 @@ class _ProfileScreenState extends State<ProfileScreen>
                       child: _SettingsTile(
                         icon: Icons.info_outline_rounded,
                         title: context.l10n.aboutTitle,
-                        subtitle: context.l10n.profileVersion,
-                        trailing:
-                            const Text('v1.0.0', style: AppTextStyles.caption),
+                        subtitle: _version == null
+                            ? null
+                            : context.l10n.profileVersion(_version!),
                         onTap: () => _go(const AboutAppScreen()),
                       ),
                     ),
@@ -528,8 +535,13 @@ class _IdentityCard extends StatelessWidget {
                               _ActiveChip(loop: loop),
                             ],
                           ),
-                          const SizedBox(height: 10),
-                          _CodePill(loop: loop),
+                          // The patient's own code from the server; no
+                          // pill when the account has none.
+                          if (context.watch<AuthCubit>().state.user?.patientCode
+                              case final code?) ...[
+                            const SizedBox(height: 10),
+                            _CodePill(loop: loop, code: code),
+                          ],
                         ],
                       ),
                     ),
@@ -672,7 +684,8 @@ class _ActiveChip extends StatelessWidget {
 /// كبسولة كود المريض + لمعة تمر عليها.
 class _CodePill extends StatelessWidget {
   final Animation<double> loop;
-  const _CodePill({required this.loop});
+  final String code;
+  const _CodePill({required this.loop, required this.code});
 
   @override
   Widget build(BuildContext context) {
@@ -682,7 +695,7 @@ class _CodePill extends StatelessWidget {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
           color: _kLavender,
-          child: Text(context.l10n.profilePatientCode,
+          child: Text(context.l10n.profilePatientCode(code),
               style: AppTextStyles.caption.copyWith(
                   color: AppColors.primary, fontWeight: FontWeight.w600)),
         ),
