@@ -143,9 +143,14 @@
   "@aboutTagline": {
     "description": "UI text in presentation/screens/about_app_screen.dart"
   },
-  "aboutVersion": "الإصدار 1.0.0 (Build 240)",
+  "aboutVersion": "الإصدار {version}",
   "@aboutVersion": {
-    "description": "UI text in presentation/screens/about_app_screen.dart"
+    "description": "The installed app version, such as 1.0.0 (3).",
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
   },
   "aboutDescription": "تطبيق معتمد ومصمم لدعمك بالتعاون المباشر مع أخصائيك المعتمدة لتحقيق أهدافك الصحية المستدامة.",
   "@aboutDescription": {
@@ -1333,7 +1338,7 @@
   "@logMealFromPlanNote2": {
     "description": "UI text in presentation/screens/log_meal_intro_screen.dart"
   },
-  "logMealFromPlanFooter": "المتابعة لاختيار الوجبة (P-21)",
+  "logMealFromPlanFooter": "المتابعة لاختيار الوجبة",
   "@logMealFromPlanFooter": {
     "description": "UI text in presentation/screens/log_meal_intro_screen.dart"
   },
@@ -1353,7 +1358,7 @@
   "@logMealOffPlanNote2": {
     "description": "UI text in presentation/screens/log_meal_intro_screen.dart"
   },
-  "logMealOffPlanFooter": "المتابعة للبحث وحساب الغرامات (P-22)",
+  "logMealOffPlanFooter": "المتابعة للبحث وحساب الغرامات",
   "@logMealOffPlanFooter": {
     "description": "UI text in presentation/screens/log_meal_intro_screen.dart"
   },
@@ -1768,9 +1773,14 @@
   "@measurementEntryNoFuture": {
     "description": "UI text in presentation/screens/new_measurement_screen.dart"
   },
-  "measurementEntryToday": "اليوم، الأحد 21 سبتمبر 2025",
+  "measurementEntryToday": "اليوم، {date}",
   "@measurementEntryToday": {
-    "description": "UI text in presentation/screens/new_measurement_screen.dart"
+    "description": "Today's date on the new measurement screen.",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
   },
   "measurementEntrySuggestedTime": "توقيت التسجيل المقترح: صباحاً قبل الإفطار",
   "@measurementEntrySuggestedTime": {
@@ -2570,9 +2580,14 @@
   "@profileLanguageBadge": {
     "description": "UI text in presentation/screens/profile_screen.dart"
   },
-  "profileVersion": "الإصدار 1.0.0",
+  "profileVersion": "الإصدار {version}",
   "@profileVersion": {
-    "description": "UI text in presentation/screens/profile_screen.dart"
+    "description": "The installed app version on the account screen.",
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
   },
   "profileUpgradeRequired": "هذه الميزة تتطلب باقة أعلى — تواصل مع أخصائي التغذية للترقية",
   "@profileUpgradeRequired": {
@@ -2590,9 +2605,14 @@
   "@profileLogoutCaption": {
     "description": "UI text in presentation/screens/profile_screen.dart"
   },
-  "profilePatientCode": "كود المريض: HL-0042",
+  "profilePatientCode": "كود المريض: {code}",
   "@profilePatientCode": {
-    "description": "UI text in presentation/screens/profile_screen.dart"
+    "description": "The patient's own code from the server.",
+    "placeholders": {
+      "code": {
+        "type": "String"
+      }
+    }
   },
   "profileFollowingClinic": "العيادة المتابعة",
   "@profileFollowingClinic": {
@@ -2846,10 +2866,6 @@
   "progressDiscussWhatsApp": "مناقشة التقييم عبر الواتساب مباشرة",
   "@progressDiscussWhatsApp": {
     "description": "UI text in presentation/screens/progress_screen.dart"
-  },
-  "quantityFreshFruit": "فاكهة طازجة",
-  "@quantityFreshFruit": {
-    "description": "UI text in presentation/screens/quantity_selector_screen.dart"
   },
   "quantityKcalPerGrams": "{kcal} سعرة حرارية لكل {grams} غرام",
   "@quantityKcalPerGrams": {

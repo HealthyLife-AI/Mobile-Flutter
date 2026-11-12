@@ -5,6 +5,7 @@ import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_radius.dart';
 import '../../core/theme/app_text_styles.dart';
 import '../widgets/app_header_bar.dart' show AppHeaderBar;
+import '../widgets/app_version_text.dart';
 import '../../core/navigation/logout_flow.dart';
 
 import '../widgets/directional_icon.dart';
@@ -277,11 +278,9 @@ class _IdentityHero extends StatelessWidget {
                         ),
                         const SizedBox(width: 6),
                         Flexible(
-                          child: Text(
-                            context.l10n.aboutVersion,
+                          child: AppVersionText(
+                            builder: context.l10n.aboutVersion,
                             textAlign: TextAlign.center,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
                             style: AppTextStyles.caption.copyWith(
                               color: AppColors.textPrimary,
                               fontWeight: FontWeight.w600,
@@ -481,7 +480,6 @@ class _LegalItem {
 /// بطاقة واحدة تضم صفوف الشفافية والخصوصية بينها فواصل.
 class _LegalCard extends StatelessWidget {
   const _LegalCard();
-
 
   static List<_LegalItem> _items(AppLocalizations l10n) => [
         _LegalItem(

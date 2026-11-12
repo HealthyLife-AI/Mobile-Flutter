@@ -422,7 +422,10 @@ class _MeasurementEntryScreenState extends State<MeasurementEntryScreen>
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(context.l10n.measurementEntryToday,
+                      Text(
+                          context.l10n.measurementEntryToday(context
+                              .localizeDigits(MaterialLocalizations.of(context)
+                                  .formatFullDate(DateTime.now()))),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: AppTextStyles.body),

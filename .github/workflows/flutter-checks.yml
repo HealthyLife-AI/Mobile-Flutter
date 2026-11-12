@@ -1,0 +1,42 @@
+name: Flutter checks
+
+# Runs on every pull request and on main, so a change is analysed and tested
+# before review. The Flutter version is the one recorded in .metadata.
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+concurrency:
+  group: flutter-checks-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  analyze-and-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: 3.41.8
+          cache: true
+
+      - name: Dependencies
+        run: flutter pub get
+
+      - name: Generated localizations are up to date
+        run: |
+          flutter gen-l10n
+          git diff --exit-code -- lib/l10n/generated
+
+      - name: Analyze
+        run: flutter analyze --fatal-infos
+
+      - name: Test
+        run: flutter test

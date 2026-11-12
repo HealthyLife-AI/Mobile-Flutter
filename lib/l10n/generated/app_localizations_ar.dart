@@ -186,7 +186,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get aboutTagline => 'منصة المتابعة والتغذية العلاجية للمرضى';
 
   @override
-  String get aboutVersion => 'الإصدار 1.0.0 (Build 240)';
+  String aboutVersion(String version) {
+    return 'الإصدار $version';
+  }
 
   @override
   String get aboutDescription =>
@@ -1117,7 +1119,7 @@ class AppLocalizationsAr extends AppLocalizations {
       'استبدال ذكي للبدائل المتكافئة بنقرة واحدة';
 
   @override
-  String get logMealFromPlanFooter => 'المتابعة لاختيار الوجبة (P-21)';
+  String get logMealFromPlanFooter => 'المتابعة لاختيار الوجبة';
 
   @override
   String get logMealFlexibleBadge => 'بحث وتوثيق مرن';
@@ -1135,7 +1137,7 @@ class AppLocalizationsAr extends AppLocalizations {
       'لا داعي للشعور بالذنب، المرونة جزء أساسي من النجاح';
 
   @override
-  String get logMealOffPlanFooter => 'المتابعة للبحث وحساب الغرامات (P-22)';
+  String get logMealOffPlanFooter => 'المتابعة للبحث وحساب الغرامات';
 
   @override
   String get logMealPrivacyNote => 'سجل وجباتك يطّلع عليه أخصائيك فقط.';
@@ -1446,7 +1448,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get measurementEntryNoFuture => 'لا يمكن تحديد موعد مستقبلي';
 
   @override
-  String get measurementEntryToday => 'اليوم، الأحد 21 سبتمبر 2025';
+  String measurementEntryToday(String date) {
+    return 'اليوم، $date';
+  }
 
   @override
   String get measurementEntrySuggestedTime =>
@@ -2084,7 +2088,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get profileLanguageBadge => 'عربي';
 
   @override
-  String get profileVersion => 'الإصدار 1.0.0';
+  String profileVersion(String version) {
+    return 'الإصدار $version';
+  }
 
   @override
   String get profileUpgradeRequired =>
@@ -2101,7 +2107,9 @@ class AppLocalizationsAr extends AppLocalizations {
       'يتطلب تأكيد تسجيل الخروج لضمان مزامنة قياساتك الأخيرة';
 
   @override
-  String get profilePatientCode => 'كود المريض: HL-0042';
+  String profilePatientCode(String code) {
+    return 'كود المريض: $code';
+  }
 
   @override
   String get profileFollowingClinic => 'العيادة المتابعة';
@@ -2298,9 +2306,6 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get progressDiscussWhatsApp => 'مناقشة التقييم عبر الواتساب مباشرة';
-
-  @override
-  String get quantityFreshFruit => 'فاكهة طازجة';
 
   @override
   String quantityKcalPerGrams(Object kcal, Object grams) {

@@ -17,6 +17,7 @@ import '../widgets/load_error_view.dart';
 import '../widgets/clinical_trust_footer.dart';
 import '../widgets/gradient_cta_button.dart';
 import 'quantity_selector_screen.dart';
+import '../../core/config/feature_flags.dart';
 import 'barcode_scanner_screen.dart';
 import 'notifications_center_screen.dart';
 import '../../core/navigation/app_page_route.dart';
@@ -540,18 +541,19 @@ class _FoodSearchViewState extends State<_FoodSearchView>
                       ),
                     ),
             ),
-            Semantics(
-              button: true,
-              label: context.l10n.foodSearchScanBarcode,
-              child: _PressScale(
-                onTap: _openScanner,
-                child: const Padding(
-                  padding: EdgeInsets.all(8),
-                  child: Icon(Icons.qr_code_scanner_rounded,
-                      size: 22, color: AppColors.primary),
+            if (FeatureFlags.barcodeScanner)
+              Semantics(
+                button: true,
+                label: context.l10n.foodSearchScanBarcode,
+                child: _PressScale(
+                  onTap: _openScanner,
+                  child: const Padding(
+                    padding: EdgeInsets.all(8),
+                    child: Icon(Icons.qr_code_scanner_rounded,
+                        size: 22, color: AppColors.primary),
+                  ),
                 ),
               ),
-            ),
           ],
         ),
       ),

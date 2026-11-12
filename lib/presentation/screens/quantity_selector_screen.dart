@@ -170,19 +170,6 @@ class _QuantitySelectorScreenState extends State<QuantitySelectorScreen>
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: AppTextStyles.cardTitle)),
-                const SizedBox(width: 8),
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 9, vertical: 3),
-                  decoration: BoxDecoration(
-                      color: AppColors.primary,
-                      borderRadius: BorderRadius.circular(AppRadius.pill)),
-                  child: Text(context.l10n.quantityFreshFruit,
-                      style: const TextStyle(
-                          fontSize: 10.5,
-                          color: Colors.white,
-                          fontWeight: FontWeight.w600)),
-                ),
               ]),
               const SizedBox(height: 5),
               Text(

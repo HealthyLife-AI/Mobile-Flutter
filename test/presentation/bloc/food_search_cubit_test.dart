@@ -3,7 +3,6 @@ import 'package:healthylife_ai/core/errors/failure.dart';
 import 'package:healthylife_ai/core/errors/result.dart';
 import 'package:healthylife_ai/domain/entities/meal_entities.dart';
 import 'package:healthylife_ai/domain/entities/patient_health_profile_entities.dart';
-import 'package:healthylife_ai/domain/entities/recommendation_entity.dart';
 import 'package:healthylife_ai/domain/repositories/food_repository.dart';
 import 'package:healthylife_ai/domain/repositories/health_profile_repository.dart';
 import 'package:healthylife_ai/domain/usecases/search_foods_use_case.dart';
@@ -22,10 +21,6 @@ class _ScriptedFoods implements FoodRepository {
         ? const Success(<SearchableFood>[])
         : results.removeAt(0);
   }
-
-  @override
-  Future<Result<List<RecommendationItem>>> getRecommendedRecipes() =>
-      throw UnimplementedError();
 }
 
 /// Answers the health profile with one scripted result.

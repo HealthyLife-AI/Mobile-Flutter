@@ -434,11 +434,11 @@ abstract class AppLocalizations {
   /// **'منصة المتابعة والتغذية العلاجية للمرضى'**
   String get aboutTagline;
 
-  /// UI text in presentation/screens/about_app_screen.dart
+  /// The installed app version, such as 1.0.0 (3).
   ///
   /// In ar, this message translates to:
-  /// **'الإصدار 1.0.0 (Build 240)'**
-  String get aboutVersion;
+  /// **'الإصدار {version}'**
+  String aboutVersion(String version);
 
   /// UI text in presentation/screens/about_app_screen.dart
   ///
@@ -2069,7 +2069,7 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/log_meal_intro_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'المتابعة لاختيار الوجبة (P-21)'**
+  /// **'المتابعة لاختيار الوجبة'**
   String get logMealFromPlanFooter;
 
   /// UI text in presentation/screens/log_meal_intro_screen.dart
@@ -2099,7 +2099,7 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/log_meal_intro_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'المتابعة للبحث وحساب الغرامات (P-22)'**
+  /// **'المتابعة للبحث وحساب الغرامات'**
   String get logMealOffPlanFooter;
 
   /// UI text in presentation/screens/log_meal_intro_screen.dart
@@ -2606,11 +2606,11 @@ abstract class AppLocalizations {
   /// **'لا يمكن تحديد موعد مستقبلي'**
   String get measurementEntryNoFuture;
 
-  /// UI text in presentation/screens/new_measurement_screen.dart
+  /// Today's date on the new measurement screen.
   ///
   /// In ar, this message translates to:
-  /// **'اليوم، الأحد 21 سبتمبر 2025'**
-  String get measurementEntryToday;
+  /// **'اليوم، {date}'**
+  String measurementEntryToday(String date);
 
   /// UI text in presentation/screens/new_measurement_screen.dart
   ///
@@ -3692,11 +3692,11 @@ abstract class AppLocalizations {
   /// **'عربي'**
   String get profileLanguageBadge;
 
-  /// UI text in presentation/screens/profile_screen.dart
+  /// The installed app version on the account screen.
   ///
   /// In ar, this message translates to:
-  /// **'الإصدار 1.0.0'**
-  String get profileVersion;
+  /// **'الإصدار {version}'**
+  String profileVersion(String version);
 
   /// UI text in presentation/screens/profile_screen.dart
   ///
@@ -3722,11 +3722,11 @@ abstract class AppLocalizations {
   /// **'يتطلب تأكيد تسجيل الخروج لضمان مزامنة قياساتك الأخيرة'**
   String get profileLogoutCaption;
 
-  /// UI text in presentation/screens/profile_screen.dart
+  /// The patient's own code from the server.
   ///
   /// In ar, this message translates to:
-  /// **'كود المريض: HL-0042'**
-  String get profilePatientCode;
+  /// **'كود المريض: {code}'**
+  String profilePatientCode(String code);
 
   /// UI text in presentation/screens/profile_screen.dart
   ///
@@ -4063,12 +4063,6 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'مناقشة التقييم عبر الواتساب مباشرة'**
   String get progressDiscussWhatsApp;
-
-  /// UI text in presentation/screens/quantity_selector_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'فاكهة طازجة'**
-  String get quantityFreshFruit;
 
   /// UI text in presentation/screens/quantity_selector_screen.dart
   ///
