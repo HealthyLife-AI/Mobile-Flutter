@@ -113,11 +113,18 @@ class EmptyState extends StatelessWidget {
 /// The loading state of a page: the shape of a list of cards in shimmer, not
 /// a spinner. It keeps the layout from jumping when the data arrives, and
 /// reads as "loading" to a screen reader.
+///
+/// It draws as many cards as fit the room it is given, so the same widget
+/// serves a whole page and a short slot (a chart area).
 class ListSkeleton extends StatelessWidget {
   const ListSkeleton({super.key, this.items = 4, this.itemHeight = 88});
 
+  /// The most cards drawn.
   final int items;
   final double itemHeight;
+
+  static const double _gap = 12;
+  static const double _padding = 16;
 
   @override
   Widget build(BuildContext context) {
@@ -125,26 +132,38 @@ class ListSkeleton extends StatelessWidget {
       liveRegion: true,
       label: context.l10n.commonLoading,
       child: ExcludeSemantics(
-        child: Align(
-          alignment: Alignment.topCenter,
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              // Full width: a ShimmerBox with no width would be 0 wide here.
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                for (var i = 0; i < items; i++) ...[
-                  if (i > 0) const SizedBox(height: 12),
-                  ShimmerBox(
-                    height: itemHeight,
-                    borderRadius: BorderRadius.circular(16),
-                  ),
+        child: LayoutBuilder(builder: (context, constraints) {
+          var count = items;
+          var height = itemHeight;
+          if (constraints.maxHeight.isFinite) {
+            final room = constraints.maxHeight - _padding;
+            count =
+                ((room + _gap) / (itemHeight + _gap)).floor().clamp(1, items);
+            // Less room than one card: the card shrinks to it.
+            if (room < itemHeight) height = room.clamp(0, itemHeight);
+          }
+          return Align(
+            alignment: Alignment.topCenter,
+            child: Padding(
+              padding:
+                  const EdgeInsets.fromLTRB(_padding, _padding, _padding, 0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                // Full width: a ShimmerBox with no width would be 0 wide here.
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  for (var i = 0; i < count; i++) ...[
+                    if (i > 0) const SizedBox(height: _gap),
+                    ShimmerBox(
+                      height: height,
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                  ],
                 ],
-              ],
+              ),
             ),
-          ),
-        ),
+          );
+        }),
       ),
     );
   }

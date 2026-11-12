@@ -131,6 +131,30 @@ void main() {
     });
   });
 
+  group('ListSkeleton in a short slot', () {
+    testWidgets('draws only the cards that fit, and does not overflow',
+        (tester) async {
+      await show(
+        tester,
+        const SizedBox(height: 170, child: ListSkeleton()),
+      );
+
+      expect(tester.takeException(), isNull);
+      expect(find.byType(ShimmerBox), findsOneWidget);
+    });
+
+    testWidgets('a slot shorter than one card shrinks the card',
+        (tester) async {
+      await show(
+        tester,
+        const SizedBox(height: 60, child: ListSkeleton()),
+      );
+
+      expect(tester.takeException(), isNull);
+      expect(tester.getSize(find.byType(ShimmerBox)).height, lessThan(88));
+    });
+  });
+
   group('header', () {
     testWidgets('the back button is 48dp and named for a screen reader',
         (tester) async {
