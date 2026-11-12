@@ -526,7 +526,7 @@ class _ProgressBodyState extends State<_ProgressBody> {
                         style: const TextStyle(
                             fontSize: 10.5,
                             fontWeight: FontWeight.w700,
-                            color: AppColors.primary)),
+                            color: AppColors.primaryInk)),
                   ),
                   for (final label in _axisLabels(context, cubit.days))
                     Flexible(
