@@ -4936,5 +4936,50 @@
   },
   "@unsavedChangesDiscard": {
     "description": "Asked before leaving a form with unsaved input."
+  },
+  "homeKcalOfTarget": "{eaten} من {target} سعرة",
+  "homeRingMeals": "وجبات",
+  "homeNextMealIs": "وجبتك القادمة: {meal}.",
+  "homeTodayMeals": "وجبات اليوم",
+  "homeWeeklyPlanLink": "الخطة الأسبوعية",
+  "homeNextMealChip": "الوجبة القادمة",
+  "homeOffPlanQuestion": "أكلت شيئاً خارج الخطة؟",
+  "homeOffPlanAction": "سجّله",
+  "@homeKcalOfTarget": {
+    "description": "Home: the day card and today's meals.",
+    "placeholders": {
+      "eaten": {
+        "type": "String"
+      },
+      "target": {
+        "type": "String"
+      }
+    }
+  },
+  "@homeRingMeals": {
+    "description": "Home: the day card and today's meals."
+  },
+  "@homeNextMealIs": {
+    "description": "Home: the day card and today's meals.",
+    "placeholders": {
+      "meal": {
+        "type": "String"
+      }
+    }
+  },
+  "@homeTodayMeals": {
+    "description": "Home: the day card and today's meals."
+  },
+  "@homeWeeklyPlanLink": {
+    "description": "Home: the day card and today's meals."
+  },
+  "@homeNextMealChip": {
+    "description": "Home: the day card and today's meals."
+  },
+  "@homeOffPlanQuestion": {
+    "description": "Home: the day card and today's meals."
+  },
+  "@homeOffPlanAction": {
+    "description": "Home: the day card and today's meals."
   }
 }

@@ -4161,4 +4161,32 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get unsavedChangesDiscard => 'تجاهل';
+
+  @override
+  String homeKcalOfTarget(String eaten, String target) {
+    return '$eaten من $target سعرة';
+  }
+
+  @override
+  String get homeRingMeals => 'وجبات';
+
+  @override
+  String homeNextMealIs(String meal) {
+    return 'وجبتك القادمة: $meal.';
+  }
+
+  @override
+  String get homeTodayMeals => 'وجبات اليوم';
+
+  @override
+  String get homeWeeklyPlanLink => 'الخطة الأسبوعية';
+
+  @override
+  String get homeNextMealChip => 'الوجبة القادمة';
+
+  @override
+  String get homeOffPlanQuestion => 'أكلت شيئاً خارج الخطة؟';
+
+  @override
+  String get homeOffPlanAction => 'سجّله';
 }

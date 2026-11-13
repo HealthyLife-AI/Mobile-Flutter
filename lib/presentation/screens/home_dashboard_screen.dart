@@ -28,6 +28,9 @@ import '../bloc/patient_features_cubits.dart';
 import '../widgets/measurement_schedule_card.dart';
 import '../widgets/quick_contact_card.dart';
 import '../widgets/today_card.dart';
+import '../widgets/home_day.dart';
+import '../widgets/log_meal_sheet.dart';
+import 'weekly_plan_screen.dart';
 
 import '../../l10n/l10n.dart';
 
@@ -38,87 +41,14 @@ class _C {
   static Color get teal => AppColors.primary;
   static const ink = AppColors.textPrimary;
   static const muted = AppColors.textMuted;
-  static const mint = AppColors.successBg;
-  static const mintSoft = AppColors.successBg;
   static const green = AppColors.success;
-  static const greyBox = AppColors.panel;
   static const line = AppColors.chipInactiveBg;
-  static const lavender = AppColors.border;
   static const amber = AppColors.warning;
-  static const amberBg = AppColors.warningCardBg;
 }
 
 TextStyle _ts(double size,
         {FontWeight w = FontWeight.w600, Color? c, double? h}) =>
     TextStyle(fontSize: size, fontWeight: w, color: c ?? _C.ink, height: h);
-
-String _fmt(int n) =>
-    n.toString().replaceAllMapped(RegExp(r'\B(?=(\d{3})+(?!\d))'), (m) => ',');
-
-// ─────────────────────────────────────────────────────────────────────────────
-//  Display data: today's meals from the nutritionist's plan (API guide 5.1)
-// ─────────────────────────────────────────────────────────────────────────────
-enum _SlotKind { done, active, collapsed }
-
-class _Item {
-  final String name, qty;
-  const _Item(this.name, this.qty);
-}
-
-class _Slot {
-  final String title, time;
-  final String? subtitle, alt;
-  final IconData icon;
-  final _SlotKind kind;
-  final List<_Item> items;
-  final int kcal;
-
-  /// The plan meal this slot shows; opened to log it.
-  final Meal meal;
-  const _Slot({
-    required this.title,
-    required this.icon,
-    required this.kind,
-    required this.kcal,
-    required this.meal,
-    this.time = '',
-    this.subtitle,
-    this.alt,
-    this.items = const [],
-  });
-}
-
-IconData _iconFor(PlanMealType? type) => switch (type) {
-      PlanMealType.breakfast => Icons.free_breakfast_outlined,
-      PlanMealType.lunch => Icons.restaurant_rounded,
-      PlanMealType.dinner => Icons.dinner_dining_rounded,
-      PlanMealType.snack => Icons.eco_rounded,
-      _ => Icons.restaurant_menu_rounded,
-    };
-
-/// Logged meals show as done, the first meal not logged yet is the active
-/// one, and the rest stay collapsed.
-List<_Slot> _slotsFor(BuildContext context, List<Meal> meals) => [
-      for (final m in meals)
-        _Slot(
-          title: m.name,
-          time: m.timeRange,
-          icon: _iconFor(m.source?.type),
-          kind: switch (m.status) {
-            MealStatus.logged => _SlotKind.done,
-            MealStatus.current => _SlotKind.active,
-            MealStatus.upcoming => _SlotKind.collapsed,
-          },
-          kcal: m.calories,
-          subtitle: context.l10n.commonCaloriesValue(m.calories),
-          alt: m.alternativesText.isEmpty ? null : m.alternativesText,
-          items: [
-            for (final i in m.items)
-              _Item(i.name, context.l10n.commonGramsValue(i.grams)),
-          ],
-          meal: m,
-        ),
-    ];
 
 // ─────────────────────────────────────────────────────────────────────────────
 //  Screen
@@ -226,8 +156,8 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
     final meals = plan == null
         ? const <Meal>[]
         : planMealsFor(context, plan, now, isLogged: mealLog.isPlannedLogged);
-    final slots = _slotsFor(context, meals);
     final logged = meals.where((m) => m.status == MealStatus.logged).length;
+    final next = meals.where((m) => m.status != MealStatus.logged).firstOrNull;
     final target = plan?.totalOn(now).calories.round() ?? 0;
 
     final offlineUi = _conn != HomeConnectionState.online;
@@ -288,11 +218,7 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
                         ),
                       ],
                       const SizedBox(height: 16),
-                      const _Reveal(delayMs: 80, child: TodayCard()),
-                      const _Reveal(
-                          delayMs: 100, child: MeasurementDueReminder()),
                       if (plan == null) ...[
-                        const SizedBox(height: 4),
                         // No plan to show: the load failed, or there is no active
                         // plan yet (204), which is an empty state, not an error.
                         if (planState
@@ -302,46 +228,79 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
                             onRetry: () => context.read<MealPlanCubit>().load(),
                           )
                         else
-                          const _Reveal(delayMs: 120, child: _NoPlanCard()),
+                          const _Reveal(delayMs: 80, child: _NoPlanCard()),
                       ] else ...[
-                        if (meals.isNotEmpty) ...[
-                          const SizedBox(height: 16),
-                          _Reveal(
-                            delayMs: 120,
-                            from: const Offset(0, 0.12),
-                            child: _ProgressCard(
-                                logged: logged, total: meals.length),
+                        // The day at a glance: meals and calories logged, and
+                        // the nutritionist's line for today or the next meal.
+                        _Reveal(
+                          delayMs: 80,
+                          from: const Offset(0, 0.12),
+                          child: HomeDayCard(
+                            logged: logged,
+                            total: meals.length,
+                            eatenKcal: mealLog.totalCalories,
+                            targetKcal: target,
+                            nextMeal: next,
                           ),
-                        ],
+                        ),
                         const SizedBox(height: 20),
                         _Reveal(
-                            delayMs: 220,
-                            child: _SectionHeader(targetKcal: target)),
-                        const SizedBox(height: 12),
+                          delayMs: 160,
+                          child: Row(children: [
+                            Expanded(
+                                child: Text(context.l10n.homeTodayMeals,
+                                    style: AppTextStyles.sectionHeading)),
+                            TextButton(
+                              onPressed: () => Navigator.of(context).push(
+                                  AppPageRoute(
+                                      builder: (_) =>
+                                          const WeeklyPlanScreen())),
+                              style: TextButton.styleFrom(
+                                  foregroundColor: AppColors.primaryInk,
+                                  minimumSize: const Size(48, 44)),
+                              child: Text(context.l10n.homeWeeklyPlanLink,
+                                  style: AppTextStyles.pillLabel),
+                            ),
+                          ]),
+                        ),
+                        const SizedBox(height: 8),
                         if (meals.isEmpty)
                           Text(context.l10n.planNoMealToday,
                               textAlign: TextAlign.center,
                               style: _ts(12.5, c: _C.muted)),
-                        for (int i = 0; i < slots.length; i++)
+                        for (int i = 0; i < meals.length; i++)
                           Padding(
-                            padding: const EdgeInsets.only(bottom: 12),
+                            padding: const EdgeInsets.only(bottom: 10),
                             child: _Reveal(
-                              delayMs: 280 + i * 110,
+                              delayMs: 220 + i * 90,
                               from: const Offset(0, 0.1),
-                              child: slots[i].kind == _SlotKind.collapsed
-                                  ? _CollapsedCard(slot: slots[i])
-                                  : _MealCard(
-                                      slot: slots[i],
-                                      syncPending: offlineUi &&
-                                          _pendingCount > 0 &&
-                                          i == 0,
-                                      onLog: () => _openMeal(slots[i].meal),
-                                      onEat: () => _eat(slots[i].meal),
-                                      eating: _eating,
-                                    ),
+                              child: HomeMealTile(
+                                meal: meals[i],
+                                isNext: identical(meals[i], next),
+                                onOpen: () => _openMeal(meals[i]),
+                                actions: identical(meals[i], next)
+                                    ? _MealActions(
+                                        onEat: () => _eat(meals[i]),
+                                        onDetails: () => _openMeal(meals[i]),
+                                        eating: _eating,
+                                      )
+                                    : null,
+                              ),
                             ),
                           ),
+                        const SizedBox(height: 2),
+                        _Reveal(
+                          delayMs: 300 + meals.length * 90,
+                          child: HomeOffPlanCard(
+                              onTap: () => showLogMealSheet(context)),
+                        ),
                       ],
+                      const SizedBox(height: 16),
+                      // Below the meals: the questionnaire and the other
+                      // reminders of the day, then the weigh-in reminder.
+                      const _Reveal(delayMs: 600, child: TodayReminders()),
+                      const _Reveal(
+                          delayMs: 640, child: MeasurementDueReminder()),
                       const SizedBox(height: 4),
                       const _Reveal(delayMs: 700, child: QuickContactCard()),
                       const SizedBox(height: 16),
@@ -618,182 +577,6 @@ class _BellButtonState extends State<_BellButton>
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-//  Progress card
-// ─────────────────────────────────────────────────────────────────────────────
-class _ProgressCard extends StatefulWidget {
-  final int logged, total;
-  const _ProgressCard({required this.logged, required this.total});
-  @override
-  State<_ProgressCard> createState() => _ProgressCardState();
-}
-
-class _ProgressCardState extends State<_ProgressCard>
-    with SingleTickerProviderStateMixin {
-  late final AnimationController _loop = AnimationController(
-      vsync: this, duration: const Duration(milliseconds: 2600))
-    ..repeat();
-
-  @override
-  void dispose() {
-    _loop.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final target = widget.logged / widget.total;
-    return TweenAnimationBuilder<double>(
-      tween: Tween(begin: 0, end: target),
-      duration: const Duration(milliseconds: 1200),
-      curve: Curves.easeOutCubic,
-      builder: (context, v, _) {
-        return Container(
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: _C.mint,
-            borderRadius: BorderRadius.circular(22),
-            border: Border.all(color: _C.teal.withValues(alpha: 0.08)),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Row(children: [
-                AnimatedBuilder(
-                  animation: _loop,
-                  builder: (context, child) => Transform.scale(
-                      scale: 1 + 0.07 * math.sin(_loop.value * 2 * math.pi),
-                      child: child),
-                  child: Container(
-                    width: 34,
-                    height: 34,
-                    decoration: BoxDecoration(
-                        color: _C.teal,
-                        borderRadius: BorderRadius.circular(11)),
-                    child: const Icon(Icons.check_circle_outline_rounded,
-                        color: Colors.white, size: 20),
-                  ),
-                ),
-                const SizedBox(width: 10),
-                Text(context.l10n.homeAdherenceToday,
-                    style: _ts(17, w: FontWeight.w800)),
-                const Spacer(),
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
-                  decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.8),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Text('${(v * 100).round()}%',
-                      style: _ts(13, w: FontWeight.w800, c: _C.teal)),
-                ),
-              ]),
-              const SizedBox(height: 14),
-              Row(children: [
-                Text(context.l10n.homeDailyMealPath,
-                    style: _ts(11.5, c: _C.muted)),
-                const Spacer(),
-                Text(context.l10n.homeMealsLogged(widget.logged, widget.total),
-                    style: _ts(11.5, c: _C.muted)),
-              ]),
-              const SizedBox(height: 8),
-              _ProgressBar(value: v, loop: _loop),
-            ],
-          ),
-        );
-      },
-    );
-  }
-}
-
-class _ProgressBar extends StatelessWidget {
-  final double value;
-  final Animation<double> loop;
-  const _ProgressBar({required this.value, required this.loop});
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      height: 9,
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(9),
-        child: Stack(children: [
-          const Positioned.fill(child: ColoredBox(color: _C.lavender)),
-          // Fill starts from the right (RTL).
-          Align(
-            alignment: AlignmentDirectional.centerStart,
-            child: FractionallySizedBox(
-              widthFactor: value.clamp(0.0, 1.0),
-              heightFactor: 1,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(9),
-                child: Stack(children: [
-                  Positioned.fill(
-                    child: DecoratedBox(
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                            colors: [_C.teal, _C.teal.withValues(alpha: 0.82)]),
-                      ),
-                    ),
-                  ),
-                  Positioned.fill(
-                    child: AnimatedBuilder(
-                      animation: loop,
-                      builder: (context, _) => Align(
-                        alignment: Alignment(1.6 - 3.2 * loop.value, 0),
-                        child: FractionallySizedBox(
-                          widthFactor: 0.4,
-                          heightFactor: 1,
-                          child: DecoratedBox(
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(colors: [
-                                Colors.white.withValues(alpha: 0),
-                                Colors.white.withValues(alpha: 0.4),
-                                Colors.white.withValues(alpha: 0),
-                              ]),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ]),
-              ),
-            ),
-          ),
-        ]),
-      ),
-    );
-  }
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-//  Section header
-// ─────────────────────────────────────────────────────────────────────────────
-class _SectionHeader extends StatelessWidget {
-  /// The day's planned calories (5.1).
-  final int targetKcal;
-  const _SectionHeader({required this.targetKcal});
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(children: [
-      Text(context.l10n.homeMealSchedule, style: _ts(17, w: FontWeight.w800)),
-      const Spacer(),
-      Icon(Icons.local_fire_department_outlined, size: 15, color: _C.teal),
-      const SizedBox(width: 4),
-      TweenAnimationBuilder<int>(
-        tween: IntTween(begin: 0, end: targetKcal),
-        duration: const Duration(milliseconds: 1300),
-        curve: Curves.easeOutCubic,
-        builder: (context, v, _) => Text(context.l10n.homeTargetKcal(_fmt(v)),
-            style: _ts(11.5, w: FontWeight.w700, c: _C.teal)),
-      ),
-    ]);
-  }
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
 //  No active plan yet (204): an empty state, not an error (5.1)
 // ─────────────────────────────────────────────────────────────────────────────
 class _NoPlanCard extends StatelessWidget {
@@ -822,329 +605,6 @@ class _NoPlanCard extends StatelessWidget {
           ]),
         ),
       ]),
-    );
-  }
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-//  Meal card (done / active)
-// ─────────────────────────────────────────────────────────────────────────────
-class _MealCard extends StatefulWidget {
-  final _Slot slot;
-  final bool syncPending;
-
-  /// Opens the meal's details (amounts, alternatives).
-  final VoidCallback onLog;
-
-  /// Logs the meal as planned, in one tap.
-  final VoidCallback onEat;
-  final bool eating;
-  const _MealCard(
-      {required this.slot,
-      required this.syncPending,
-      required this.onLog,
-      required this.onEat,
-      required this.eating});
-  @override
-  State<_MealCard> createState() => _MealCardState();
-}
-
-class _MealCardState extends State<_MealCard>
-    with SingleTickerProviderStateMixin {
-  late final AnimationController _glow = AnimationController(
-      vsync: this, duration: const Duration(milliseconds: 1800));
-
-  bool get _active => widget.slot.kind == _SlotKind.active;
-
-  @override
-  void initState() {
-    super.initState();
-    if (_active) _glow.repeat(reverse: true);
-  }
-
-  @override
-  void dispose() {
-    _glow.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final s = widget.slot;
-    return AnimatedBuilder(
-      animation: _glow,
-      builder: (context, child) {
-        final g = _active ? Curves.easeInOut.transform(_glow.value) : 0.0;
-        return Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(22),
-            border: Border.all(
-                color: _active ? _C.teal.withValues(alpha: 0.14) : _C.line),
-            gradient: _active
-                ? const LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [Colors.white, Colors.white, AppColors.successBg],
-                    stops: [0, 0.55, 1],
-                  )
-                : null,
-            color: _active ? null : Colors.white,
-            boxShadow: [
-              BoxShadow(
-                color: _active
-                    ? _C.teal.withValues(alpha: 0.10 + 0.12 * g)
-                    : Colors.black.withValues(alpha: 0.04),
-                blurRadius: _active ? 18 + 12 * g : 12,
-                offset: const Offset(0, 8),
-              ),
-            ],
-          ),
-          child: child,
-        );
-      },
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(21),
-        child:
-            Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-          if (_active)
-            SizedBox(
-              height: 3.5,
-              child: TweenAnimationBuilder<double>(
-                tween: Tween(begin: 0, end: 1),
-                duration: const Duration(milliseconds: 1100),
-                curve: Curves.easeOutCubic,
-                builder: (context, v, _) => Align(
-                  alignment: AlignmentDirectional.centerStart,
-                  child: FractionallySizedBox(
-                    widthFactor: v,
-                    heightFactor: 1,
-                    child: ColoredBox(color: _C.teal),
-                  ),
-                ),
-              ),
-            ),
-          Padding(
-            padding: const EdgeInsets.all(14),
-            child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  _header(s),
-                  const SizedBox(height: 12),
-                  _itemsBox(s),
-                  if (s.alt != null) _altRow(s.alt!),
-                  const SizedBox(height: 12),
-                  _footer(s),
-                ]),
-          ),
-        ]),
-      ),
-    );
-  }
-
-  Widget _header(_Slot s) {
-    final Widget chip;
-    if (widget.syncPending) {
-      chip = _StatusChip(
-          key: const ValueKey('sync'),
-          label: context.l10n.homeAwaitingSync,
-          icon: Icons.hourglass_bottom_rounded,
-          bg: _C.amberBg,
-          fg: _C.amber);
-    } else if (_active) {
-      chip = _StatusChip(
-          key: const ValueKey('wait'),
-          label: context.l10n.homeAwaitingLog,
-          icon: Icons.schedule_rounded,
-          bg: Colors.white,
-          fg: _C.muted,
-          bordered: true);
-    } else {
-      chip = _StatusChip(
-          key: const ValueKey('done'),
-          label: context.l10n.homeLogged,
-          icon: Icons.check_circle_rounded,
-          bg: _C.mint,
-          fg: _C.green);
-    }
-
-    return Row(children: [
-      _IconTile(icon: s.icon),
-      const SizedBox(width: 10),
-      Expanded(
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Row(children: [
-            Container(
-                width: 6,
-                height: 6,
-                decoration:
-                    BoxDecoration(color: _C.teal, shape: BoxShape.circle)),
-            const SizedBox(width: 6),
-            Text(s.title, style: _ts(16, w: FontWeight.w800)),
-          ]),
-          // The plan has no meal times (5.1); a time shows only if one exists.
-          if (s.time.isNotEmpty) ...[
-            const SizedBox(height: 3),
-            Row(children: [
-              const Icon(Icons.schedule_rounded, size: 11, color: _C.muted),
-              const SizedBox(width: 4),
-              Text(s.time, style: _ts(11, c: _C.muted)),
-            ]),
-          ],
-        ]),
-      ),
-      AnimatedSwitcher(
-          duration: const Duration(milliseconds: 350), child: chip),
-    ]);
-  }
-
-  Widget _itemsBox(_Slot s) {
-    return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-          color: _C.greyBox, borderRadius: BorderRadius.circular(15)),
-      child: Column(children: [
-        for (int i = 0; i < s.items.length; i++)
-          Padding(
-            padding: EdgeInsets.only(bottom: i == s.items.length - 1 ? 0 : 10),
-            child: _Reveal(
-              delayMs: 500 + i * 90,
-              from: const Offset(0.06, 0),
-              child: _ItemRow(item: s.items[i]),
-            ),
-          ),
-      ]),
-    );
-  }
-
-  Widget _altRow(String alt) {
-    return Container(
-      margin: const EdgeInsets.only(top: 10),
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 9),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(13),
-        border: Border.all(color: _C.line),
-      ),
-      child: Row(children: [
-        Icon(Icons.swap_horiz_rounded, size: 16, color: _C.teal),
-        const SizedBox(width: 6),
-        Expanded(child: Text(alt, style: _ts(11.5))),
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-          decoration: BoxDecoration(
-              color: _C.mint, borderRadius: BorderRadius.circular(20)),
-          child: Text(context.l10n.homeAlternativeAvailable,
-              style: _ts(10, w: FontWeight.w700, c: _C.teal)),
-        ),
-      ]),
-    );
-  }
-
-  Widget _footer(_Slot s) {
-    final kcal = Row(mainAxisSize: MainAxisSize.min, children: [
-      const Icon(Icons.bolt_rounded, size: 15, color: _C.muted),
-      const SizedBox(width: 3),
-      TweenAnimationBuilder<int>(
-        tween: IntTween(begin: 0, end: s.kcal),
-        duration: const Duration(milliseconds: 1000),
-        curve: Curves.easeOutCubic,
-        builder: (context, v, _) => Text(context.l10n.commonCaloriesValue(v),
-            style: _ts(12, c: _C.muted)),
-      ),
-    ]);
-
-    if (_active) {
-      return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-        Align(alignment: AlignmentDirectional.centerStart, child: kcal),
-        const SizedBox(height: 10),
-        _MealActions(
-            onEat: widget.onEat, onDetails: widget.onLog, eating: widget.eating),
-      ]);
-    }
-    return Row(children: [
-      kcal,
-      const Spacer(),
-      const Icon(Icons.check_rounded, size: 15, color: _C.green),
-      const SizedBox(width: 4),
-      Text(context.l10n.homeCompletedOnTime,
-          style: _ts(11.5, w: FontWeight.w700, c: _C.green)),
-    ]);
-  }
-}
-
-class _IconTile extends StatelessWidget {
-  final IconData icon;
-  final bool soft;
-  const _IconTile({required this.icon, this.soft = false});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: soft ? 38 : 42,
-      height: soft ? 38 : 42,
-      decoration: BoxDecoration(
-        color: soft ? _C.greyBox : null,
-        gradient:
-            soft ? null : const LinearGradient(colors: [_C.mint, _C.mintSoft]),
-        borderRadius: BorderRadius.circular(13),
-      ),
-      child: Icon(icon, size: soft ? 19 : 21, color: _C.teal),
-    );
-  }
-}
-
-class _ItemRow extends StatelessWidget {
-  final _Item item;
-  const _ItemRow({required this.item});
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(children: [
-      Container(
-          width: 5,
-          height: 5,
-          decoration: BoxDecoration(color: _C.teal, shape: BoxShape.circle)),
-      const SizedBox(width: 8),
-      Expanded(child: Text(item.name, style: _ts(12.5))),
-      Text(item.qty, style: _ts(11, c: _C.muted)),
-    ]);
-  }
-}
-
-class _StatusChip extends StatelessWidget {
-  final String label;
-  final IconData icon;
-  final Color bg, fg;
-  final bool bordered;
-  const _StatusChip({
-    super.key,
-    required this.label,
-    required this.icon,
-    required this.bg,
-    required this.fg,
-    this.bordered = false,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return TweenAnimationBuilder<double>(
-      tween: Tween(begin: 0.6, end: 1),
-      duration: const Duration(milliseconds: 700),
-      curve: Curves.elasticOut,
-      builder: (context, v, child) => Transform.scale(scale: v, child: child),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-        decoration: BoxDecoration(
-          color: bg,
-          borderRadius: BorderRadius.circular(20),
-          border: bordered ? Border.all(color: _C.line) : null,
-        ),
-        child: Row(mainAxisSize: MainAxisSize.min, children: [
-          Icon(icon, size: 13, color: fg),
-          const SizedBox(width: 4),
-          Text(label, style: _ts(11, w: FontWeight.w700, c: fg)),
-        ]),
-      ),
     );
   }
 }
@@ -1200,110 +660,6 @@ class _MealActions extends StatelessWidget {
         ),
       ),
     ]);
-  }
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-//  Collapsed card (dinner / snack)
-// ─────────────────────────────────────────────────────────────────────────────
-class _CollapsedCard extends StatefulWidget {
-  final _Slot slot;
-  const _CollapsedCard({required this.slot});
-  @override
-  State<_CollapsedCard> createState() => _CollapsedCardState();
-}
-
-class _CollapsedCardState extends State<_CollapsedCard> {
-  bool _open = false;
-
-  @override
-  Widget build(BuildContext context) {
-    final s = widget.slot;
-    final expandable = s.items.isNotEmpty;
-
-    return GestureDetector(
-      behavior: HitTestBehavior.opaque,
-      onTap: expandable ? () => setState(() => _open = !_open) : null,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 300),
-        padding: const EdgeInsets.all(14),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(
-              color: _open ? _C.teal.withValues(alpha: 0.25) : _C.line),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: _open ? 0.06 : 0.03),
-              blurRadius: 12,
-              offset: const Offset(0, 6),
-            ),
-          ],
-        ),
-        child:
-            Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-          Row(children: [
-            _IconTile(icon: s.icon, soft: true),
-            const SizedBox(width: 10),
-            Expanded(
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(s.title, style: _ts(14.5, w: FontWeight.w800)),
-                    const SizedBox(height: 3),
-                    Text(s.subtitle ?? '', style: _ts(11, c: _C.muted)),
-                  ]),
-            ),
-            if (expandable)
-              AnimatedContainer(
-                duration: const Duration(milliseconds: 300),
-                width: 30,
-                height: 30,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: _open ? _C.teal : _C.greyBox,
-                ),
-                child: AnimatedRotation(
-                  turns: _open ? 0.5 : 0,
-                  duration: const Duration(milliseconds: 300),
-                  curve: Curves.easeOutBack,
-                  child: Icon(Icons.keyboard_arrow_down_rounded,
-                      size: 20, color: _open ? Colors.white : _C.teal),
-                ),
-              )
-            else
-              Text(context.l10n.commonKcalValue(s.kcal),
-                  style: _ts(10.5, c: _C.muted)),
-          ]),
-          AnimatedSize(
-            duration: const Duration(milliseconds: 340),
-            curve: Curves.easeOutCubic,
-            alignment: Alignment.topCenter,
-            child: _open
-                ? Container(
-                    margin: const EdgeInsets.only(top: 12),
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                        color: _C.greyBox,
-                        borderRadius: BorderRadius.circular(15)),
-                    child: Column(children: [
-                      for (int i = 0; i < s.items.length; i++)
-                        Padding(
-                          padding: EdgeInsets.only(
-                              bottom: i == s.items.length - 1 ? 0 : 10),
-                          child: _Reveal(
-                            delayMs: 80 + i * 80,
-                            from: const Offset(0.06, 0),
-                            child: _ItemRow(item: s.items[i]),
-                          ),
-                        ),
-                    ]),
-                  )
-                : const SizedBox(width: double.infinity),
-          ),
-        ]),
-      ),
-    );
   }
 }
 
@@ -1366,6 +722,24 @@ class _TipCardState extends State<_TipCard>
           ),
         ),
       ]),
+    );
+  }
+}
+
+class _IconTile extends StatelessWidget {
+  final IconData icon;
+  const _IconTile({required this.icon});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 42,
+      height: 42,
+      decoration: BoxDecoration(
+        color: AppColors.successBg,
+        borderRadius: BorderRadius.circular(13),
+      ),
+      child: Icon(icon, size: 21, color: _C.teal),
     );
   }
 }
