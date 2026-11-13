@@ -8,114 +8,179 @@ class NavTab {
   const NavTab({required this.icon, required this.label});
 }
 
-/// AnimatedBottomNavPill — floating glassmorphic nav bar with a pill
-/// indicator that slides between tabs (M4), 250-300ms easeOutCubic.
+/// The action in the middle of the bar: the app's main action ("log a meal").
+class NavCenterAction {
+  final IconData icon;
+  final String tooltip;
+  final VoidCallback onPressed;
+  const NavCenterAction({
+    required this.icon,
+    required this.tooltip,
+    required this.onPressed,
+  });
+}
+
+/// The app's bottom bar: the tabs, with the main action as a round button in
+/// the middle (two tabs on each side for four tabs).
+///
+/// It is a solid bar under the content, not a pill floating over it, so the
+/// shell does not extend its body behind it and nothing on a screen is ever
+/// covered: neither by the bar nor by a floating button.
+///
+/// Every tab shows its label; the selected one sits in a tinted pill. The class
+/// keeps its name so the shell and tests stay the same.
 class AnimatedBottomNavPill extends StatelessWidget {
   final List<NavTab> tabs;
   final int selectedIndex;
   final ValueChanged<int> onChanged;
+
+  /// The round button in the middle. Null for a bar of tabs only.
+  final NavCenterAction? centerAction;
+
+  static const double barHeight = 72;
 
   const AnimatedBottomNavPill({
     super.key,
     required this.tabs,
     required this.selectedIndex,
     required this.onChanged,
+    this.centerAction,
   });
 
   @override
   Widget build(BuildContext context) {
-    final bool isRtl = Directionality.of(context) == TextDirection.rtl;
+    final half = (tabs.length / 2).ceil();
+    final items = <Widget>[
+      for (var i = 0; i < tabs.length; i++) ...[
+        if (centerAction != null && i == half)
+          Expanded(child: _CenterButton(action: centerAction!)),
+        Expanded(
+          child: _TabItem(
+            tab: tabs[i],
+            active: i == selectedIndex,
+            onTap: () => onChanged(i),
+          ),
+        ),
+      ],
+    ];
 
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(18, 0, 18, 10),
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        border: const Border(top: BorderSide(color: AppColors.border)),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.textPrimary.withValues(alpha: 0.06),
+            blurRadius: 16,
+            offset: const Offset(0, -4),
+          ),
+        ],
+      ),
       child: SafeArea(
         top: false,
-        child: Container(
-          height: 82,
-          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
-          decoration: BoxDecoration(
-            color: Colors.white.withValues(alpha: 0.92),
-            borderRadius: BorderRadius.circular(30),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.08),
-                blurRadius: 20,
-                offset: const Offset(0, 12),
-              ),
-            ],
-            border:
-                Border.all(color: AppColors.primary.withValues(alpha: 0.08)),
+        child: SizedBox(
+          height: barHeight,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 6),
+            child: Row(children: items),
           ),
-          child: Row(
-            textDirection: isRtl ? TextDirection.rtl : TextDirection.ltr,
-            children: List.generate(tabs.length, (index) {
-              final active = index == selectedIndex;
-              return Expanded(
-                child: GestureDetector(
-                  behavior: HitTestBehavior.opaque,
-                  onTap: () => onChanged(index),
-                  child: AnimatedContainer(
-                    duration: const Duration(milliseconds: 220),
-                    curve: Curves.easeOutCubic,
-                    margin: EdgeInsets.fromLTRB(
-                      active ? 7 : 9,
-                      6,
-                      active ? 7 : 9,
-                      6,
-                    ),
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
-                    decoration: active
-                        ? BoxDecoration(
-                            gradient: AppColors.primaryGradient,
-                            borderRadius: BorderRadius.circular(22),
-                            boxShadow: [
-                              BoxShadow(
-                                color:
-                                    AppColors.primary.withValues(alpha: 0.22),
-                                blurRadius: 14,
-                                offset: const Offset(0, 8),
-                              ),
-                            ],
-                          )
-                        : null,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          tabs[index].icon,
-                          color:
-                              active ? Colors.white : AppColors.textSecondary,
-                          size: 22,
-                        ),
-                        const SizedBox(height: 3),
-                        AnimatedSwitcher(
-                          duration: const Duration(milliseconds: 180),
-                          switchInCurve: Curves.easeOutCubic,
-                          switchOutCurve: Curves.easeInCubic,
-                          child: active
-                              ? FittedBox(
-                                  fit: BoxFit.scaleDown,
-                                  child: Text(
-                                    tabs[index].label,
-                                    key:
-                                        ValueKey('active-${tabs[index].label}'),
-                                    maxLines: 1,
-                                    softWrap: false,
-                                    style: AppTextStyles.caption.copyWith(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  ),
-                                )
-                              : const SizedBox.shrink(
-                                  key: ValueKey('inactive')),
-                        ),
-                      ],
-                    ),
-                  ),
+        ),
+      ),
+    );
+  }
+}
+
+class _TabItem extends StatelessWidget {
+  const _TabItem(
+      {required this.tab, required this.active, required this.onTap});
+
+  final NavTab tab;
+  final bool active;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final color = active ? AppColors.primaryInk : AppColors.textSecondary;
+    return Semantics(
+      button: true,
+      selected: active,
+      label: tab.label,
+      excludeSemantics: true,
+      child: InkResponse(
+        onTap: onTap,
+        radius: 36,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            AnimatedContainer(
+              duration: const Duration(milliseconds: 220),
+              curve: Curves.easeOutCubic,
+              width: 52,
+              height: 30,
+              decoration: BoxDecoration(
+                color: active ? AppColors.primaryTint : Colors.transparent,
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: Icon(tab.icon, size: 22, color: color),
+            ),
+            const SizedBox(height: 4),
+            FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Text(
+                tab.label,
+                maxLines: 1,
+                softWrap: false,
+                style: AppTextStyles.caption.copyWith(
+                  color: color,
+                  fontWeight: active ? FontWeight.w700 : FontWeight.w500,
                 ),
-              );
-            }),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _CenterButton extends StatelessWidget {
+  const _CenterButton({required this.action});
+
+  final NavCenterAction action;
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Tooltip(
+        message: action.tooltip,
+        child: Semantics(
+          button: true,
+          label: action.tooltip,
+          excludeSemantics: true,
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              boxShadow: [
+                BoxShadow(
+                  color: AppColors.primary.withValues(alpha: 0.28),
+                  blurRadius: 12,
+                  offset: const Offset(0, 4),
+                ),
+              ],
+            ),
+            child: Material(
+              color: AppColors.primary,
+              shape: const CircleBorder(),
+              clipBehavior: Clip.antiAlias,
+              child: InkWell(
+                onTap: action.onPressed,
+                child: SizedBox(
+                  width: 56,
+                  height: 56,
+                  child: Icon(action.icon, color: Colors.white, size: 30),
+                ),
+              ),
+            ),
           ),
         ),
       ),

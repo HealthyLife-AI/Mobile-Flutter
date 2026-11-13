@@ -193,6 +193,35 @@ void main() {
       await tester.tap(find.byIcon(Icons.event_note_rounded));
       expect(tapped, [2, 1]);
     });
+
+    testWidgets('the centre action sits between the two halves of the tabs',
+        (tester) async {
+      var added = 0;
+      final tabs = [
+        ..._tabs,
+        const NavTab(icon: Icons.insights_rounded, label: 'التقدم'),
+      ];
+      await tester.pumpWidget(_host(AnimatedBottomNavPill(
+        tabs: tabs,
+        selectedIndex: 0,
+        onChanged: (_) {},
+        centerAction: NavCenterAction(
+            icon: Icons.add_rounded,
+            tooltip: 'تسجيل وجبة',
+            onPressed: () => added++),
+      )));
+      final add = find.byTooltip('تسجيل وجبة');
+      expect(add, findsOneWidget);
+      // Two tabs on each side, whatever the direction.
+      final x = tester.getCenter(add).dx;
+      final sides = [
+        for (final t in tabs) tester.getCenter(find.byIcon(t.icon)).dx < x
+      ];
+      expect(sides.where((left) => left), hasLength(2));
+      expect(tester.getSize(add).shortestSide, greaterThanOrEqualTo(48));
+      await tester.tap(add);
+      expect(added, 1);
+    });
   });
 
   group('shared components under the dark theme', () {

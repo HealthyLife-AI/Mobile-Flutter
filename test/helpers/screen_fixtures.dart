@@ -232,6 +232,11 @@ Future<GlobalKey> pumpScreen(
   Locale locale = const Locale('ar'),
   double textScale = 1.0,
 }) async {
+  // A phone is used by touch: no keyboard focus rings, as on a device.
+  FocusManager.instance.highlightStrategy =
+      FocusHighlightStrategy.alwaysTouch;
+  addTearDown(() => FocusManager.instance.highlightStrategy =
+      FocusHighlightStrategy.automatic);
   tester.view.devicePixelRatio = 2;
   tester.view.physicalSize = size * 2;
   addTearDown(tester.view.reset);
