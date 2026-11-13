@@ -7069,6 +7069,30 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'إخفاء كلمة المرور'**
   String get passwordHide;
+
+  /// Asked before leaving a form with unsaved input.
+  ///
+  /// In ar, this message translates to:
+  /// **'تجاهل التغييرات؟'**
+  String get unsavedChangesTitle;
+
+  /// Asked before leaving a form with unsaved input.
+  ///
+  /// In ar, this message translates to:
+  /// **'ما أدخلته لم يُحفظ بعد، وسيضيع إن خرجت الآن.'**
+  String get unsavedChangesBody;
+
+  /// Asked before leaving a form with unsaved input.
+  ///
+  /// In ar, this message translates to:
+  /// **'متابعة التعديل'**
+  String get unsavedChangesStay;
+
+  /// Asked before leaving a form with unsaved input.
+  ///
+  /// In ar, this message translates to:
+  /// **'تجاهل'**
+  String get unsavedChangesDiscard;
 }
 
 class _AppLocalizationsDelegate

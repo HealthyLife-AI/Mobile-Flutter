@@ -4920,5 +4920,21 @@
   },
   "@passwordHide": {
     "description": "Accessible name of an icon-only control."
+  },
+  "unsavedChangesTitle": "تجاهل التغييرات؟",
+  "unsavedChangesBody": "ما أدخلته لم يُحفظ بعد، وسيضيع إن خرجت الآن.",
+  "unsavedChangesStay": "متابعة التعديل",
+  "unsavedChangesDiscard": "تجاهل",
+  "@unsavedChangesTitle": {
+    "description": "Asked before leaving a form with unsaved input."
+  },
+  "@unsavedChangesBody": {
+    "description": "Asked before leaving a form with unsaved input."
+  },
+  "@unsavedChangesStay": {
+    "description": "Asked before leaving a form with unsaved input."
+  },
+  "@unsavedChangesDiscard": {
+    "description": "Asked before leaving a form with unsaved input."
   }
 }

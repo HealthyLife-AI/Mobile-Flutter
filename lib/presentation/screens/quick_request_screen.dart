@@ -8,6 +8,7 @@ import '../../core/theme/app_radius.dart';
 import '../../core/theme/app_text_styles.dart';
 import '../../domain/entities/patient_care_entities.dart';
 import '../../l10n/l10n.dart';
+import '../widgets/unsaved_changes_guard.dart';
 import '../bloc/patient_features_cubits.dart';
 import '../date_labels.dart';
 import '../widgets/app_header_bar.dart';
@@ -139,6 +140,13 @@ class _QuickRequestScreenState extends State<QuickRequestScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return UnsavedChangesGuard(
+      hasChanges: () => _reason != null || _note.text.trim().isNotEmpty,
+      child: _buildForm(context),
+    );
+  }
+
+  Widget _buildForm(BuildContext context) {
     final l10n = context.l10n;
     final occasion = _reason == QuickRequestReason.specialOccasion;
     final count = _note.text.characters.length;

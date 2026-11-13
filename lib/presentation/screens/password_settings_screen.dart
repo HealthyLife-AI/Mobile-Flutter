@@ -12,6 +12,7 @@ import '../widgets/app_header_bar.dart';
 import '../widgets/forgot_password_dialog.dart';
 
 import '../../l10n/l10n.dart';
+import '../widgets/unsaved_changes_guard.dart';
 import '../rate_limit_text.dart';
 
 // ───────────────────────── الألوان (مطابقة للصورة) ─────────────────────────
@@ -161,7 +162,7 @@ class _PasswordSettingsScreenState extends State<PasswordSettingsScreen>
     });
     _showSnack(context.l10n.passwordSaved, success: true);
     await Future.delayed(const Duration(milliseconds: 900));
-    if (mounted) Navigator.of(context).maybePop();
+    if (mounted) Navigator.of(context).pop();
   }
 
   /// Maps a failed password change to a message. The server's own text is never shown.
@@ -228,6 +229,16 @@ class _PasswordSettingsScreenState extends State<PasswordSettingsScreen>
 
   @override
   Widget build(BuildContext context) {
+    return UnsavedChangesGuard(
+      hasChanges: () =>
+          _currentController.text.isNotEmpty ||
+          _newController.text.isNotEmpty ||
+          _confirmController.text.isNotEmpty,
+      child: _buildForm(context),
+    );
+  }
+
+  Widget _buildForm(BuildContext context) {
     return Scaffold(
       appBar: AppHeaderBar(title: context.l10n.passwordTitle),
       backgroundColor: _pageBg,

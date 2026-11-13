@@ -4160,4 +4160,17 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get passwordHide => 'Hide password';
+
+  @override
+  String get unsavedChangesTitle => 'Discard changes?';
+
+  @override
+  String get unsavedChangesBody =>
+      'What you entered hasn\'t been saved and will be lost if you leave now.';
+
+  @override
+  String get unsavedChangesStay => 'Keep editing';
+
+  @override
+  String get unsavedChangesDiscard => 'Discard';
 }
