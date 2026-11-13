@@ -935,10 +935,6 @@
   "@homeCompletedOnTime": {
     "description": "UI text in presentation/screens/home_dashboard_screen.dart"
   },
-  "homeLogMeal": "تسجيل الوجبة",
-  "@homeLogMeal": {
-    "description": "UI text in presentation/screens/home_dashboard_screen.dart"
-  },
   "homeHydrationTip": "شرب كوبين من الماء قبل الوجبة قد يساعد على الشعور بالشبع، والاستمرار على الخطة خطوة بعد خطوة.",
   "@homeHydrationTip": {
     "description": "UI text in presentation/screens/home_dashboard_screen.dart"
@@ -983,64 +979,8 @@
   "@logMealTitle": {
     "description": "UI text in presentation/screens/log_meal_intro_screen.dart"
   },
-  "logMealIntro": "تسجيل ما تناولته بصدق هو خطوتك الأولى نحو نتائج مستدامة. أخصائي التغذية هنا لدعمك دائماً دون أي تقييم.",
-  "@logMealIntro": {
-    "description": "UI text in presentation/screens/log_meal_intro_screen.dart"
-  },
-  "logMealPlannedBadge": "وجبات الخطة",
-  "@logMealPlannedBadge": {
-    "description": "UI text in presentation/screens/log_meal_intro_screen.dart"
-  },
-  "logMealFromPlanTitle": "سجّلت وجبة من خطتي",
-  "@logMealFromPlanTitle": {
-    "description": "UI text in presentation/screens/log_meal_intro_screen.dart"
-  },
-  "logMealFromPlanDesc": "تأكيد سريع لتناول إحدى وجبات جدول اليوم (فطور، سناك، غداء، عشاء) مع إمكانية اختيار البدائل المتاحة في الخطة.",
-  "@logMealFromPlanDesc": {
-    "description": "UI text in presentation/screens/log_meal_intro_screen.dart"
-  },
-  "logMealFromPlanNote": "مطابقة تلقائية للسعرات والمكونات المجدولة",
-  "@logMealFromPlanNote": {
-    "description": "UI text in presentation/screens/log_meal_intro_screen.dart"
-  },
-  "logMealFromPlanNote2": "استبدال ذكي للبدائل المتكافئة بنقرة واحدة",
-  "@logMealFromPlanNote2": {
-    "description": "UI text in presentation/screens/log_meal_intro_screen.dart"
-  },
-  "logMealFromPlanFooter": "المتابعة لاختيار الوجبة",
-  "@logMealFromPlanFooter": {
-    "description": "UI text in presentation/screens/log_meal_intro_screen.dart"
-  },
-  "logMealFlexibleBadge": "بحث وتوثيق مرن",
-  "@logMealFlexibleBadge": {
-    "description": "UI text in presentation/screens/log_meal_intro_screen.dart"
-  },
-  "logMealOffPlanDesc": "تناولت طعاماً أو وجبة خفيفة لم تكن مدرجة في جدولك؟ سجّلها بسهولة بالبحث المباشر أو تحديد الغرامات التقريبية.",
-  "@logMealOffPlanDesc": {
-    "description": "UI text in presentation/screens/log_meal_intro_screen.dart"
-  },
-  "logMealOffPlanNote": "قاعدة بيانات غنية بالأطعمة العربية والوجبات الشائعة",
-  "@logMealOffPlanNote": {
-    "description": "UI text in presentation/screens/log_meal_intro_screen.dart"
-  },
-  "logMealOffPlanNote2": "لا داعي للشعور بالذنب، المرونة جزء أساسي من النجاح",
-  "@logMealOffPlanNote2": {
-    "description": "UI text in presentation/screens/log_meal_intro_screen.dart"
-  },
-  "logMealOffPlanFooter": "المتابعة للبحث وحساب الغرامات",
-  "@logMealOffPlanFooter": {
-    "description": "UI text in presentation/screens/log_meal_intro_screen.dart"
-  },
   "logMealPrivacyNote": "سجل وجباتك يطّلع عليه أخصائيك فقط.",
   "@logMealPrivacyNote": {
-    "description": "UI text in presentation/screens/log_meal_intro_screen.dart"
-  },
-  "logMealEncouragementLabel": "إضاءة تشجيعية: ",
-  "@logMealEncouragementLabel": {
-    "description": "UI text in presentation/screens/log_meal_intro_screen.dart"
-  },
-  "logMealEncouragementBody": "التسجيل الدقيق يساعد أخصائي التغذية على ضبط سعراتك وملاءمة الوجبات القادمة حسب استجابة جسمك الطبيعية وتفضيلاتك اليومية.",
-  "@logMealEncouragementBody": {
     "description": "UI text in presentation/screens/log_meal_intro_screen.dart"
   },
   "mealDetailTitle": "تفاصيل الوجبة",
