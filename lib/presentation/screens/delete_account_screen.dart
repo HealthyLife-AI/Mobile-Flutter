@@ -134,6 +134,9 @@ class _DeleteAccountScreenState extends State<DeleteAccountScreen> {
                 ),
                 suffixIcon: IconButton(
                   onPressed: () => setState(() => _obscure = !_obscure),
+                  tooltip: _obscure
+                      ? context.l10n.passwordShow
+                      : context.l10n.passwordHide,
                   icon: Icon(_obscure
                       ? Icons.visibility_outlined
                       : Icons.visibility_off_outlined),

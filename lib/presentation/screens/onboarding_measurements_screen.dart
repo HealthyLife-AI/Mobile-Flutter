@@ -589,16 +589,23 @@ class _RoundStepBtn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        width: 46,
-        height: 46,
-        decoration: BoxDecoration(
-            color: AppColors.background,
-            shape: BoxShape.circle,
-            border: Border.all(color: AppColors.border)),
-        child: Icon(icon, color: AppColors.primary),
+    return Semantics(
+      button: true,
+      label: icon == Icons.add_rounded
+          ? context.l10n.commonIncrease
+          : context.l10n.commonDecrease,
+      excludeSemantics: true,
+      child: GestureDetector(
+        onTap: onTap,
+        child: Container(
+          width: 48,
+          height: 48,
+          decoration: BoxDecoration(
+              color: AppColors.background,
+              shape: BoxShape.circle,
+              border: Border.all(color: AppColors.border)),
+          child: Icon(icon, color: AppColors.primary),
+        ),
       ),
     );
   }

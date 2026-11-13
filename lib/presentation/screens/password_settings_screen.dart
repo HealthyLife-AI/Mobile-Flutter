@@ -926,26 +926,33 @@ class _PasswordFieldState extends State<_PasswordField> {
         ),
         child: Row(
           children: [
-            GestureDetector(
-              key: widget.visibilityKey,
-              behavior: HitTestBehavior.opaque,
-              onTap: widget.onToggle,
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
-                child: AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 250),
-                  transitionBuilder: (child, anim) => RotationTransition(
-                    turns: Tween<double>(begin: 0.15, end: 0.0).animate(anim),
-                    child: ScaleTransition(scale: anim, child: child),
-                  ),
-                  child: Icon(
-                    widget.obscure
-                        ? Icons.visibility_outlined
-                        : Icons.visibility_off_outlined,
-                    key: ValueKey(widget.obscure),
-                    color: AppColors.textSecondary,
-                    size: 22,
+            Semantics(
+              button: true,
+              label: widget.obscure
+                  ? context.l10n.passwordShow
+                  : context.l10n.passwordHide,
+              excludeSemantics: true,
+              child: GestureDetector(
+                key: widget.visibilityKey,
+                behavior: HitTestBehavior.opaque,
+                onTap: widget.onToggle,
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
+                  child: AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 250),
+                    transitionBuilder: (child, anim) => RotationTransition(
+                      turns: Tween<double>(begin: 0.15, end: 0.0).animate(anim),
+                      child: ScaleTransition(scale: anim, child: child),
+                    ),
+                    child: Icon(
+                      widget.obscure
+                          ? Icons.visibility_outlined
+                          : Icons.visibility_off_outlined,
+                      key: ValueKey(widget.obscure),
+                      color: AppColors.textSecondary,
+                      size: 22,
+                    ),
                   ),
                 ),
               ),

@@ -4136,4 +4136,16 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get logMealSearchFood => 'البحث عن طعام';
+
+  @override
+  String get commonIncrease => 'زيادة';
+
+  @override
+  String get commonDecrease => 'إنقاص';
+
+  @override
+  String get passwordShow => 'إظهار كلمة المرور';
+
+  @override
+  String get passwordHide => 'إخفاء كلمة المرور';
 }

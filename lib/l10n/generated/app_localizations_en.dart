@@ -4148,4 +4148,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get logMealSearchFood => 'Search for a food';
+
+  @override
+  String get commonIncrease => 'Increase';
+
+  @override
+  String get commonDecrease => 'Decrease';
+
+  @override
+  String get passwordShow => 'Show password';
+
+  @override
+  String get passwordHide => 'Hide password';
 }
