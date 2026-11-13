@@ -26,7 +26,7 @@ class _MeasurementGuideScreenState extends State<MeasurementGuideScreen> {
   // ألوان مقدّرة من اللقطات؛ استبدلها برموز الثيم إن وُجد ما يقابلها.
   static const Color _lavender = AppColors.panel;
   static const Color _lavenderSoft = AppColors.panel;
-  static const Color _teal = Color(0xFF0E7C86);
+  static const Color _teal = AppColors.primaryInk;
 
   late String _selected = widget.initialPart;
   final ScrollController _scroll = ScrollController();
@@ -159,7 +159,7 @@ class _MeasurementGuideScreenState extends State<MeasurementGuideScreen> {
             width: 44,
             height: 44,
             decoration: BoxDecoration(
-                color: const Color(0xFFA6CCC6),
+                color: AppColors.border,
                 borderRadius: BorderRadius.circular(12)),
             child:
                 const Icon(Icons.straighten_rounded, color: AppColors.primary),
@@ -275,7 +275,7 @@ class _MeasurementGuideScreenState extends State<MeasurementGuideScreen> {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 12, vertical: 5),
                       decoration: BoxDecoration(
-                          color: const Color(0xFFB6D4D6),
+                          color: AppColors.border,
                           borderRadius: BorderRadius.circular(AppRadius.pill)),
                       child: Text(part.positionBadge,
                           style: const TextStyle(
@@ -302,7 +302,7 @@ class _MeasurementGuideScreenState extends State<MeasurementGuideScreen> {
                                     style: const TextStyle(
                                         fontSize: 11,
                                         fontWeight: FontWeight.w600,
-                                        color: Color(0xFF3E5A8C))),
+                                        color: AppColors.textSecondary)),
                               ),
                             ),
                             const SizedBox(width: 10),
@@ -471,7 +471,7 @@ class _GuideIllustrationState extends State<_GuideIllustration>
           children: [
             Positioned.fill(
               child: Container(
-                color: const Color(0xFFB3D0D4),
+                color: AppColors.border,
                 child: CustomPaint(
                   size: Size.infinite,
                   painter: _SilhouettePainter(part.key, _intro, _loop),
@@ -508,7 +508,7 @@ class _GuideIllustrationState extends State<_GuideIllustration>
                     padding:
                         const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
                     decoration: BoxDecoration(
-                        color: const Color(0xFF6B8C90).withValues(alpha: 0.92),
+                        color: AppColors.iconMuted.withValues(alpha: 0.92),
                         borderRadius: BorderRadius.circular(AppRadius.pill)),
                     child: Text(part.cornerHint,
                         style:
@@ -704,8 +704,8 @@ class _SilhouettePainter extends CustomPainter {
       : super(repaint: Listenable.merge([intro, loop]));
 
   static const Color _fill = Color(0xFFEFF3E8);
-  static const Color _tape = Color(0xFF12B886);
-  static const Color _tapeFar = Color(0xFFA7C4BC);
+  static const Color _tape = AppColors.success;
+  static const Color _tapeFar = AppColors.border;
   static const Color _mark = Color(0xFFC5D8BE);
 
   /// جزء من زمن الدخول بين [a] و [b] مع منحنى.

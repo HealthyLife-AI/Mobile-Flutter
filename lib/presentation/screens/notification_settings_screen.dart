@@ -17,10 +17,10 @@ import '../../l10n/l10n.dart';
 import '../widgets/directional_icon.dart';
 
 // ───────────────────────── ألوان إضافية مأخوذة من التصميم ─────────────────────────
-const Color _kMint = Color(0xFF5EE0B0);
+const Color _kMint = AppColors.turquoise;
 const Color _kLavender = AppColors.panel; // خلفية البطاقات الفاتحة
 const Color _kIconBox = AppColors.panel; // مربع الأيقونة
-const Color _kOffTrack = Color(0xFFB9C6C8);
+const Color _kOffTrack = AppColors.border;
 
 /// "10:00 م" — صيغة 12 ساعة كما في التصميم.
 String _fmtTime(BuildContext context, TimeOfDay t) {

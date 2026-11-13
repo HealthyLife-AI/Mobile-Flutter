@@ -34,7 +34,7 @@ class OfflineBanner extends StatelessWidget {
         duration: const Duration(milliseconds: 300),
         padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
-          color: syncing ? AppColors.primaryTint : const Color(0xFFFDF3E4),
+          color: syncing ? AppColors.primaryTint : AppColors.warningCardBg,
           borderRadius: BorderRadius.circular(AppRadius.card),
         ),
         child: Row(children: [
@@ -49,7 +49,7 @@ class OfflineBanner extends StatelessWidget {
                         valueColor: AlwaysStoppedAnimation(AppColors.primary)))
                 : Container(
                     decoration: const BoxDecoration(
-                        color: Color(0xFFF2C265), shape: BoxShape.circle),
+                        color: AppColors.warningCardBorder, shape: BoxShape.circle),
                     child: const Icon(Icons.cloud_off_rounded,
                         color: Colors.white, size: 16)),
           ),

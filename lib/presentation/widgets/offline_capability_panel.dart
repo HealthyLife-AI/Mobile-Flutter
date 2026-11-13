@@ -62,7 +62,7 @@ class _OfflineStatusGlyphState extends State<OfflineStatusGlyph>
                 width: 30,
                 height: 30,
                 decoration: const BoxDecoration(
-                    color: Color(0xFFFCE4E4), shape: BoxShape.circle),
+                    color: AppColors.dangerBg, shape: BoxShape.circle),
                 child: const Icon(Icons.priority_high_rounded,
                     color: AppColors.danger, size: 16))),
         PositionedDirectional(

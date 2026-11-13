@@ -19,7 +19,7 @@ import '../../core/navigation/app_page_route.dart';
 import '../widgets/directional_icon.dart';
 import '../../l10n/l10n.dart';
 
-const Color _mint = Color(0xFFD9F5EC);
+const Color _mint = AppColors.successBg;
 const Color _periwinkle = AppColors.chipInactiveBg;
 const Color _cardBase = AppColors.panel;
 

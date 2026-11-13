@@ -48,7 +48,7 @@ class ErrorStateScreen extends StatelessWidget {
               height: 260,
               decoration: BoxDecoration(
                 gradient: const LinearGradient(
-                    colors: [Color(0xFFEAF7F2), Color(0xFFF7FBFA)],
+                    colors: [AppColors.panel, AppColors.panel],
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter),
                 borderRadius: BorderRadius.circular(AppRadius.card),
@@ -94,7 +94,7 @@ class ErrorStateScreen extends StatelessWidget {
                         width: 46,
                         height: 46,
                         decoration: const BoxDecoration(
-                            color: Color(0xFFFCE4E4), shape: BoxShape.circle),
+                            color: AppColors.dangerBg, shape: BoxShape.circle),
                         child: const Icon(Icons.replay_rounded,
                             color: AppColors.danger))),
               ]),

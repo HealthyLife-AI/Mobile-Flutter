@@ -11,8 +11,8 @@ import '../widgets/gradient_cta_button.dart';
 import '../../l10n/l10n.dart';
 import '../widgets/log_meal_sheet.dart';
 
-const Color _mint = Color(0xFF19D3A2);
-const Color _screenTint = Color(0xFFF2FBF9);
+const Color _mint = AppColors.accentGreen;
+const Color _screenTint = AppColors.panel;
 
 String _num(BuildContext context, num v) =>
     context.localizeDigits(v % 1 == 0 ? v.toInt() : v.toStringAsFixed(1));
@@ -684,7 +684,7 @@ class _BurstPainter extends CustomPainter {
     AppColors.primary,
     _mint,
     Color(0xFFFFC15A),
-    Color(0xFF7FE3C9)
+    AppColors.turquoise
   ];
 
   @override

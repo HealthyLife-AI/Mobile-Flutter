@@ -15,15 +15,15 @@ import '../../l10n/l10n.dart';
 import '../rate_limit_text.dart';
 
 // ───────────────────────── الألوان (مطابقة للصورة) ─────────────────────────
-const Color _teal = Color(0xFF00636E);
-const Color _mint = Color(0xFF3DDBB0);
-const Color _success = Color(0xFF12A37F);
+const Color _teal = AppColors.primaryInk;
+const Color _mint = AppColors.turquoise;
+const Color _success = AppColors.success;
 const Color _lavender = AppColors.panel;
 const Color _track = AppColors.chipInactiveBg;
 const Color _cardBorder = AppColors.panel;
 const Color _fieldBorder = AppColors.border;
 const Color _pageBg = AppColors.background;
-const Color _warnRed = Color(0xFFEF5B5B);
+const Color _warnRed = AppColors.danger;
 const Color _warnOrange = Color(0xFFF5A524);
 
 /// كلمة المرور — نموذج تغيير كلمة المرور مع مقياس قوة وقائمة شروط،
@@ -531,8 +531,8 @@ class _SecurityHeroState extends State<_SecurityHero>
                   height: 52,
                   decoration: BoxDecoration(
                     color: widget.ready
-                        ? const Color(0xFFD8F5EA)
-                        : const Color(0xFFE0ECEF),
+                        ? AppColors.successBg
+                        : AppColors.chipInactiveBg,
                     borderRadius: BorderRadius.circular(16),
                   ),
                   child: AnimatedSwitcher(
@@ -1012,7 +1012,7 @@ class _RequirementRow extends StatelessWidget {
             width: 28,
             height: 28,
             decoration: BoxDecoration(
-              color: met ? const Color(0xFFD9E8EA) : AppColors.chipInactiveBg,
+              color: met ? AppColors.chipInactiveBg : AppColors.chipInactiveBg,
               shape: BoxShape.circle,
             ),
             child: AnimatedSwitcher(

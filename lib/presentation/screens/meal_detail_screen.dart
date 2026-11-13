@@ -481,9 +481,9 @@ class _CaloriesCard extends StatelessWidget {
                 width: 22,
                 height: 22,
                 decoration: const BoxDecoration(
-                    color: Color(0xFFD5F5E9), shape: BoxShape.circle),
+                    color: AppColors.successBg, shape: BoxShape.circle),
                 child: const Icon(Icons.check_rounded,
-                    size: 14, color: Color(0xFF12B886)),
+                    size: 14, color: AppColors.success),
               ),
               const SizedBox(width: 8),
               Expanded(
@@ -635,7 +635,7 @@ class _CategoryGroupCard extends StatelessWidget {
       required this.selectedIndex,
       required this.onSelect});
 
-  static const Color _green = Color(0xFF34D3A5);
+  static const Color _green = AppColors.success;
 
   @override
   Widget build(BuildContext context) {
@@ -870,12 +870,12 @@ class _FoodThumb extends StatelessWidget {
         gradient: const LinearGradient(
           begin: Alignment.topRight,
           end: Alignment.bottomLeft,
-          colors: [Color(0xFFFFF1DC), Color(0xFFF6D3A6)],
+          colors: [AppColors.warningCardBg, AppColors.warningCardBorder],
         ),
         border: Border.all(color: Colors.white, width: 2),
       ),
       child:
-          Icon(categoryIcon(option), size: 28, color: const Color(0xFFD9822B)),
+          Icon(categoryIcon(option), size: 28, color: AppColors.warning),
     );
   }
 }

@@ -14,10 +14,10 @@ import '../../core/navigation/app_page_route.dart';
 import '../../l10n/l10n.dart';
 
 // ───────────────────────── ألوان إضافية مأخوذة من التصميم ─────────────────────────
-const Color _kMint = Color(0xFF5EE0B0);
-const Color _kMintSoft = Color(0xFFD5F7EA);
+const Color _kMint = AppColors.turquoise;
+const Color _kMintSoft = AppColors.successBg;
 const Color _kLavender = AppColors.panel;
-const Color _kCheckBg = Color(0xFFBFD6D4);
+const Color _kCheckBg = AppColors.border;
 
 /// Onboarding step 3/3 — "لا تفوّت مواعيد وجباتك".
 ///

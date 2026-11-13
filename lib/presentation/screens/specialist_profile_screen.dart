@@ -19,7 +19,7 @@ import '../../l10n/l10n.dart';
 import '../widgets/state_views.dart';
 
 const Color _whatsapp = Color(0xFF25D366);
-const Color _mint = Color(0xFF7DF2D6);
+const Color _mint = AppColors.turquoise;
 const Color _lavender = AppColors.panel;
 
 /// ملف الأخصائي: the patient's nutritionist from `GET /me/nutritionist` (API

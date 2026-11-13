@@ -43,7 +43,7 @@ class TodayCard extends StatelessWidget {
               children: [
                 SpecCardHeader(
                   icon: Icons.wb_sunny_outlined,
-                  iconColor: const Color(0xFFB45309),
+                  iconColor: AppColors.warning,
                   iconBackground: const Color(0x26F59E0B),
                   title: l10n.todayTitle,
                   subtitle: fullDayLabel(context, today.date),

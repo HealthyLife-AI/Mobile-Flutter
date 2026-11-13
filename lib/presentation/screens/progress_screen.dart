@@ -70,9 +70,9 @@ class _ProgressBody extends StatefulWidget {
 
 class _ProgressBodyState extends State<_ProgressBody> {
   // ألوان مقدّرة من اللقطة؛ استبدلها برموز الثيم إن وُجد ما يقابلها.
-  static const Color _teal = Color(0xFF0E7C86);
+  static const Color _teal = AppColors.primaryInk;
   static const Color _lavender = AppColors.panel;
-  static const Color _mint = Color(0xFF6FF0CF);
+  static const Color _mint = AppColors.turquoise;
 
   int _tab = 0;
   int _chartRange = 0; // 0 = 30 يوماً، 1 = 90 يوماً
@@ -334,7 +334,7 @@ class _ProgressBodyState extends State<_ProgressBody> {
                       style: const TextStyle(
                           fontSize: 10,
                           fontWeight: FontWeight.w700,
-                          color: Color(0xFF0B4F44))),
+                          color: AppColors.success)),
                 ),
               ],
             ]),
@@ -572,7 +572,7 @@ class _ProgressBodyState extends State<_ProgressBody> {
                     width: 12,
                     height: 12,
                     decoration: const BoxDecoration(
-                        color: Color(0xFF0E6F78), shape: BoxShape.circle)),
+                        color: AppColors.primaryInk, shape: BoxShape.circle)),
                 const SizedBox(width: 6),
                 Text(context.l10n.progressHomeReading,
                     style: AppTextStyles.caption
@@ -820,7 +820,7 @@ class _ProgressBodyState extends State<_ProgressBody> {
               color: _mint,
               child: Row(mainAxisSize: MainAxisSize.min, children: [
                 const Icon(Icons.check_circle_outline_rounded,
-                    size: 15, color: Color(0xFF0B4F44)),
+                    size: 15, color: AppColors.success),
                 const SizedBox(width: 4),
                 Text(
                     l10n.progressAdherencePercent(
@@ -828,7 +828,7 @@ class _ProgressBodyState extends State<_ProgressBody> {
                     style: const TextStyle(
                         fontSize: 11,
                         fontWeight: FontWeight.w700,
-                        color: Color(0xFF0B4F44))),
+                        color: AppColors.success)),
               ]),
             ),
         ]),
@@ -1058,7 +1058,7 @@ class _VitalCard extends StatelessWidget {
             decoration: BoxDecoration(
                 color: AppColors.panel,
                 borderRadius: BorderRadius.circular(10)),
-            child: Icon(icon, size: 18, color: const Color(0xFF0E7C86)),
+            child: Icon(icon, size: 18, color: AppColors.primaryInk),
           ),
         ]),
         const SizedBox(height: 8),
@@ -1148,7 +1148,7 @@ class _TaskRow extends StatelessWidget {
                   : null,
             ),
             const SizedBox(width: 10),
-            Icon(icon, size: 17, color: const Color(0xFF0E7C86)),
+            Icon(icon, size: 17, color: AppColors.primaryInk),
             const SizedBox(width: 6),
             Expanded(
               child: Text(title,
@@ -1210,9 +1210,9 @@ class _WeightChartPainter extends CustomPainter {
   final String tooltip;
   final TextDirection textDirection;
 
-  static const Color _teal = Color(0xFF0E6F78);
-  static const Color _mint = Color(0xFF6FF0CF);
-  static const Color _navy = Color(0xFF1F2A44);
+  static const Color _teal = AppColors.primaryInk;
+  static const Color _mint = AppColors.turquoise;
+  static const Color _navy = AppColors.textPrimary;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -1230,7 +1230,7 @@ class _WeightChartPainter extends CustomPainter {
             text: yLabels[i],
             style: const TextStyle(
                 fontSize: 10,
-                color: Color(0xFF7A8197),
+                color: AppColors.textMuted,
                 fontFamily: AppTextStyles.fontFamily)),
         textDirection: TextDirection.ltr,
       )..layout();
