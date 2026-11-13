@@ -21,8 +21,8 @@ import '../l10n/l10n.dart';
 import 'widgets/state_views.dart';
 import 'widgets/log_meal_sheet.dart';
 
-/// Bottom-nav shell. extendBody: true so the floating pill never sits
-/// flush against the screen edge (section 2.3).
+/// Bottom-nav shell: four tabs, with "log a meal" as the middle item of the
+/// bar.
 class AppShell extends StatefulWidget {
   const AppShell({super.key});
 
@@ -154,8 +154,9 @@ class _AppShellState extends State<AppShell> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
+    // The body stops at the bar: nothing on a screen sits under it, and there
+    // is no floating button to cover content either.
     return Scaffold(
-      extendBody: true,
       backgroundColor: AppColors.background,
       body: Container(
         decoration: const BoxDecoration(
@@ -200,21 +201,17 @@ class _AppShellState extends State<AppShell> with WidgetsBindingObserver {
           ),
         ),
       ),
+      // Log a meal is the middle item of the bar, on every tab.
       bottomNavigationBar: AnimatedBottomNavPill(
         tabs: _tabs(context.l10n),
         selectedIndex: _index,
         onChanged: (i) => setState(() => _index = i),
+        centerAction: NavCenterAction(
+          icon: Icons.add_rounded,
+          tooltip: context.l10n.navLogMealTooltip,
+          onPressed: () => showLogMealSheet(context),
+        ),
       ),
-      floatingActionButton: {0, 2}.contains(_index)
-          ? FloatingActionButton(
-              tooltip: context.l10n.navLogMealTooltip,
-              backgroundColor: AppColors.primary,
-              foregroundColor: Colors.white,
-              elevation: 4,
-              onPressed: () => showLogMealSheet(context),
-              child: const Icon(Icons.add_rounded, size: 28),
-            )
-          : null,
     );
   }
 }
