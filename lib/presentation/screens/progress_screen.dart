@@ -71,7 +71,7 @@ class _ProgressBody extends StatefulWidget {
 class _ProgressBodyState extends State<_ProgressBody> {
   // ألوان مقدّرة من اللقطة؛ استبدلها برموز الثيم إن وُجد ما يقابلها.
   static const Color _teal = Color(0xFF0E7C86);
-  static const Color _lavender = Color(0xFFF2F4FC);
+  static const Color _lavender = AppColors.panel;
   static const Color _mint = Color(0xFF6FF0CF);
 
   int _tab = 0;
@@ -1056,7 +1056,7 @@ class _VitalCard extends StatelessWidget {
             width: 34,
             height: 34,
             decoration: BoxDecoration(
-                color: const Color(0xFFF2F4FC),
+                color: AppColors.panel,
                 borderRadius: BorderRadius.circular(10)),
             child: Icon(icon, size: 18, color: const Color(0xFF0E7C86)),
           ),
@@ -1085,7 +1085,7 @@ class _VitalCard extends StatelessWidget {
           const SizedBox(width: 6),
           if (delta != null)
             _Pill(
-              color: const Color(0xFFF2F4FC),
+              color: AppColors.panel,
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
               child: Text(delta!,
                   style: AppTextStyles.caption.copyWith(
@@ -1126,7 +1126,7 @@ class _TaskRow extends StatelessWidget {
           margin: const EdgeInsets.only(bottom: 10),
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
-              color: const Color(0xFFF6F7FC),
+              color: AppColors.panel,
               borderRadius: BorderRadius.circular(12)),
           child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
             AnimatedContainer(
@@ -1220,7 +1220,7 @@ class _WeightChartPainter extends CustomPainter {
     final plot = Rect.fromLTRB(l, t, size.width - r, size.height - b);
 
     final grid = Paint()
-      ..color = const Color(0xFFD5DBEE)
+      ..color = AppColors.chipInactiveBg
       ..strokeWidth = 1;
     for (var i = 0; i < 3; i++) {
       final y = plot.top + plot.height * i / 2;

@@ -27,8 +27,8 @@ import '../bloc/auth/auth_cubit.dart';
 import '../widgets/state_views.dart';
 import '../widgets/directional_icon.dart';
 
-const _lav = Color(0xFFF6F8FE); // خلفية الصناديق الفاتحة
-const _lavGrey = Color(0xFFEEF1F8);
+const _lav = AppColors.panel; // خلفية الصناديق الفاتحة
+const _lavGrey = AppColors.panel;
 const _dangerBg = Color(0xFFFDE8E8);
 const _mintPill = Color(0xFFD3F3E8);
 

@@ -16,7 +16,7 @@ import '../../l10n/l10n.dart';
 // ───────────────────────── ألوان إضافية مأخوذة من التصميم ─────────────────────────
 const Color _kMint = Color(0xFF5EE0B0);
 const Color _kMintSoft = Color(0xFFD5F7EA);
-const Color _kLavender = Color(0xFFF3F5FC);
+const Color _kLavender = AppColors.panel;
 const Color _kCheckBg = Color(0xFFBFD6D4);
 
 /// Onboarding step 3/3 — "لا تفوّت مواعيد وجباتك".
@@ -379,7 +379,7 @@ class _ProgressBar extends StatelessWidget {
             Container(
               height: 7,
               decoration: BoxDecoration(
-                  color: const Color(0xFFE3E8EF),
+                  color: AppColors.chipInactiveBg,
                   borderRadius: BorderRadius.circular(4)),
             ),
             Align(
@@ -724,7 +724,7 @@ class _PrivacyNote extends StatelessWidget {
           width: 40,
           height: 40,
           decoration: BoxDecoration(
-              color: const Color(0xFFE6EBFA),
+              color: AppColors.chipInactiveBg,
               borderRadius: BorderRadius.circular(11)),
           child: const Icon(Icons.lock_outline_rounded,
               size: 19, color: AppColors.primary),

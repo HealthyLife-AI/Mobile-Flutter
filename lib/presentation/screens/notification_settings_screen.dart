@@ -18,8 +18,8 @@ import '../widgets/directional_icon.dart';
 
 // ───────────────────────── ألوان إضافية مأخوذة من التصميم ─────────────────────────
 const Color _kMint = Color(0xFF5EE0B0);
-const Color _kLavender = Color(0xFFEEF2FD); // خلفية البطاقات الفاتحة
-const Color _kIconBox = Color(0xFFF3F5FC); // مربع الأيقونة
+const Color _kLavender = AppColors.panel; // خلفية البطاقات الفاتحة
+const Color _kIconBox = AppColors.panel; // مربع الأيقونة
 const Color _kOffTrack = Color(0xFFB9C6C8);
 
 /// "10:00 م" — صيغة 12 ساعة كما في التصميم.

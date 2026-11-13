@@ -20,10 +20,10 @@ const Color _kMint = Color(0xFF5EE0B0);
 const Color _kMintSector = Color(0xFFC9F3E3);
 const Color _kMintSoft = Color(0xFFE3F8F0);
 const Color _kSkySector = Color(0xFFD6EEFA);
-const Color _kDisc = Color(0xFFEEF1FB);
-const Color _kLavender = Color(0xFFF4F6FC);
+const Color _kDisc = AppColors.panel;
+const Color _kLavender = AppColors.panel;
 const Color _kIconBg = Color(0xFFBFD6D4);
-const Color _kLine = Color(0xFFDCE3EC);
+const Color _kLine = AppColors.chipInactiveBg;
 
 /// اهتزاز مخمَّد في أول [span] من الدورة.
 double _swing(double t,

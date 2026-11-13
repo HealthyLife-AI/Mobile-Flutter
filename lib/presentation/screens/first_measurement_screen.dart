@@ -14,8 +14,8 @@ import 'measurement_guide_screen.dart';
 import '../../l10n/l10n.dart';
 import '../widgets/directional_icon.dart';
 
-const _tintBox = Color(0xFFF3F6FC); // خلفية الصناديق الفاتحة في التصميم
-const _iconBlue = Color(0xFFE3ECFA);
+const _tintBox = AppColors.panel; // خلفية الصناديق الفاتحة في التصميم
+const _iconBlue = AppColors.chipInactiveBg;
 const _leafGreen = Color(0xFF1FB57A);
 
 /// What the prompt asks for, from the readings the patient already has.
