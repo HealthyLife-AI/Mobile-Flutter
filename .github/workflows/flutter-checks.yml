@@ -113,10 +113,18 @@ jobs:
           fi
           grep -q "Release signing is not set up" release.log
 
+      # Signed with the debug key so it installs on a test phone, but built as
+      # release: R8, Crashlytics on, no DevicePreview. Never for a store.
       - name: Release build for internal testing (debug key, on request)
         env:
           ORG_GRADLE_PROJECT_allowDebugSigning: "true"
         run: flutter build apk --release
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: app-release-internal-test-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
+          retention-days: 7
 
   ios-build:
     # A build without signing: it proves the Xcode project, the entitlements
