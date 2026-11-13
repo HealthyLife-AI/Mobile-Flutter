@@ -4173,4 +4173,32 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get unsavedChangesDiscard => 'Discard';
+
+  @override
+  String homeKcalOfTarget(String eaten, String target) {
+    return '$eaten of $target kcal';
+  }
+
+  @override
+  String get homeRingMeals => 'meals';
+
+  @override
+  String homeNextMealIs(String meal) {
+    return 'Your next meal: $meal.';
+  }
+
+  @override
+  String get homeTodayMeals => 'Today\'s meals';
+
+  @override
+  String get homeWeeklyPlanLink => 'Weekly plan';
+
+  @override
+  String get homeNextMealChip => 'Next meal';
+
+  @override
+  String get homeOffPlanQuestion => 'Ate something off plan?';
+
+  @override
+  String get homeOffPlanAction => 'Log it';
 }

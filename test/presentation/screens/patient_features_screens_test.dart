@@ -231,9 +231,13 @@ void main() {
           context.read<QuickRequestsCubit>().load();
         },
       );
-      expect(find.text(_ar.todayTitle), findsOneWidget);
-      expect(find.text('عندك استبيان قصير من أخصائيتك.'), findsOneWidget);
+      // The nutritionist's line for today is in the day card, and the
+      // questionnaire is a reminder card of its own.
       expect(find.text('المهم ترجع للخطة بالوجبة الجاية.'), findsOneWidget);
+      await tester.scrollUntilVisible(
+          find.text('عندك استبيان قصير من أخصائيتك.'), 300,
+          scrollable: find.byType(Scrollable).first);
+      expect(find.text('عندك استبيان قصير من أخصائيتك.'), findsOneWidget);
       expect(find.text(_ar.scheduleDueTitle), findsOneWidget);
       await tester.scrollUntilVisible(find.text(_ar.quickContactTitle), 300,
           scrollable: find.byType(Scrollable).first);

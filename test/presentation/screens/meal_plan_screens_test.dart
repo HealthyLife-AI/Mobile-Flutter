@@ -58,8 +58,10 @@ void main() {
       expect(find.text(ar.mealTypeDinner), findsOneWidget);
       expect(find.text(ar.mealTypeSnack), findsOneWidget,
           reason: "today's day-specific snack");
-      expect(find.text('بيض مسلوق'), findsOneWidget);
-      expect(find.text(ar.homeMealsLogged(0, 4)), findsOneWidget);
+      // The foods show in the meal's one-line summary.
+      expect(find.textContaining('بيض مسلوق'), findsOneWidget);
+      // The day card: none of the four meals logged yet.
+      expect(find.text('0/4'), findsOneWidget);
       // None of the old demo content.
       expect(find.text(ar.homeItemTwoBoiledEggs), findsNothing);
       await unmount(tester);
@@ -90,7 +92,7 @@ void main() {
         await tester.pump(const Duration(milliseconds: 600));
       }
 
-      expect(find.text('بيض مسلوق'), findsOneWidget);
+      expect(find.textContaining('بيض مسلوق'), findsOneWidget);
       await unmount(tester);
     });
   });

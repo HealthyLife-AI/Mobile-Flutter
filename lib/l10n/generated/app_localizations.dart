@@ -7093,6 +7093,54 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'تجاهل'**
   String get unsavedChangesDiscard;
+
+  /// Home: the day card and today's meals.
+  ///
+  /// In ar, this message translates to:
+  /// **'{eaten} من {target} سعرة'**
+  String homeKcalOfTarget(String eaten, String target);
+
+  /// Home: the day card and today's meals.
+  ///
+  /// In ar, this message translates to:
+  /// **'وجبات'**
+  String get homeRingMeals;
+
+  /// Home: the day card and today's meals.
+  ///
+  /// In ar, this message translates to:
+  /// **'وجبتك القادمة: {meal}.'**
+  String homeNextMealIs(String meal);
+
+  /// Home: the day card and today's meals.
+  ///
+  /// In ar, this message translates to:
+  /// **'وجبات اليوم'**
+  String get homeTodayMeals;
+
+  /// Home: the day card and today's meals.
+  ///
+  /// In ar, this message translates to:
+  /// **'الخطة الأسبوعية'**
+  String get homeWeeklyPlanLink;
+
+  /// Home: the day card and today's meals.
+  ///
+  /// In ar, this message translates to:
+  /// **'الوجبة القادمة'**
+  String get homeNextMealChip;
+
+  /// Home: the day card and today's meals.
+  ///
+  /// In ar, this message translates to:
+  /// **'أكلت شيئاً خارج الخطة؟'**
+  String get homeOffPlanQuestion;
+
+  /// Home: the day card and today's meals.
+  ///
+  /// In ar, this message translates to:
+  /// **'سجّله'**
+  String get homeOffPlanAction;
 }
 
 class _AppLocalizationsDelegate
