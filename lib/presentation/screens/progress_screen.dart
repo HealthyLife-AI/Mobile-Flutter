@@ -155,7 +155,7 @@ class _ProgressBodyState extends State<_ProgressBody> {
   List<String> _axisLabels(BuildContext context, int days) {
     final now = DateTime.now();
     return [
-      for (final ago in [days ~/ 3, days * 2 ~/ 3, days])
+      for (final ago in [days, days * 2 ~/ 3, days ~/ 3])
         context.localizeDigits(
             numericDate(DateTime(now.year, now.month, now.day - ago))),
     ];
@@ -508,7 +508,8 @@ class _ProgressBodyState extends State<_ProgressBody> {
           child: _chartBody(context, cubit.state),
         ),
         const SizedBox(height: 6),
-        // محور التاريخ: "اليوم" يساراً كما في التصميم.
+        // The date axis runs left to right in both languages: "today" is at the
+        // right end, like the chart above it.
         Directionality(
           textDirection: TextDirection.ltr,
           child: Padding(
@@ -518,6 +519,15 @@ class _ProgressBodyState extends State<_ProgressBody> {
                 children: [
                   // Flexible, so a narrow phone shortens a label instead of
                   // overflowing the row.
+                  for (final label in _axisLabels(context, cubit.days))
+                    Flexible(
+                      child: Text(label,
+                          maxLines: 1,
+                          softWrap: false,
+                          overflow: TextOverflow.fade,
+                          style: const TextStyle(
+                              fontSize: 10.5, color: AppColors.textSecondary)),
+                    ),
                   Flexible(
                     child: Text(context.l10n.commonToday,
                         maxLines: 1,
@@ -528,15 +538,6 @@ class _ProgressBodyState extends State<_ProgressBody> {
                             fontWeight: FontWeight.w700,
                             color: AppColors.primaryInk)),
                   ),
-                  for (final label in _axisLabels(context, cubit.days))
-                    Flexible(
-                      child: Text(label,
-                          maxLines: 1,
-                          softWrap: false,
-                          overflow: TextOverflow.fade,
-                          style: const TextStyle(
-                              fontSize: 10.5, color: AppColors.textSecondary)),
-                    ),
                 ]),
           ),
         ),
@@ -1045,9 +1046,11 @@ class _VitalCard extends StatelessWidget {
       padding: const EdgeInsets.all(12),
       child: Column(children: [
         Row(children: [
-          Text(label,
-              style:
-                  AppTextStyles.caption.copyWith(color: AppColors.textPrimary)),
+          Flexible(
+            child: Text(label,
+                style: AppTextStyles.caption
+                    .copyWith(color: AppColors.textPrimary)),
+          ),
           const Spacer(),
           Container(
             width: 34,
@@ -1060,18 +1063,26 @@ class _VitalCard extends StatelessWidget {
         ]),
         const SizedBox(height: 8),
         Row(children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.baseline,
-            textBaseline: TextBaseline.alphabetic,
-            children: [
-              Text(value,
-                  style: AppTextStyles.metricMedium
-                      .copyWith(fontSize: 22, fontWeight: FontWeight.w800)),
-              const SizedBox(width: 4),
-              Text(context.l10n.commonCmUnit, style: AppTextStyles.caption),
-            ],
+          // Shrinks, rather than overflows, in a half-width card with a
+          // large system font.
+          Expanded(
+            child: FittedBox(
+              fit: BoxFit.scaleDown,
+              alignment: AlignmentDirectional.centerStart,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.baseline,
+                textBaseline: TextBaseline.alphabetic,
+                children: [
+                  Text(value,
+                      style: AppTextStyles.metricMedium
+                          .copyWith(fontSize: 22, fontWeight: FontWeight.w800)),
+                  const SizedBox(width: 4),
+                  Text(context.l10n.commonCmUnit, style: AppTextStyles.caption),
+                ],
+              ),
+            ),
           ),
-          const Spacer(),
+          const SizedBox(width: 6),
           if (delta != null)
             _Pill(
               color: const Color(0xFFF2F4FC),
@@ -1231,7 +1242,9 @@ class _WeightChartPainter extends CustomPainter {
     final pts = [
       for (final p in points)
         Offset(
-          plot.left + (p.daysAgo / days).clamp(0.0, 1.0) * plot.width,
+          // Time runs left to right in both languages, as on the web
+          // dashboard: the oldest reading on the left, today on the right.
+          plot.left + (1 - (p.daysAgo / days).clamp(0.0, 1.0)) * plot.width,
           plot.top + (top - p.weightKg) / span * plot.height,
         ),
     ];
