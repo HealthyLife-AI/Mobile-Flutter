@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_text_styles.dart';
 import '../../domain/entities/meal_entities.dart';
+import '../../domain/entities/meal_plan_entities.dart';
 import '../../l10n/l10n.dart';
 import '../bloc/meal_log/meal_log_cubit.dart';
 import 'load_error_view.dart';
@@ -18,8 +19,12 @@ Future<void> logPlannedAndConfirm({
   required MealLogCubit cubit,
   required AppLocalizations l10n,
   required Meal meal,
+
+  /// The foods eaten, an alternative in place of a planned food where one was
+  /// picked. Null: the meal as planned.
+  List<PlanItem>? eaten,
 }) async {
-  final result = await cubit.logPlanned(meal);
+  final result = await cubit.logPlanned(meal, eaten: eaten);
   final entry = result.valueOrNull;
   if (entry == null) {
     messenger.showSnackBar(SnackBar(

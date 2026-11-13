@@ -4182,4 +4182,20 @@ class AppLocalizationsAr extends AppLocalizations {
   String todayPlanKcalOfGoal(String eaten, String goal) {
     return '$eaten من $goal سعرة';
   }
+
+  @override
+  String get logSheetChangeMeal => 'تغيير الوجبة';
+
+  @override
+  String get logSheetUncheckHint => 'أزل علامة ما لم تأكله، أو اختر بديلاً.';
+
+  @override
+  String logSheetSwapTo(String food) {
+    return 'تبديل إلى: $food';
+  }
+
+  @override
+  String logSheetLogMeal(String meal, String kcal) {
+    return 'تسجيل $meal · $kcal سعرة';
+  }
 }

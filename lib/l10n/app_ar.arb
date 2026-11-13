@@ -4976,5 +4976,34 @@
         "type": "String"
       }
     }
+  },
+  "logSheetChangeMeal": "تغيير الوجبة",
+  "logSheetUncheckHint": "أزل علامة ما لم تأكله، أو اختر بديلاً.",
+  "logSheetSwapTo": "تبديل إلى: {food}",
+  "logSheetLogMeal": "تسجيل {meal} · {kcal} سعرة",
+  "@logSheetChangeMeal": {
+    "description": "Log sheet: a plan meal's foods."
+  },
+  "@logSheetUncheckHint": {
+    "description": "Log sheet: a plan meal's foods."
+  },
+  "@logSheetSwapTo": {
+    "description": "Log sheet: a plan meal's foods.",
+    "placeholders": {
+      "food": {
+        "type": "String"
+      }
+    }
+  },
+  "@logSheetLogMeal": {
+    "description": "Log sheet: a plan meal's foods.",
+    "placeholders": {
+      "meal": {
+        "type": "String"
+      },
+      "kcal": {
+        "type": "String"
+      }
+    }
   }
 }
