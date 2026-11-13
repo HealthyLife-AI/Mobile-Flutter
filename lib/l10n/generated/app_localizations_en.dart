@@ -24,9 +24,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get commonSave => 'Save';
 
   @override
-  String get commonDone => 'Done';
-
-  @override
   String get commonClose => 'Close';
 
   @override
@@ -46,9 +43,6 @@ class AppLocalizationsEn extends AppLocalizations {
       'Information will appear here as soon as it\'s available.';
 
   @override
-  String get commonErrorTitle => 'Something went wrong';
-
-  @override
   String get commonErrorBody => 'We couldn\'t load the data. Please try again.';
 
   @override
@@ -58,63 +52,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get commonOfflineBody => 'Check your network and try again.';
 
   @override
-  String get commonSuccess => 'Done successfully';
-
-  @override
-  String get failureNetwork =>
-      'Could not reach the server. Check your connection and try again.';
-
-  @override
-  String get failureTimeout => 'The request took too long. Please try again.';
-
-  @override
-  String get failureServer =>
-      'The service is unavailable right now. Try again later.';
-
-  @override
-  String get failureUnauthorized =>
-      'Your session has expired. Please sign in again.';
-
-  @override
-  String get failureNotFound => 'The requested item was not found.';
-
-  @override
-  String get failureValidation => 'Please check your input and try again.';
-
-  @override
-  String get failureCache => 'Could not read locally saved data.';
-
-  @override
-  String get failureUnexpected =>
-      'An unexpected error occurred. Please try again.';
-
-  @override
   String get validationRequired => 'This field is required';
-
-  @override
-  String get validationInvalidEmail => 'Enter a valid email address';
-
-  @override
-  String validationTooShort(int min) {
-    return 'Must be at least $min characters';
-  }
-
-  @override
-  String validationTooLong(int max) {
-    return 'Must not exceed $max characters';
-  }
-
-  @override
-  String get validationMissingUppercase => 'Add at least one uppercase letter';
-
-  @override
-  String get validationMissingDigit => 'Add at least one digit';
-
-  @override
-  String get validationMissingSpecial => 'Add at least one special character';
-
-  @override
-  String get validationMismatch => 'The two values don\'t match';
 
   @override
   String get validationInvalidNumber => 'Numbers only';
@@ -240,60 +178,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'Your session will end securely. Your logs and measurements stay saved in your account.';
 
   @override
-  String get achievementsFullWeek => 'A full week of commitment';
-
-  @override
-  String get achievementsSevenDayStreak => '7-day logging streak';
-
-  @override
-  String get achievementsFirstMeal => 'First meal logged';
-
-  @override
-  String get achievementsHydration => 'Drinking water regularly';
-
-  @override
-  String get achievementsThirtyDays => '30 days of commitment';
-
-  @override
-  String get achievementsFirstWeightGoal => 'First weight goal';
-
-  @override
   String get achievementsTitle => 'Your achievements';
 
   @override
-  String get achievementsEncouragement =>
-      'Keep going — every small step counts';
-
-  @override
-  String get activationWelcome => 'Welcome to HealthyLife';
-
-  @override
-  String get activationSubtitle =>
-      'Activate your access to the follow-up program';
-
-  @override
-  String get activationCertified => 'Certified';
-
-  @override
-  String get activationSpecialistRole =>
-      'Nutrition & metabolic management specialist';
-
-  @override
-  String get activationInvitedBy =>
-      'Your nutritionist has invited you to link your health record and start your meal plan.';
-
-  @override
-  String get activationPrefilledNote =>
-      'The clinic has already entered your basic details';
-
-  @override
   String get activationNewPassword => 'New password';
-
-  @override
-  String get activationConfirmPassword => 'Confirm password';
-
-  @override
-  String get passwordRuleMinLength => '8 characters or more';
 
   @override
   String get passwordRuleUppercase => 'At least one uppercase letter (A-Z)';
@@ -302,17 +190,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get passwordRuleDigit => 'At least one number (0-9)';
 
   @override
-  String get activationCta => 'Activate account & start the plan';
-
-  @override
   String get activationEncryptedNote =>
       'The connection between the app and our servers is encrypted.';
-
-  @override
-  String get activationLinkValid => 'Link valid and active';
-
-  @override
-  String get activationLinkExpired => 'Link expired / already used';
 
   @override
   String get barcodeTitle => 'Scan the product barcode';
@@ -407,9 +286,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get dailyLogActiveDay => 'Active day';
-
-  @override
-  String get demoDateSunday21Sep2025 => 'Sunday, 21 September 2025';
 
   @override
   String get dailyLogLoggedMeals => 'Logged meals';
@@ -538,9 +414,6 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get demoDateFriday19Sep2025 => 'Friday, 19 September 2025';
-
-  @override
   String get firstMeasurementBaselineSaved =>
       'Your starting point has been saved to your health record.';
 
@@ -599,18 +472,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get measurementPromptViewProgress => 'View my progress';
 
   @override
-  String get followUpSuccessfully => 'Successfully';
-
-  @override
-  String get followUpStatus => 'Follow-up status';
-
-  @override
-  String get followUpTwelveWeeks => '12 weeks';
-
-  @override
-  String get followUpMeasurementsLogged => 'Measurements logged';
-
-  @override
   String get followUpMealAdherence => 'Meal adherence';
 
   @override
@@ -639,10 +500,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get followUpContactWhatsApp => 'Contact your specialist on WhatsApp';
-
-  @override
-  String get followUpViewFinalReport =>
-      'View the final follow-up report summary';
 
   @override
   String get followUpTerms =>
@@ -678,9 +535,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get foodSearchScanBarcode => 'Scan barcode';
-
-  @override
-  String get foodSearchSuggested => 'Suggested foods';
 
   @override
   String foodSearchPer100g(Object amount) {
@@ -835,68 +689,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get healthRecordAllergies => 'Allergies & restrictions';
 
   @override
-  String get healthRecordBadges => 'Badges & achievements log';
-
-  @override
-  String get healthRecordBadgesUnlocked => '3 badges unlocked';
-
-  @override
-  String get healthRecordBadgeFirstGoal => 'First goal';
-
-  @override
-  String get healthRecordBadgeFirstGoalDesc =>
-      'First weight measurement logged';
-
-  @override
-  String get healthRecordBadgeIronCommitment => 'Iron commitment';
-
-  @override
-  String get healthRecordBadgeIronCommitmentDesc =>
-      '7 consecutive days of logging';
-
-  @override
-  String get healthRecordBadgeWaterFriend => 'Water friend';
-
-  @override
-  String get healthRecordBadgeWaterFriendDesc =>
-      'Drank 2.5 L for 5 days in a row';
-
-  @override
-  String get healthRecordBadgeLose5kg => 'Lose 5 kg';
-
-  @override
-  String get healthRecordBadgeLose5kgDesc => '1.2 kg left to unlock';
-
-  @override
-  String get healthRecordShareSummary =>
-      'Share summary & achievements with your specialist';
-
-  @override
-  String get healthRecordActiveNow => 'Active now';
-
-  @override
-  String get healthRecordAgeFileCode => '26 years • File code:';
-
-  @override
-  String get healthRecordLevel => 'Level 3: Commitment champion';
-
-  @override
-  String get healthRecordExcellentWeek => 'Excellent performance this week';
-
-  @override
-  String healthRecordPoints(Object points) {
-    return '$points / 1000 pts';
-  }
-
-  @override
-  String get healthRecordPointsToNext => '250 points left to reach level four';
-
-  @override
-  String healthRecordPercentComplete(Object percent) {
-    return '$percent% complete';
-  }
-
-  @override
   String get healthRecordCurrentGoal => 'Current strategic health goal';
 
   @override
@@ -925,96 +717,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'Request a change or add a report to the health record';
 
   @override
-  String healthRecordStreakDays(Object days) {
-    return '$days consecutive days of full commitment!';
-  }
-
-  @override
-  String get healthRecordStreakNote =>
-      'Logging your meals and activity every day keeps you going.';
-
-  @override
-  String get healthRecordDone => 'Achieved';
-
-  @override
   String get healthSyncTitle => 'Connect a health app';
 
   @override
-  String get healthSyncConnected => 'Connected successfully';
-
-  @override
-  String get healthSyncConnectPrompt => 'Connect your health app';
-
-  @override
-  String get healthSyncBody =>
-      'Connecting Apple Health or Google Fit lets your specialist follow your activity and heart rate automatically without manual entry, and improves the accuracy of your meal plan.';
-
-  @override
-  String get healthSyncConnectNow => 'Connect now';
-
-  @override
-  String get healthSyncBackToProgress => 'Back to progress';
-
-  @override
-  String get homeMealBreakfast => 'Breakfast';
-
-  @override
-  String get homeBreakfastTime => '08:00 AM';
-
-  @override
-  String get homeBreakfastAlternative =>
-      'Suggested alternative: 100g cottage cheese';
-
-  @override
   String get homeItemTwoBoiledEggs => '2 boiled eggs';
-
-  @override
-  String get homeItemOatBread => '1 loaf of oat bread';
-
-  @override
-  String get homeItemCucumberTomatoes => 'Cucumber and cherry tomatoes';
-
-  @override
-  String get homeItemFresh => 'Fresh';
-
-  @override
-  String get homeMealLunch => 'Lunch';
-
-  @override
-  String get homeLunchTime => '02:30 PM';
-
-  @override
-  String get homeItemGrilledChicken => 'Grilled chicken breast';
-
-  @override
-  String get homeItemBrownRice => 'Steamed brown rice';
-
-  @override
-  String get homeItemGreenSalad => 'Green salad with olive oil dressing';
-
-  @override
-  String get homeItemLargePlate => 'Large plate';
-
-  @override
-  String get homeDinnerTitle => 'Dinner - 08:00 PM';
-
-  @override
-  String get homeDinnerSubtitle => 'Light and clean - about 320 calories';
-
-  @override
-  String get homeItemGreekYogurt => 'Greek yogurt';
-
-  @override
-  String get homeItemSauteedVeg => 'Sautéed vegetables';
-
-  @override
-  String get homeItemBrownToast => 'Brown toast';
-
-  @override
-  String get homeEveningSnack => 'Evening snack';
-
-  @override
-  String get homeEveningSnackSubtitle => 'Seasonal fruit (120g)';
 
   @override
   String homeSyncedItems(Object count) {
@@ -1325,9 +1031,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get measurementsTitle => 'Weight & body measurements';
 
   @override
-  String get measurementsDateLabel => 'Friday, 19 September 2025';
-
-  @override
   String get measurementsCurrentWeight => 'Current weight';
 
   @override
@@ -1406,9 +1109,6 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get measurementsSyncNote =>
       'Your data is synced with the clinic measurements and your personal record.';
-
-  @override
-  String get measurementsLastUpdated => 'Last updated: 19 September';
 
   @override
   String get measurementsBodyCircumference => 'Body circumference';
@@ -1612,13 +1312,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get notificationSettingsEnable => 'Turn on notifications now';
-
-  @override
-  String get notificationSettingsEnabledTitle => 'Phone notifications are on';
-
-  @override
-  String get notificationSettingsEnabledDesc =>
-      'You will get meal reminders, specialist messages and measurement times.';
 
   @override
   String get notificationSettingsCalm => 'Calm and balance without noise';
@@ -1931,18 +1624,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get passwordErrorDigit => 'Add at least one number';
 
   @override
-  String get passwordErrorSpecial => 'Add at least one special character';
-
-  @override
   String get passwordErrorMismatch =>
       'Confirm your new password so that it matches exactly';
 
   @override
   String get passwordSaved => 'Password saved successfully';
-
-  @override
-  String get passwordResetLinkSent =>
-      'A password reset link will be sent to your registered number or email';
 
   @override
   String get passwordTitle => 'Password';
@@ -1967,9 +1653,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get passwordRuleMinLength8 => 'At least 8 characters';
-
-  @override
-  String get passwordRuleSpecial => 'At least one special character (!@#\$%)';
 
   @override
   String get passwordLogoutOthersNote =>
@@ -2157,10 +1840,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profileLogoutSubtitle => 'End the session securely on this device';
 
   @override
-  String get progressNextConsultation =>
-      'Next consultation: next Sunday at 5:00 PM';
-
-  @override
   String progressNextAppointment(String date) {
     return 'Your next appointment: $date';
   }
@@ -2173,9 +1852,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get progressLiveSync => 'Synced with the clinic';
-
-  @override
-  String get progressOnlineNow => 'Online now';
 
   @override
   String get progressAndMeasurements => 'Progress';
@@ -2231,34 +1907,19 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get progressUpdatedTwoDaysAgo => 'Updated 2 days ago';
-
-  @override
   String get progressWaist => 'Waist';
-
-  @override
-  String get progressWaistDelta => '-4 cm';
 
   @override
   String get progressHip => 'Hip';
 
   @override
-  String get progressHipDelta => '-2 cm';
-
-  @override
   String get progressThigh => 'Thigh';
-
-  @override
-  String get progressThighDelta => '-1 cm';
 
   @override
   String get progressArm => 'Arm';
 
   @override
   String get progressGuideLink => 'Illustrated measurement guide';
-
-  @override
-  String get progressWeeklyEvaluation => 'This week\'s evaluation';
 
   @override
   String get progressLatestReview => 'Latest review from your nutritionist';
@@ -2277,45 +1938,6 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get progressExcellent => 'Excellent performance';
-
-  @override
-  String get progressEvaluationBody =>
-      'An excellent response in insulin resistance, with a noticeable improvement in vital energy balance during the morning hours and remarkable stability in waist measurements.';
-
-  @override
-  String get progressEncouragementTitle => 'A special note of encouragement';
-
-  @override
-  String get progressEncouragementQuote =>
-      '“I\'m so proud of your awareness and commitment this week! The weight loss is gradual and healthy, and your waist has improved noticeably. Keep up your current sleep pattern and we\'ll reach this month\'s goal easily.”';
-
-  @override
-  String get progressVoiceNote => 'Voice note from the doctor';
-
-  @override
-  String get progressTaskWater => 'Increase water intake to 2.5 liters a day';
-
-  @override
-  String get progressTaskWaterDesc =>
-      'Spread it evenly, one glass every two hours between meals, to boost metabolism.';
-
-  @override
-  String get progressTaskCottageCheese =>
-      'Cottage cheese with olive oil as an alternative';
-
-  @override
-  String get progressTaskCottageCheeseDesc =>
-      'Adopt it as your main dinner to support slow satiety and balance blood sugar at night.';
-
-  @override
-  String get progressTaskWalk => 'A 15-minute light walk after dinner';
-
-  @override
-  String get progressTaskWalkDesc =>
-      'Boosts circulation and draws down glycogen stores before sleep.';
-
-  @override
   String get progressNextWeekGuidance => 'Next week\'s guidance';
 
   @override
@@ -2331,13 +1953,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get progressAllNotes => 'View all notes';
-
-  @override
-  String get progressThreeTasks => '3 specific tasks';
-
-  @override
-  String get progressDiscussWhatsApp =>
-      'Discuss the evaluation directly on WhatsApp';
 
   @override
   String quantityKcalPerGrams(Object kcal, Object grams) {
@@ -2483,24 +2098,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get callsEmptyPast => 'No past appointments yet.';
 
   @override
-  String get wellbeingSleepQuality => 'Your sleep quality last night';
-
-  @override
-  String get wellbeingHours => 'hours';
-
-  @override
-  String get wellbeingGoodSleep => 'Good sleep — keep the same routine';
-
-  @override
-  String get wellbeingStressLevel => 'Stress level';
-
-  @override
-  String get wellbeingLow => 'Low';
-
-  @override
-  String get wellbeingBreathingMoment => 'A breathing moment';
-
-  @override
   String get specialistTitle => 'Specialist profile';
 
   @override
@@ -2567,18 +2164,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'To log meals and confirm you ate them, please go to the My daily plan tab';
 
   @override
-  String get weeklyPlanWeekThree => 'Week three';
-
-  @override
-  String get weeklyPlanMonth => 'September 2025';
-
-  @override
   String get weeklyPlanDetailed => 'Detailed plan';
-
-  @override
-  String weeklyPlanDayPlan(Object day, Object date) {
-    return '$day • $date Sep';
-  }
 
   @override
   String get macroHealthyFatsShort => 'Healthy fats';
@@ -2588,18 +2174,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get macroFatLabel => 'Fat';
-
-  @override
-  String get weeklyPlanFats => '42 g';
-
-  @override
-  String get weeklyPlanCarbs => '120 g';
-
-  @override
-  String get weeklyPlanProtein => '105 g';
-
-  @override
-  String get weeklyPlanSummary => 'Your plan as set by your nutritionist';
 
   @override
   String get connectionStatusTitle => 'Connection status';
@@ -3352,12 +2926,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String weeklyPlanDayOf(String date) {
     return 'Plan for $date';
   }
-
-  @override
-  String get nutritionistAvatarLabel => 'Nutritionist';
-
-  @override
-  String get patientAvatarLabel => 'Account';
 
   @override
   String get notificationsYesterday => 'Yesterday';

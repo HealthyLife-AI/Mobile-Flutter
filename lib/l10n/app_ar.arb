@@ -5,48 +5,16 @@
   "commonCancel": "إلغاء",
   "commonConfirm": "تأكيد",
   "commonSave": "حفظ",
-  "commonDone": "تم",
   "commonClose": "إغلاق",
   "commonBack": "رجوع",
   "commonNext": "التالي",
   "commonLoading": "جارٍ التحميل…",
   "commonEmptyTitle": "لا توجد بيانات لعرضها بعد",
   "commonEmptyBody": "ستظهر المعلومات هنا فور توفرها.",
-  "commonErrorTitle": "حدث خطأ ما",
   "commonErrorBody": "تعذّر تحميل البيانات. حاول مرة أخرى.",
   "commonOfflineTitle": "لا يوجد اتصال بالإنترنت",
   "commonOfflineBody": "تحقق من اتصالك بالشبكة ثم أعد المحاولة.",
-  "commonSuccess": "تم بنجاح",
-  "failureNetwork": "تعذّر الاتصال بالخادم. تحقّق من شبكة الإنترنت وحاول مجدداً.",
-  "failureTimeout": "استغرق الاتصال وقتاً طويلاً. حاول مرة أخرى.",
-  "failureServer": "خدمة غير متاحة حالياً. حاول لاحقاً.",
-  "failureUnauthorized": "انتهت صلاحية الجلسة. سجّل الدخول مجدداً.",
-  "failureNotFound": "العنصر المطلوب غير موجود.",
-  "failureValidation": "تحقق من البيانات المدخلة وأعد المحاولة.",
-  "failureCache": "تعذّر قراءة البيانات المحفوظة محلياً.",
-  "failureUnexpected": "حدث خطأ غير متوقع. حاول مرة أخرى.",
   "validationRequired": "هذا الحقل مطلوب",
-  "validationInvalidEmail": "أدخل بريداً إلكترونياً صحيحاً",
-  "validationTooShort": "يجب ألا يقل عن {min} أحرف",
-  "@validationTooShort": {
-    "placeholders": {
-      "min": {
-        "type": "int"
-      }
-    }
-  },
-  "validationTooLong": "يجب ألا يتجاوز {max} حرفاً",
-  "@validationTooLong": {
-    "placeholders": {
-      "max": {
-        "type": "int"
-      }
-    }
-  },
-  "validationMissingUppercase": "أضف حرفاً كبيراً واحداً على الأقل",
-  "validationMissingDigit": "أضف رقماً واحداً على الأقل",
-  "validationMissingSpecial": "أضف رمزاً خاصاً واحداً على الأقل",
-  "validationMismatch": "القيمتان غير متطابقتين",
   "validationInvalidNumber": "أرقاماً صحيحة فقط",
   "validationOutOfRange": "القيمة يجب أن تكون بين {min} و {max}",
   "@validationOutOfRange": {
@@ -204,72 +172,12 @@
   "@aboutLogoutNote": {
     "description": "UI text in presentation/screens/about_app_screen.dart"
   },
-  "achievementsFullWeek": "أسبوع كامل من الالتزام",
-  "@achievementsFullWeek": {
-    "description": "UI text in presentation/screens/achievements_screen.dart"
-  },
-  "achievementsSevenDayStreak": "7 أيام تسجيل متواصل",
-  "@achievementsSevenDayStreak": {
-    "description": "UI text in presentation/screens/achievements_screen.dart"
-  },
-  "achievementsFirstMeal": "أول وجبة مسجّلة",
-  "@achievementsFirstMeal": {
-    "description": "UI text in presentation/screens/achievements_screen.dart"
-  },
-  "achievementsHydration": "شرب الماء بانتظام",
-  "@achievementsHydration": {
-    "description": "UI text in presentation/screens/achievements_screen.dart"
-  },
-  "achievementsThirtyDays": "30 يوم التزام",
-  "@achievementsThirtyDays": {
-    "description": "UI text in presentation/screens/achievements_screen.dart"
-  },
-  "achievementsFirstWeightGoal": "هدف الوزن الأول",
-  "@achievementsFirstWeightGoal": {
-    "description": "UI text in presentation/screens/achievements_screen.dart"
-  },
   "achievementsTitle": "إنجازاتك",
   "@achievementsTitle": {
     "description": "UI text in presentation/screens/achievements_screen.dart"
   },
-  "achievementsEncouragement": "استمري، كل خطوة صغيرة تُحسب",
-  "@achievementsEncouragement": {
-    "description": "UI text in presentation/screens/achievements_screen.dart"
-  },
-  "activationWelcome": "مرحباً بك في HealthyLife",
-  "@activationWelcome": {
-    "description": "UI text in presentation/screens/activation_screen.dart"
-  },
-  "activationSubtitle": "تفعيل الوصول إلى برنامج المتابعة",
-  "@activationSubtitle": {
-    "description": "UI text in presentation/screens/activation_screen.dart"
-  },
-  "activationCertified": "معتمدة",
-  "@activationCertified": {
-    "description": "UI text in presentation/screens/activation_screen.dart"
-  },
-  "activationSpecialistRole": "أخصائي التغذية وإدارة الأيض",
-  "@activationSpecialistRole": {
-    "description": "UI text in presentation/screens/activation_screen.dart"
-  },
-  "activationInvitedBy": "تمت دعوتك بواسطة أخصائي التغذية لربط ملفك الصحي وبدء خطتك الغذائية.",
-  "@activationInvitedBy": {
-    "description": "UI text in presentation/screens/activation_screen.dart"
-  },
-  "activationPrefilledNote": "تم إدخال بياناتك الأساسية مسبقاً من قبل العيادة",
-  "@activationPrefilledNote": {
-    "description": "UI text in presentation/screens/activation_screen.dart"
-  },
   "activationNewPassword": "كلمة المرور الجديدة",
   "@activationNewPassword": {
-    "description": "UI text in presentation/screens/activation_screen.dart"
-  },
-  "activationConfirmPassword": "تأكيد كلمة المرور",
-  "@activationConfirmPassword": {
-    "description": "UI text in presentation/screens/activation_screen.dart"
-  },
-  "passwordRuleMinLength": "8 أحرف أو أكثر",
-  "@passwordRuleMinLength": {
     "description": "UI text in presentation/screens/activation_screen.dart"
   },
   "passwordRuleUppercase": "حرف كبير واحد على الأقل (A-Z)",
@@ -280,20 +188,8 @@
   "@passwordRuleDigit": {
     "description": "UI text in presentation/screens/activation_screen.dart"
   },
-  "activationCta": "تفعيل الحساب وبدء الخطة",
-  "@activationCta": {
-    "description": "UI text in presentation/screens/activation_screen.dart"
-  },
   "activationEncryptedNote": "الاتصال بين التطبيق وخوادمنا مشفّر.",
   "@activationEncryptedNote": {
-    "description": "UI text in presentation/screens/activation_screen.dart"
-  },
-  "activationLinkValid": "رابط ساري وعامل",
-  "@activationLinkValid": {
-    "description": "UI text in presentation/screens/activation_screen.dart"
-  },
-  "activationLinkExpired": "رابط منتهٍ / مُستخدم",
-  "@activationLinkExpired": {
     "description": "UI text in presentation/screens/activation_screen.dart"
   },
   "barcodeTitle": "امسح باركود المنتج",
@@ -402,10 +298,6 @@
   },
   "dailyLogActiveDay": "اليوم النشط",
   "@dailyLogActiveDay": {
-    "description": "UI text in presentation/screens/daily_log_screen.dart"
-  },
-  "demoDateSunday21Sep2025": "الأحد، 21 سبتمبر 2025",
-  "@demoDateSunday21Sep2025": {
     "description": "UI text in presentation/screens/daily_log_screen.dart"
   },
   "dailyLogLoggedMeals": "الوجبات المسجلة",
@@ -577,10 +469,6 @@
       }
     }
   },
-  "demoDateFriday19Sep2025": "الجمعة، 19 سبتمبر 2025",
-  "@demoDateFriday19Sep2025": {
-    "description": "UI text in presentation/screens/first_measurement_screen.dart"
-  },
   "firstMeasurementBaselineSaved": "تم توثيق نقطة البداية بنجاح في ملفك الصحي.",
   "@firstMeasurementBaselineSaved": {
     "description": "UI text in presentation/screens/first_measurement_screen.dart"
@@ -645,22 +533,6 @@
   "@measurementPromptViewProgress": {
     "description": "Text button on the measurement prompt that opens the progress dashboard without measuring now."
   },
-  "followUpSuccessfully": "بنجاح",
-  "@followUpSuccessfully": {
-    "description": "UI text in presentation/screens/follow_up_ended_screen.dart"
-  },
-  "followUpStatus": "حالة المتابعة",
-  "@followUpStatus": {
-    "description": "UI text in presentation/screens/follow_up_ended_screen.dart"
-  },
-  "followUpTwelveWeeks": "12 أسبوع",
-  "@followUpTwelveWeeks": {
-    "description": "UI text in presentation/screens/follow_up_ended_screen.dart"
-  },
-  "followUpMeasurementsLogged": "القياسات المسجلة",
-  "@followUpMeasurementsLogged": {
-    "description": "UI text in presentation/screens/follow_up_ended_screen.dart"
-  },
   "followUpMealAdherence": "الالتزام بالوجبات",
   "@followUpMealAdherence": {
     "description": "UI text in presentation/screens/follow_up_ended_screen.dart"
@@ -695,10 +567,6 @@
   },
   "followUpContactWhatsApp": "التواصل مع أخصائي التغذية عبر واتساب",
   "@followUpContactWhatsApp": {
-    "description": "UI text in presentation/screens/follow_up_ended_screen.dart"
-  },
-  "followUpViewFinalReport": "استعراض ملخص التقرير النهائي للمتابعة",
-  "@followUpViewFinalReport": {
     "description": "UI text in presentation/screens/follow_up_ended_screen.dart"
   },
   "followUpTerms": "شروط الخدمة وسياسة الخصوصية للبيانات الصحية",
@@ -743,10 +611,6 @@
   },
   "foodSearchScanBarcode": "مسح الباركود",
   "@foodSearchScanBarcode": {
-    "description": "UI text in presentation/screens/food_search_screen.dart"
-  },
-  "foodSearchSuggested": "الأطعمة المقترحة",
-  "@foodSearchSuggested": {
     "description": "UI text in presentation/screens/food_search_screen.dart"
   },
   "foodSearchPer100g": "لكل {amount} غ",
@@ -936,88 +800,6 @@
   "@healthRecordAllergies": {
     "description": "UI text in presentation/screens/health_record_screen.dart"
   },
-  "healthRecordBadges": "الأوسمة وسجل الإنجازات",
-  "@healthRecordBadges": {
-    "description": "UI text in presentation/screens/health_record_screen.dart"
-  },
-  "healthRecordBadgesUnlocked": "3 أوسمة مفتوحة",
-  "@healthRecordBadgesUnlocked": {
-    "description": "UI text in presentation/screens/health_record_screen.dart"
-  },
-  "healthRecordBadgeFirstGoal": "الهدف الأول",
-  "@healthRecordBadgeFirstGoal": {
-    "description": "UI text in presentation/screens/health_record_screen.dart"
-  },
-  "healthRecordBadgeFirstGoalDesc": "تسجيل أول قياس وزني بنجاح",
-  "@healthRecordBadgeFirstGoalDesc": {
-    "description": "UI text in presentation/screens/health_record_screen.dart"
-  },
-  "healthRecordBadgeIronCommitment": "التزام حديدي",
-  "@healthRecordBadgeIronCommitment": {
-    "description": "UI text in presentation/screens/health_record_screen.dart"
-  },
-  "healthRecordBadgeIronCommitmentDesc": "7 أيام متواصلة من التوثيق",
-  "@healthRecordBadgeIronCommitmentDesc": {
-    "description": "UI text in presentation/screens/health_record_screen.dart"
-  },
-  "healthRecordBadgeWaterFriend": "صديق الماء",
-  "@healthRecordBadgeWaterFriend": {
-    "description": "UI text in presentation/screens/health_record_screen.dart"
-  },
-  "healthRecordBadgeWaterFriendDesc": "شرب 2.5 لتر لـ 5 أيام متتالية",
-  "@healthRecordBadgeWaterFriendDesc": {
-    "description": "UI text in presentation/screens/health_record_screen.dart"
-  },
-  "healthRecordBadgeLose5kg": "خسارة 5 كجم",
-  "@healthRecordBadgeLose5kg": {
-    "description": "UI text in presentation/screens/health_record_screen.dart"
-  },
-  "healthRecordBadgeLose5kgDesc": "باقي 1.2 كجم للفتح",
-  "@healthRecordBadgeLose5kgDesc": {
-    "description": "UI text in presentation/screens/health_record_screen.dart"
-  },
-  "healthRecordShareSummary": "مشاركة الملخص والإنجازات مع الأخصائي",
-  "@healthRecordShareSummary": {
-    "description": "UI text in presentation/screens/health_record_screen.dart"
-  },
-  "healthRecordActiveNow": "نشط الآن",
-  "@healthRecordActiveNow": {
-    "description": "UI text in presentation/screens/health_record_screen.dart"
-  },
-  "healthRecordAgeFileCode": "26 سنة • كود الملف: ",
-  "@healthRecordAgeFileCode": {
-    "description": "UI text in presentation/screens/health_record_screen.dart"
-  },
-  "healthRecordLevel": "المستوى 3: بطل الالتزام",
-  "@healthRecordLevel": {
-    "description": "UI text in presentation/screens/health_record_screen.dart"
-  },
-  "healthRecordExcellentWeek": "أداء ممتاز خلال الأسبوع الحالي",
-  "@healthRecordExcellentWeek": {
-    "description": "UI text in presentation/screens/health_record_screen.dart"
-  },
-  "healthRecordPoints": "{points} / 1000 ن",
-  "@healthRecordPoints": {
-    "description": "UI text in presentation/screens/health_record_screen.dart",
-    "placeholders": {
-      "points": {
-        "type": "Object"
-      }
-    }
-  },
-  "healthRecordPointsToNext": "باقي 250 نقطة للوصول للمستوى الرابع",
-  "@healthRecordPointsToNext": {
-    "description": "UI text in presentation/screens/health_record_screen.dart"
-  },
-  "healthRecordPercentComplete": "{percent}% مكتمل",
-  "@healthRecordPercentComplete": {
-    "description": "UI text in presentation/screens/health_record_screen.dart",
-    "placeholders": {
-      "percent": {
-        "type": "Object"
-      }
-    }
-  },
   "healthRecordCurrentGoal": "الهدف الصحي الاستراتيجي الحالي",
   "@healthRecordCurrentGoal": {
     "description": "UI text in presentation/screens/health_record_screen.dart"
@@ -1050,125 +832,12 @@
   "@healthRecordRequestChange": {
     "description": "UI text in presentation/screens/health_record_screen.dart"
   },
-  "healthRecordStreakDays": "{days} يوماً متتالياً من الالتزام التام!",
-  "@healthRecordStreakDays": {
-    "description": "UI text in presentation/screens/health_record_screen.dart",
-    "placeholders": {
-      "days": {
-        "type": "Object"
-      }
-    }
-  },
-  "healthRecordStreakNote": "تسجيل الوجبات والنشاط يومياً يحافظ على استمرارك.",
-  "@healthRecordStreakNote": {
-    "description": "UI text in presentation/screens/health_record_screen.dart"
-  },
-  "healthRecordDone": "تم الإنجاز",
-  "@healthRecordDone": {
-    "description": "UI text in presentation/screens/health_record_screen.dart"
-  },
   "healthSyncTitle": "ربط تطبيق الصحة",
   "@healthSyncTitle": {
     "description": "UI text in presentation/screens/health_sync_screen.dart"
   },
-  "healthSyncConnected": "تم الربط بنجاح",
-  "@healthSyncConnected": {
-    "description": "UI text in presentation/screens/health_sync_screen.dart"
-  },
-  "healthSyncConnectPrompt": "اربطي تطبيق الصحة",
-  "@healthSyncConnectPrompt": {
-    "description": "UI text in presentation/screens/health_sync_screen.dart"
-  },
-  "healthSyncBody": "ربط Apple Health أو Google Fit يتيح لأخصائي التغذية متابعة نشاطك ومعدل ضربات قلبك تلقائياً دون إدخال يدوي، ويحسّن دقة خطتك الغذائية.",
-  "@healthSyncBody": {
-    "description": "UI text in presentation/screens/health_sync_screen.dart"
-  },
-  "healthSyncConnectNow": "ربط الآن",
-  "@healthSyncConnectNow": {
-    "description": "UI text in presentation/screens/health_sync_screen.dart"
-  },
-  "healthSyncBackToProgress": "العودة للتقدّم",
-  "@healthSyncBackToProgress": {
-    "description": "UI text in presentation/screens/health_sync_screen.dart"
-  },
-  "homeMealBreakfast": "الفطور",
-  "@homeMealBreakfast": {
-    "description": "UI text in presentation/screens/home_dashboard_screen.dart"
-  },
-  "homeBreakfastTime": "08:00 صباحاً",
-  "@homeBreakfastTime": {
-    "description": "UI text in presentation/screens/home_dashboard_screen.dart"
-  },
-  "homeBreakfastAlternative": "البديل المقترح: 100g جبنة قريش",
-  "@homeBreakfastAlternative": {
-    "description": "UI text in presentation/screens/home_dashboard_screen.dart"
-  },
   "homeItemTwoBoiledEggs": "2 بيضة مسلوقة",
   "@homeItemTwoBoiledEggs": {
-    "description": "UI text in presentation/screens/home_dashboard_screen.dart"
-  },
-  "homeItemOatBread": "1 رغيف خبز شوفان",
-  "@homeItemOatBread": {
-    "description": "UI text in presentation/screens/home_dashboard_screen.dart"
-  },
-  "homeItemCucumberTomatoes": "خيار وطماطم كرزية",
-  "@homeItemCucumberTomatoes": {
-    "description": "UI text in presentation/screens/home_dashboard_screen.dart"
-  },
-  "homeItemFresh": "طازج",
-  "@homeItemFresh": {
-    "description": "UI text in presentation/screens/home_dashboard_screen.dart"
-  },
-  "homeMealLunch": "الغداء",
-  "@homeMealLunch": {
-    "description": "UI text in presentation/screens/home_dashboard_screen.dart"
-  },
-  "homeLunchTime": "02:30 ظهراً",
-  "@homeLunchTime": {
-    "description": "UI text in presentation/screens/home_dashboard_screen.dart"
-  },
-  "homeItemGrilledChicken": "صدر دجاج مشوي",
-  "@homeItemGrilledChicken": {
-    "description": "UI text in presentation/screens/home_dashboard_screen.dart"
-  },
-  "homeItemBrownRice": "أرز أسمر مطبوخ على البخار",
-  "@homeItemBrownRice": {
-    "description": "UI text in presentation/screens/home_dashboard_screen.dart"
-  },
-  "homeItemGreenSalad": "سلطة خضراء مع متبلة زيت زيتون",
-  "@homeItemGreenSalad": {
-    "description": "UI text in presentation/screens/home_dashboard_screen.dart"
-  },
-  "homeItemLargePlate": "طبق كبير",
-  "@homeItemLargePlate": {
-    "description": "UI text in presentation/screens/home_dashboard_screen.dart"
-  },
-  "homeDinnerTitle": "العشاء - 08:00 مساءً",
-  "@homeDinnerTitle": {
-    "description": "UI text in presentation/screens/home_dashboard_screen.dart"
-  },
-  "homeDinnerSubtitle": "خفيف وخالٍ - 320 سعرة حرارية تقريباً",
-  "@homeDinnerSubtitle": {
-    "description": "UI text in presentation/screens/home_dashboard_screen.dart"
-  },
-  "homeItemGreekYogurt": "زبادي يوناني",
-  "@homeItemGreekYogurt": {
-    "description": "UI text in presentation/screens/home_dashboard_screen.dart"
-  },
-  "homeItemSauteedVeg": "خضار سوتيه",
-  "@homeItemSauteedVeg": {
-    "description": "UI text in presentation/screens/home_dashboard_screen.dart"
-  },
-  "homeItemBrownToast": "خبز توست أسمر",
-  "@homeItemBrownToast": {
-    "description": "UI text in presentation/screens/home_dashboard_screen.dart"
-  },
-  "homeEveningSnack": "سناك المساء",
-  "@homeEveningSnack": {
-    "description": "UI text in presentation/screens/home_dashboard_screen.dart"
-  },
-  "homeEveningSnackSubtitle": "فاكهة موسمية (120g)",
-  "@homeEveningSnackSubtitle": {
     "description": "UI text in presentation/screens/home_dashboard_screen.dart"
   },
   "homeSyncedItems": "تمت مزامنة {count} عنصر بنجاح",
@@ -1585,10 +1254,6 @@
   "@measurementsTitle": {
     "description": "UI text in presentation/screens/measurements_screen.dart"
   },
-  "measurementsDateLabel": "الجمعة، 19 سبتمبر 2025",
-  "@measurementsDateLabel": {
-    "description": "UI text in presentation/screens/measurements_screen.dart"
-  },
   "measurementsCurrentWeight": "الوزن الحالي",
   "@measurementsCurrentWeight": {
     "description": "UI text in presentation/screens/measurements_screen.dart"
@@ -1684,10 +1349,6 @@
   },
   "measurementsSyncNote": "بياناتك متزامنة مع قياسات العيادة وسجلك الشخصي.",
   "@measurementsSyncNote": {
-    "description": "UI text in presentation/screens/measurements_screen.dart"
-  },
-  "measurementsLastUpdated": "آخر تحديث: 19 سبتمبر",
-  "@measurementsLastUpdated": {
     "description": "UI text in presentation/screens/measurements_screen.dart"
   },
   "measurementsBodyCircumference": "محيط الجسم",
@@ -1949,14 +1610,6 @@
   },
   "notificationSettingsEnable": "تفعيل الإشعارات الآن",
   "@notificationSettingsEnable": {
-    "description": "UI text in presentation/screens/notification_settings_screen.dart"
-  },
-  "notificationSettingsEnabledTitle": "إشعارات الهاتف مفعّلة",
-  "@notificationSettingsEnabledTitle": {
-    "description": "UI text in presentation/screens/notification_settings_screen.dart"
-  },
-  "notificationSettingsEnabledDesc": "ستصلك تذكيرات الوجبات ورسائل أخصائي التغذية ومواعيد القياس.",
-  "@notificationSettingsEnabledDesc": {
     "description": "UI text in presentation/screens/notification_settings_screen.dart"
   },
   "notificationSettingsCalm": "هدوء وتوازن بدون تشويش",
@@ -2351,20 +2004,12 @@
   "@passwordErrorDigit": {
     "description": "UI text in presentation/screens/password_settings_screen.dart"
   },
-  "passwordErrorSpecial": "أضف رمزًا خاصًا واحدًا على الأقل",
-  "@passwordErrorSpecial": {
-    "description": "UI text in presentation/screens/password_settings_screen.dart"
-  },
   "passwordErrorMismatch": "أكدي كلمة المرور الجديدة بشكل مطابق",
   "@passwordErrorMismatch": {
     "description": "UI text in presentation/screens/password_settings_screen.dart"
   },
   "passwordSaved": "تم حفظ كلمة المرور بنجاح",
   "@passwordSaved": {
-    "description": "UI text in presentation/screens/password_settings_screen.dart"
-  },
-  "passwordResetLinkSent": "سيتم إرسال رابط استعادة كلمة المرور إلى رقمك أو بريدك المسجل",
-  "@passwordResetLinkSent": {
     "description": "UI text in presentation/screens/password_settings_screen.dart"
   },
   "passwordTitle": "كلمة المرور",
@@ -2397,10 +2042,6 @@
   },
   "passwordRuleMinLength8": "8 أحرف على الأقل",
   "@passwordRuleMinLength8": {
-    "description": "UI text in presentation/screens/password_settings_screen.dart"
-  },
-  "passwordRuleSpecial": "رمز خاص واحد على الأقل (!@#$%)",
-  "@passwordRuleSpecial": {
     "description": "UI text in presentation/screens/password_settings_screen.dart"
   },
   "passwordLogoutOthersNote": "بعد تغيير كلمة المرور بنجاح، سيتم تسجيل خروجك من الأجهزة الأخرى تلقائياً لحماية حسابك.",
@@ -2630,10 +2271,6 @@
   "@profileLogoutSubtitle": {
     "description": "UI text in presentation/screens/profile_screen.dart"
   },
-  "progressNextConsultation": "الموعد الاستشاري القادم: الأحد القادم، الساعة 5:00 مساءً",
-  "@progressNextConsultation": {
-    "description": "UI text in presentation/screens/progress_screen.dart"
-  },
   "progressNextAppointment": "موعدك القادم: {date}",
   "@progressNextAppointment": {
     "description": "Footer of the progress screen: the next booked appointment (API guide 12.4). date is already formatted with its time.",
@@ -2653,10 +2290,6 @@
   },
   "progressLiveSync": "متزامن مع العيادة",
   "@progressLiveSync": {
-    "description": "UI text in presentation/screens/progress_screen.dart"
-  },
-  "progressOnlineNow": "متصل الآن",
-  "@progressOnlineNow": {
     "description": "UI text in presentation/screens/progress_screen.dart"
   },
   "progressAndMeasurements": "التقدّم والقياسات",
@@ -2733,32 +2366,16 @@
       }
     }
   },
-  "progressUpdatedTwoDaysAgo": "آخر تحديث قبل يومين",
-  "@progressUpdatedTwoDaysAgo": {
-    "description": "UI text in presentation/screens/progress_screen.dart"
-  },
   "progressWaist": "الخصر",
   "@progressWaist": {
-    "description": "UI text in presentation/screens/progress_screen.dart"
-  },
-  "progressWaistDelta": "-4 سم",
-  "@progressWaistDelta": {
     "description": "UI text in presentation/screens/progress_screen.dart"
   },
   "progressHip": "الورك",
   "@progressHip": {
     "description": "UI text in presentation/screens/progress_screen.dart"
   },
-  "progressHipDelta": "-2 سم",
-  "@progressHipDelta": {
-    "description": "UI text in presentation/screens/progress_screen.dart"
-  },
   "progressThigh": "الفخذ",
   "@progressThigh": {
-    "description": "UI text in presentation/screens/progress_screen.dart"
-  },
-  "progressThighDelta": "-1 سم",
-  "@progressThighDelta": {
     "description": "UI text in presentation/screens/progress_screen.dart"
   },
   "progressArm": "الذراع",
@@ -2767,10 +2384,6 @@
   },
   "progressGuideLink": "دليل القياس المصوّر",
   "@progressGuideLink": {
-    "description": "UI text in presentation/screens/progress_screen.dart"
-  },
-  "progressWeeklyEvaluation": "تقييم الأسبوع الحالي",
-  "@progressWeeklyEvaluation": {
     "description": "UI text in presentation/screens/progress_screen.dart"
   },
   "progressLatestReview": "آخر تقييم من أخصائي التغذية",
@@ -2795,50 +2408,6 @@
       }
     }
   },
-  "progressExcellent": "أداء ممتاز",
-  "@progressExcellent": {
-    "description": "UI text in presentation/screens/progress_screen.dart"
-  },
-  "progressEvaluationBody": "استجابة ممتازة لمقاومة الإنسولين، مع تحسن ملموس في توازن الطاقة الحيوية أثناء ساعات الصباح وثبات ملحوظ في قياسات الخصر.",
-  "@progressEvaluationBody": {
-    "description": "UI text in presentation/screens/progress_screen.dart"
-  },
-  "progressEncouragementTitle": "رسالة تشجيعية خاصة",
-  "@progressEncouragementTitle": {
-    "description": "UI text in presentation/screens/progress_screen.dart"
-  },
-  "progressEncouragementQuote": "“فخورة جداً بوعيك والتزامك هذا الأسبوع! النزول تدريجي وصحي ومحيط الخصر تحسن بشكل ملحوظ. حافظي على نمط النوم الحالي وسنصل لهدف الشهر بكل سهولة”",
-  "@progressEncouragementQuote": {
-    "description": "Progress: encouragement card (no patient name)."
-  },
-  "progressVoiceNote": "ملاحظة صوتية من الدكتورة",
-  "@progressVoiceNote": {
-    "description": "UI text in presentation/screens/progress_screen.dart"
-  },
-  "progressTaskWater": "زيادة شرب الماء لـ 2.5 لتر يومياً",
-  "@progressTaskWater": {
-    "description": "UI text in presentation/screens/progress_screen.dart"
-  },
-  "progressTaskWaterDesc": "توزيع منتظم بمعدل كوب كل ساعتين بين الوجبات لتعزيز الأيض.",
-  "@progressTaskWaterDesc": {
-    "description": "UI text in presentation/screens/progress_screen.dart"
-  },
-  "progressTaskCottageCheese": "بديل جبنة القريش مع زيت الزيتون",
-  "@progressTaskCottageCheese": {
-    "description": "UI text in presentation/screens/progress_screen.dart"
-  },
-  "progressTaskCottageCheeseDesc": "اعتمادك كوجبة عشاء رئيسية لدعم الشبع البطيء وموازنة سكر الدم ليلاً.",
-  "@progressTaskCottageCheeseDesc": {
-    "description": "UI text in presentation/screens/progress_screen.dart"
-  },
-  "progressTaskWalk": "15 دقيقة مشي خفيف بعد العشاء",
-  "@progressTaskWalk": {
-    "description": "UI text in presentation/screens/progress_screen.dart"
-  },
-  "progressTaskWalkDesc": "تنشيط الدورة الدموية وتفريغ مخازن الجليكوجين قبل النوم.",
-  "@progressTaskWalkDesc": {
-    "description": "UI text in presentation/screens/progress_screen.dart"
-  },
   "progressNextWeekGuidance": "توجيهات الأسبوع القادم",
   "@progressNextWeekGuidance": {
     "description": "UI text in presentation/screens/progress_screen.dart"
@@ -2858,14 +2427,6 @@
   "progressAllNotes": "عرض كل الملاحظات",
   "@progressAllNotes": {
     "description": "Link from the progress screen to every note from the nutritionist."
-  },
-  "progressThreeTasks": "3 مهام محددة",
-  "@progressThreeTasks": {
-    "description": "UI text in presentation/screens/progress_screen.dart"
-  },
-  "progressDiscussWhatsApp": "مناقشة التقييم عبر الواتساب مباشرة",
-  "@progressDiscussWhatsApp": {
-    "description": "UI text in presentation/screens/progress_screen.dart"
   },
   "quantityKcalPerGrams": "{kcal} سعرة حرارية لكل {grams} غرام",
   "@quantityKcalPerGrams": {
@@ -3082,30 +2643,6 @@
   "@callsEmptyPast": {
     "description": "UI text in presentation/screens/schedule_calls_screen.dart"
   },
-  "wellbeingSleepQuality": "جودة نومك الليلة الماضية",
-  "@wellbeingSleepQuality": {
-    "description": "UI text in presentation/screens/sleep_stress_mood_screen.dart"
-  },
-  "wellbeingHours": "ساعات",
-  "@wellbeingHours": {
-    "description": "UI text in presentation/screens/sleep_stress_mood_screen.dart"
-  },
-  "wellbeingGoodSleep": "نوم جيد — استمري على نفس الروتين",
-  "@wellbeingGoodSleep": {
-    "description": "UI text in presentation/screens/sleep_stress_mood_screen.dart"
-  },
-  "wellbeingStressLevel": "مستوى الإجهاد",
-  "@wellbeingStressLevel": {
-    "description": "UI text in presentation/screens/sleep_stress_mood_screen.dart"
-  },
-  "wellbeingLow": "منخفض",
-  "@wellbeingLow": {
-    "description": "UI text in presentation/screens/sleep_stress_mood_screen.dart"
-  },
-  "wellbeingBreathingMoment": "لحظة تنفّس",
-  "@wellbeingBreathingMoment": {
-    "description": "UI text in presentation/screens/sleep_stress_mood_screen.dart"
-  },
   "specialistTitle": "ملف الأخصائي",
   "specialistAboutTitle": "عن أخصائي التغذية",
   "@specialistAboutTitle": {
@@ -3186,29 +2723,9 @@
   "@weeklyPlanLoggingHint": {
     "description": "UI text in presentation/screens/weekly_plan_screen.dart"
   },
-  "weeklyPlanWeekThree": "الأسبوع الثالث",
-  "@weeklyPlanWeekThree": {
-    "description": "UI text in presentation/screens/weekly_plan_screen.dart"
-  },
-  "weeklyPlanMonth": "سبتمبر 2025",
-  "@weeklyPlanMonth": {
-    "description": "UI text in presentation/screens/weekly_plan_screen.dart"
-  },
   "weeklyPlanDetailed": "خطة غذائية مفصلة",
   "@weeklyPlanDetailed": {
     "description": "UI text in presentation/screens/weekly_plan_screen.dart"
-  },
-  "weeklyPlanDayPlan": "خطة يوم {day} • {date} سبتمبر",
-  "@weeklyPlanDayPlan": {
-    "description": "UI text in presentation/screens/weekly_plan_screen.dart",
-    "placeholders": {
-      "day": {
-        "type": "Object"
-      },
-      "date": {
-        "type": "Object"
-      }
-    }
   },
   "macroHealthyFatsShort": "دهون صحية",
   "@macroHealthyFatsShort": {
@@ -3221,22 +2738,6 @@
   "macroFatLabel": "دهون",
   "@macroFatLabel": {
     "description": "Short macro label in stat boxes (meal logged)."
-  },
-  "weeklyPlanFats": "42 غ",
-  "@weeklyPlanFats": {
-    "description": "UI text in presentation/screens/weekly_plan_screen.dart"
-  },
-  "weeklyPlanCarbs": "120 غ",
-  "@weeklyPlanCarbs": {
-    "description": "UI text in presentation/screens/weekly_plan_screen.dart"
-  },
-  "weeklyPlanProtein": "105 غ",
-  "@weeklyPlanProtein": {
-    "description": "UI text in presentation/screens/weekly_plan_screen.dart"
-  },
-  "weeklyPlanSummary": "خطتك كما وضعها أخصائي التغذية",
-  "@weeklyPlanSummary": {
-    "description": "UI text in presentation/screens/weekly_plan_screen.dart"
   },
   "connectionStatusTitle": "حالة الاتصال",
   "@connectionStatusTitle": {
@@ -3784,14 +3285,6 @@
         "type": "String"
       }
     }
-  },
-  "nutritionistAvatarLabel": "صورة الأخصائي",
-  "@nutritionistAvatarLabel": {
-    "description": "Semantics label of the nutritionist avatar icon."
-  },
-  "patientAvatarLabel": "صورة الحساب",
-  "@patientAvatarLabel": {
-    "description": "Semantics label of the patient avatar icon."
   },
   "notificationsYesterday": "أمس",
   "@notificationsYesterday": {

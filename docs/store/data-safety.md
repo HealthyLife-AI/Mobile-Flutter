@@ -37,3 +37,15 @@ data (`lib/core/logging/crash_reporter.dart`):
 
 Crashlytics itself adds an installation id, the app version, the device model
 and the OS version.
+
+## Public pages
+
+The store listings point to pages on the public website
+(`https://frontend-nextjs-phi-ten.vercel.app`), which carry the language in the
+first path segment:
+
+- Privacy policy: `/ar/privacy` and `/en/privacy`
+- Account deletion (required by Google Play): `/ar/account-deletion` and
+  `/en/account-deletion`
+
+Deleting the account is also possible inside the app, with the password.

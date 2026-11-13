@@ -24,9 +24,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get commonSave => 'حفظ';
 
   @override
-  String get commonDone => 'تم';
-
-  @override
   String get commonClose => 'إغلاق';
 
   @override
@@ -45,9 +42,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get commonEmptyBody => 'ستظهر المعلومات هنا فور توفرها.';
 
   @override
-  String get commonErrorTitle => 'حدث خطأ ما';
-
-  @override
   String get commonErrorBody => 'تعذّر تحميل البيانات. حاول مرة أخرى.';
 
   @override
@@ -57,60 +51,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get commonOfflineBody => 'تحقق من اتصالك بالشبكة ثم أعد المحاولة.';
 
   @override
-  String get commonSuccess => 'تم بنجاح';
-
-  @override
-  String get failureNetwork =>
-      'تعذّر الاتصال بالخادم. تحقّق من شبكة الإنترنت وحاول مجدداً.';
-
-  @override
-  String get failureTimeout => 'استغرق الاتصال وقتاً طويلاً. حاول مرة أخرى.';
-
-  @override
-  String get failureServer => 'خدمة غير متاحة حالياً. حاول لاحقاً.';
-
-  @override
-  String get failureUnauthorized => 'انتهت صلاحية الجلسة. سجّل الدخول مجدداً.';
-
-  @override
-  String get failureNotFound => 'العنصر المطلوب غير موجود.';
-
-  @override
-  String get failureValidation => 'تحقق من البيانات المدخلة وأعد المحاولة.';
-
-  @override
-  String get failureCache => 'تعذّر قراءة البيانات المحفوظة محلياً.';
-
-  @override
-  String get failureUnexpected => 'حدث خطأ غير متوقع. حاول مرة أخرى.';
-
-  @override
   String get validationRequired => 'هذا الحقل مطلوب';
-
-  @override
-  String get validationInvalidEmail => 'أدخل بريداً إلكترونياً صحيحاً';
-
-  @override
-  String validationTooShort(int min) {
-    return 'يجب ألا يقل عن $min أحرف';
-  }
-
-  @override
-  String validationTooLong(int max) {
-    return 'يجب ألا يتجاوز $max حرفاً';
-  }
-
-  @override
-  String get validationMissingUppercase => 'أضف حرفاً كبيراً واحداً على الأقل';
-
-  @override
-  String get validationMissingDigit => 'أضف رقماً واحداً على الأقل';
-
-  @override
-  String get validationMissingSpecial => 'أضف رمزاً خاصاً واحداً على الأقل';
-
-  @override
-  String get validationMismatch => 'القيمتان غير متطابقتين';
 
   @override
   String get validationInvalidNumber => 'أرقاماً صحيحة فقط';
@@ -235,57 +176,10 @@ class AppLocalizationsAr extends AppLocalizations {
       'سيتم إنهاء جلستك بأمان، وتبقى سجلاتك وقياساتك محفوظة في حسابك.';
 
   @override
-  String get achievementsFullWeek => 'أسبوع كامل من الالتزام';
-
-  @override
-  String get achievementsSevenDayStreak => '7 أيام تسجيل متواصل';
-
-  @override
-  String get achievementsFirstMeal => 'أول وجبة مسجّلة';
-
-  @override
-  String get achievementsHydration => 'شرب الماء بانتظام';
-
-  @override
-  String get achievementsThirtyDays => '30 يوم التزام';
-
-  @override
-  String get achievementsFirstWeightGoal => 'هدف الوزن الأول';
-
-  @override
   String get achievementsTitle => 'إنجازاتك';
 
   @override
-  String get achievementsEncouragement => 'استمري، كل خطوة صغيرة تُحسب';
-
-  @override
-  String get activationWelcome => 'مرحباً بك في HealthyLife';
-
-  @override
-  String get activationSubtitle => 'تفعيل الوصول إلى برنامج المتابعة';
-
-  @override
-  String get activationCertified => 'معتمدة';
-
-  @override
-  String get activationSpecialistRole => 'أخصائي التغذية وإدارة الأيض';
-
-  @override
-  String get activationInvitedBy =>
-      'تمت دعوتك بواسطة أخصائي التغذية لربط ملفك الصحي وبدء خطتك الغذائية.';
-
-  @override
-  String get activationPrefilledNote =>
-      'تم إدخال بياناتك الأساسية مسبقاً من قبل العيادة';
-
-  @override
   String get activationNewPassword => 'كلمة المرور الجديدة';
-
-  @override
-  String get activationConfirmPassword => 'تأكيد كلمة المرور';
-
-  @override
-  String get passwordRuleMinLength => '8 أحرف أو أكثر';
 
   @override
   String get passwordRuleUppercase => 'حرف كبير واحد على الأقل (A-Z)';
@@ -294,16 +188,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get passwordRuleDigit => 'رقم واحد على الأقل (0-9)';
 
   @override
-  String get activationCta => 'تفعيل الحساب وبدء الخطة';
-
-  @override
   String get activationEncryptedNote => 'الاتصال بين التطبيق وخوادمنا مشفّر.';
-
-  @override
-  String get activationLinkValid => 'رابط ساري وعامل';
-
-  @override
-  String get activationLinkExpired => 'رابط منتهٍ / مُستخدم';
 
   @override
   String get barcodeTitle => 'امسح باركود المنتج';
@@ -394,9 +279,6 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get dailyLogActiveDay => 'اليوم النشط';
-
-  @override
-  String get demoDateSunday21Sep2025 => 'الأحد، 21 سبتمبر 2025';
 
   @override
   String get dailyLogLoggedMeals => 'الوجبات المسجلة';
@@ -524,9 +406,6 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
-  String get demoDateFriday19Sep2025 => 'الجمعة، 19 سبتمبر 2025';
-
-  @override
   String get firstMeasurementBaselineSaved =>
       'تم توثيق نقطة البداية بنجاح في ملفك الصحي.';
 
@@ -582,18 +461,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get measurementPromptViewProgress => 'عرض تقدّمي الآن';
 
   @override
-  String get followUpSuccessfully => 'بنجاح';
-
-  @override
-  String get followUpStatus => 'حالة المتابعة';
-
-  @override
-  String get followUpTwelveWeeks => '12 أسبوع';
-
-  @override
-  String get followUpMeasurementsLogged => 'القياسات المسجلة';
-
-  @override
   String get followUpMealAdherence => 'الالتزام بالوجبات';
 
   @override
@@ -621,9 +488,6 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get followUpContactWhatsApp => 'التواصل مع أخصائي التغذية عبر واتساب';
-
-  @override
-  String get followUpViewFinalReport => 'استعراض ملخص التقرير النهائي للمتابعة';
 
   @override
   String get followUpTerms => 'شروط الخدمة وسياسة الخصوصية للبيانات الصحية';
@@ -658,9 +522,6 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get foodSearchScanBarcode => 'مسح الباركود';
-
-  @override
-  String get foodSearchSuggested => 'الأطعمة المقترحة';
 
   @override
   String foodSearchPer100g(Object amount) {
@@ -814,65 +675,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get healthRecordAllergies => 'الحساسية والموانع';
 
   @override
-  String get healthRecordBadges => 'الأوسمة وسجل الإنجازات';
-
-  @override
-  String get healthRecordBadgesUnlocked => '3 أوسمة مفتوحة';
-
-  @override
-  String get healthRecordBadgeFirstGoal => 'الهدف الأول';
-
-  @override
-  String get healthRecordBadgeFirstGoalDesc => 'تسجيل أول قياس وزني بنجاح';
-
-  @override
-  String get healthRecordBadgeIronCommitment => 'التزام حديدي';
-
-  @override
-  String get healthRecordBadgeIronCommitmentDesc => '7 أيام متواصلة من التوثيق';
-
-  @override
-  String get healthRecordBadgeWaterFriend => 'صديق الماء';
-
-  @override
-  String get healthRecordBadgeWaterFriendDesc =>
-      'شرب 2.5 لتر لـ 5 أيام متتالية';
-
-  @override
-  String get healthRecordBadgeLose5kg => 'خسارة 5 كجم';
-
-  @override
-  String get healthRecordBadgeLose5kgDesc => 'باقي 1.2 كجم للفتح';
-
-  @override
-  String get healthRecordShareSummary => 'مشاركة الملخص والإنجازات مع الأخصائي';
-
-  @override
-  String get healthRecordActiveNow => 'نشط الآن';
-
-  @override
-  String get healthRecordAgeFileCode => '26 سنة • كود الملف: ';
-
-  @override
-  String get healthRecordLevel => 'المستوى 3: بطل الالتزام';
-
-  @override
-  String get healthRecordExcellentWeek => 'أداء ممتاز خلال الأسبوع الحالي';
-
-  @override
-  String healthRecordPoints(Object points) {
-    return '$points / 1000 ن';
-  }
-
-  @override
-  String get healthRecordPointsToNext => 'باقي 250 نقطة للوصول للمستوى الرابع';
-
-  @override
-  String healthRecordPercentComplete(Object percent) {
-    return '$percent% مكتمل';
-  }
-
-  @override
   String get healthRecordCurrentGoal => 'الهدف الصحي الاستراتيجي الحالي';
 
   @override
@@ -900,95 +702,10 @@ class AppLocalizationsAr extends AppLocalizations {
       'طلب تعديل أو إضافة تقرير إلى السجل الصحي';
 
   @override
-  String healthRecordStreakDays(Object days) {
-    return '$days يوماً متتالياً من الالتزام التام!';
-  }
-
-  @override
-  String get healthRecordStreakNote =>
-      'تسجيل الوجبات والنشاط يومياً يحافظ على استمرارك.';
-
-  @override
-  String get healthRecordDone => 'تم الإنجاز';
-
-  @override
   String get healthSyncTitle => 'ربط تطبيق الصحة';
 
   @override
-  String get healthSyncConnected => 'تم الربط بنجاح';
-
-  @override
-  String get healthSyncConnectPrompt => 'اربطي تطبيق الصحة';
-
-  @override
-  String get healthSyncBody =>
-      'ربط Apple Health أو Google Fit يتيح لأخصائي التغذية متابعة نشاطك ومعدل ضربات قلبك تلقائياً دون إدخال يدوي، ويحسّن دقة خطتك الغذائية.';
-
-  @override
-  String get healthSyncConnectNow => 'ربط الآن';
-
-  @override
-  String get healthSyncBackToProgress => 'العودة للتقدّم';
-
-  @override
-  String get homeMealBreakfast => 'الفطور';
-
-  @override
-  String get homeBreakfastTime => '08:00 صباحاً';
-
-  @override
-  String get homeBreakfastAlternative => 'البديل المقترح: 100g جبنة قريش';
-
-  @override
   String get homeItemTwoBoiledEggs => '2 بيضة مسلوقة';
-
-  @override
-  String get homeItemOatBread => '1 رغيف خبز شوفان';
-
-  @override
-  String get homeItemCucumberTomatoes => 'خيار وطماطم كرزية';
-
-  @override
-  String get homeItemFresh => 'طازج';
-
-  @override
-  String get homeMealLunch => 'الغداء';
-
-  @override
-  String get homeLunchTime => '02:30 ظهراً';
-
-  @override
-  String get homeItemGrilledChicken => 'صدر دجاج مشوي';
-
-  @override
-  String get homeItemBrownRice => 'أرز أسمر مطبوخ على البخار';
-
-  @override
-  String get homeItemGreenSalad => 'سلطة خضراء مع متبلة زيت زيتون';
-
-  @override
-  String get homeItemLargePlate => 'طبق كبير';
-
-  @override
-  String get homeDinnerTitle => 'العشاء - 08:00 مساءً';
-
-  @override
-  String get homeDinnerSubtitle => 'خفيف وخالٍ - 320 سعرة حرارية تقريباً';
-
-  @override
-  String get homeItemGreekYogurt => 'زبادي يوناني';
-
-  @override
-  String get homeItemSauteedVeg => 'خضار سوتيه';
-
-  @override
-  String get homeItemBrownToast => 'خبز توست أسمر';
-
-  @override
-  String get homeEveningSnack => 'سناك المساء';
-
-  @override
-  String get homeEveningSnackSubtitle => 'فاكهة موسمية (120g)';
 
   @override
   String homeSyncedItems(Object count) {
@@ -1298,9 +1015,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get measurementsTitle => 'الوزن ومحيط الجسم';
 
   @override
-  String get measurementsDateLabel => 'الجمعة، 19 سبتمبر 2025';
-
-  @override
   String get measurementsCurrentWeight => 'الوزن الحالي';
 
   @override
@@ -1380,9 +1094,6 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get measurementsSyncNote =>
       'بياناتك متزامنة مع قياسات العيادة وسجلك الشخصي.';
-
-  @override
-  String get measurementsLastUpdated => 'آخر تحديث: 19 سبتمبر';
 
   @override
   String get measurementsBodyCircumference => 'محيط الجسم';
@@ -1582,13 +1293,6 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get notificationSettingsEnable => 'تفعيل الإشعارات الآن';
-
-  @override
-  String get notificationSettingsEnabledTitle => 'إشعارات الهاتف مفعّلة';
-
-  @override
-  String get notificationSettingsEnabledDesc =>
-      'ستصلك تذكيرات الوجبات ورسائل أخصائي التغذية ومواعيد القياس.';
 
   @override
   String get notificationSettingsCalm => 'هدوء وتوازن بدون تشويش';
@@ -1897,17 +1601,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get passwordErrorDigit => 'أضف رقمًا واحدًا على الأقل';
 
   @override
-  String get passwordErrorSpecial => 'أضف رمزًا خاصًا واحدًا على الأقل';
-
-  @override
   String get passwordErrorMismatch => 'أكدي كلمة المرور الجديدة بشكل مطابق';
 
   @override
   String get passwordSaved => 'تم حفظ كلمة المرور بنجاح';
-
-  @override
-  String get passwordResetLinkSent =>
-      'سيتم إرسال رابط استعادة كلمة المرور إلى رقمك أو بريدك المسجل';
 
   @override
   String get passwordTitle => 'كلمة المرور';
@@ -1932,9 +1629,6 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get passwordRuleMinLength8 => '8 أحرف على الأقل';
-
-  @override
-  String get passwordRuleSpecial => 'رمز خاص واحد على الأقل (!@#\$%)';
 
   @override
   String get passwordLogoutOthersNote =>
@@ -2121,10 +1815,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get profileLogoutSubtitle => 'إنهاء الجلسة بأمان من هذا الجهاز';
 
   @override
-  String get progressNextConsultation =>
-      'الموعد الاستشاري القادم: الأحد القادم، الساعة 5:00 مساءً';
-
-  @override
   String progressNextAppointment(String date) {
     return 'موعدك القادم: $date';
   }
@@ -2137,9 +1827,6 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get progressLiveSync => 'متزامن مع العيادة';
-
-  @override
-  String get progressOnlineNow => 'متصل الآن';
 
   @override
   String get progressAndMeasurements => 'التقدّم والقياسات';
@@ -2195,34 +1882,19 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
-  String get progressUpdatedTwoDaysAgo => 'آخر تحديث قبل يومين';
-
-  @override
   String get progressWaist => 'الخصر';
-
-  @override
-  String get progressWaistDelta => '-4 سم';
 
   @override
   String get progressHip => 'الورك';
 
   @override
-  String get progressHipDelta => '-2 سم';
-
-  @override
   String get progressThigh => 'الفخذ';
-
-  @override
-  String get progressThighDelta => '-1 سم';
 
   @override
   String get progressArm => 'الذراع';
 
   @override
   String get progressGuideLink => 'دليل القياس المصوّر';
-
-  @override
-  String get progressWeeklyEvaluation => 'تقييم الأسبوع الحالي';
 
   @override
   String get progressLatestReview => 'آخر تقييم من أخصائي التغذية';
@@ -2239,44 +1911,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String progressReviewedBy(String name) {
     return 'تمت المراجعة من $name';
   }
-
-  @override
-  String get progressExcellent => 'أداء ممتاز';
-
-  @override
-  String get progressEvaluationBody =>
-      'استجابة ممتازة لمقاومة الإنسولين، مع تحسن ملموس في توازن الطاقة الحيوية أثناء ساعات الصباح وثبات ملحوظ في قياسات الخصر.';
-
-  @override
-  String get progressEncouragementTitle => 'رسالة تشجيعية خاصة';
-
-  @override
-  String get progressEncouragementQuote =>
-      '“فخورة جداً بوعيك والتزامك هذا الأسبوع! النزول تدريجي وصحي ومحيط الخصر تحسن بشكل ملحوظ. حافظي على نمط النوم الحالي وسنصل لهدف الشهر بكل سهولة”';
-
-  @override
-  String get progressVoiceNote => 'ملاحظة صوتية من الدكتورة';
-
-  @override
-  String get progressTaskWater => 'زيادة شرب الماء لـ 2.5 لتر يومياً';
-
-  @override
-  String get progressTaskWaterDesc =>
-      'توزيع منتظم بمعدل كوب كل ساعتين بين الوجبات لتعزيز الأيض.';
-
-  @override
-  String get progressTaskCottageCheese => 'بديل جبنة القريش مع زيت الزيتون';
-
-  @override
-  String get progressTaskCottageCheeseDesc =>
-      'اعتمادك كوجبة عشاء رئيسية لدعم الشبع البطيء وموازنة سكر الدم ليلاً.';
-
-  @override
-  String get progressTaskWalk => '15 دقيقة مشي خفيف بعد العشاء';
-
-  @override
-  String get progressTaskWalkDesc =>
-      'تنشيط الدورة الدموية وتفريغ مخازن الجليكوجين قبل النوم.';
 
   @override
   String get progressNextWeekGuidance => 'توجيهات الأسبوع القادم';
@@ -2296,12 +1930,6 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get progressAllNotes => 'عرض كل الملاحظات';
-
-  @override
-  String get progressThreeTasks => '3 مهام محددة';
-
-  @override
-  String get progressDiscussWhatsApp => 'مناقشة التقييم عبر الواتساب مباشرة';
 
   @override
   String quantityKcalPerGrams(Object kcal, Object grams) {
@@ -2445,24 +2073,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get callsEmptyPast => 'لا توجد مواعيد سابقة بعد.';
 
   @override
-  String get wellbeingSleepQuality => 'جودة نومك الليلة الماضية';
-
-  @override
-  String get wellbeingHours => 'ساعات';
-
-  @override
-  String get wellbeingGoodSleep => 'نوم جيد — استمري على نفس الروتين';
-
-  @override
-  String get wellbeingStressLevel => 'مستوى الإجهاد';
-
-  @override
-  String get wellbeingLow => 'منخفض';
-
-  @override
-  String get wellbeingBreathingMoment => 'لحظة تنفّس';
-
-  @override
   String get specialistTitle => 'ملف الأخصائي';
 
   @override
@@ -2526,18 +2136,7 @@ class AppLocalizationsAr extends AppLocalizations {
       'لتسجيل الوجبات وتأكيد تناولها يرجى التوجه لتبويب خطتي اليومية';
 
   @override
-  String get weeklyPlanWeekThree => 'الأسبوع الثالث';
-
-  @override
-  String get weeklyPlanMonth => 'سبتمبر 2025';
-
-  @override
   String get weeklyPlanDetailed => 'خطة غذائية مفصلة';
-
-  @override
-  String weeklyPlanDayPlan(Object day, Object date) {
-    return 'خطة يوم $day • $date سبتمبر';
-  }
 
   @override
   String get macroHealthyFatsShort => 'دهون صحية';
@@ -2547,18 +2146,6 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get macroFatLabel => 'دهون';
-
-  @override
-  String get weeklyPlanFats => '42 غ';
-
-  @override
-  String get weeklyPlanCarbs => '120 غ';
-
-  @override
-  String get weeklyPlanProtein => '105 غ';
-
-  @override
-  String get weeklyPlanSummary => 'خطتك كما وضعها أخصائي التغذية';
 
   @override
   String get connectionStatusTitle => 'حالة الاتصال';
@@ -3308,12 +2895,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String weeklyPlanDayOf(String date) {
     return 'خطة يوم $date';
   }
-
-  @override
-  String get nutritionistAvatarLabel => 'صورة الأخصائي';
-
-  @override
-  String get patientAvatarLabel => 'صورة الحساب';
 
   @override
   String get notificationsYesterday => 'أمس';

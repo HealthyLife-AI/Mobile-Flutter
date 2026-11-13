@@ -128,12 +128,6 @@ abstract class AppLocalizations {
   /// **'حفظ'**
   String get commonSave;
 
-  /// No description provided for @commonDone.
-  ///
-  /// In ar, this message translates to:
-  /// **'تم'**
-  String get commonDone;
-
   /// No description provided for @commonClose.
   ///
   /// In ar, this message translates to:
@@ -170,12 +164,6 @@ abstract class AppLocalizations {
   /// **'ستظهر المعلومات هنا فور توفرها.'**
   String get commonEmptyBody;
 
-  /// No description provided for @commonErrorTitle.
-  ///
-  /// In ar, this message translates to:
-  /// **'حدث خطأ ما'**
-  String get commonErrorTitle;
-
   /// No description provided for @commonErrorBody.
   ///
   /// In ar, this message translates to:
@@ -194,107 +182,11 @@ abstract class AppLocalizations {
   /// **'تحقق من اتصالك بالشبكة ثم أعد المحاولة.'**
   String get commonOfflineBody;
 
-  /// No description provided for @commonSuccess.
-  ///
-  /// In ar, this message translates to:
-  /// **'تم بنجاح'**
-  String get commonSuccess;
-
-  /// No description provided for @failureNetwork.
-  ///
-  /// In ar, this message translates to:
-  /// **'تعذّر الاتصال بالخادم. تحقّق من شبكة الإنترنت وحاول مجدداً.'**
-  String get failureNetwork;
-
-  /// No description provided for @failureTimeout.
-  ///
-  /// In ar, this message translates to:
-  /// **'استغرق الاتصال وقتاً طويلاً. حاول مرة أخرى.'**
-  String get failureTimeout;
-
-  /// No description provided for @failureServer.
-  ///
-  /// In ar, this message translates to:
-  /// **'خدمة غير متاحة حالياً. حاول لاحقاً.'**
-  String get failureServer;
-
-  /// No description provided for @failureUnauthorized.
-  ///
-  /// In ar, this message translates to:
-  /// **'انتهت صلاحية الجلسة. سجّل الدخول مجدداً.'**
-  String get failureUnauthorized;
-
-  /// No description provided for @failureNotFound.
-  ///
-  /// In ar, this message translates to:
-  /// **'العنصر المطلوب غير موجود.'**
-  String get failureNotFound;
-
-  /// No description provided for @failureValidation.
-  ///
-  /// In ar, this message translates to:
-  /// **'تحقق من البيانات المدخلة وأعد المحاولة.'**
-  String get failureValidation;
-
-  /// No description provided for @failureCache.
-  ///
-  /// In ar, this message translates to:
-  /// **'تعذّر قراءة البيانات المحفوظة محلياً.'**
-  String get failureCache;
-
-  /// No description provided for @failureUnexpected.
-  ///
-  /// In ar, this message translates to:
-  /// **'حدث خطأ غير متوقع. حاول مرة أخرى.'**
-  String get failureUnexpected;
-
   /// No description provided for @validationRequired.
   ///
   /// In ar, this message translates to:
   /// **'هذا الحقل مطلوب'**
   String get validationRequired;
-
-  /// No description provided for @validationInvalidEmail.
-  ///
-  /// In ar, this message translates to:
-  /// **'أدخل بريداً إلكترونياً صحيحاً'**
-  String get validationInvalidEmail;
-
-  /// No description provided for @validationTooShort.
-  ///
-  /// In ar, this message translates to:
-  /// **'يجب ألا يقل عن {min} أحرف'**
-  String validationTooShort(int min);
-
-  /// No description provided for @validationTooLong.
-  ///
-  /// In ar, this message translates to:
-  /// **'يجب ألا يتجاوز {max} حرفاً'**
-  String validationTooLong(int max);
-
-  /// No description provided for @validationMissingUppercase.
-  ///
-  /// In ar, this message translates to:
-  /// **'أضف حرفاً كبيراً واحداً على الأقل'**
-  String get validationMissingUppercase;
-
-  /// No description provided for @validationMissingDigit.
-  ///
-  /// In ar, this message translates to:
-  /// **'أضف رقماً واحداً على الأقل'**
-  String get validationMissingDigit;
-
-  /// No description provided for @validationMissingSpecial.
-  ///
-  /// In ar, this message translates to:
-  /// **'أضف رمزاً خاصاً واحداً على الأقل'**
-  String get validationMissingSpecial;
-
-  /// No description provided for @validationMismatch.
-  ///
-  /// In ar, this message translates to:
-  /// **'القيمتان غير متطابقتين'**
-  String get validationMismatch;
 
   /// No description provided for @validationInvalidNumber.
   ///
@@ -521,104 +413,14 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/achievements_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'أسبوع كامل من الالتزام'**
-  String get achievementsFullWeek;
-
-  /// UI text in presentation/screens/achievements_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'7 أيام تسجيل متواصل'**
-  String get achievementsSevenDayStreak;
-
-  /// UI text in presentation/screens/achievements_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'أول وجبة مسجّلة'**
-  String get achievementsFirstMeal;
-
-  /// UI text in presentation/screens/achievements_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'شرب الماء بانتظام'**
-  String get achievementsHydration;
-
-  /// UI text in presentation/screens/achievements_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'30 يوم التزام'**
-  String get achievementsThirtyDays;
-
-  /// UI text in presentation/screens/achievements_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'هدف الوزن الأول'**
-  String get achievementsFirstWeightGoal;
-
-  /// UI text in presentation/screens/achievements_screen.dart
-  ///
-  /// In ar, this message translates to:
   /// **'إنجازاتك'**
   String get achievementsTitle;
-
-  /// UI text in presentation/screens/achievements_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'استمري، كل خطوة صغيرة تُحسب'**
-  String get achievementsEncouragement;
-
-  /// UI text in presentation/screens/activation_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'مرحباً بك في HealthyLife'**
-  String get activationWelcome;
-
-  /// UI text in presentation/screens/activation_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'تفعيل الوصول إلى برنامج المتابعة'**
-  String get activationSubtitle;
-
-  /// UI text in presentation/screens/activation_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'معتمدة'**
-  String get activationCertified;
-
-  /// UI text in presentation/screens/activation_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'أخصائي التغذية وإدارة الأيض'**
-  String get activationSpecialistRole;
-
-  /// UI text in presentation/screens/activation_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'تمت دعوتك بواسطة أخصائي التغذية لربط ملفك الصحي وبدء خطتك الغذائية.'**
-  String get activationInvitedBy;
-
-  /// UI text in presentation/screens/activation_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'تم إدخال بياناتك الأساسية مسبقاً من قبل العيادة'**
-  String get activationPrefilledNote;
 
   /// UI text in presentation/screens/activation_screen.dart
   ///
   /// In ar, this message translates to:
   /// **'كلمة المرور الجديدة'**
   String get activationNewPassword;
-
-  /// UI text in presentation/screens/activation_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'تأكيد كلمة المرور'**
-  String get activationConfirmPassword;
-
-  /// UI text in presentation/screens/activation_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'8 أحرف أو أكثر'**
-  String get passwordRuleMinLength;
 
   /// UI text in presentation/screens/activation_screen.dart
   ///
@@ -635,26 +437,8 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/activation_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'تفعيل الحساب وبدء الخطة'**
-  String get activationCta;
-
-  /// UI text in presentation/screens/activation_screen.dart
-  ///
-  /// In ar, this message translates to:
   /// **'الاتصال بين التطبيق وخوادمنا مشفّر.'**
   String get activationEncryptedNote;
-
-  /// UI text in presentation/screens/activation_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'رابط ساري وعامل'**
-  String get activationLinkValid;
-
-  /// UI text in presentation/screens/activation_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'رابط منتهٍ / مُستخدم'**
-  String get activationLinkExpired;
 
   /// UI text in presentation/screens/barcode_scanner_screen.dart
   ///
@@ -805,12 +589,6 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'اليوم النشط'**
   String get dailyLogActiveDay;
-
-  /// UI text in presentation/screens/daily_log_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'الأحد، 21 سبتمبر 2025'**
-  String get demoDateSunday21Sep2025;
 
   /// UI text in presentation/screens/daily_log_screen.dart
   ///
@@ -1031,12 +809,6 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/first_measurement_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'الجمعة، 19 سبتمبر 2025'**
-  String get demoDateFriday19Sep2025;
-
-  /// UI text in presentation/screens/first_measurement_screen.dart
-  ///
-  /// In ar, this message translates to:
   /// **'تم توثيق نقطة البداية بنجاح في ملفك الصحي.'**
   String get firstMeasurementBaselineSaved;
 
@@ -1133,30 +905,6 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/follow_up_ended_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'بنجاح'**
-  String get followUpSuccessfully;
-
-  /// UI text in presentation/screens/follow_up_ended_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'حالة المتابعة'**
-  String get followUpStatus;
-
-  /// UI text in presentation/screens/follow_up_ended_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'12 أسبوع'**
-  String get followUpTwelveWeeks;
-
-  /// UI text in presentation/screens/follow_up_ended_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'القياسات المسجلة'**
-  String get followUpMeasurementsLogged;
-
-  /// UI text in presentation/screens/follow_up_ended_screen.dart
-  ///
-  /// In ar, this message translates to:
   /// **'الالتزام بالوجبات'**
   String get followUpMealAdherence;
 
@@ -1207,12 +955,6 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'التواصل مع أخصائي التغذية عبر واتساب'**
   String get followUpContactWhatsApp;
-
-  /// UI text in presentation/screens/follow_up_ended_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'استعراض ملخص التقرير النهائي للمتابعة'**
-  String get followUpViewFinalReport;
 
   /// UI text in presentation/screens/follow_up_ended_screen.dart
   ///
@@ -1279,12 +1021,6 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'مسح الباركود'**
   String get foodSearchScanBarcode;
-
-  /// UI text in presentation/screens/food_search_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'الأطعمة المقترحة'**
-  String get foodSearchSuggested;
 
   /// UI text in presentation/screens/food_search_screen.dart
   ///
@@ -1535,114 +1271,6 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/health_record_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'الأوسمة وسجل الإنجازات'**
-  String get healthRecordBadges;
-
-  /// UI text in presentation/screens/health_record_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'3 أوسمة مفتوحة'**
-  String get healthRecordBadgesUnlocked;
-
-  /// UI text in presentation/screens/health_record_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'الهدف الأول'**
-  String get healthRecordBadgeFirstGoal;
-
-  /// UI text in presentation/screens/health_record_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'تسجيل أول قياس وزني بنجاح'**
-  String get healthRecordBadgeFirstGoalDesc;
-
-  /// UI text in presentation/screens/health_record_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'التزام حديدي'**
-  String get healthRecordBadgeIronCommitment;
-
-  /// UI text in presentation/screens/health_record_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'7 أيام متواصلة من التوثيق'**
-  String get healthRecordBadgeIronCommitmentDesc;
-
-  /// UI text in presentation/screens/health_record_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'صديق الماء'**
-  String get healthRecordBadgeWaterFriend;
-
-  /// UI text in presentation/screens/health_record_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'شرب 2.5 لتر لـ 5 أيام متتالية'**
-  String get healthRecordBadgeWaterFriendDesc;
-
-  /// UI text in presentation/screens/health_record_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'خسارة 5 كجم'**
-  String get healthRecordBadgeLose5kg;
-
-  /// UI text in presentation/screens/health_record_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'باقي 1.2 كجم للفتح'**
-  String get healthRecordBadgeLose5kgDesc;
-
-  /// UI text in presentation/screens/health_record_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'مشاركة الملخص والإنجازات مع الأخصائي'**
-  String get healthRecordShareSummary;
-
-  /// UI text in presentation/screens/health_record_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'نشط الآن'**
-  String get healthRecordActiveNow;
-
-  /// UI text in presentation/screens/health_record_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'26 سنة • كود الملف: '**
-  String get healthRecordAgeFileCode;
-
-  /// UI text in presentation/screens/health_record_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'المستوى 3: بطل الالتزام'**
-  String get healthRecordLevel;
-
-  /// UI text in presentation/screens/health_record_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'أداء ممتاز خلال الأسبوع الحالي'**
-  String get healthRecordExcellentWeek;
-
-  /// UI text in presentation/screens/health_record_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'{points} / 1000 ن'**
-  String healthRecordPoints(Object points);
-
-  /// UI text in presentation/screens/health_record_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'باقي 250 نقطة للوصول للمستوى الرابع'**
-  String get healthRecordPointsToNext;
-
-  /// UI text in presentation/screens/health_record_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'{percent}% مكتمل'**
-  String healthRecordPercentComplete(Object percent);
-
-  /// UI text in presentation/screens/health_record_screen.dart
-  ///
-  /// In ar, this message translates to:
   /// **'الهدف الصحي الاستراتيجي الحالي'**
   String get healthRecordCurrentGoal;
 
@@ -1688,179 +1316,17 @@ abstract class AppLocalizations {
   /// **'طلب تعديل أو إضافة تقرير إلى السجل الصحي'**
   String get healthRecordRequestChange;
 
-  /// UI text in presentation/screens/health_record_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'{days} يوماً متتالياً من الالتزام التام!'**
-  String healthRecordStreakDays(Object days);
-
-  /// UI text in presentation/screens/health_record_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'تسجيل الوجبات والنشاط يومياً يحافظ على استمرارك.'**
-  String get healthRecordStreakNote;
-
-  /// UI text in presentation/screens/health_record_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'تم الإنجاز'**
-  String get healthRecordDone;
-
   /// UI text in presentation/screens/health_sync_screen.dart
   ///
   /// In ar, this message translates to:
   /// **'ربط تطبيق الصحة'**
   String get healthSyncTitle;
 
-  /// UI text in presentation/screens/health_sync_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'تم الربط بنجاح'**
-  String get healthSyncConnected;
-
-  /// UI text in presentation/screens/health_sync_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'اربطي تطبيق الصحة'**
-  String get healthSyncConnectPrompt;
-
-  /// UI text in presentation/screens/health_sync_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'ربط Apple Health أو Google Fit يتيح لأخصائي التغذية متابعة نشاطك ومعدل ضربات قلبك تلقائياً دون إدخال يدوي، ويحسّن دقة خطتك الغذائية.'**
-  String get healthSyncBody;
-
-  /// UI text in presentation/screens/health_sync_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'ربط الآن'**
-  String get healthSyncConnectNow;
-
-  /// UI text in presentation/screens/health_sync_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'العودة للتقدّم'**
-  String get healthSyncBackToProgress;
-
-  /// UI text in presentation/screens/home_dashboard_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'الفطور'**
-  String get homeMealBreakfast;
-
-  /// UI text in presentation/screens/home_dashboard_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'08:00 صباحاً'**
-  String get homeBreakfastTime;
-
-  /// UI text in presentation/screens/home_dashboard_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'البديل المقترح: 100g جبنة قريش'**
-  String get homeBreakfastAlternative;
-
   /// UI text in presentation/screens/home_dashboard_screen.dart
   ///
   /// In ar, this message translates to:
   /// **'2 بيضة مسلوقة'**
   String get homeItemTwoBoiledEggs;
-
-  /// UI text in presentation/screens/home_dashboard_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'1 رغيف خبز شوفان'**
-  String get homeItemOatBread;
-
-  /// UI text in presentation/screens/home_dashboard_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'خيار وطماطم كرزية'**
-  String get homeItemCucumberTomatoes;
-
-  /// UI text in presentation/screens/home_dashboard_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'طازج'**
-  String get homeItemFresh;
-
-  /// UI text in presentation/screens/home_dashboard_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'الغداء'**
-  String get homeMealLunch;
-
-  /// UI text in presentation/screens/home_dashboard_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'02:30 ظهراً'**
-  String get homeLunchTime;
-
-  /// UI text in presentation/screens/home_dashboard_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'صدر دجاج مشوي'**
-  String get homeItemGrilledChicken;
-
-  /// UI text in presentation/screens/home_dashboard_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'أرز أسمر مطبوخ على البخار'**
-  String get homeItemBrownRice;
-
-  /// UI text in presentation/screens/home_dashboard_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'سلطة خضراء مع متبلة زيت زيتون'**
-  String get homeItemGreenSalad;
-
-  /// UI text in presentation/screens/home_dashboard_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'طبق كبير'**
-  String get homeItemLargePlate;
-
-  /// UI text in presentation/screens/home_dashboard_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'العشاء - 08:00 مساءً'**
-  String get homeDinnerTitle;
-
-  /// UI text in presentation/screens/home_dashboard_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'خفيف وخالٍ - 320 سعرة حرارية تقريباً'**
-  String get homeDinnerSubtitle;
-
-  /// UI text in presentation/screens/home_dashboard_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'زبادي يوناني'**
-  String get homeItemGreekYogurt;
-
-  /// UI text in presentation/screens/home_dashboard_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'خضار سوتيه'**
-  String get homeItemSauteedVeg;
-
-  /// UI text in presentation/screens/home_dashboard_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'خبز توست أسمر'**
-  String get homeItemBrownToast;
-
-  /// UI text in presentation/screens/home_dashboard_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'سناك المساء'**
-  String get homeEveningSnack;
-
-  /// UI text in presentation/screens/home_dashboard_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'فاكهة موسمية (120g)'**
-  String get homeEveningSnackSubtitle;
 
   /// UI text in presentation/screens/home_dashboard_screen.dart
   ///
@@ -2369,12 +1835,6 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/measurements_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'الجمعة، 19 سبتمبر 2025'**
-  String get measurementsDateLabel;
-
-  /// UI text in presentation/screens/measurements_screen.dart
-  ///
-  /// In ar, this message translates to:
   /// **'الوزن الحالي'**
   String get measurementsCurrentWeight;
 
@@ -2497,12 +1957,6 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'بياناتك متزامنة مع قياسات العيادة وسجلك الشخصي.'**
   String get measurementsSyncNote;
-
-  /// UI text in presentation/screens/measurements_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'آخر تحديث: 19 سبتمبر'**
-  String get measurementsLastUpdated;
 
   /// UI text in presentation/screens/measurements_screen.dart
   ///
@@ -2833,18 +2287,6 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'تفعيل الإشعارات الآن'**
   String get notificationSettingsEnable;
-
-  /// UI text in presentation/screens/notification_settings_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'إشعارات الهاتف مفعّلة'**
-  String get notificationSettingsEnabledTitle;
-
-  /// UI text in presentation/screens/notification_settings_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'ستصلك تذكيرات الوجبات ورسائل أخصائي التغذية ومواعيد القياس.'**
-  String get notificationSettingsEnabledDesc;
 
   /// UI text in presentation/screens/notification_settings_screen.dart
   ///
@@ -3383,12 +2825,6 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/password_settings_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'أضف رمزًا خاصًا واحدًا على الأقل'**
-  String get passwordErrorSpecial;
-
-  /// UI text in presentation/screens/password_settings_screen.dart
-  ///
-  /// In ar, this message translates to:
   /// **'أكدي كلمة المرور الجديدة بشكل مطابق'**
   String get passwordErrorMismatch;
 
@@ -3397,12 +2833,6 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'تم حفظ كلمة المرور بنجاح'**
   String get passwordSaved;
-
-  /// UI text in presentation/screens/password_settings_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'سيتم إرسال رابط استعادة كلمة المرور إلى رقمك أو بريدك المسجل'**
-  String get passwordResetLinkSent;
 
   /// UI text in presentation/screens/password_settings_screen.dart
   ///
@@ -3451,12 +2881,6 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'8 أحرف على الأقل'**
   String get passwordRuleMinLength8;
-
-  /// UI text in presentation/screens/password_settings_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'رمز خاص واحد على الأقل (!@#\$%)'**
-  String get passwordRuleSpecial;
 
   /// UI text in presentation/screens/password_settings_screen.dart
   ///
@@ -3752,12 +3176,6 @@ abstract class AppLocalizations {
   /// **'إنهاء الجلسة بأمان من هذا الجهاز'**
   String get profileLogoutSubtitle;
 
-  /// UI text in presentation/screens/progress_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'الموعد الاستشاري القادم: الأحد القادم، الساعة 5:00 مساءً'**
-  String get progressNextConsultation;
-
   /// Footer of the progress screen: the next booked appointment (API guide 12.4). date is already formatted with its time.
   ///
   /// In ar, this message translates to:
@@ -3781,12 +3199,6 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'متزامن مع العيادة'**
   String get progressLiveSync;
-
-  /// UI text in presentation/screens/progress_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'متصل الآن'**
-  String get progressOnlineNow;
 
   /// UI text in presentation/screens/progress_screen.dart
   ///
@@ -3887,20 +3299,8 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/progress_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'آخر تحديث قبل يومين'**
-  String get progressUpdatedTwoDaysAgo;
-
-  /// UI text in presentation/screens/progress_screen.dart
-  ///
-  /// In ar, this message translates to:
   /// **'الخصر'**
   String get progressWaist;
-
-  /// UI text in presentation/screens/progress_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'-4 سم'**
-  String get progressWaistDelta;
 
   /// UI text in presentation/screens/progress_screen.dart
   ///
@@ -3911,20 +3311,8 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/progress_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'-2 سم'**
-  String get progressHipDelta;
-
-  /// UI text in presentation/screens/progress_screen.dart
-  ///
-  /// In ar, this message translates to:
   /// **'الفخذ'**
   String get progressThigh;
-
-  /// UI text in presentation/screens/progress_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'-1 سم'**
-  String get progressThighDelta;
 
   /// UI text in presentation/screens/progress_screen.dart
   ///
@@ -3937,12 +3325,6 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'دليل القياس المصوّر'**
   String get progressGuideLink;
-
-  /// UI text in presentation/screens/progress_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'تقييم الأسبوع الحالي'**
-  String get progressWeeklyEvaluation;
 
   /// Title of the card with the nutritionist's latest note (API guide 9.2).
   ///
@@ -3971,72 +3353,6 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/progress_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'أداء ممتاز'**
-  String get progressExcellent;
-
-  /// UI text in presentation/screens/progress_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'استجابة ممتازة لمقاومة الإنسولين، مع تحسن ملموس في توازن الطاقة الحيوية أثناء ساعات الصباح وثبات ملحوظ في قياسات الخصر.'**
-  String get progressEvaluationBody;
-
-  /// UI text in presentation/screens/progress_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'رسالة تشجيعية خاصة'**
-  String get progressEncouragementTitle;
-
-  /// Progress: encouragement card (no patient name).
-  ///
-  /// In ar, this message translates to:
-  /// **'“فخورة جداً بوعيك والتزامك هذا الأسبوع! النزول تدريجي وصحي ومحيط الخصر تحسن بشكل ملحوظ. حافظي على نمط النوم الحالي وسنصل لهدف الشهر بكل سهولة”'**
-  String get progressEncouragementQuote;
-
-  /// UI text in presentation/screens/progress_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'ملاحظة صوتية من الدكتورة'**
-  String get progressVoiceNote;
-
-  /// UI text in presentation/screens/progress_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'زيادة شرب الماء لـ 2.5 لتر يومياً'**
-  String get progressTaskWater;
-
-  /// UI text in presentation/screens/progress_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'توزيع منتظم بمعدل كوب كل ساعتين بين الوجبات لتعزيز الأيض.'**
-  String get progressTaskWaterDesc;
-
-  /// UI text in presentation/screens/progress_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'بديل جبنة القريش مع زيت الزيتون'**
-  String get progressTaskCottageCheese;
-
-  /// UI text in presentation/screens/progress_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'اعتمادك كوجبة عشاء رئيسية لدعم الشبع البطيء وموازنة سكر الدم ليلاً.'**
-  String get progressTaskCottageCheeseDesc;
-
-  /// UI text in presentation/screens/progress_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'15 دقيقة مشي خفيف بعد العشاء'**
-  String get progressTaskWalk;
-
-  /// UI text in presentation/screens/progress_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'تنشيط الدورة الدموية وتفريغ مخازن الجليكوجين قبل النوم.'**
-  String get progressTaskWalkDesc;
-
-  /// UI text in presentation/screens/progress_screen.dart
-  ///
-  /// In ar, this message translates to:
   /// **'توجيهات الأسبوع القادم'**
   String get progressNextWeekGuidance;
 
@@ -4051,18 +3367,6 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'عرض كل الملاحظات'**
   String get progressAllNotes;
-
-  /// UI text in presentation/screens/progress_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'3 مهام محددة'**
-  String get progressThreeTasks;
-
-  /// UI text in presentation/screens/progress_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'مناقشة التقييم عبر الواتساب مباشرة'**
-  String get progressDiscussWhatsApp;
 
   /// UI text in presentation/screens/quantity_selector_screen.dart
   ///
@@ -4316,42 +3620,6 @@ abstract class AppLocalizations {
   /// **'لا توجد مواعيد سابقة بعد.'**
   String get callsEmptyPast;
 
-  /// UI text in presentation/screens/sleep_stress_mood_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'جودة نومك الليلة الماضية'**
-  String get wellbeingSleepQuality;
-
-  /// UI text in presentation/screens/sleep_stress_mood_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'ساعات'**
-  String get wellbeingHours;
-
-  /// UI text in presentation/screens/sleep_stress_mood_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'نوم جيد — استمري على نفس الروتين'**
-  String get wellbeingGoodSleep;
-
-  /// UI text in presentation/screens/sleep_stress_mood_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'مستوى الإجهاد'**
-  String get wellbeingStressLevel;
-
-  /// UI text in presentation/screens/sleep_stress_mood_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'منخفض'**
-  String get wellbeingLow;
-
-  /// UI text in presentation/screens/sleep_stress_mood_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'لحظة تنفّس'**
-  String get wellbeingBreathingMoment;
-
   /// UI text in presentation/screens/specialist_profile_screen.dart
   ///
   /// In ar, this message translates to:
@@ -4475,26 +3743,8 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/weekly_plan_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'الأسبوع الثالث'**
-  String get weeklyPlanWeekThree;
-
-  /// UI text in presentation/screens/weekly_plan_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'سبتمبر 2025'**
-  String get weeklyPlanMonth;
-
-  /// UI text in presentation/screens/weekly_plan_screen.dart
-  ///
-  /// In ar, this message translates to:
   /// **'خطة غذائية مفصلة'**
   String get weeklyPlanDetailed;
-
-  /// UI text in presentation/screens/weekly_plan_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'خطة يوم {day} • {date} سبتمبر'**
-  String weeklyPlanDayPlan(Object day, Object date);
 
   /// UI text in presentation/screens/weekly_plan_screen.dart
   ///
@@ -4513,30 +3763,6 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'دهون'**
   String get macroFatLabel;
-
-  /// UI text in presentation/screens/weekly_plan_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'42 غ'**
-  String get weeklyPlanFats;
-
-  /// UI text in presentation/screens/weekly_plan_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'120 غ'**
-  String get weeklyPlanCarbs;
-
-  /// UI text in presentation/screens/weekly_plan_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'105 غ'**
-  String get weeklyPlanProtein;
-
-  /// UI text in presentation/screens/weekly_plan_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'خطتك كما وضعها أخصائي التغذية'**
-  String get weeklyPlanSummary;
 
   /// UI text in presentation/widgets/connection_status_sheet.dart
   ///
@@ -5803,18 +5029,6 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'خطة يوم {date}'**
   String weeklyPlanDayOf(String date);
-
-  /// Semantics label of the nutritionist avatar icon.
-  ///
-  /// In ar, this message translates to:
-  /// **'صورة الأخصائي'**
-  String get nutritionistAvatarLabel;
-
-  /// Semantics label of the patient avatar icon.
-  ///
-  /// In ar, this message translates to:
-  /// **'صورة الحساب'**
-  String get patientAvatarLabel;
 
   /// Inbox day header for yesterday.
   ///
