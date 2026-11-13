@@ -284,28 +284,12 @@
   "@commonUndo": {
     "description": "UI text in presentation/screens/daily_log_screen.dart"
   },
-  "dailyLogTitle": "سجل اليوم",
-  "@dailyLogTitle": {
-    "description": "UI text in presentation/screens/daily_log_screen.dart"
-  },
   "commonNotifications": "الإشعارات",
   "@commonNotifications": {
     "description": "UI text in presentation/screens/daily_log_screen.dart"
   },
   "dailyLogWeeklyPlanTooltip": "استعراض الخطة الأسبوعية",
   "@dailyLogWeeklyPlanTooltip": {
-    "description": "UI text in presentation/screens/daily_log_screen.dart"
-  },
-  "dailyLogActiveDay": "اليوم النشط",
-  "@dailyLogActiveDay": {
-    "description": "UI text in presentation/screens/daily_log_screen.dart"
-  },
-  "dailyLogLoggedMeals": "الوجبات المسجلة",
-  "@dailyLogLoggedMeals": {
-    "description": "UI text in presentation/screens/daily_log_screen.dart"
-  },
-  "dailyLogTotalEnergy": "مجموع الطاقة المستهلكة",
-  "@dailyLogTotalEnergy": {
     "description": "UI text in presentation/screens/daily_log_screen.dart"
   },
   "commonKcalValue": "{value} سعرة",
@@ -316,44 +300,6 @@
         "type": "Object"
       }
     }
-  },
-  "dailyLogOverGoal": "تجاوزت الهدف بـ {value} سعرة",
-  "@dailyLogOverGoal": {
-    "description": "UI text in presentation/screens/daily_log_screen.dart",
-    "placeholders": {
-      "value": {
-        "type": "Object"
-      }
-    }
-  },
-  "dailyLogBalancedEnergy": "توازن الطاقة اليومي المتزن",
-  "@dailyLogBalancedEnergy": {
-    "description": "UI text in presentation/screens/daily_log_screen.dart"
-  },
-  "dailyLogPercentOfRecommended": "{percent}٪ من الموصى به",
-  "@dailyLogPercentOfRecommended": {
-    "description": "UI text in presentation/screens/daily_log_screen.dart",
-    "placeholders": {
-      "percent": {
-        "type": "Object"
-      }
-    }
-  },
-  "dailyLogOverGoalReassurance": "لا بأس، الأرقام مرشد هادئ وليست حكماً، وغداً يوم جديد.",
-  "@dailyLogOverGoalReassurance": {
-    "description": "UI text in presentation/screens/daily_log_screen.dart"
-  },
-  "dailyLogVariedChoices": "خياراتك اليوم متنوعة ومغذية، تذكّر أن الأرقام مرشد هادئ لدعم نشاطك وصحتك.",
-  "@dailyLogVariedChoices": {
-    "description": "UI text in presentation/screens/daily_log_screen.dart"
-  },
-  "dailyLogTimeline": "التسلسل الزمني",
-  "@dailyLogTimeline": {
-    "description": "UI text in presentation/screens/daily_log_screen.dart"
-  },
-  "dailyLogPreviewEmpty": "معاينة السجل الفارغ",
-  "@dailyLogPreviewEmpty": {
-    "description": "UI text in presentation/screens/daily_log_screen.dart"
   },
   "dailyLogOffPlanFree": "خارج الخطة • إضافة حرة",
   "@dailyLogOffPlanFree": {
@@ -4981,5 +4927,54 @@
   },
   "@homeOffPlanAction": {
     "description": "Home: the day card and today's meals."
+  },
+  "todayPlanTitle": "خطة اليوم",
+  "todayPlanKcalToday": "سعرة حرارية اليوم",
+  "todayPlanAltAvailable": "بديل متاح",
+  "todayPlanLogMeal": "سجّلت هذه الوجبة",
+  "todayPlanLoggedAt": "تم التسجيل {time}",
+  "todayPlanDeleteLog": "حذف التسجيل",
+  "todayPlanViewOnly": "هذه خطة يوم آخر للعرض. التسجيل لوجبات اليوم فقط.",
+  "todayPlanBackToToday": "العودة إلى اليوم",
+  "@todayPlanTitle": {
+    "description": "Plan tab: today's plan."
+  },
+  "@todayPlanKcalToday": {
+    "description": "Plan tab: today's plan."
+  },
+  "@todayPlanAltAvailable": {
+    "description": "Plan tab: today's plan."
+  },
+  "@todayPlanLogMeal": {
+    "description": "Plan tab: today's plan."
+  },
+  "@todayPlanLoggedAt": {
+    "description": "Plan tab: today's plan.",
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "@todayPlanDeleteLog": {
+    "description": "Plan tab: today's plan."
+  },
+  "@todayPlanViewOnly": {
+    "description": "Plan tab: today's plan."
+  },
+  "@todayPlanBackToToday": {
+    "description": "Plan tab: today's plan."
+  },
+  "todayPlanKcalOfGoal": "{eaten} من {goal} سعرة",
+  "@todayPlanKcalOfGoal": {
+    "description": "Plan tab: calories logged out of the day's plan.",
+    "placeholders": {
+      "eaten": {
+        "type": "String"
+      },
+      "goal": {
+        "type": "String"
+      }
+    }
   }
 }

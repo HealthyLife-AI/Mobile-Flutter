@@ -17,22 +17,15 @@ import '../bloc/meal_plan/meal_plan_cubit.dart';
 import '../meal_plan_view.dart';
 import 'meal_detail_screen.dart';
 import 'notifications_center_screen.dart';
+import 'shopping_list_screen.dart';
 import 'weekly_plan_screen.dart';
+import '../widgets/meal_logged_snack.dart';
+import '../widgets/today_plan.dart';
 
 import '../../l10n/l10n.dart';
 import '../widgets/log_meal_sheet.dart';
 
 const Color _mutedIcon = AppColors.textMuted;
-
-String _fmt(int n) {
-  final s = n.toString();
-  final buf = StringBuffer();
-  for (var i = 0; i < s.length; i++) {
-    if (i > 0 && (s.length - i) % 3 == 0) buf.write(',');
-    buf.write(s[i]);
-  }
-  return buf.toString();
-}
 
 bool _reduceMotion(BuildContext context) =>
     MediaQuery.of(context).disableAnimations;
@@ -46,11 +39,13 @@ class DailyLogScreen extends StatefulWidget {
 
 class _DailyLogScreenState extends State<DailyLogScreen> {
   final Set<String> _removed = {};
-  bool _previewEmpty = false;
 
-  /// الوجبات الموجودة أول ما فتحت الشاشة: هذول بس بيدخلوا بتتابع،
-  /// أي وجبة بتنضاف بعدين بتظهر فوراً بدون تأخير.
-  Set<String>? _initialIds;
+  /// The day shown. Today unless the patient picked another day of the week.
+  DateTime _day = DateTime.now();
+
+  /// A one-tap log is on its way.
+  bool _logging = false;
+
 
   /// The plan and day the server's logs were last read for.
   String? _syncedFor;
@@ -66,6 +61,26 @@ class _DailyLogScreenState extends State<DailyLogScreen> {
   }
 
   void _onAddMeal() => showLogMealSheet(context);
+
+  void _openShopping() => Navigator.of(context)
+      .push(AppPageRoute(builder: (_) => ShoppingListScreen(day: _day)));
+
+  /// Logs the meal as planned, with an undo, as "أكلتها" does on home.
+  Future<void> _logMeal(Meal meal) async {
+    if (_logging) return;
+    setState(() => _logging = true);
+    HapticFeedback.mediumImpact();
+    await logPlannedAndConfirm(
+        messenger: ScaffoldMessenger.of(context),
+        cubit: context.read<MealLogCubit>(),
+        l10n: context.l10n,
+        meal: meal);
+    if (mounted) setState(() => _logging = false);
+  }
+
+  String _timeOf(DateTime at) =>
+      context.localizeDigits(MaterialLocalizations.of(context)
+          .formatTimeOfDay(TimeOfDay.fromDateTime(at.toLocal())));
 
   /// Hides the row at once, and deletes the entry for real (here and on the
   /// server, API guide 6.4) when the undo notice closes without an undo. A
@@ -238,16 +253,41 @@ class _DailyLogScreenState extends State<DailyLogScreen> {
                 : planMealsFor(context, plan, now,
                     isLogged: mealLog.isPlannedLogged);
             _syncWhenReady(planState, todayMeals);
-            final goal = plan?.totalOn(now).calories.round() ?? 0;
             final items = _collectItems(mealLog.entries, todayMeals);
-            _initialIds ??= items.map((i) => i.id).toSet();
 
             final active =
                 items.where((i) => !_removed.contains(i.id)).toList();
-            final calories = active.fold<int>(0, (t, i) => t + i.calories);
-            final count = active.length;
-            final showEmpty = _previewEmpty || count == 0;
-            final latestId = active.isEmpty ? null : active.last.id;
+            final eaten = active.fold<int>(0, (t, i) => t + i.calories);
+            final isToday = isSameLocalDay(_day, now);
+            final dayMeals = plan == null
+                ? const <Meal>[]
+                : isToday
+                    ? todayMeals
+                    : planMealsFor(context, plan, _day);
+            // Today's planned meals that are logged, by meal.
+            final loggedByMeal = {
+              for (final i in active)
+                if (i.meal != null) i.meal!.id: i,
+            };
+            final entryById = {for (final e in mealLog.entries) e.id: e};
+            // Everything else logged today: off-plan foods, and planned
+            // meals that are no longer in today's plan.
+            final others = [
+              for (final i in items)
+                if (i.meal == null ||
+                    !todayMeals.any((m) => m.id == i.meal!.id))
+                  i,
+            ];
+            final loggedDays = {
+              for (final e in mealLog.entries)
+                DateTime(e.loggedAt.toLocal().year, e.loggedAt.toLocal().month,
+                    e.loggedAt.toLocal().day),
+            };
+            final next = isToday
+                ? dayMeals
+                    .where((m) => !loggedByMeal.containsKey(m.id))
+                    .firstOrNull
+                : null;
 
             return RefreshIndicator(
               color: AppColors.primary,
@@ -255,82 +295,113 @@ class _DailyLogScreenState extends State<DailyLogScreen> {
                   context.read<MealLogCubit>().syncToday(todayMeals),
               child: ListView(
                 physics: const AlwaysScrollableScrollPhysics(),
-                padding: const EdgeInsets.fromLTRB(18, 12, 18, 120),
+                padding: const EdgeInsets.fromLTRB(16, 12, 16, 32),
                 children: [
                   _FadeSlide(
                       delayMs: 0,
                       dy: -16,
-                      child: _Header(onCalendar: _openWeeklyPlan)),
-                  const SizedBox(height: 16),
+                      child: _Header(
+                          onCalendar: _openWeeklyPlan,
+                          onShopping: _openShopping)),
+                  const SizedBox(height: 14),
                   _FadeSlide(
-                    delayMs: 120,
-                    child: _SummaryCard(
-                        count: count, calories: calories, goal: goal),
-                  ),
-                  const SizedBox(height: 22),
-                  _FadeSlide(
-                    delayMs: 240,
-                    child: _SectionHeader(
-                      previewEmpty: _previewEmpty,
-                      onTogglePreview: () {
+                    delayMs: 60,
+                    child: WeekStrip(
+                      days: weekAround(now),
+                      selected: _day,
+                      loggedDays: loggedDays,
+                      onSelect: (d) {
                         HapticFeedback.selectionClick();
-                        setState(() => _previewEmpty = !_previewEmpty);
+                        setState(() => _day = d);
                       },
                     ),
                   ),
-                  const SizedBox(height: 12),
-                  AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 380),
-                    switchInCurve: Curves.easeOutCubic,
-                    switchOutCurve: Curves.easeIn,
-                    transitionBuilder: (child, anim) => FadeTransition(
-                      opacity: anim,
-                      child: SlideTransition(
-                        position: Tween<Offset>(
-                                begin: const Offset(0, .06), end: Offset.zero)
-                            .animate(anim),
-                        child: child,
+                  if (!isToday) ...[
+                    const SizedBox(height: 10),
+                    Row(children: [
+                      Expanded(
+                        child: Text(context.l10n.todayPlanViewOnly,
+                            style: AppTextStyles.caption
+                                .copyWith(color: AppColors.textSecondary)),
+                      ),
+                      TextButton(
+                        onPressed: () => setState(() => _day = now),
+                        child: Text(context.l10n.todayPlanBackToToday),
+                      ),
+                    ]),
+                  ],
+                  const SizedBox(height: 14),
+                  if (plan != null)
+                    _FadeSlide(
+                      delayMs: 120,
+                      child: DayTotalsCard(
+                        totals: plan.totalOn(_day),
+                        eatenKcal: isToday ? eaten : null,
                       ),
                     ),
-                    child: showEmpty
-                        ? const _EmptyState(key: ValueKey('empty'))
-                        : Column(
-                            key: const ValueKey('list'),
-                            children: [
-                              for (var i = 0; i < items.length; i++)
-                                _FadeSlide(
-                                  key: ValueKey(items[i].id),
-                                  delayMs: _initialIds!.contains(items[i].id)
-                                      ? 340 + math.min(i, 5) * 100
-                                      : 0,
-                                  child: _CollapsibleCard(
-                                    removed: _removed.contains(items[i].id),
-                                    child: _TimelineCard(
-                                      item: items[i],
-                                      isLatest: items[i].id == latestId,
-                                      onTap: items[i].meal != null
-                                          ? () => _openMeal(items[i].meal!)
-                                          : items[i].editable
-                                              ? () => _editGrams(items[i])
-                                              : null,
-                                      onDelete: items[i].deletable
-                                          ? () => _delete(items[i])
-                                          : null,
-                                    ),
-                                  ),
-                                ),
-                            ],
+                  const SizedBox(height: 14),
+                  if (dayMeals.isEmpty && others.isEmpty)
+                    const _EmptyState(key: ValueKey('empty')),
+                  for (var i = 0; i < dayMeals.length; i++)
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 12),
+                      child: _FadeSlide(
+                        key: ValueKey('${_day.day}-${dayMeals[i].id}'),
+                        delayMs: 180 + math.min(i, 5) * 80,
+                        child: Builder(builder: (context) {
+                          final meal = dayMeals[i];
+                          final log = isToday ? loggedByMeal[meal.id] : null;
+                          final entry = log == null ? null : entryById[log.id];
+                          return PlanMealCard(
+                            meal: meal,
+                            onOpen: () => _openMeal(meal),
+                            highlighted: identical(meal, next),
+                            loggedTime:
+                                entry == null ? null : _timeOf(entry.loggedAt),
+                            onLog: isToday && log == null
+                                ? () => _logMeal(meal)
+                                : null,
+                            logging: _logging,
+                            onDeleteLog: log != null && log.deletable
+                                ? () => _delete(log)
+                                : null,
+                          );
+                        }),
+                      ),
+                    ),
+                  if (isToday && others.isNotEmpty) ...[
+                    const SizedBox(height: 6),
+                    Text(context.l10n.logMealTabOffPlan,
+                        style: AppTextStyles.sectionHeading),
+                    const SizedBox(height: 10),
+                    for (final item in others)
+                      KeyedSubtree(
+                        key: ValueKey(item.id),
+                        child: _CollapsibleCard(
+                          removed: _removed.contains(item.id),
+                          child: _TimelineCard(
+                            item: item,
+                            isLatest: false,
+                            onTap: item.meal != null
+                                ? () => _openMeal(item.meal!)
+                                : item.editable
+                                    ? () => _editGrams(item)
+                                    : null,
+                            onDelete:
+                                item.deletable ? () => _delete(item) : null,
                           ),
-                  ),
-                  const SizedBox(height: 4),
-                  const _FadeSlide(delayMs: 700, child: _ReminderCard()),
-                  const SizedBox(height: 16),
+                        ),
+                      ),
+                  ],
+                  const SizedBox(height: 8),
                   _FadeSlide(
-                      delayMs: 820, child: _AddMealButton(onTap: _onAddMeal)),
+                      delayMs: 600, child: _AddMealButton(onTap: _onAddMeal)),
                   const SizedBox(height: 12),
                   _FadeSlide(
-                      delayMs: 900,
+                      delayMs: 660,
                       child: _WeeklyPlanButton(onTap: _openWeeklyPlan)),
+                  const SizedBox(height: 16),
+                  const _FadeSlide(delayMs: 720, child: _ReminderCard()),
                 ],
               ),
             );
@@ -462,33 +533,38 @@ class _GramsSheetState extends State<_GramsSheet> {
 
 class _Header extends StatelessWidget {
   final VoidCallback onCalendar;
-  const _Header({required this.onCalendar});
+  final VoidCallback onShopping;
+  const _Header({required this.onCalendar, required this.onShopping});
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return Row(
       children: [
-        Container(
-          width: 38,
-          height: 38,
-          decoration: const BoxDecoration(
-              color: AppColors.primary, shape: BoxShape.circle),
-          child: const Icon(Icons.person_outline_rounded,
-              color: Colors.white, size: 20),
+        Expanded(child: Text(l10n.todayPlanTitle, style: AppTextStyles.h1)),
+        OutlinedButton.icon(
+          onPressed: onShopping,
+          style: OutlinedButton.styleFrom(
+            minimumSize: const Size(48, 44),
+            foregroundColor: AppColors.textPrimary,
+            side: const BorderSide(color: AppColors.border),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(AppRadius.button)),
+          ),
+          icon: const Icon(Icons.shopping_cart_outlined, size: 20),
+          label: Text(l10n.shoppingListTitle,
+              style: AppTextStyles.pillLabel
+                  .copyWith(color: AppColors.textPrimary)),
         ),
-        const SizedBox(width: 10),
-        Text(context.l10n.dailyLogTitle, style: AppTextStyles.cardTitle),
-        const Spacer(),
+        _HeaderIcon(
+            icon: Icons.calendar_month_outlined,
+            onTap: onCalendar,
+            tooltip: l10n.dailyLogWeeklyPlanTooltip),
         _HeaderIcon(
             icon: Icons.notifications_none_rounded,
             onTap: () => Navigator.of(context).push(AppPageRoute(
                 builder: (_) => const NotificationsCenterScreen())),
-            tooltip: context.l10n.commonNotifications),
-        const SizedBox(width: 4),
-        _HeaderIcon(
-            icon: Icons.calendar_month_outlined,
-            onTap: onCalendar,
-            tooltip: context.l10n.dailyLogWeeklyPlanTooltip),
+            tooltip: l10n.commonNotifications),
       ],
     );
   }
@@ -522,354 +598,7 @@ class _HeaderIcon extends StatelessWidget {
 
 // ───────────────────────────── Summary card ─────────────────────────────
 
-class _SummaryCard extends StatelessWidget {
-  final int count;
-  final int calories;
-  final int goal;
-  const _SummaryCard(
-      {required this.count, required this.calories, required this.goal});
-
-  @override
-  Widget build(BuildContext context) {
-    // No plan, or a plan without calories: there is no target to compare to.
-    final hasGoal = goal > 0;
-    final percent = hasGoal ? (calories / goal * 100).round() : 0;
-    final progress =
-        hasGoal ? (calories / goal).clamp(0.0, 1.0).toDouble() : 0.0;
-    final over = hasGoal && calories > goal;
-    final accent = over ? AppColors.accentOrange : AppColors.primary;
-
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: _cardDecoration(),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(context.l10n.dailyLogActiveDay,
-                        style: AppTextStyles.caption),
-                    const SizedBox(height: 4),
-                    Text(
-                        context.localizeDigits(MaterialLocalizations.of(context)
-                            .formatFullDate(DateTime.now())),
-                        style: AppTextStyles.h1),
-                  ],
-                ),
-              ),
-              Container(
-                width: 44,
-                height: 44,
-                decoration: BoxDecoration(
-                    color: AppColors.primaryTint,
-                    borderRadius: BorderRadius.circular(14)),
-                child: const Icon(Icons.event_available_rounded,
-                    color: AppColors.primary),
-              ),
-            ],
-          ),
-          const SizedBox(height: 14),
-          Row(
-            children: [
-              Expanded(
-                child: _StatTile(
-                  icon: Icons.restaurant_rounded,
-                  filled: false,
-                  label: context.l10n.dailyLogLoggedMeals,
-                  value: count.toDouble(),
-                  // Singular / dual / plural from the locale's plural rules.
-                  format: (n) => context.l10n
-                      .dailyLogMealsCount(n, context.localizeDigits(n)),
-                ),
-              ),
-              const SizedBox(width: 10),
-              Expanded(
-                child: _StatTile(
-                  icon: Icons.local_fire_department_rounded,
-                  filled: true,
-                  label: context.l10n.dailyLogTotalEnergy,
-                  value: calories.toDouble(),
-                  format: (n) => context.l10n
-                      .commonKcalValue(context.localizeDigits(_fmt(n))),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
-          Row(
-            children: [
-              Icon(Icons.eco_outlined, size: 16, color: accent),
-              const SizedBox(width: 6),
-              Expanded(
-                child: Text(
-                  over
-                      ? context.l10n.dailyLogOverGoal(
-                          context.localizeDigits(_fmt(calories - goal)))
-                      : context.l10n.dailyLogBalancedEnergy,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: AppTextStyles.caption,
-                ),
-              ),
-              const SizedBox(width: 8),
-              TweenAnimationBuilder<double>(
-                tween: Tween(begin: 0, end: percent.toDouble()),
-                duration: const Duration(milliseconds: 1400),
-                curve: Curves.easeOutCubic,
-                builder: (_, v, __) => Text(
-                  context.l10n.dailyLogPercentOfRecommended(
-                      context.localizeDigits(v.round())),
-                  style: AppTextStyles.caption
-                      .copyWith(color: accent, fontWeight: FontWeight.w700),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 8),
-          _EnergyBar(progress: progress, color: accent),
-          const SizedBox(height: 10),
-          Text(
-            over
-                ? context.l10n.dailyLogOverGoalReassurance
-                : context.l10n.dailyLogVariedChoices,
-            style: AppTextStyles.caption,
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _StatTile extends StatelessWidget {
-  final IconData icon;
-  final bool filled;
-  final String label;
-  final double value;
-  final String Function(int n) format;
-  const _StatTile({
-    required this.icon,
-    required this.filled,
-    required this.label,
-    required this.value,
-    required this.format,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-      decoration: BoxDecoration(
-        color: AppColors.background,
-        borderRadius: BorderRadius.circular(AppRadius.cardSmall),
-        border: Border.all(color: AppColors.border),
-      ),
-      child: Row(
-        children: [
-          Container(
-            width: 30,
-            height: 30,
-            decoration: BoxDecoration(
-              color: filled ? AppColors.primary : AppColors.primaryTint,
-              shape: BoxShape.circle,
-            ),
-            child: Icon(icon,
-                size: 16, color: filled ? Colors.white : AppColors.primary),
-          ),
-          const SizedBox(width: 8),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(label,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(fontSize: 10.5, color: _mutedIcon)),
-                const SizedBox(height: 2),
-                TweenAnimationBuilder<double>(
-                  tween: Tween(begin: 0, end: value),
-                  duration: const Duration(milliseconds: 1300),
-                  curve: Curves.easeOutCubic,
-                  builder: (_, v, __) => FittedBox(
-                    fit: BoxFit.scaleDown,
-                    alignment: AlignmentDirectional.centerStart,
-                    child: Text(format(v.round()),
-                        maxLines: 1,
-                        style: AppTextStyles.cardTitle.copyWith(fontSize: 14)),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-/// شريط التقدم: يمتلئ بحركة ناعمة + لمعة تمرّ فوقه (تتوقف لو المستخدم مفعّل تقليل الحركة).
-class _EnergyBar extends StatefulWidget {
-  final double progress;
-  final Color color;
-  const _EnergyBar({required this.progress, required this.color});
-
-  @override
-  State<_EnergyBar> createState() => _EnergyBarState();
-}
-
-class _EnergyBarState extends State<_EnergyBar>
-    with SingleTickerProviderStateMixin {
-  late final AnimationController _shimmer = AnimationController(
-      vsync: this, duration: const Duration(milliseconds: 2200));
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    if (_reduceMotion(context)) {
-      _shimmer.stop();
-    } else if (!_shimmer.isAnimating) {
-      _shimmer.repeat();
-    }
-  }
-
-  @override
-  void dispose() {
-    _shimmer.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return TweenAnimationBuilder<double>(
-      tween: Tween(begin: 0, end: widget.progress),
-      duration: const Duration(milliseconds: 1400),
-      curve: Curves.easeOutCubic,
-      builder: (context, v, _) {
-        return ClipRRect(
-          borderRadius: BorderRadius.circular(99),
-          child: SizedBox(
-            height: 10,
-            child: Stack(
-              fit: StackFit.expand,
-              children: [
-                const ColoredBox(color: AppColors.primaryTint),
-                FractionallySizedBox(
-                  alignment: AlignmentDirectional.centerStart,
-                  widthFactor: v.clamp(0.0, 1.0).toDouble(),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(99),
-                    child: RepaintBoundary(
-                      child: AnimatedBuilder(
-                        animation: _shimmer,
-                        builder: (_, __) => Stack(
-                          fit: StackFit.expand,
-                          children: [
-                            ColoredBox(color: widget.color),
-                            Align(
-                              alignment:
-                                  Alignment(-1.6 + 3.2 * _shimmer.value, 0),
-                              child: FractionallySizedBox(
-                                widthFactor: .35,
-                                child: DecoratedBox(
-                                  decoration: BoxDecoration(
-                                    gradient: LinearGradient(colors: [
-                                      Colors.white.withValues(alpha: 0),
-                                      Colors.white.withValues(alpha: .45),
-                                      Colors.white.withValues(alpha: 0),
-                                    ]),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
-}
-
 // ───────────────────────────── Section header ─────────────────────────────
-
-class _SectionHeader extends StatelessWidget {
-  final bool previewEmpty;
-  final VoidCallback onTogglePreview;
-  const _SectionHeader(
-      {required this.previewEmpty, required this.onTogglePreview});
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        const Icon(Icons.schedule_rounded, size: 18, color: AppColors.primary),
-        const SizedBox(width: 6),
-        // Title takes the leftover space and ellipsizes instead of pushing the
-        // toggle pill past the right edge on narrow (320dp) screens.
-        Expanded(
-          child: Text(
-            context.l10n.dailyLogTimeline,
-            style: AppTextStyles.cardTitle,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ),
-        Semantics(
-          button: true,
-          toggled: previewEmpty,
-          label: context.l10n.dailyLogPreviewEmpty,
-          child: _PressableScale(
-            onTap: onTogglePreview,
-            child: AnimatedContainer(
-              duration: const Duration(milliseconds: 250),
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-              decoration: BoxDecoration(
-                color: previewEmpty ? AppColors.primary : AppColors.primaryTint,
-                borderRadius: BorderRadius.circular(99),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 250),
-                    transitionBuilder: (c, a) =>
-                        ScaleTransition(scale: a, child: c),
-                    child: Icon(
-                      previewEmpty
-                          ? Icons.visibility_off_outlined
-                          : Icons.visibility_outlined,
-                      key: ValueKey(previewEmpty),
-                      size: 14,
-                      color: previewEmpty ? Colors.white : AppColors.primary,
-                    ),
-                  ),
-                  const SizedBox(width: 5),
-                  Text(
-                    context.l10n.dailyLogPreviewEmpty,
-                    style: TextStyle(
-                      fontSize: 11,
-                      fontWeight: FontWeight.w600,
-                      color: previewEmpty ? Colors.white : AppColors.primary,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-}
 
 // ───────────────────────────── Timeline card ─────────────────────────────
 

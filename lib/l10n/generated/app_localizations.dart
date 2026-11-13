@@ -569,12 +569,6 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/daily_log_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'سجل اليوم'**
-  String get dailyLogTitle;
-
-  /// UI text in presentation/screens/daily_log_screen.dart
-  ///
-  /// In ar, this message translates to:
   /// **'الإشعارات'**
   String get commonNotifications;
 
@@ -587,68 +581,8 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/daily_log_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'اليوم النشط'**
-  String get dailyLogActiveDay;
-
-  /// UI text in presentation/screens/daily_log_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'الوجبات المسجلة'**
-  String get dailyLogLoggedMeals;
-
-  /// UI text in presentation/screens/daily_log_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'مجموع الطاقة المستهلكة'**
-  String get dailyLogTotalEnergy;
-
-  /// UI text in presentation/screens/daily_log_screen.dart
-  ///
-  /// In ar, this message translates to:
   /// **'{value} سعرة'**
   String commonKcalValue(Object value);
-
-  /// UI text in presentation/screens/daily_log_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'تجاوزت الهدف بـ {value} سعرة'**
-  String dailyLogOverGoal(Object value);
-
-  /// UI text in presentation/screens/daily_log_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'توازن الطاقة اليومي المتزن'**
-  String get dailyLogBalancedEnergy;
-
-  /// UI text in presentation/screens/daily_log_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'{percent}٪ من الموصى به'**
-  String dailyLogPercentOfRecommended(Object percent);
-
-  /// UI text in presentation/screens/daily_log_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'لا بأس، الأرقام مرشد هادئ وليست حكماً، وغداً يوم جديد.'**
-  String get dailyLogOverGoalReassurance;
-
-  /// UI text in presentation/screens/daily_log_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'خياراتك اليوم متنوعة ومغذية، تذكّر أن الأرقام مرشد هادئ لدعم نشاطك وصحتك.'**
-  String get dailyLogVariedChoices;
-
-  /// UI text in presentation/screens/daily_log_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'التسلسل الزمني'**
-  String get dailyLogTimeline;
-
-  /// UI text in presentation/screens/daily_log_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'معاينة السجل الفارغ'**
-  String get dailyLogPreviewEmpty;
 
   /// UI text in presentation/screens/daily_log_screen.dart
   ///
@@ -7141,6 +7075,60 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'سجّله'**
   String get homeOffPlanAction;
+
+  /// Plan tab: today's plan.
+  ///
+  /// In ar, this message translates to:
+  /// **'خطة اليوم'**
+  String get todayPlanTitle;
+
+  /// Plan tab: today's plan.
+  ///
+  /// In ar, this message translates to:
+  /// **'سعرة حرارية اليوم'**
+  String get todayPlanKcalToday;
+
+  /// Plan tab: today's plan.
+  ///
+  /// In ar, this message translates to:
+  /// **'بديل متاح'**
+  String get todayPlanAltAvailable;
+
+  /// Plan tab: today's plan.
+  ///
+  /// In ar, this message translates to:
+  /// **'سجّلت هذه الوجبة'**
+  String get todayPlanLogMeal;
+
+  /// Plan tab: today's plan.
+  ///
+  /// In ar, this message translates to:
+  /// **'تم التسجيل {time}'**
+  String todayPlanLoggedAt(String time);
+
+  /// Plan tab: today's plan.
+  ///
+  /// In ar, this message translates to:
+  /// **'حذف التسجيل'**
+  String get todayPlanDeleteLog;
+
+  /// Plan tab: today's plan.
+  ///
+  /// In ar, this message translates to:
+  /// **'هذه خطة يوم آخر للعرض. التسجيل لوجبات اليوم فقط.'**
+  String get todayPlanViewOnly;
+
+  /// Plan tab: today's plan.
+  ///
+  /// In ar, this message translates to:
+  /// **'العودة إلى اليوم'**
+  String get todayPlanBackToToday;
+
+  /// Plan tab: calories logged out of the day's plan.
+  ///
+  /// In ar, this message translates to:
+  /// **'{eaten} من {goal} سعرة'**
+  String todayPlanKcalOfGoal(String eaten, String goal);
 }
 
 class _AppLocalizationsDelegate

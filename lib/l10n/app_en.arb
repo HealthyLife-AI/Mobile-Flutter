@@ -78,20 +78,9 @@
   "dailyLogEditGone": "This entry no longer exists, so it was removed from your log.",
   "dailyLogEditFailed": "The amount couldn't be saved. Please try again.",
   "commonUndo": "Undo",
-  "dailyLogTitle": "Today's log",
   "commonNotifications": "Notifications",
   "dailyLogWeeklyPlanTooltip": "View the weekly plan",
-  "dailyLogActiveDay": "Active day",
-  "dailyLogLoggedMeals": "Logged meals",
-  "dailyLogTotalEnergy": "Total energy consumed",
   "commonKcalValue": "{value} kcal",
-  "dailyLogOverGoal": "{value} kcal over your goal",
-  "dailyLogBalancedEnergy": "Balanced daily energy",
-  "dailyLogPercentOfRecommended": "{percent}% of recommended",
-  "dailyLogOverGoalReassurance": "That's okay — the numbers are a calm guide, not a verdict, and tomorrow is a new day.",
-  "dailyLogVariedChoices": "Your choices today are varied and nourishing. Remember, the numbers are a calm guide to support your activity and health.",
-  "dailyLogTimeline": "Timeline",
-  "dailyLogPreviewEmpty": "Preview empty log",
   "dailyLogOffPlanFree": "Off-plan • free entry",
   "dailyLogFromPlan": "From the meal plan",
   "commonGramsValue": "{value} g",
@@ -1340,5 +1329,54 @@
   },
   "@homeOffPlanAction": {
     "description": "Home: the day card and today's meals."
+  },
+  "todayPlanTitle": "Today's plan",
+  "todayPlanKcalToday": "kcal today",
+  "todayPlanAltAvailable": "Swap available",
+  "todayPlanLogMeal": "I had this meal",
+  "todayPlanLoggedAt": "Logged {time}",
+  "todayPlanDeleteLog": "Delete this log",
+  "todayPlanViewOnly": "This is another day's plan, to look at. Only today's meals can be logged.",
+  "todayPlanBackToToday": "Back to today",
+  "@todayPlanTitle": {
+    "description": "Plan tab: today's plan."
+  },
+  "@todayPlanKcalToday": {
+    "description": "Plan tab: today's plan."
+  },
+  "@todayPlanAltAvailable": {
+    "description": "Plan tab: today's plan."
+  },
+  "@todayPlanLogMeal": {
+    "description": "Plan tab: today's plan."
+  },
+  "@todayPlanLoggedAt": {
+    "description": "Plan tab: today's plan.",
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "@todayPlanDeleteLog": {
+    "description": "Plan tab: today's plan."
+  },
+  "@todayPlanViewOnly": {
+    "description": "Plan tab: today's plan."
+  },
+  "@todayPlanBackToToday": {
+    "description": "Plan tab: today's plan."
+  },
+  "todayPlanKcalOfGoal": "{eaten} of {goal} kcal",
+  "@todayPlanKcalOfGoal": {
+    "description": "Plan tab: calories logged out of the day's plan.",
+    "placeholders": {
+      "eaten": {
+        "type": "String"
+      },
+      "goal": {
+        "type": "String"
+      }
+    }
   }
 }
