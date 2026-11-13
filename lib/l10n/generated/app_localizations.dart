@@ -7879,6 +7879,36 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'تعذّر التراجع. يمكنك حذف الوجبة من سجل اليوم.'**
   String get mealUndoFailed;
+
+  /// The log-a-meal bottom sheet.
+  ///
+  /// In ar, this message translates to:
+  /// **'من خطتي'**
+  String get logMealTabPlan;
+
+  /// The log-a-meal bottom sheet.
+  ///
+  /// In ar, this message translates to:
+  /// **'خارج الخطة'**
+  String get logMealTabOffPlan;
+
+  /// The log-a-meal bottom sheet.
+  ///
+  /// In ar, this message translates to:
+  /// **'تم تسجيل كل وجبات اليوم.'**
+  String get logMealAllLogged;
+
+  /// The log-a-meal bottom sheet.
+  ///
+  /// In ar, this message translates to:
+  /// **'ابحث عن الطعام الذي تناولته وحدّد كميته بالغرام، وتُضاف سعراته إلى سجل اليوم.'**
+  String get logMealOffPlanHint;
+
+  /// The log-a-meal bottom sheet.
+  ///
+  /// In ar, this message translates to:
+  /// **'البحث عن طعام'**
+  String get logMealSearchFood;
 }
 
 class _AppLocalizationsDelegate

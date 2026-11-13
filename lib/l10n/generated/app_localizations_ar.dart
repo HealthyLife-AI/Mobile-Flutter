@@ -4563,4 +4563,20 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get mealUndoFailed => 'تعذّر التراجع. يمكنك حذف الوجبة من سجل اليوم.';
+
+  @override
+  String get logMealTabPlan => 'من خطتي';
+
+  @override
+  String get logMealTabOffPlan => 'خارج الخطة';
+
+  @override
+  String get logMealAllLogged => 'تم تسجيل كل وجبات اليوم.';
+
+  @override
+  String get logMealOffPlanHint =>
+      'ابحث عن الطعام الذي تناولته وحدّد كميته بالغرام، وتُضاف سعراته إلى سجل اليوم.';
+
+  @override
+  String get logMealSearchFood => 'البحث عن طعام';
 }

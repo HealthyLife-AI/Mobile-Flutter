@@ -7,10 +7,9 @@ import '../../core/theme/app_radius.dart';
 import '../../core/theme/app_text_styles.dart';
 import '../../domain/entities/meal_entities.dart';
 import '../widgets/gradient_cta_button.dart';
-import 'log_meal_intro_screen.dart';
-import '../../core/navigation/app_page_route.dart';
 
 import '../../l10n/l10n.dart';
+import '../widgets/log_meal_sheet.dart';
 
 const Color _mint = Color(0xFF19D3A2);
 const Color _screenTint = Color(0xFFF2FBF9);
@@ -100,8 +99,12 @@ class _MealLogSuccessScreenState extends State<MealLogSuccessScreen>
 
   void _logAnother() {
     _timer?.cancel();
-    Navigator.of(context)
-        .push(AppPageRoute(builder: (_) => const LogMealIntroScreen()));
+    // Back to the first screen, with the log-a-meal sheet open over it.
+    final navigator = Navigator.of(context);
+    navigator.popUntil((route) => route.isFirst);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (navigator.mounted) showLogMealSheet(navigator.context);
+    });
   }
 
   // The final tick (0) still reads "one second", as before.

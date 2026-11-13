@@ -28,7 +28,6 @@ import 'package:healthylife_ai/presentation/bloc/measurements/measurements_cubit
 import 'package:healthylife_ai/presentation/bloc/notifications/notifications_cubit.dart';
 import 'package:healthylife_ai/presentation/bloc/patient_features_cubits.dart';
 import 'package:healthylife_ai/presentation/screens/food_search_screen.dart';
-import 'package:healthylife_ai/presentation/screens/log_meal_intro_screen.dart';
 import 'package:healthylife_ai/presentation/screens/login_screen.dart';
 import 'package:healthylife_ai/presentation/screens/measurements_screen.dart';
 import 'package:healthylife_ai/presentation/screens/new_measurement_screen.dart';
@@ -347,9 +346,12 @@ void main() {
         (tester) => _shot(
             tester, '04_weekly_plan', size, (_) => const WeeklyPlanScreen()));
     testWidgets(
-        'log meal intro $t',
-        (tester) => _shot(tester, '05_log_meal_intro', size,
-            (_) => const LogMealIntroScreen()));
+        'log meal sheet $t',
+        (tester) => _shot(tester, '05_log_meal_sheet', size,
+            (_) => const AppShell(), act: (tester) async {
+          // The + button of the shell opens the sheet over Home.
+          await tester.tap(find.byIcon(Icons.add_rounded).first);
+        }));
     testWidgets(
         'meal detail $t',
         (tester) =>

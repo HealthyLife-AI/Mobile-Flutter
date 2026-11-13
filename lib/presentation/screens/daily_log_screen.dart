@@ -15,12 +15,12 @@ import '../../core/time/date_only.dart';
 import '../bloc/meal_log/meal_log_cubit.dart';
 import '../bloc/meal_plan/meal_plan_cubit.dart';
 import '../meal_plan_view.dart';
-import 'log_meal_intro_screen.dart';
 import 'meal_detail_screen.dart';
 import 'notifications_center_screen.dart';
 import 'weekly_plan_screen.dart';
 
 import '../../l10n/l10n.dart';
+import '../widgets/log_meal_sheet.dart';
 
 const Color _mutedIcon = Color(0xFF475467);
 
@@ -65,10 +65,7 @@ class _DailyLogScreenState extends State<DailyLogScreen> {
         .push(AppPageRoute(builder: (_) => MealDetailScreen(meal: meal)));
   }
 
-  void _onAddMeal() {
-    Navigator.of(context)
-        .push(AppPageRoute(builder: (_) => const LogMealIntroScreen()));
-  }
+  void _onAddMeal() => showLogMealSheet(context);
 
   /// Hides the row at once, and deletes the entry for real (here and on the
   /// server, API guide 6.4) when the undo notice closes without an undo. A

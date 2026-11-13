@@ -199,17 +199,9 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
     final messenger = ScaffoldMessenger.of(context);
     final cubit = context.read<MealLogCubit>();
     final l10n = context.l10n;
-    final result = await cubit.logPlanned(meal);
-    if (!mounted) return;
-    setState(() => _eating = false);
-    final entry = result.valueOrNull;
-    if (entry == null) {
-      messenger.showSnackBar(SnackBar(
-          content: Text(loadFailureMessage(context, result.failureOrNull))));
-      return;
-    }
-    showMealLoggedSnack(
-        messenger: messenger, cubit: cubit, l10n: l10n, entry: entry);
+    await logPlannedAndConfirm(
+        messenger: messenger, cubit: cubit, l10n: l10n, meal: meal);
+    if (mounted) setState(() => _eating = false);
   }
 
   void _openMeal(Meal meal) {

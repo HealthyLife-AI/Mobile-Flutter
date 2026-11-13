@@ -4595,4 +4595,20 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get mealUndoFailed =>
       'Couldn\'t undo. You can delete the meal from today\'s record.';
+
+  @override
+  String get logMealTabPlan => 'From my plan';
+
+  @override
+  String get logMealTabOffPlan => 'Off plan';
+
+  @override
+  String get logMealAllLogged => 'All of today\'s meals are logged.';
+
+  @override
+  String get logMealOffPlanHint =>
+      'Search for the food you ate and set how many grams. Its calories are added to today\'s record.';
+
+  @override
+  String get logMealSearchFood => 'Search for a food';
 }

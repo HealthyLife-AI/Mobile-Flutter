@@ -5,9 +5,30 @@ import '../../core/theme/app_text_styles.dart';
 import '../../domain/entities/meal_entities.dart';
 import '../../l10n/l10n.dart';
 import '../bloc/meal_log/meal_log_cubit.dart';
+import 'load_error_view.dart';
 
 /// How long the patient can undo a meal they just logged.
 const Duration mealUndoWindow = Duration(seconds: 6);
+
+/// Logs [meal] as planned and shows the confirmation with its undo, or the
+/// reason it could not be logged. Takes what outlives the screen that asked,
+/// so a bottom sheet can close first.
+Future<void> logPlannedAndConfirm({
+  required ScaffoldMessengerState messenger,
+  required MealLogCubit cubit,
+  required AppLocalizations l10n,
+  required Meal meal,
+}) async {
+  final result = await cubit.logPlanned(meal);
+  final entry = result.valueOrNull;
+  if (entry == null) {
+    messenger.showSnackBar(SnackBar(
+        content: Text(loadFailureText(l10n, result.failureOrNull))));
+    return;
+  }
+  showMealLoggedSnack(
+      messenger: messenger, cubit: cubit, l10n: l10n, entry: entry);
+}
 
 /// The short confirmation after a planned meal is logged, with an undo.
 ///

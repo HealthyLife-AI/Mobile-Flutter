@@ -7,9 +7,11 @@ import 'state_views.dart';
 /// The message for a screen that could not load: the offline text when there
 /// is no connection, the generic one otherwise.
 String loadFailureMessage(BuildContext context, Failure? failure) =>
-    failure is NetworkFailure
-        ? context.l10n.commonOfflineBody
-        : context.l10n.commonErrorBody;
+    loadFailureText(context.l10n, failure);
+
+/// [loadFailureMessage] for code that holds the strings, not a context.
+String loadFailureText(AppLocalizations l10n, Failure? failure) =>
+    failure is NetworkFailure ? l10n.commonOfflineBody : l10n.commonErrorBody;
 
 /// A screen with nothing to show because loading failed: what happened, in
 /// the offline or the generic wording, and a retry button.
