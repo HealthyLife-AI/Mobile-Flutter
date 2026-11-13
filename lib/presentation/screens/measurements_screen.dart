@@ -170,11 +170,15 @@ class _MeasurementsViewState extends State<_MeasurementsView> {
                           size: 14,
                           color: AppColors.primary),
                       const SizedBox(width: 4),
-                      Text(
-                          l10n.measurementsDeltaVsLast(context
-                              .localizeDigits(delta.abs().toStringAsFixed(1))),
-                          style: AppTextStyles.caption
-                              .copyWith(color: AppColors.primaryInk)),
+                      // Flexible: a large system font wraps the text
+                      // instead of overflowing the pill.
+                      Flexible(
+                        child: Text(
+                            l10n.measurementsDeltaVsLast(context.localizeDigits(
+                                delta.abs().toStringAsFixed(1))),
+                            style: AppTextStyles.caption
+                                .copyWith(color: AppColors.primaryInk)),
+                      ),
                     ]),
                   ),
                 ),
@@ -184,11 +188,13 @@ class _MeasurementsViewState extends State<_MeasurementsView> {
                   const Icon(Icons.verified_rounded,
                       size: 14, color: AppColors.primary),
                   const SizedBox(width: 4),
-                  Text(
-                      l10n.measurementsClinicVerified(
-                          nutritionist?.gender ?? 'unknown',
-                          nutritionist?.name ?? ''),
-                      style: AppTextStyles.caption),
+                  Flexible(
+                    child: Text(
+                        l10n.measurementsClinicVerified(
+                            nutritionist?.gender ?? 'unknown',
+                            nutritionist?.name ?? ''),
+                        style: AppTextStyles.caption),
+                  ),
                 ]),
             ],
           ),
@@ -230,11 +236,17 @@ class _MeasurementsViewState extends State<_MeasurementsView> {
                     style: AppTextStyles.caption),
               ],
               const SizedBox(height: 10),
-              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                _Legend(ring: true, label: l10n.measurementsClinicReading),
-                const SizedBox(width: 18),
-                _Legend(ring: false, label: l10n.measurementsHomeReading),
-              ]),
+              // A Wrap: the two keys fall onto two lines on a narrow phone or
+              // with a large font, instead of overflowing one row.
+              Wrap(
+                alignment: WrapAlignment.center,
+                spacing: 18,
+                runSpacing: 6,
+                children: [
+                  _Legend(ring: true, label: l10n.measurementsClinicReading),
+                  _Legend(ring: false, label: l10n.measurementsHomeReading),
+                ],
+              ),
               const SizedBox(height: 12),
               Container(
                 padding: const EdgeInsets.all(12),
