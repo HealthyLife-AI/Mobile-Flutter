@@ -1427,12 +1427,6 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/home_dashboard_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'تسجيل الوجبة'**
-  String get homeLogMeal;
-
-  /// UI text in presentation/screens/home_dashboard_screen.dart
-  ///
-  /// In ar, this message translates to:
   /// **'شرب كوبين من الماء قبل الوجبة قد يساعد على الشعور بالشبع، والاستمرار على الخطة خطوة بعد خطوة.'**
   String get homeHydrationTip;
 
@@ -1499,92 +1493,8 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/log_meal_intro_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'تسجيل ما تناولته بصدق هو خطوتك الأولى نحو نتائج مستدامة. أخصائي التغذية هنا لدعمك دائماً دون أي تقييم.'**
-  String get logMealIntro;
-
-  /// UI text in presentation/screens/log_meal_intro_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'وجبات الخطة'**
-  String get logMealPlannedBadge;
-
-  /// UI text in presentation/screens/log_meal_intro_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'سجّلت وجبة من خطتي'**
-  String get logMealFromPlanTitle;
-
-  /// UI text in presentation/screens/log_meal_intro_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'تأكيد سريع لتناول إحدى وجبات جدول اليوم (فطور، سناك، غداء، عشاء) مع إمكانية اختيار البدائل المتاحة في الخطة.'**
-  String get logMealFromPlanDesc;
-
-  /// UI text in presentation/screens/log_meal_intro_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'مطابقة تلقائية للسعرات والمكونات المجدولة'**
-  String get logMealFromPlanNote;
-
-  /// UI text in presentation/screens/log_meal_intro_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'استبدال ذكي للبدائل المتكافئة بنقرة واحدة'**
-  String get logMealFromPlanNote2;
-
-  /// UI text in presentation/screens/log_meal_intro_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'المتابعة لاختيار الوجبة'**
-  String get logMealFromPlanFooter;
-
-  /// UI text in presentation/screens/log_meal_intro_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'بحث وتوثيق مرن'**
-  String get logMealFlexibleBadge;
-
-  /// UI text in presentation/screens/log_meal_intro_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'تناولت طعاماً أو وجبة خفيفة لم تكن مدرجة في جدولك؟ سجّلها بسهولة بالبحث المباشر أو تحديد الغرامات التقريبية.'**
-  String get logMealOffPlanDesc;
-
-  /// UI text in presentation/screens/log_meal_intro_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'قاعدة بيانات غنية بالأطعمة العربية والوجبات الشائعة'**
-  String get logMealOffPlanNote;
-
-  /// UI text in presentation/screens/log_meal_intro_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'لا داعي للشعور بالذنب، المرونة جزء أساسي من النجاح'**
-  String get logMealOffPlanNote2;
-
-  /// UI text in presentation/screens/log_meal_intro_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'المتابعة للبحث وحساب الغرامات'**
-  String get logMealOffPlanFooter;
-
-  /// UI text in presentation/screens/log_meal_intro_screen.dart
-  ///
-  /// In ar, this message translates to:
   /// **'سجل وجباتك يطّلع عليه أخصائيك فقط.'**
   String get logMealPrivacyNote;
-
-  /// UI text in presentation/screens/log_meal_intro_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'إضاءة تشجيعية: '**
-  String get logMealEncouragementLabel;
-
-  /// UI text in presentation/screens/log_meal_intro_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'التسجيل الدقيق يساعد أخصائي التغذية على ضبط سعراتك وملاءمة الوجبات القادمة حسب استجابة جسمك الطبيعية وتفضيلاتك اليومية.'**
-  String get logMealEncouragementBody;
 
   /// UI text in presentation/screens/meal_detail_screen.dart
   ///

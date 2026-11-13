@@ -773,9 +773,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get homeCompletedOnTime => 'مكتمل في الموعد';
 
   @override
-  String get homeLogMeal => 'تسجيل الوجبة';
-
-  @override
   String get homeHydrationTip =>
       'شرب كوبين من الماء قبل الوجبة قد يساعد على الشعور بالشبع، والاستمرار على الخطة خطوة بعد خطوة.';
 
@@ -812,56 +809,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get logMealTitle => 'تسجيل وجبة';
 
   @override
-  String get logMealIntro =>
-      'تسجيل ما تناولته بصدق هو خطوتك الأولى نحو نتائج مستدامة. أخصائي التغذية هنا لدعمك دائماً دون أي تقييم.';
-
-  @override
-  String get logMealPlannedBadge => 'وجبات الخطة';
-
-  @override
-  String get logMealFromPlanTitle => 'سجّلت وجبة من خطتي';
-
-  @override
-  String get logMealFromPlanDesc =>
-      'تأكيد سريع لتناول إحدى وجبات جدول اليوم (فطور، سناك، غداء، عشاء) مع إمكانية اختيار البدائل المتاحة في الخطة.';
-
-  @override
-  String get logMealFromPlanNote => 'مطابقة تلقائية للسعرات والمكونات المجدولة';
-
-  @override
-  String get logMealFromPlanNote2 =>
-      'استبدال ذكي للبدائل المتكافئة بنقرة واحدة';
-
-  @override
-  String get logMealFromPlanFooter => 'المتابعة لاختيار الوجبة';
-
-  @override
-  String get logMealFlexibleBadge => 'بحث وتوثيق مرن';
-
-  @override
-  String get logMealOffPlanDesc =>
-      'تناولت طعاماً أو وجبة خفيفة لم تكن مدرجة في جدولك؟ سجّلها بسهولة بالبحث المباشر أو تحديد الغرامات التقريبية.';
-
-  @override
-  String get logMealOffPlanNote =>
-      'قاعدة بيانات غنية بالأطعمة العربية والوجبات الشائعة';
-
-  @override
-  String get logMealOffPlanNote2 =>
-      'لا داعي للشعور بالذنب، المرونة جزء أساسي من النجاح';
-
-  @override
-  String get logMealOffPlanFooter => 'المتابعة للبحث وحساب الغرامات';
-
-  @override
   String get logMealPrivacyNote => 'سجل وجباتك يطّلع عليه أخصائيك فقط.';
-
-  @override
-  String get logMealEncouragementLabel => 'إضاءة تشجيعية: ';
-
-  @override
-  String get logMealEncouragementBody =>
-      'التسجيل الدقيق يساعد أخصائي التغذية على ضبط سعراتك وملاءمة الوجبات القادمة حسب استجابة جسمك الطبيعية وتفضيلاتك اليومية.';
 
   @override
   String get mealDetailTitle => 'تفاصيل الوجبة';

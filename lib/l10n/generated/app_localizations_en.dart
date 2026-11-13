@@ -788,9 +788,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get homeCompletedOnTime => 'Completed on time';
 
   @override
-  String get homeLogMeal => 'Log meal';
-
-  @override
   String get homeHydrationTip =>
       'Drinking two glasses of water before a meal may help you feel full. Keep following your plan, one step at a time.';
 
@@ -827,57 +824,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get logMealTitle => 'Log a meal';
 
   @override
-  String get logMealIntro =>
-      'Logging what you ate honestly is your first step toward lasting results. Your specialist is always here to support you, without judgment.';
-
-  @override
-  String get logMealPlannedBadge => 'Plan meals';
-
-  @override
-  String get logMealFromPlanTitle => 'I ate a meal from my plan';
-
-  @override
-  String get logMealFromPlanDesc =>
-      'Quickly confirm you had one of today\'s scheduled meals (breakfast, snack, lunch, dinner), with the alternatives your plan allows.';
-
-  @override
-  String get logMealFromPlanNote =>
-      'Automatic matching of scheduled calories and ingredients';
-
-  @override
-  String get logMealFromPlanNote2 =>
-      'Smart one-tap swap for equivalent alternatives';
-
-  @override
-  String get logMealFromPlanFooter => 'Continue to choose the meal';
-
-  @override
-  String get logMealFlexibleBadge => 'Flexible search & logging';
-
-  @override
-  String get logMealOffPlanDesc =>
-      'Had a food or snack that wasn\'t on your schedule? Log it easily by searching directly or entering approximate grams.';
-
-  @override
-  String get logMealOffPlanNote =>
-      'A rich database of Arabic foods and common meals';
-
-  @override
-  String get logMealOffPlanNote2 =>
-      'No need to feel guilty — flexibility is a key part of success';
-
-  @override
-  String get logMealOffPlanFooter => 'Continue to search and calculate grams';
-
-  @override
   String get logMealPrivacyNote => 'Only your nutritionist sees your meal log.';
-
-  @override
-  String get logMealEncouragementLabel => 'A note of encouragement:';
-
-  @override
-  String get logMealEncouragementBody =>
-      'Accurate logging helps your specialist fine-tune your calories and fit upcoming meals to your body\'s natural response and your daily preferences.';
 
   @override
   String get mealDetailTitle => 'Meal details';
