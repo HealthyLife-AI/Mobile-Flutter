@@ -430,9 +430,11 @@ class _OnboardingHealthScreenState extends State<OnboardingHealthScreen> {
                             ),
                           ),
                           const SizedBox(width: 8),
-                          GestureDetector(
-                            onTap: () => _removeMedication(i),
-                            child: const Icon(Icons.close_rounded,
+                          IconButton(
+                            onPressed: () => _removeMedication(i),
+                            tooltip:
+                                context.l10n.foodPrefsRemove(_medications[i]),
+                            icon: const Icon(Icons.close_rounded,
                                 size: 18, color: AppColors.textSecondary),
                           ),
                         ]),
@@ -555,8 +557,8 @@ class _MiniBadge extends StatelessWidget {
           color: AppColors.primaryTint,
           borderRadius: BorderRadius.circular(AppRadius.pill)),
       child: Text(label,
-          style: AppTextStyles.caption
-              .copyWith(color: AppColors.primaryInk, fontWeight: FontWeight.w700)),
+          style: AppTextStyles.caption.copyWith(
+              color: AppColors.primaryInk, fontWeight: FontWeight.w700)),
     );
   }
 }

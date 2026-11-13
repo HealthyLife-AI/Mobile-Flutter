@@ -969,21 +969,29 @@ class _RoundStepBtn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return _PressScale(
-      child: GestureDetector(
-        onTap: onTap,
-        child: Container(
-          width: 48,
-          height: 48,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: filled ? AppColors.primary : AppColors.surface,
-            border: filled
-                ? null
-                : Border.all(color: AppColors.primary.withValues(alpha: 0.35)),
-          ),
-          child: Icon(
-            icon,
-            color: filled ? Colors.white : AppColors.primary,
+      child: Semantics(
+        button: true,
+        label: icon == Icons.add_rounded
+            ? context.l10n.commonIncrease
+            : context.l10n.commonDecrease,
+        excludeSemantics: true,
+        child: GestureDetector(
+          onTap: onTap,
+          child: Container(
+            width: 48,
+            height: 48,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: filled ? AppColors.primary : AppColors.surface,
+              border: filled
+                  ? null
+                  : Border.all(
+                      color: AppColors.primary.withValues(alpha: 0.35)),
+            ),
+            child: Icon(
+              icon,
+              color: filled ? Colors.white : AppColors.primary,
+            ),
           ),
         ),
       ),

@@ -7045,6 +7045,30 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'البحث عن طعام'**
   String get logMealSearchFood;
+
+  /// Accessible name of an icon-only control.
+  ///
+  /// In ar, this message translates to:
+  /// **'زيادة'**
+  String get commonIncrease;
+
+  /// Accessible name of an icon-only control.
+  ///
+  /// In ar, this message translates to:
+  /// **'إنقاص'**
+  String get commonDecrease;
+
+  /// Accessible name of an icon-only control.
+  ///
+  /// In ar, this message translates to:
+  /// **'إظهار كلمة المرور'**
+  String get passwordShow;
+
+  /// Accessible name of an icon-only control.
+  ///
+  /// In ar, this message translates to:
+  /// **'إخفاء كلمة المرور'**
+  String get passwordHide;
 }
 
 class _AppLocalizationsDelegate

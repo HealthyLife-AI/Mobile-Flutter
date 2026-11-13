@@ -306,11 +306,10 @@ class _TopBar extends StatelessWidget {
         children: [
           Row(
             children: [
-              InkResponse(
-                onTap: onBack,
-                radius: 24,
-                // في RTL يتجه هذا السهم لليمين تلقائياً
-                child: const Icon(Icons.arrow_back_rounded,
+              IconButton(
+                onPressed: onBack,
+                tooltip: MaterialLocalizations.of(context).backButtonTooltip,
+                icon: const Icon(Icons.arrow_back_rounded,
                     size: 26, color: AppColors.textPrimary),
               ),
               const SizedBox(width: 12),

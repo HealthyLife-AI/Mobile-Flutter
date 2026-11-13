@@ -1263,5 +1263,21 @@
   "logMealTabOffPlan": "Off plan",
   "logMealAllLogged": "All of today's meals are logged.",
   "logMealOffPlanHint": "Search for the food you ate and set how many grams. Its calories are added to today's record.",
-  "logMealSearchFood": "Search for a food"
+  "logMealSearchFood": "Search for a food",
+  "commonIncrease": "Increase",
+  "commonDecrease": "Decrease",
+  "passwordShow": "Show password",
+  "passwordHide": "Hide password",
+  "@commonIncrease": {
+    "description": "Accessible name of an icon-only control."
+  },
+  "@commonDecrease": {
+    "description": "Accessible name of an icon-only control."
+  },
+  "@passwordShow": {
+    "description": "Accessible name of an icon-only control."
+  },
+  "@passwordHide": {
+    "description": "Accessible name of an icon-only control."
+  }
 }

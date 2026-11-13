@@ -54,9 +54,11 @@ class ConnectionStatusSheet extends StatelessWidget {
                     child: const Icon(Icons.person_rounded,
                         color: AppColors.primary, size: 20)),
                 const SizedBox(width: 8),
-                GestureDetector(
-                    onTap: () => Navigator.of(context).pop(),
-                    child: const Icon(Icons.close_rounded,
+                IconButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    tooltip:
+                        MaterialLocalizations.of(context).closeButtonTooltip,
+                    icon: const Icon(Icons.close_rounded,
                         color: AppColors.textSecondary)),
                 const Spacer(),
                 Text(context.l10n.connectionStatusTitle,

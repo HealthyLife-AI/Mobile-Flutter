@@ -4904,5 +4904,21 @@
   "logMealSearchFood": "البحث عن طعام",
   "@logMealSearchFood": {
     "description": "The log-a-meal bottom sheet."
+  },
+  "commonIncrease": "زيادة",
+  "commonDecrease": "إنقاص",
+  "passwordShow": "إظهار كلمة المرور",
+  "passwordHide": "إخفاء كلمة المرور",
+  "@commonIncrease": {
+    "description": "Accessible name of an icon-only control."
+  },
+  "@commonDecrease": {
+    "description": "Accessible name of an icon-only control."
+  },
+  "@passwordShow": {
+    "description": "Accessible name of an icon-only control."
+  },
+  "@passwordHide": {
+    "description": "Accessible name of an icon-only control."
   }
 }

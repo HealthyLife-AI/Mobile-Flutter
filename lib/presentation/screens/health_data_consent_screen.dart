@@ -223,7 +223,8 @@ class _HealthDataConsentScreenState extends State<HealthDataConsentScreen> {
               border: Border.all(color: AppColors.border),
             ),
             child: Text(context.l10n.consentConfidentialVerified,
-                style: const TextStyle(fontSize: 10, color: AppColors.primaryInk)),
+                style:
+                    const TextStyle(fontSize: 10, color: AppColors.primaryInk)),
           ),
         ]),
         const SizedBox(height: 10),
@@ -310,11 +311,11 @@ class _ConsentHeader extends StatelessWidget {
         border: Border(bottom: BorderSide(color: AppColors.hairline)),
       ),
       child: Row(children: [
-        InkResponse(
-          onTap: onBack,
-          radius: 22,
-          // arrow_back بينعكس تلقائياً في RTL ويصير يشاور لليمين
-          child: const Icon(Icons.arrow_back_rounded,
+        IconButton(
+          onPressed: onBack,
+          tooltip: MaterialLocalizations.of(context).backButtonTooltip,
+          // The standard arrow mirrors by itself in RTL.
+          icon: const Icon(Icons.arrow_back_rounded,
               size: 24, color: AppColors.textPrimary),
         ),
         const SizedBox(width: 10),
@@ -326,10 +327,10 @@ class _ConsentHeader extends StatelessWidget {
             style: AppTextStyles.cardTitle.copyWith(fontSize: 14),
           ),
         ),
-        InkResponse(
-          onTap: onClose,
-          radius: 20,
-          child: const Icon(Icons.close_rounded,
+        IconButton(
+          onPressed: onClose,
+          tooltip: MaterialLocalizations.of(context).closeButtonTooltip,
+          icon: const Icon(Icons.close_rounded,
               size: 22, color: AppColors.textSecondary),
         ),
         const SizedBox(width: 10),
