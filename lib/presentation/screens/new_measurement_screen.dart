@@ -11,6 +11,7 @@ import '../../core/theme/app_text_styles.dart';
 import '../../domain/entities/measurement_entities.dart';
 import '../../domain/usecases/save_measurement_use_case.dart';
 import '../../l10n/l10n.dart';
+import '../widgets/unsaved_changes_guard.dart';
 import '../bloc/nutritionist/nutritionist_cubit.dart';
 import '../widgets/app_header_bar.dart';
 import '../widgets/clinical_trust_footer.dart';
@@ -247,6 +248,15 @@ class _MeasurementEntryScreenState extends State<MeasurementEntryScreen>
 
   @override
   Widget build(BuildContext context) {
+    return UnsavedChangesGuard(
+      hasChanges: () =>
+          _weightChosen ||
+          _controllers.values.any((c) => c.text.trim().isNotEmpty),
+      child: _buildForm(context),
+    );
+  }
+
+  Widget _buildForm(BuildContext context) {
     return BlocProvider<NutritionistCubit>(
       create: (context) =>
           NutritionistCubit(context.read<AppDependencies>().nutritionist)
@@ -283,7 +293,7 @@ class _MeasurementEntryScreenState extends State<MeasurementEntryScreen>
                   ),
                   const SizedBox(height: 6),
                   TextButton(
-                    onPressed: () => Navigator.of(context).pop(),
+                    onPressed: () => Navigator.of(context).maybePop(),
                     child: Text(context.l10n.measurementEntryCancel,
                         style: AppTextStyles.secondary),
                   ),

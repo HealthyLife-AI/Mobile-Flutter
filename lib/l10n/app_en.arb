@@ -1279,5 +1279,21 @@
   },
   "@passwordHide": {
     "description": "Accessible name of an icon-only control."
+  },
+  "unsavedChangesTitle": "Discard changes?",
+  "unsavedChangesBody": "What you entered hasn't been saved and will be lost if you leave now.",
+  "unsavedChangesStay": "Keep editing",
+  "unsavedChangesDiscard": "Discard",
+  "@unsavedChangesTitle": {
+    "description": "Asked before leaving a form with unsaved input."
+  },
+  "@unsavedChangesBody": {
+    "description": "Asked before leaving a form with unsaved input."
+  },
+  "@unsavedChangesStay": {
+    "description": "Asked before leaving a form with unsaved input."
+  },
+  "@unsavedChangesDiscard": {
+    "description": "Asked before leaving a form with unsaved input."
   }
 }

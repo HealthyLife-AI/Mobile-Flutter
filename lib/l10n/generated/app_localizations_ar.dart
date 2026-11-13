@@ -4148,4 +4148,17 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get passwordHide => 'إخفاء كلمة المرور';
+
+  @override
+  String get unsavedChangesTitle => 'تجاهل التغييرات؟';
+
+  @override
+  String get unsavedChangesBody =>
+      'ما أدخلته لم يُحفظ بعد، وسيضيع إن خرجت الآن.';
+
+  @override
+  String get unsavedChangesStay => 'متابعة التعديل';
+
+  @override
+  String get unsavedChangesDiscard => 'تجاهل';
 }
