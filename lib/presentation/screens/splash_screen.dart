@@ -19,7 +19,14 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen>
     with TickerProviderStateMixin {
+  /// The brand moment: shown in full when nobody is signed in (a first launch
+  /// or after signing out).
   static const Duration _minimumSplashDuration = Duration(seconds: 3);
+
+  /// A signed-in patient opens the app many times a day, so the splash is only
+  /// long enough for the logo to appear, not a wait.
+  static const Duration _returningSplashDuration =
+      Duration(milliseconds: 1200);
   static const Color _teal = Color(0xFF028090);
 
   late final AnimationController _introController;
@@ -121,15 +128,19 @@ class _SplashScreenState extends State<SplashScreen>
     unawaited(_boot());
   }
 
-  /// Runs start-up (restores the session, rotates the tokens, checks consent)
-  /// while the splash animation plays. Then the splash opens the screen for the
+  /// Runs start-up (restores the session, checks consent) while the splash
+  /// animation plays, for at least the time that suits who is opening the app. Then the splash opens the screen for the
   /// resulting status. The auth listener does not navigate during launch.
   Future<void> _boot() async {
     final auth = context.read<AuthCubit>();
-    await Future.wait<void>([
-      auth.start(),
-      Future<void>.delayed(_minimumSplashDuration),
-    ]);
+    final started = Stopwatch()..start();
+    await auth.start();
+    if (!mounted) return;
+    final minimum = auth.state.status == AuthStatus.signedOut
+        ? _minimumSplashDuration
+        : _returningSplashDuration;
+    final remaining = minimum - started.elapsed;
+    if (remaining > Duration.zero) await Future<void>.delayed(remaining);
     if (!mounted) return;
     auth.finishLaunch();
     AppRouter.showFor(auth.state);
