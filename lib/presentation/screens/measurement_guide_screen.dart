@@ -24,8 +24,8 @@ class MeasurementGuideScreen extends StatefulWidget {
 
 class _MeasurementGuideScreenState extends State<MeasurementGuideScreen> {
   // ألوان مقدّرة من اللقطات؛ استبدلها برموز الثيم إن وُجد ما يقابلها.
-  static const Color _lavender = Color(0xFFEEF1FC);
-  static const Color _lavenderSoft = Color(0xFFF4F6FD);
+  static const Color _lavender = AppColors.panel;
+  static const Color _lavenderSoft = AppColors.panel;
   static const Color _teal = Color(0xFF0E7C86);
 
   late String _selected = widget.initialPart;
@@ -295,7 +295,7 @@ class _MeasurementGuideScreenState extends State<MeasurementGuideScreen> {
                               width: 26,
                               height: 26,
                               decoration: const BoxDecoration(
-                                  color: Color(0xFFE3EAFB),
+                                  color: AppColors.chipInactiveBg,
                                   shape: BoxShape.circle),
                               child: Center(
                                 child: Text(context.localizeDigits(i + 1),
@@ -329,14 +329,14 @@ class _MeasurementGuideScreenState extends State<MeasurementGuideScreen> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-          color: const Color(0xFFEEF2FF),
+          color: AppColors.panel,
           borderRadius: BorderRadius.circular(AppRadius.card)),
       child: Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
         Container(
           width: 44,
           height: 44,
           decoration: BoxDecoration(
-              color: const Color(0xFFDCE5FA),
+              color: AppColors.chipInactiveBg,
               borderRadius: BorderRadius.circular(12)),
           child: const Icon(Icons.smart_display_outlined,
               color: AppColors.primary),

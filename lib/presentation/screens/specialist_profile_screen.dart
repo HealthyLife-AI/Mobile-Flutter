@@ -20,7 +20,7 @@ import '../widgets/state_views.dart';
 
 const Color _whatsapp = Color(0xFF25D366);
 const Color _mint = Color(0xFF7DF2D6);
-const Color _lavender = Color(0xFFEEF1FC);
+const Color _lavender = AppColors.panel;
 
 /// ملف الأخصائي: the patient's nutritionist from `GET /me/nutritionist` (API
 /// guide 9.1). Each field is shown only when the server sent it.

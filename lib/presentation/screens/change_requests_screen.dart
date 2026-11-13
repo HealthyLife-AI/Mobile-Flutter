@@ -17,7 +17,7 @@ import '../widgets/confirm_action_sheet.dart';
 import 'change_request_forms.dart';
 import '../widgets/state_views.dart';
 
-const _lav = Color(0xFFF6F8FE);
+const _lav = AppColors.panel;
 
 /// "طلب تعديل" — asks the nutritionist to change the goal, medications or
 /// allergies, and shows the requests already sent (API guide 11.2, 11.3).

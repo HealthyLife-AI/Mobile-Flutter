@@ -595,7 +595,7 @@ class _MacroBox extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 6),
         decoration: BoxDecoration(
-            color: const Color(0xFFF4F6FD),
+            color: AppColors.panel,
             borderRadius: BorderRadius.circular(14)),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -754,7 +754,7 @@ class _OptionTile extends StatelessWidget {
         margin: const EdgeInsets.only(bottom: 10),
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
-          color: selected ? const Color(0xFFF5F7FD) : AppColors.surface,
+          color: selected ? AppColors.panel : AppColors.surface,
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
             color: selected
@@ -943,7 +943,7 @@ class _RadioMarkState extends State<_RadioMark>
             height: 28,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: on ? AppColors.primary : const Color(0xFFEEF1FA),
+              color: on ? AppColors.primary : AppColors.panel,
             ),
             child: AnimatedSwitcher(
               duration: const Duration(milliseconds: 380),

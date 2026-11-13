@@ -38,8 +38,8 @@ import '../widgets/directional_icon.dart';
 // ───────────────────────── ألوان إضافية مأخوذة من التصميم ─────────────────────────
 const Color _kMint = Color(0xFF5EE0B0);
 const Color _kMintSoft = Color(0xFFE3F8F0);
-const Color _kLavender = Color(0xFFF1F4FC);
-const Color _kDivider = Color(0xFFEBEFF6);
+const Color _kLavender = AppColors.panel;
+const Color _kDivider = AppColors.border;
 const Color _kLogoutBg = Color(0xFFFFDCD8);
 const Color _kLogoutText = Color(0xFFB3261E);
 

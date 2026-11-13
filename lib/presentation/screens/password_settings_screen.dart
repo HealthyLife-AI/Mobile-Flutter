@@ -18,11 +18,11 @@ import '../rate_limit_text.dart';
 const Color _teal = Color(0xFF00636E);
 const Color _mint = Color(0xFF3DDBB0);
 const Color _success = Color(0xFF12A37F);
-const Color _lavender = Color(0xFFF3F6FC);
-const Color _track = Color(0xFFDCE3F4);
-const Color _cardBorder = Color(0xFFEDF0F6);
-const Color _fieldBorder = Color(0xFFDDE2EC);
-const Color _pageBg = Color(0xFFFBFCFE);
+const Color _lavender = AppColors.panel;
+const Color _track = AppColors.chipInactiveBg;
+const Color _cardBorder = AppColors.panel;
+const Color _fieldBorder = AppColors.border;
+const Color _pageBg = AppColors.background;
 const Color _warnRed = Color(0xFFEF5B5B);
 const Color _warnOrange = Color(0xFFF5A524);
 
@@ -1005,7 +1005,7 @@ class _RequirementRow extends StatelessWidget {
             width: 28,
             height: 28,
             decoration: BoxDecoration(
-              color: met ? const Color(0xFFD9E8EA) : const Color(0xFFDDE3F3),
+              color: met ? const Color(0xFFD9E8EA) : AppColors.chipInactiveBg,
               shape: BoxShape.circle,
             ),
             child: AnimatedSwitcher(

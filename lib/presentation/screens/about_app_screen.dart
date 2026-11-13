@@ -493,7 +493,7 @@ class _LegalCard extends StatelessWidget {
         _LegalItem(
           icon: Icons.description_outlined,
           iconColor: const Color(0xFF3E5A8C),
-          tint: const Color(0xFFE9EFFA),
+          tint: AppColors.chipInactiveBg,
           title: l10n.aboutMedicalTermsTitle,
           subtitle: l10n.aboutMedicalTermsSubtitle,
         ),
@@ -614,7 +614,7 @@ class _StandardProtectionCard extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: const Color(0xFFEEF1FC),
+        color: AppColors.panel,
         borderRadius: BorderRadius.circular(AppRadius.card),
       ),
       child: Row(
