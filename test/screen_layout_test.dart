@@ -126,7 +126,7 @@ void main() {
     await tester.tap(find.byIcon(Icons.event_note_rounded));
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 400));
-    expect(find.text('سجل اليوم'), findsOneWidget);
+    expect(find.text('خطة اليوم'), findsOneWidget);
 
     await tester.tap(find.byTooltip('استعراض الخطة الأسبوعية'));
     await tester.pump();
@@ -141,8 +141,12 @@ void main() {
     // The nutritionist's plan, not demo content: its week (started two weeks
     // ago) and a food that only the plan contains.
     expect(find.text('الأسبوع 3 من الخطة'), findsOneWidget);
-    // Today's total from the plan's summary_by_day (993 kcal).
-    expect(find.text('993'), findsOneWidget);
+    // Today's total from the plan's summary_by_day (993 kcal). The plan tab
+    // under it shows the same total.
+    expect(
+        find.descendant(
+            of: find.byType(WeeklyPlanScreen), matching: find.text('993')),
+        findsOneWidget);
     await tester.scrollUntilVisible(find.text('صدر دجاج مشوي'), 300,
         scrollable: find
             .descendant(

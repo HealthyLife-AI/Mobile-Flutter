@@ -276,54 +276,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get commonUndo => 'Undo';
 
   @override
-  String get dailyLogTitle => 'Today\'s log';
-
-  @override
   String get commonNotifications => 'Notifications';
 
   @override
   String get dailyLogWeeklyPlanTooltip => 'View the weekly plan';
 
   @override
-  String get dailyLogActiveDay => 'Active day';
-
-  @override
-  String get dailyLogLoggedMeals => 'Logged meals';
-
-  @override
-  String get dailyLogTotalEnergy => 'Total energy consumed';
-
-  @override
   String commonKcalValue(Object value) {
     return '$value kcal';
   }
-
-  @override
-  String dailyLogOverGoal(Object value) {
-    return '$value kcal over your goal';
-  }
-
-  @override
-  String get dailyLogBalancedEnergy => 'Balanced daily energy';
-
-  @override
-  String dailyLogPercentOfRecommended(Object percent) {
-    return '$percent% of recommended';
-  }
-
-  @override
-  String get dailyLogOverGoalReassurance =>
-      'That\'s okay — the numbers are a calm guide, not a verdict, and tomorrow is a new day.';
-
-  @override
-  String get dailyLogVariedChoices =>
-      'Your choices today are varied and nourishing. Remember, the numbers are a calm guide to support your activity and health.';
-
-  @override
-  String get dailyLogTimeline => 'Timeline';
-
-  @override
-  String get dailyLogPreviewEmpty => 'Preview empty log';
 
   @override
   String get dailyLogOffPlanFree => 'Off-plan • free entry';
@@ -4201,4 +4162,36 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get homeOffPlanAction => 'Log it';
+
+  @override
+  String get todayPlanTitle => 'Today\'s plan';
+
+  @override
+  String get todayPlanKcalToday => 'kcal today';
+
+  @override
+  String get todayPlanAltAvailable => 'Swap available';
+
+  @override
+  String get todayPlanLogMeal => 'I had this meal';
+
+  @override
+  String todayPlanLoggedAt(String time) {
+    return 'Logged $time';
+  }
+
+  @override
+  String get todayPlanDeleteLog => 'Delete this log';
+
+  @override
+  String get todayPlanViewOnly =>
+      'This is another day\'s plan, to look at. Only today\'s meals can be logged.';
+
+  @override
+  String get todayPlanBackToToday => 'Back to today';
+
+  @override
+  String todayPlanKcalOfGoal(String eaten, String goal) {
+    return '$eaten of $goal kcal';
+  }
 }

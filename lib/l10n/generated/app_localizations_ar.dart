@@ -269,54 +269,15 @@ class AppLocalizationsAr extends AppLocalizations {
   String get commonUndo => 'تراجع';
 
   @override
-  String get dailyLogTitle => 'سجل اليوم';
-
-  @override
   String get commonNotifications => 'الإشعارات';
 
   @override
   String get dailyLogWeeklyPlanTooltip => 'استعراض الخطة الأسبوعية';
 
   @override
-  String get dailyLogActiveDay => 'اليوم النشط';
-
-  @override
-  String get dailyLogLoggedMeals => 'الوجبات المسجلة';
-
-  @override
-  String get dailyLogTotalEnergy => 'مجموع الطاقة المستهلكة';
-
-  @override
   String commonKcalValue(Object value) {
     return '$value سعرة';
   }
-
-  @override
-  String dailyLogOverGoal(Object value) {
-    return 'تجاوزت الهدف بـ $value سعرة';
-  }
-
-  @override
-  String get dailyLogBalancedEnergy => 'توازن الطاقة اليومي المتزن';
-
-  @override
-  String dailyLogPercentOfRecommended(Object percent) {
-    return '$percent٪ من الموصى به';
-  }
-
-  @override
-  String get dailyLogOverGoalReassurance =>
-      'لا بأس، الأرقام مرشد هادئ وليست حكماً، وغداً يوم جديد.';
-
-  @override
-  String get dailyLogVariedChoices =>
-      'خياراتك اليوم متنوعة ومغذية، تذكّر أن الأرقام مرشد هادئ لدعم نشاطك وصحتك.';
-
-  @override
-  String get dailyLogTimeline => 'التسلسل الزمني';
-
-  @override
-  String get dailyLogPreviewEmpty => 'معاينة السجل الفارغ';
 
   @override
   String get dailyLogOffPlanFree => 'خارج الخطة • إضافة حرة';
@@ -4189,4 +4150,36 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get homeOffPlanAction => 'سجّله';
+
+  @override
+  String get todayPlanTitle => 'خطة اليوم';
+
+  @override
+  String get todayPlanKcalToday => 'سعرة حرارية اليوم';
+
+  @override
+  String get todayPlanAltAvailable => 'بديل متاح';
+
+  @override
+  String get todayPlanLogMeal => 'سجّلت هذه الوجبة';
+
+  @override
+  String todayPlanLoggedAt(String time) {
+    return 'تم التسجيل $time';
+  }
+
+  @override
+  String get todayPlanDeleteLog => 'حذف التسجيل';
+
+  @override
+  String get todayPlanViewOnly =>
+      'هذه خطة يوم آخر للعرض. التسجيل لوجبات اليوم فقط.';
+
+  @override
+  String get todayPlanBackToToday => 'العودة إلى اليوم';
+
+  @override
+  String todayPlanKcalOfGoal(String eaten, String goal) {
+    return '$eaten من $goal سعرة';
+  }
 }
