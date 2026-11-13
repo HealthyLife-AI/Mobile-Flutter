@@ -1381,5 +1381,10 @@
   "commonListSeparator": ", ",
   "loginPrivacyPolicy": "Privacy policy",
   "stateOfflineTitle": "No connection",
-  "stateErrorTitle": "This page didn't load"
+  "stateErrorTitle": "This page didn't load",
+  "mealAte": "I ate it",
+  "mealDetailsAndSwaps": "Details & swaps",
+  "mealLoggedSnack": "{meal} logged",
+  "mealUndo": "Undo",
+  "mealUndoFailed": "Couldn't undo. You can delete the meal from today's record."
 }

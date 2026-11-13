@@ -7849,6 +7849,36 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'تعذّر تحميل الصفحة'**
   String get stateErrorTitle;
+
+  /// One-tap meal logging on Home.
+  ///
+  /// In ar, this message translates to:
+  /// **'أكلتها'**
+  String get mealAte;
+
+  /// One-tap meal logging on Home.
+  ///
+  /// In ar, this message translates to:
+  /// **'التفاصيل والبدائل'**
+  String get mealDetailsAndSwaps;
+
+  /// Confirmation after a planned meal is logged; the name is the meal, such as the lunch.
+  ///
+  /// In ar, this message translates to:
+  /// **'تم تسجيل {meal}'**
+  String mealLoggedSnack(String meal);
+
+  /// One-tap meal logging on Home.
+  ///
+  /// In ar, this message translates to:
+  /// **'تراجع'**
+  String get mealUndo;
+
+  /// One-tap meal logging on Home.
+  ///
+  /// In ar, this message translates to:
+  /// **'تعذّر التراجع. يمكنك حذف الوجبة من سجل اليوم.'**
+  String get mealUndoFailed;
 }
 
 class _AppLocalizationsDelegate

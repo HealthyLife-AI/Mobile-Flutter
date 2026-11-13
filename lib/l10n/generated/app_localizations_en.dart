@@ -4577,4 +4577,22 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get stateErrorTitle => 'This page didn\'t load';
+
+  @override
+  String get mealAte => 'I ate it';
+
+  @override
+  String get mealDetailsAndSwaps => 'Details & swaps';
+
+  @override
+  String mealLoggedSnack(String meal) {
+    return '$meal logged';
+  }
+
+  @override
+  String get mealUndo => 'Undo';
+
+  @override
+  String get mealUndoFailed =>
+      'Couldn\'t undo. You can delete the meal from today\'s record.';
 }

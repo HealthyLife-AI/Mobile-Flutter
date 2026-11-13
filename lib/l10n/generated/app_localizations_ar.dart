@@ -4546,4 +4546,21 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get stateErrorTitle => 'تعذّر تحميل الصفحة';
+
+  @override
+  String get mealAte => 'أكلتها';
+
+  @override
+  String get mealDetailsAndSwaps => 'التفاصيل والبدائل';
+
+  @override
+  String mealLoggedSnack(String meal) {
+    return 'تم تسجيل $meal';
+  }
+
+  @override
+  String get mealUndo => 'تراجع';
+
+  @override
+  String get mealUndoFailed => 'تعذّر التراجع. يمكنك حذف الوجبة من سجل اليوم.';
 }

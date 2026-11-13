@@ -1,9 +1,11 @@
 import 'dart:async';
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../core/state/async_state.dart';
 import '../../core/theme/app_colors.dart';
+import '../../core/theme/app_text_styles.dart';
 import '../../core/navigation/app_page_route.dart';
 import '../../domain/entities/meal_entities.dart';
 import '../../domain/entities/meal_plan_entities.dart';
@@ -11,6 +13,7 @@ import '../bloc/meal_log/meal_log_cubit.dart';
 import '../bloc/meal_plan/meal_plan_cubit.dart';
 import '../meal_plan_view.dart';
 import '../widgets/load_error_view.dart';
+import '../widgets/meal_logged_snack.dart';
 import '../widgets/scroll_edge_fade.dart';
 import '../widgets/home_skeleton.dart';
 import '../widgets/offline_banner.dart';
@@ -184,6 +187,31 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
         context.read<PostsUnreadCubit>().load(),
       ]);
 
+  bool _eating = false;
+
+  /// "I ate it": the meal is logged as planned, with one tap. The log is kept
+  /// on the device at once (the server copy goes through the offline queue),
+  /// and the patient can undo it for a few seconds; it stays editable after.
+  Future<void> _eat(Meal meal) async {
+    if (_eating) return;
+    setState(() => _eating = true);
+    HapticFeedback.mediumImpact();
+    final messenger = ScaffoldMessenger.of(context);
+    final cubit = context.read<MealLogCubit>();
+    final l10n = context.l10n;
+    final result = await cubit.logPlanned(meal);
+    if (!mounted) return;
+    setState(() => _eating = false);
+    final entry = result.valueOrNull;
+    if (entry == null) {
+      messenger.showSnackBar(SnackBar(
+          content: Text(loadFailureMessage(context, result.failureOrNull))));
+      return;
+    }
+    showMealLoggedSnack(
+        messenger: messenger, cubit: cubit, l10n: l10n, entry: entry);
+  }
+
   void _openMeal(Meal meal) {
     Navigator.of(context)
         .push(AppPageRoute(builder: (_) => MealDetailScreen(meal: meal)));
@@ -316,6 +344,8 @@ class _HomeDashboardScreenState extends State<HomeDashboardScreen> {
                                           _pendingCount > 0 &&
                                           i == 0,
                                       onLog: () => _openMeal(slots[i].meal),
+                                      onEat: () => _eat(slots[i].meal),
+                                      eating: _eating,
                                     ),
                             ),
                           ),
@@ -810,9 +840,19 @@ class _NoPlanCard extends StatelessWidget {
 class _MealCard extends StatefulWidget {
   final _Slot slot;
   final bool syncPending;
+
+  /// Opens the meal's details (amounts, alternatives).
   final VoidCallback onLog;
+
+  /// Logs the meal as planned, in one tap.
+  final VoidCallback onEat;
+  final bool eating;
   const _MealCard(
-      {required this.slot, required this.syncPending, required this.onLog});
+      {required this.slot,
+      required this.syncPending,
+      required this.onLog,
+      required this.onEat,
+      required this.eating});
   @override
   State<_MealCard> createState() => _MealCardState();
 }
@@ -1022,8 +1062,12 @@ class _MealCardState extends State<_MealCard>
     ]);
 
     if (_active) {
-      return Row(
-          children: [kcal, const Spacer(), _LogButton(onTap: widget.onLog)]);
+      return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+        Align(alignment: AlignmentDirectional.centerStart, child: kcal),
+        const SizedBox(height: 10),
+        _MealActions(
+            onEat: widget.onEat, onDetails: widget.onLog, eating: widget.eating),
+      ]);
     }
     return Row(children: [
       kcal,
@@ -1113,84 +1157,57 @@ class _StatusChip extends StatelessWidget {
   }
 }
 
-class _LogButton extends StatefulWidget {
-  final VoidCallback onTap;
-  const _LogButton({required this.onTap});
-  @override
-  State<_LogButton> createState() => _LogButtonState();
-}
+/// The two actions of the current meal: eat it as planned (one tap, with an
+/// undo), or open its details to change an amount or pick an alternative.
+class _MealActions extends StatelessWidget {
+  const _MealActions(
+      {required this.onEat, required this.onDetails, required this.eating});
 
-class _LogButtonState extends State<_LogButton>
-    with SingleTickerProviderStateMixin {
-  late final AnimationController _loop = AnimationController(
-      vsync: this, duration: const Duration(milliseconds: 3000))
-    ..repeat();
-  bool _down = false;
+  final VoidCallback onEat;
+  final VoidCallback onDetails;
 
-  @override
-  void dispose() {
-    _loop.dispose();
-    super.dispose();
-  }
+  /// A log is on its way: the button waits, so a second tap does nothing.
+  final bool eating;
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTapDown: (_) => setState(() => _down = true),
-      onTapCancel: () => setState(() => _down = false),
-      onTapUp: (_) => setState(() => _down = false),
-      onTap: widget.onTap,
-      child: AnimatedScale(
-        scale: _down ? 0.94 : 1,
-        duration: const Duration(milliseconds: 120),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(13),
-          child: Stack(children: [
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-              color: _C.teal,
-              child: Row(mainAxisSize: MainAxisSize.min, children: [
-                Text(context.l10n.homeLogMeal,
-                    style: _ts(12.5, w: FontWeight.w700, c: Colors.white)),
-                const SizedBox(width: 6),
-                AnimatedRotation(
-                  turns: _down ? 0.25 : 0,
-                  duration: const Duration(milliseconds: 220),
-                  child: const Icon(Icons.add_rounded,
-                      color: Colors.white, size: 18),
-                ),
-              ]),
-            ),
-            Positioned.fill(
-              child: IgnorePointer(
-                child: AnimatedBuilder(
-                  animation: _loop,
-                  builder: (context, _) {
-                    final p = (_loop.value / 0.4).clamp(0.0, 1.0);
-                    return Align(
-                      alignment: Alignment(-1.6 + 3.2 * p, 0),
-                      child: FractionallySizedBox(
-                        widthFactor: 0.35,
-                        heightFactor: 1,
-                        child: DecoratedBox(
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(colors: [
-                              Colors.white.withValues(alpha: 0),
-                              Colors.white.withValues(alpha: 0.28),
-                              Colors.white.withValues(alpha: 0),
-                            ]),
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ),
-          ]),
+    final l10n = context.l10n;
+    final shape =
+        RoundedRectangleBorder(borderRadius: BorderRadius.circular(14));
+    return Row(children: [
+      Expanded(
+        child: OutlinedButton(
+          onPressed: onDetails,
+          style: OutlinedButton.styleFrom(
+            minimumSize: const Size.fromHeight(48),
+            foregroundColor: AppColors.primary,
+            side: const BorderSide(color: AppColors.primary),
+            shape: shape,
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+          ),
+          child: Text(l10n.mealDetailsAndSwaps,
+              maxLines: 2,
+              textAlign: TextAlign.center,
+              style: AppTextStyles.pillLabel),
         ),
       ),
-    );
+      const SizedBox(width: 8),
+      Expanded(
+        child: FilledButton.icon(
+          onPressed: eating ? null : onEat,
+          style: FilledButton.styleFrom(
+            minimumSize: const Size.fromHeight(48),
+            backgroundColor: AppColors.primary,
+            foregroundColor: Colors.white,
+            shape: shape,
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+          ),
+          icon: const Icon(Icons.check_rounded, size: 20),
+          label: Text(l10n.mealAte,
+              style: AppTextStyles.ctaText.copyWith(fontSize: 15)),
+        ),
+      ),
+    ]);
   }
 }
 
