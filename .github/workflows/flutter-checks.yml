@@ -41,7 +41,39 @@ jobs:
       - name: Test
         run: flutter test
 
+  # Decides which native builds a change needs. It runs on a cheap Linux
+  # runner, so a build that is not needed never waits for a runner (the macOS
+  # one in particular) and a skipped job counts as passed.
+  changes:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      android: ${{ steps.filter.outputs.android }}
+      ios: ${{ steps.filter.outputs.ios }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            android:
+              - 'android/**'
+              - 'pubspec.yaml'
+              - 'pubspec.lock'
+              - '.github/workflows/flutter-checks.yml'
+            ios:
+              - 'ios/**'
+              - 'pubspec.yaml'
+              - 'pubspec.lock'
+              - '.github/workflows/flutter-checks.yml'
+
+  # The APK build proves the Gradle setup, the signing guard and the manifest.
+  # Dart code is compiled by analyze-and-test, so a change that touches no
+  # Android file or dependency skips it; main is always built.
   android-build:
+    needs: changes
+    if: github.event_name == 'push' || needs.changes.outputs.android == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 40
     steps:
@@ -51,6 +83,7 @@ jobs:
         with:
           distribution: temurin
           java-version: 17
+          cache: gradle
 
       - uses: subosito/flutter-action@v2
         with:
@@ -90,38 +123,26 @@ jobs:
     # file, the localized strings and the privacy manifest are wired right.
     # macOS minutes cost more than Linux, so it runs only when iOS files or
     # the dependencies change.
+    needs: changes
+    if: needs.changes.outputs.ios == 'true'
     runs-on: macos-latest
     timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
 
-      - uses: dorny/paths-filter@v3
-        id: ios
-        with:
-          filters: |
-            ios:
-              - 'ios/**'
-              - 'pubspec.yaml'
-              - 'pubspec.lock'
-              - '.github/workflows/flutter-checks.yml'
-
       - uses: subosito/flutter-action@v2
-        if: steps.ios.outputs.ios == 'true'
         with:
           channel: stable
           flutter-version: 3.41.8
           cache: true
 
       - name: Dependencies
-        if: steps.ios.outputs.ios == 'true'
         run: flutter pub get
 
       - name: iOS build without signing
-        if: steps.ios.outputs.ios == 'true'
         run: flutter build ios --release --no-codesign
 
       - name: The built app carries the privacy manifest, strings and entitlement
-        if: steps.ios.outputs.ios == 'true'
         run: |
           APP=build/ios/iphoneos/Runner.app
           test -f "$APP/PrivacyInfo.xcprivacy"
