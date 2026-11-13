@@ -771,7 +771,7 @@
       }
     }
   },
-  "foodSearchTryAnother": "جرّبي كلمة أخرى أو اطلبي إضافة الصنف من الأسفل",
+  "foodSearchTryAnother": "جرّب كلمة أخرى أو اطلب إضافة الصنف من الأسفل",
   "@foodSearchTryAnother": {
     "description": "UI text in presentation/screens/food_search_screen.dart"
   },
@@ -783,7 +783,7 @@
   "@foodAllergyCheckUnavailable": {
     "description": "UI text in presentation/screens/food_search_screen.dart"
   },
-  "foodSearchSpecialistWaiting": "{gender, select, male{أخصائيك {name} بانتظارك} female{أخصائيتك {name} بانتظارك} unknown{أخصائي التغذية بانتظارك} other{{name} بانتظارك}}",
+  "foodSearchSpecialistWaiting": "{gender, select, male{أخصائي التغذية {name} بانتظارك} female{أخصائية التغذية {name} بانتظارك} unknown{أخصائي التغذية بانتظارك} other{{name} بانتظارك}}",
   "@foodSearchSpecialistWaiting": {
     "description": "Food search help card. gender: male | female | other | unknown (profile not loaded).",
     "placeholders": {
@@ -2343,15 +2343,15 @@
   "@passwordErrorMinLength": {
     "description": "UI text in presentation/screens/password_settings_screen.dart"
   },
-  "passwordErrorUppercase": "أضيفي حرفًا كبيرًا واحدًا على الأقل",
+  "passwordErrorUppercase": "أضف حرفًا كبيرًا واحدًا على الأقل",
   "@passwordErrorUppercase": {
     "description": "UI text in presentation/screens/password_settings_screen.dart"
   },
-  "passwordErrorDigit": "أضيفي رقمًا واحدًا على الأقل",
+  "passwordErrorDigit": "أضف رقمًا واحدًا على الأقل",
   "@passwordErrorDigit": {
     "description": "UI text in presentation/screens/password_settings_screen.dart"
   },
-  "passwordErrorSpecial": "أضيفي رمزًا خاصًا واحدًا على الأقل",
+  "passwordErrorSpecial": "أضف رمزًا خاصًا واحدًا على الأقل",
   "@passwordErrorSpecial": {
     "description": "UI text in presentation/screens/password_settings_screen.dart"
   },
@@ -3877,7 +3877,7 @@
       }
     }
   },
-  "planInstructionsTitle": "تعليمات أخصائيتك",
+  "planInstructionsTitle": "تعليمات أخصائي التغذية",
   "@planInstructionsTitle": {
     "description": "Patient app design spec"
   },
@@ -3986,7 +3986,7 @@
   "@scheduleDueTodayTitle": {
     "description": "Patient app design spec"
   },
-  "scheduleSetBy": "حددته أخصائيتك: {interval}",
+  "scheduleSetBy": "حدّده أخصائي التغذية: {interval}",
   "@scheduleSetBy": {
     "description": "Patient app design spec",
     "placeholders": {
@@ -4037,23 +4037,23 @@
       }
     }
   },
-  "scheduleLateBody": "سجّل وزنك الآن عشان أخصائيتك تتابع تقدمك بدقة.",
+  "scheduleLateBody": "سجّل وزنك الآن ليتابع أخصائي التغذية تقدمك بدقة.",
   "@scheduleLateBody": {
     "description": "Patient app design spec"
   },
-  "quickContactTitle": "صار عندك ظرف؟",
+  "quickContactTitle": "هل طرأ ظرف خاص؟",
   "@quickContactTitle": {
     "description": "Patient app design spec"
   },
-  "quickContactSubtitle": "مناسبة، أكل مش متوفر، شراهة مفاجئة…",
+  "quickContactSubtitle": "مناسبة، أو طعام غير متوفر، أو شهية مفاجئة…",
   "@quickContactSubtitle": {
     "description": "Patient app design spec"
   },
-  "quickContactBody": "احكي لأخصائيتك بسرعة، وبترد عليك بتعديل أو بديل يناسب ظرفك.",
+  "quickContactBody": "أرسل طلباً سريعاً إلى أخصائي التغذية، وسيردّ عليك بتعديل أو بديل يناسب ظرفك.",
   "@quickContactBody": {
     "description": "Patient app design spec"
   },
-  "quickContactButton": "تواصل سريع مع أخصائيتك",
+  "quickContactButton": "تواصل سريع مع أخصائي التغذية",
   "@quickContactButton": {
     "description": "Patient app design spec"
   },
@@ -4074,11 +4074,11 @@
   "@quickRequestTitle": {
     "description": "Patient app design spec"
   },
-  "quickRequestQuestion": "شو اللي صاير معك؟",
+  "quickRequestQuestion": "ما الذي حدث؟",
   "@quickRequestQuestion": {
     "description": "Patient app design spec"
   },
-  "quickRequestIntro": "اختر سببًا واحدًا، وأخصائيتك بترد عليك بتعديل أو بديل.",
+  "quickRequestIntro": "اختر سبباً واحداً، وسيردّ أخصائي التغذية بتعديل أو بديل.",
   "@quickRequestIntro": {
     "description": "Patient app design spec"
   },
@@ -4090,7 +4090,7 @@
   "@reasonSpecialOccasionHint": {
     "description": "Patient app design spec"
   },
-  "reasonFoodUnavailable": "الأكل مش متوفر",
+  "reasonFoodUnavailable": "الطعام غير متوفر",
   "@reasonFoodUnavailable": {
     "description": "Patient app design spec"
   },
@@ -4106,7 +4106,7 @@
   "@reasonCravingHint": {
     "description": "Patient app design spec"
   },
-  "reasonCannotContinue": "مش قادر ألتزم",
+  "reasonCannotContinue": "لا أستطيع الالتزام",
   "@reasonCannotContinue": {
     "description": "Patient app design spec"
   },
@@ -4118,7 +4118,7 @@
   "@reasonOther": {
     "description": "Patient app design spec"
   },
-  "reasonOtherHint": "اكتب لأخصائيتك باختصار",
+  "reasonOtherHint": "اكتب لأخصائي التغذية باختصار",
   "@reasonOtherHint": {
     "description": "Patient app design spec"
   },
@@ -4142,7 +4142,7 @@
   "@quickRequestNoteHint": {
     "description": "Patient app design spec"
   },
-  "quickRequestResponseTime": "أخصائيتك بترد عادة خلال يوم. للحالات الطارئة أو الأعراض المقلقة راجع الطبيب مباشرة.",
+  "quickRequestResponseTime": "يردّ أخصائي التغذية عادة خلال يوم. للحالات الطارئة أو الأعراض المقلقة، راجع الطبيب مباشرة.",
   "@quickRequestResponseTime": {
     "description": "Patient app design spec"
   },
@@ -4150,15 +4150,15 @@
   "@quickRequestSend": {
     "description": "Patient app design spec"
   },
-  "quickRequestSent": "وصل طلبك لأخصائيتك",
+  "quickRequestSent": "وصل طلبك إلى أخصائي التغذية",
   "@quickRequestSent": {
     "description": "Patient app design spec"
   },
-  "quickRequestLimit": "وصلت لحد الطلبات اليوم (5). جرّب بكرة أو احكي مع أخصائيتك بموعدك القادم.",
+  "quickRequestLimit": "بلغت حدّ الطلبات اليوم (5). جرّب غداً أو ناقش الأمر في موعدك القادم.",
   "@quickRequestLimit": {
     "description": "Patient app design spec"
   },
-  "quickRequestOffline": "لا يوجد اتصال. الطلب ما انبعت، جرّب لما يرجع الإنترنت.",
+  "quickRequestOffline": "لا يوجد اتصال. لم يُرسل الطلب، جرّب عند عودة الإنترنت.",
   "@quickRequestOffline": {
     "description": "Patient app design spec"
   },
@@ -4196,11 +4196,11 @@
       }
     }
   },
-  "requestAwaitingReply": "بانتظار رد أخصائيتك",
+  "requestAwaitingReply": "بانتظار ردّ أخصائي التغذية",
   "@requestAwaitingReply": {
     "description": "Patient app design spec"
   },
-  "requestReplyFrom": "رد أخصائيتك • {date}",
+  "requestReplyFrom": "ردّ أخصائي التغذية • {date}",
   "@requestReplyFrom": {
     "description": "Patient app design spec",
     "placeholders": {
@@ -4209,7 +4209,7 @@
       }
     }
   },
-  "requestReplyLabel": "رد أخصائيتك",
+  "requestReplyLabel": "ردّ أخصائي التغذية",
   "@requestReplyLabel": {
     "description": "Patient app design spec"
   },
@@ -4217,7 +4217,7 @@
   "@myRequestsEmpty": {
     "description": "Patient app design spec"
   },
-  "myRequestsEmptyBody": "لو صار عندك ظرف، احكي لأخصائيتك من هون.",
+  "myRequestsEmptyBody": "عند حدوث ظرف خاص، يمكنك إرسال طلب سريع من هنا.",
   "@myRequestsEmptyBody": {
     "description": "Patient app design spec"
   },
@@ -4246,7 +4246,7 @@
       }
     }
   },
-  "checkinChooseAny": "اختر كل اللي ينطبق عليك",
+  "checkinChooseAny": "اختر كل ما ينطبق عليك",
   "@checkinChooseAny": {
     "description": "Patient app design spec"
   },
@@ -4259,7 +4259,7 @@
       }
     }
   },
-  "checkinTextHint": "اكتب لأخصائيتك باختصار…",
+  "checkinTextHint": "اكتب لأخصائي التغذية باختصار…",
   "@checkinTextHint": {
     "description": "Patient app design spec"
   },
@@ -4267,19 +4267,19 @@
   "@checkinSubmit": {
     "description": "Patient app design spec"
   },
-  "checkinThanks": "شكرًا! وصلت إجاباتك لأخصائيتك",
+  "checkinThanks": "شكراً! وصلت إجاباتك إلى أخصائي التغذية",
   "@checkinThanks": {
     "description": "Patient app design spec"
   },
-  "checkinExpired": "انتهت مدة هذا الاستبيان، بيوصلك الجاي بموعده.",
+  "checkinExpired": "انتهت مدة هذا الاستبيان، وسيصلك التالي في موعده.",
   "@checkinExpired": {
     "description": "Patient app design spec"
   },
-  "checkinNone": "ما في استبيان حاليًا",
+  "checkinNone": "لا يوجد استبيان حالياً",
   "@checkinNone": {
     "description": "Patient app design spec"
   },
-  "checkinNoneBody": "لما ترسل أخصائيتك استبيانًا جديدًا بيوصلك تذكير.",
+  "checkinNoneBody": "عندما يرسل أخصائي التغذية استبياناً جديداً سيصلك تذكير.",
   "@checkinNoneBody": {
     "description": "Patient app design spec"
   },
@@ -4287,11 +4287,11 @@
   "@foodPrefsTitle": {
     "description": "Patient app design spec"
   },
-  "foodPrefsNotAllergy": "مش حساسية",
+  "foodPrefsNotAllergy": "ليست حساسية",
   "@foodPrefsNotAllergy": {
     "description": "Patient app design spec"
   },
-  "foodPrefsNotAllergyBody": "بس عشان تكون خطتك على ذوقك وأسهل عليك",
+  "foodPrefsNotAllergyBody": "فقط لتكون خطتك أقرب إلى ذوقك وأسهل عليك",
   "@foodPrefsNotAllergyBody": {
     "description": "Patient app design spec"
   },
@@ -4331,7 +4331,7 @@
   "@foodPrefsEmpty": {
     "description": "Patient app design spec"
   },
-  "foodPrefsFromNutritionist": "من أخصائيتك",
+  "foodPrefsFromNutritionist": "من أخصائي التغذية",
   "@foodPrefsFromNutritionist": {
     "description": "Patient app design spec"
   },
@@ -4452,11 +4452,11 @@
   "@reminderActionLog": {
     "description": "Patient app design spec"
   },
-  "postsTitle": "نصائح أخصائيتك",
+  "postsTitle": "نصائح أخصائي التغذية",
   "@postsTitle": {
     "description": "Patient app design spec"
   },
-  "postsEmpty": "لسا ما في نصائح من أخصائيتك",
+  "postsEmpty": "لا توجد نصائح من أخصائي التغذية بعد",
   "@postsEmpty": {
     "description": "Patient app design spec"
   },
@@ -4468,11 +4468,11 @@
   "@postsPinned": {
     "description": "Patient app design spec"
   },
-  "postFromNutritionist": "من أخصائيتك",
+  "postFromNutritionist": "من أخصائي التغذية",
   "@postFromNutritionist": {
     "description": "Patient app design spec"
   },
-  "postUnavailable": "هالنصيحة مش متوفرة",
+  "postUnavailable": "هذه النصيحة غير متوفرة",
   "@postUnavailable": {
     "description": "Patient app design spec"
   },
@@ -4514,11 +4514,11 @@
   "@notificationSettingsMorningDesc": {
     "description": "Patient app design spec"
   },
-  "notificationSettingsEducation": "نصائح أخصائيتك",
+  "notificationSettingsEducation": "نصائح أخصائي التغذية",
   "@notificationSettingsEducation": {
     "description": "Patient app design spec"
   },
-  "notificationSettingsEducationDesc": "لما تنشر أخصائيتك نصيحة جديدة إلك",
+  "notificationSettingsEducationDesc": "عند نشر أخصائي التغذية نصيحة جديدة لك",
   "@notificationSettingsEducationDesc": {
     "description": "Patient app design spec"
   },
@@ -4559,7 +4559,7 @@
   "@reportsConsentTitle": {
     "description": "Patient app design spec"
   },
-  "reportsConsentOnce": "مرة وحدة بس",
+  "reportsConsentOnce": "مرة واحدة فقط",
   "@reportsConsentOnce": {
     "description": "Patient app design spec"
   },
@@ -4567,11 +4567,11 @@
   "@reportsConsentEncrypted": {
     "description": "Patient app design spec"
   },
-  "reportsConsentOnlyNutritionist": "ما بيشوفها غير أخصائيتك.",
+  "reportsConsentOnlyNutritionist": "لا يراه أحد غير أخصائي التغذية.",
   "@reportsConsentOnlyNutritionist": {
     "description": "Patient app design spec"
   },
-  "reportsConsentDelete": "بتقدر تحذف أي تقرير وقت ما بدك.",
+  "reportsConsentDelete": "يمكنك حذف أي تقرير في أي وقت.",
   "@reportsConsentDelete": {
     "description": "Patient app design spec"
   },
@@ -4633,7 +4633,7 @@
       }
     }
   },
-  "reportReviewed": "راجعته أخصائيتك",
+  "reportReviewed": "راجعه أخصائي التغذية",
   "@reportReviewed": {
     "description": "Patient app design spec"
   },
@@ -4641,7 +4641,7 @@
   "@reportAwaitingReview": {
     "description": "Patient app design spec"
   },
-  "reportNutritionistNote": "ملاحظة أخصائيتك",
+  "reportNutritionistNote": "ملاحظة أخصائي التغذية",
   "@reportNutritionistNote": {
     "description": "Patient app design spec"
   },
@@ -4649,7 +4649,7 @@
   "@reportDelete": {
     "description": "Patient app design spec"
   },
-  "reportDeleteTitle": "بدك تحذف التقرير؟",
+  "reportDeleteTitle": "حذف التقرير؟",
   "@reportDeleteTitle": {
     "description": "Patient app design spec"
   },
@@ -4709,7 +4709,7 @@
   "@reportUpload": {
     "description": "Patient app design spec"
   },
-  "reportUploaded": "انرفع التقرير لأخصائيتك",
+  "reportUploaded": "رُفع التقرير إلى أخصائي التغذية",
   "@reportUploaded": {
     "description": "Patient app design spec"
   },
@@ -4753,11 +4753,11 @@
   "@wellbeingTonight": {
     "description": "Patient app design spec"
   },
-  "wellbeingPreviousNight": "الليلة اللي قبل",
+  "wellbeingPreviousNight": "الليلة السابقة",
   "@wellbeingPreviousNight": {
     "description": "Patient app design spec"
   },
-  "wellbeingNextNight": "الليلة اللي بعد",
+  "wellbeingNextNight": "الليلة التالية",
   "@wellbeingNextNight": {
     "description": "Patient app design spec"
   },
@@ -4781,7 +4781,7 @@
   "@wellbeingQualityQuestion": {
     "description": "Patient app design spec"
   },
-  "wellbeingQualityGood": "منيح",
+  "wellbeingQualityGood": "جيدة",
   "@wellbeingQualityGood": {
     "description": "Patient app design spec"
   },
@@ -4813,7 +4813,7 @@
   "@wellbeingMoodQuestion": {
     "description": "Patient app design spec"
   },
-  "wellbeingMoodGood": "منيح",
+  "wellbeingMoodGood": "جيد",
   "@wellbeingMoodGood": {
     "description": "Patient app design spec"
   },
@@ -4821,7 +4821,7 @@
   "@wellbeingMoodOk": {
     "description": "Patient app design spec"
   },
-  "wellbeingMoodLow": "مش منيح",
+  "wellbeingMoodLow": "منخفض",
   "@wellbeingMoodLow": {
     "description": "Patient app design spec"
   },
@@ -4833,19 +4833,19 @@
   "@wellbeingNoteHint": {
     "description": "Patient app design spec"
   },
-  "wellbeingDeleteNight": "حذف تسجيل هالليلة",
+  "wellbeingDeleteNight": "حذف تسجيل هذه الليلة",
   "@wellbeingDeleteNight": {
     "description": "Patient app design spec"
   },
-  "wellbeingDeleteTitle": "بدك تحذف تسجيل هالليلة؟",
+  "wellbeingDeleteTitle": "حذف تسجيل هذه الليلة؟",
   "@wellbeingDeleteTitle": {
     "description": "Patient app design spec"
   },
-  "wellbeingErrorFuture": "ما بتقدر تسجّل ليوم ما إجا بعد.",
+  "wellbeingErrorFuture": "لا يمكن التسجيل ليوم لم يأتِ بعد.",
   "@wellbeingErrorFuture": {
     "description": "Patient app design spec"
   },
-  "wellbeingErrorOld": "بتقدر تعدّل آخر 7 أيام بس.",
+  "wellbeingErrorOld": "يمكن تعديل آخر 7 أيام فقط.",
   "@wellbeingErrorOld": {
     "description": "Patient app design spec"
   },
@@ -4870,7 +4870,7 @@
   "@wellbeingWeekdayLetters": {
     "description": "Monday to Sunday, one letter each, space separated"
   },
-  "profilePostsSubtitle": "نصائح كتبتها أخصائيتك إلك",
+  "profilePostsSubtitle": "نصائح كتبها أخصائي التغذية لك",
   "@profilePostsSubtitle": {
     "description": "Patient app design spec"
   },
@@ -4886,7 +4886,7 @@
   "@profileWellbeingSubtitle": {
     "description": "Patient app design spec"
   },
-  "profileAppointmentsSubtitle": "مواعيدك مع أخصائيتك",
+  "profileAppointmentsSubtitle": "مواعيدك مع أخصائي التغذية",
   "@profileAppointmentsSubtitle": {
     "description": "Patient app design spec"
   },
@@ -4923,7 +4923,7 @@
       }
     }
   },
-  "achvHeroStart": "سجّل وجبتك الأولى وقياسك الأول، وبتبلّش إنجازاتك تبين هون.",
+  "achvHeroStart": "سجّل وجبتك الأولى وقياسك الأول، وستبدأ إنجازاتك بالظهور هنا.",
   "@achvHeroStart": {
     "description": "Patient app design spec"
   },
@@ -5268,7 +5268,7 @@
   "@healthSyncHeroAndroid": {
     "description": "Patient app design spec"
   },
-  "healthSyncHeroBody": "خطواتك ونومك ووزنك بيوصلوا لحالهم، فبتسجّل أقل وأخصائيتك بتشوف صورة أوضح.",
+  "healthSyncHeroBody": "تصل خطواتك ونومك ووزنك تلقائياً، فتسجّل أقل ويرى أخصائي التغذية صورة أوضح.",
   "@healthSyncHeroBody": {
     "description": "Patient app design spec"
   },
@@ -5276,7 +5276,7 @@
   "@healthSyncComingSoon": {
     "description": "Patient app design spec"
   },
-  "healthSyncWhatTitle": "شو اللي بيتزامن",
+  "healthSyncWhatTitle": "ما الذي يُزامَن",
   "@healthSyncWhatTitle": {
     "description": "Patient app design spec"
   },
@@ -5284,7 +5284,7 @@
   "@healthSyncSteps": {
     "description": "Patient app design spec"
   },
-  "healthSyncStepsBody": "عشان تشوف نشاطك جنب خطة النشاط البدني",
+  "healthSyncStepsBody": "لترى نشاطك بجانب خطة النشاط البدني",
   "@healthSyncStepsBody": {
     "description": "Patient app design spec"
   },
@@ -5312,11 +5312,11 @@
   "@healthSyncPrivacyRead": {
     "description": "Patient app design spec"
   },
-  "healthSyncPrivacyChoice": "إنت بتختار شو يوصل، بند بند.",
+  "healthSyncPrivacyChoice": "أنت من يختار ما يصل، بنداً بنداً.",
   "@healthSyncPrivacyChoice": {
     "description": "Patient app design spec"
   },
-  "healthSyncPrivacyStop": "بتقدر توقف الربط بأي وقت من إعدادات جهازك.",
+  "healthSyncPrivacyStop": "يمكنك إيقاف الربط في أي وقت من إعدادات جهازك.",
   "@healthSyncPrivacyStop": {
     "description": "Patient app design spec"
   },
