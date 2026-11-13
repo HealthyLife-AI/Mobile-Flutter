@@ -174,7 +174,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get aboutTransparencyTitle => 'Transparency';
 
   @override
-  String get aboutCertifiedRegulations => 'Certified regulations';
+  String get aboutCertifiedRegulations => 'Policies and terms';
 
   @override
   String get aboutSessionAccountTitle => 'Session & account';
@@ -187,8 +187,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get aboutBrandName => 'HealthyLife';
 
   @override
-  String get aboutTagline =>
-      'Patient follow-up and clinical nutrition platform';
+  String get aboutTagline => 'Nutrition follow-up with your nutritionist';
 
   @override
   String aboutVersion(String version) {
@@ -197,7 +196,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get aboutDescription =>
-      'A certified app designed to support you, in direct collaboration with your certified specialist, in reaching lasting health goals.';
+      'An app that helps you follow your meal plan with your nutritionist.';
 
   @override
   String get aboutPrivacyPolicyTitle => 'Privacy policy & health data security';
@@ -207,11 +206,11 @@ class AppLocalizationsEn extends AppLocalizations {
       'Read the policy published on our website';
 
   @override
-  String get aboutMedicalTermsTitle => 'Medical terms & conditions';
+  String get aboutMedicalTermsTitle => 'Terms of use';
 
   @override
   String get aboutMedicalTermsSubtitle =>
-      'Guidelines for following health care plans';
+      'Guidelines for using the app and following your plan';
 
   @override
   String get aboutLicensesTitle => 'Software licences';
@@ -238,7 +237,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get aboutLogoutNote =>
-      'Your session will end securely, and all your logs and measurements stay in your medical records with no data loss.';
+      'Your session will end securely. Your logs and measurements stay saved in your account.';
 
   @override
   String get achievementsFullWeek => 'A full week of commitment';
@@ -270,18 +269,18 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get activationSubtitle =>
-      'Activate your instant access to the clinical care program';
+      'Activate your access to the follow-up program';
 
   @override
   String get activationCertified => 'Certified';
 
   @override
   String get activationSpecialistRole =>
-      'Clinical nutrition & metabolic management specialist';
+      'Nutrition & metabolic management specialist';
 
   @override
   String get activationInvitedBy =>
-      'Your specialist has invited you to link your health record and start your personalized therapeutic meal plan right away.';
+      'Your nutritionist has invited you to link your health record and start your meal plan.';
 
   @override
   String get activationPrefilledNote =>
@@ -519,7 +518,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get firstMeasurementExplanation =>
-      'A progress curve needs at least two measurements to show the real trend accurately and objectively. Your next entry will activate the chart right away.';
+      'A progress curve needs at least two measurements to show the trend. Your next entry will activate the chart.';
 
   @override
   String get firstMeasurementLogNew => 'Log a new measurement';
@@ -528,7 +527,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get firstMeasurementBackToPlan => 'Back to my daily plan';
 
   @override
-  String get firstMeasurementBaseline => 'Confirmed starting point';
+  String get firstMeasurementBaseline => 'Starting point';
 
   @override
   String get firstMeasurementInitial => 'Initial recorded measurement';
@@ -547,7 +546,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get firstMeasurementJourneyNote =>
-      'One measurement sets your starting point; the next one starts mapping your journey with your specialist, step by step.';
+      'One measurement sets your starting point; the next one starts charting your progress with your nutritionist, step by step.';
 
   @override
   String get firstMeasurementSuggestedTime => 'Suggested measuring time';
@@ -618,21 +617,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get followUpEndedTitle => 'Follow-up ended';
 
   @override
-  String get followUpPlanCompleted => 'Clinical follow-up plan completed';
+  String get followUpPlanCompleted => 'Follow-up plan completed';
 
   @override
   String get followUpPeriodEnded => 'Your current follow-up period has ended';
 
   @override
   String get followUpEndedMessage =>
-      'We hope you enjoyed your health plan and reached your goals! Your current follow-up period with your specialist has ended. To renew, continue your treatment journey or get a new plan, you can reach out directly and easily.';
+      'Your current follow-up period with your nutritionist has ended. To renew, keep following your diet or get a new plan, you can reach out directly.';
 
   @override
   String get followUpSupervisor => 'Your supervisor';
 
   @override
   String get followUpSupervisingSpecialist =>
-      'The clinical nutrition specialist supervising you';
+      'The nutritionist following your case';
 
   @override
   String get followUpRecordsSafe =>
@@ -647,7 +646,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get followUpTerms =>
-      'Terms of service & privacy policy for medical records';
+      'Terms of service & privacy policy for health data';
 
   @override
   String get foodSearchFilterFruitVeg => 'Fruits & vegetables';
@@ -772,7 +771,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get consentExitMessage =>
-      'You won\'t be able to continue your treatment journey or access your meal plan until you agree to the health privacy terms.';
+      'You can\'t continue with your meal plan or access it until you agree to the health privacy terms.';
 
   @override
   String get consentExitConfirm => 'Leave now';
@@ -789,8 +788,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get consentReadFullDocument =>
-      'Read the full clinical privacy document';
+  String get consentReadFullDocument => 'Read the full privacy document';
 
   @override
   String get consentVerified => 'Verified';
@@ -800,7 +798,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get consentPleaseAgree =>
-      'Please agree to the clinical terms to continue';
+      'Please agree to the privacy terms to continue';
 
   @override
   String get consentCharterTitle => 'Nutrition privacy charter';
@@ -810,17 +808,17 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get consentDataUseNote =>
-      'Your data (meal log, measurements and health status) reaches only your specialist and is used to build your meal plan and follow your clinical progress safely.';
+      'Your data (meal log, measurements and health status) reaches only your nutritionist and is used to build your meal plan and follow your progress.';
 
   @override
   String get consentTitle => 'Consent to health data use';
 
   @override
-  String get consentBeforeWeStart => 'Before we start your health journey';
+  String get consentBeforeWeStart => 'Before we start';
 
   @override
   String get consentCommitment =>
-      'We are committed to protecting the privacy of your health and clinical data with the utmost transparency and security.';
+      'We are committed to protecting the privacy of your health data.';
 
   @override
   String get consentCheckbox =>
@@ -831,7 +829,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'You can change or withdraw your consent instantly at any time.';
 
   @override
-  String get healthRecordTitle => 'Medical record';
+  String get healthRecordTitle => 'Health record';
 
   @override
   String get healthRecordAllergies => 'Allergies & restrictions';
@@ -903,7 +901,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get healthRecordMedications =>
-      'Approved daily medications & supplements';
+      'Recorded daily medications & supplements';
 
   @override
   String get healthRecordActive => 'Active';
@@ -916,15 +914,15 @@ class AppLocalizationsEn extends AppLocalizations {
       'The server did not accept a reading saved while you were offline, so it was not kept.';
 
   @override
-  String get healthRecordCertified => 'Certified medical record';
+  String get healthRecordCertified => 'Health record';
 
   @override
   String get healthRecordDiagnosesNote =>
-      'Diagnoses and precautions for precisely tailoring your plan';
+      'The health conditions and precautions your plan takes into account';
 
   @override
   String get healthRecordRequestChange =>
-      'Request a change or add a report to the medical record';
+      'Request a change or add a report to the health record';
 
   @override
   String healthRecordStreakDays(Object days) {
@@ -933,7 +931,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get healthRecordStreakNote =>
-      'Log your meals and daily physical activity accurately — keep the spark of motivation alive!';
+      'Logging your meals and activity every day keeps you going.';
 
   @override
   String get healthRecordDone => 'Achieved';
@@ -1088,7 +1086,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get homeHydrationTip =>
-      'Drinking two glasses of water before each meal supports steady metabolism and helps you feel calmly full. You\'re keeping an excellent pace!';
+      'Drinking two glasses of water before a meal may help you feel full. Keep following your plan, one step at a time.';
 
   @override
   String get languageTitle => 'Language';
@@ -1127,14 +1125,14 @@ class AppLocalizationsEn extends AppLocalizations {
       'Logging what you ate honestly is your first step toward lasting results. Your specialist is always here to support you, without judgment.';
 
   @override
-  String get logMealPlannedBadge => 'Approved meals';
+  String get logMealPlannedBadge => 'Plan meals';
 
   @override
   String get logMealFromPlanTitle => 'I ate a meal from my plan';
 
   @override
   String get logMealFromPlanDesc =>
-      'Quickly confirm you had one of today\'s scheduled meals (breakfast, snack, lunch, dinner), with the option to adjust approved alternatives.';
+      'Quickly confirm you had one of today\'s scheduled meals (breakfast, snack, lunch, dinner), with the alternatives your plan allows.';
 
   @override
   String get logMealFromPlanNote =>
@@ -1213,8 +1211,8 @@ class AppLocalizationsEn extends AppLocalizations {
     String _temp0 = intl.Intl.selectLogic(
       gender,
       {
-        'unknown': 'Balanced meal approved by your nutritionist',
-        'other': 'Balanced meal approved by $name (nutritionist)',
+        'unknown': 'A meal in your nutritionist\'s plan',
+        'other': 'A meal in $name\'s plan',
       },
     );
     return '$_temp0';
@@ -1261,8 +1259,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get mealLoggedTitle => 'Meal logged successfully';
 
   @override
-  String get mealLoggedBody =>
-      'Today\'s log and your nutrition adherence have been updated successfully, with clinical accuracy.';
+  String get mealLoggedBody => 'Today\'s log has been updated.';
 
   @override
   String get mealLoggedYourMeal => 'Your logged meal';
@@ -1373,7 +1370,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get measurementsTrend => 'Change over time';
 
   @override
-  String get measurementsClinicReading => 'Clinic measurement (verified)';
+  String get measurementsClinicReading => 'Clinic measurement';
 
   @override
   String get measurementsHomeReading => 'Home measurement';
@@ -1408,7 +1405,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get measurementsSyncNote =>
-      'Data updates are reliably synced with clinic measurements and your personal record.';
+      'Your data is synced with the clinic measurements and your personal record.';
 
   @override
   String get measurementsLastUpdated => 'Last updated: 19 September';
@@ -1434,7 +1431,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get measurementsRegularNote =>
-      'Logging regularly lets your specialist analyze your pattern accurately and support you with the best options, without any pressure or rush.';
+      'Logging regularly helps your nutritionist follow your pattern and suggest the options that suit you best.';
 
   @override
   String get measurementsLogDaily => 'Log your daily measurements';
@@ -1540,9 +1537,9 @@ class AppLocalizationsEn extends AppLocalizations {
       gender,
       {
         'unknown':
-            'All your data is protected and reaches your live medical record with your nutritionist securely, without any prior judgment or evaluation, so your plan can be adjusted to suit you.',
+            'Your data is protected and reaches your health record with your nutritionist, who adjusts your plan to suit you.',
         'other':
-            'All your data is protected and reaches your live medical record with $name securely, without any prior judgment or evaluation, so your plan can be adjusted to suit you.',
+            'Your data is protected and reaches your health record with $name, who adjusts your plan to suit you.',
       },
     );
     return '$_temp0';
@@ -1675,7 +1672,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get notificationsClinicalUpdate => 'Clinical update';
+  String get notificationsClinicalUpdate => 'Update from your nutritionist';
 
   @override
   String get notificationsLogNow => 'Log now';
@@ -1787,7 +1784,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get onboardingMeasurementsIntro =>
-      'Enter your weight and measurements today so we can start tracking your health journey with your specialist accurately and professionally.';
+      'Enter your weight and measurements today so we can start following your progress with your nutritionist.';
 
   @override
   String get onboardingMeasurementsMandatory => 'Mandatory';
@@ -1819,7 +1816,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get onboardingMeasurementsExtraNote =>
-      'Additional measurements help your specialist accurately follow your body circumference and fat distribution.';
+      'Additional measurements help your nutritionist follow your body circumference.';
 
   @override
   String get onboardingMeasurementsWaistHint => 'At the narrowest point';
@@ -1866,7 +1863,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get onboardingNotificationsWeightRemindersDesc =>
-      'A weekly reminder at the ideal morning time to measure, so you can follow your results and vital indicators accurately.';
+      'A weekly morning reminder to weigh yourself and follow how your weight changes.';
 
   @override
   String get onboardingNotificationsEnable => 'Turn on notifications now';
@@ -1895,7 +1892,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get onboardingTrackDescription =>
-      'Log your daily meals and weight precisely in grams, and use the available alternatives to make sticking to your diet easier, without deprivation.';
+      'Log your daily meals and weight in grams, with the alternatives your nutritionist allowed in your plan.';
 
   @override
   String get onboardingBadgeSmartScan => 'Instant smart scan';
@@ -1909,11 +1906,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get onboardingPlanDescription =>
-      'Get a fully personalized diet that suits your body and health condition, designed directly by the dietitian following your case.';
+      'A diet prepared for you by the nutritionist following your case, based on your details and goals.';
 
   @override
-  String get onboardingBadgeApproved =>
-      '100% medically approved and based on lab tests';
+  String get onboardingBadgeApproved => 'A plan prepared by your nutritionist';
 
   @override
   String get onboardingStartNow => 'Get started';
@@ -1977,7 +1973,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get passwordLogoutOthersNote =>
-      'After you change your password, you\'ll be logged out of other devices automatically to protect your medical account and your health.';
+      'After you change your password, you\'ll be logged out of your other devices automatically to protect your account.';
 
   @override
   String get passwordProtectionTitle => 'Account & health data protection';
@@ -2015,7 +2011,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get planPreparingBody =>
-      'Your clinical dietitian is now preparing your personalized meal schedule to fit your health goals and initial measurement results. We\'ll notify you as soon as the plan is approved, and you\'ll find it here.';
+      'Your nutritionist is preparing your meal schedule based on your goals and initial measurements. We\'ll notify you as soon as the plan is approved, and you\'ll find it here.';
 
   @override
   String get planPreparingExpectedTime => 'Expected approval time';
@@ -2025,7 +2021,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Within 24 working hours of logging your initial measurements';
 
   @override
-  String get planPreparingReview => 'Verified clinical review';
+  String get planPreparingReview => 'Reviewed by your nutritionist';
 
   @override
   String planPreparingManualPercent(Object percent) {
@@ -2053,8 +2049,8 @@ class AppLocalizationsEn extends AppLocalizations {
     String _temp0 = intl.Intl.selectLogic(
       gender,
       {
-        'unknown': 'Clinical nutrition clinic',
-        'other': 'Clinical nutrition clinic • $name',
+        'unknown': 'Nutrition clinic',
+        'other': 'Nutrition clinic • $name',
       },
     );
     return '$_temp0';
@@ -2072,7 +2068,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get profileHealthRecordSubtitle =>
-      'Level, goal, medications and confirmed diagnoses';
+      'Level, goal, medications and recorded conditions';
 
   @override
   String get profileAchievements => 'My achievements';
@@ -2103,8 +2099,8 @@ class AppLocalizationsEn extends AppLocalizations {
     String _temp0 = intl.Intl.selectLogic(
       gender,
       {
-        'unknown': 'Clinical nutrition specialist',
-        'other': '$name (clinical nutrition specialist)',
+        'unknown': 'Nutrition specialist',
+        'other': '$name (nutrition specialist)',
       },
     );
     return '$_temp0';
@@ -2155,7 +2151,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get profileMoreSubtitle =>
-      'Measurements, medical record, achievements and appointments';
+      'Measurements, health record, achievements and appointments';
 
   @override
   String get profileLogoutSubtitle => 'End the session securely on this device';
@@ -2176,7 +2172,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get progressActiveFile => 'Active file';
 
   @override
-  String get progressLiveSync => 'Live sync with the clinic';
+  String get progressLiveSync => 'Synced with the clinic';
 
   @override
   String get progressOnlineNow => 'Online now';
@@ -2212,7 +2208,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get commonToday => 'Today';
 
   @override
-  String get progressClinicReading => 'Clinic (verified)';
+  String get progressClinicReading => 'Clinic';
 
   @override
   String get progressHomeReading => 'Home (regular)';
@@ -2355,7 +2351,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get quantityCalculatedNote =>
-      'The value is fully calculated and added precisely to your daily plan';
+      'The value is calculated and added to today\'s record.';
 
   @override
   String quantityRange(Object min, Object max) {
@@ -2511,10 +2507,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get specialistAboutTitle => 'About your nutritionist';
 
   @override
-  String get specialistProfileActive => 'Therapeutic nutrition profile active';
+  String get specialistProfileActive => 'Nutrition profile active';
 
   @override
-  String get specialistCertified => 'Certified';
+  String get specialistCertified => 'Your nutritionist';
 
   @override
   String get specialistLicensed => 'Licensed';
@@ -2603,8 +2599,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get weeklyPlanProtein => '105 g';
 
   @override
-  String get weeklyPlanSummary =>
-      'A balanced plan to boost energy and burn fat, supervised by your specialist';
+  String get weeklyPlanSummary => 'Your plan as set by your nutritionist';
 
   @override
   String get connectionStatusTitle => 'Connection status';

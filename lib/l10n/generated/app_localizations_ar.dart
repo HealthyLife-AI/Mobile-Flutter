@@ -170,7 +170,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get aboutTransparencyTitle => 'الشفافية والمعايير الطبية';
 
   @override
-  String get aboutCertifiedRegulations => 'لوائح معتمدة';
+  String get aboutCertifiedRegulations => 'السياسات والشروط';
 
   @override
   String get aboutSessionAccountTitle => 'منطقة الجلسة والحساب';
@@ -183,7 +183,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get aboutBrandName => 'حياة صحية';
 
   @override
-  String get aboutTagline => 'منصة المتابعة والتغذية العلاجية للمرضى';
+  String get aboutTagline => 'متابعة التغذية مع أخصائي التغذية';
 
   @override
   String aboutVersion(String version) {
@@ -192,7 +192,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get aboutDescription =>
-      'تطبيق معتمد ومصمم لدعمك بالتعاون المباشر مع أخصائيك المعتمدة لتحقيق أهدافك الصحية المستدامة.';
+      'تطبيق يساعدك على متابعة خطتك الغذائية مع أخصائي التغذية.';
 
   @override
   String get aboutPrivacyPolicyTitle => 'سياسة الخصوصية وأمان البيانات الصحية';
@@ -201,10 +201,11 @@ class AppLocalizationsAr extends AppLocalizations {
   String get aboutPrivacyPolicySubtitle => 'اقرأ السياسة المنشورة على موقعنا';
 
   @override
-  String get aboutMedicalTermsTitle => 'الشروط والأحكام الطبية';
+  String get aboutMedicalTermsTitle => 'شروط الاستخدام';
 
   @override
-  String get aboutMedicalTermsSubtitle => 'إرشادات متابعة خطط الرعاية الصحية';
+  String get aboutMedicalTermsSubtitle =>
+      'إرشادات استخدام التطبيق ومتابعة الخطة';
 
   @override
   String get aboutLicensesTitle => 'تراخيص البرمجيات';
@@ -231,7 +232,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get aboutLogoutNote =>
-      'سيتم إنهاء جلستك بأمان، مع الاحتفاظ بجميع سجلاتك وقياساتك في السجلات الطبية دون أي فقدان للبيانات.';
+      'سيتم إنهاء جلستك بأمان، وتبقى سجلاتك وقياساتك محفوظة في حسابك.';
 
   @override
   String get achievementsFullWeek => 'أسبوع كامل من الالتزام';
@@ -261,18 +262,17 @@ class AppLocalizationsAr extends AppLocalizations {
   String get activationWelcome => 'مرحباً بك في HealthyLife';
 
   @override
-  String get activationSubtitle =>
-      'فعّلي وصولك الفوري إلى برنامج الرعاية السريرية';
+  String get activationSubtitle => 'تفعيل الوصول إلى برنامج المتابعة';
 
   @override
   String get activationCertified => 'معتمدة';
 
   @override
-  String get activationSpecialistRole => 'أخصائي التغذية العلاجية وإدارة الأيض';
+  String get activationSpecialistRole => 'أخصائي التغذية وإدارة الأيض';
 
   @override
   String get activationInvitedBy =>
-      'تمت دعوتك بواسطة أخصائي التغذية لربط ملفك الصحي وبدء خطتك الغذائية العلاجية المخصصة مباشرة.';
+      'تمت دعوتك بواسطة أخصائي التغذية لربط ملفك الصحي وبدء خطتك الغذائية.';
 
   @override
   String get activationPrefilledNote =>
@@ -504,7 +504,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get firstMeasurementExplanation =>
-      'يتطلب رسم منحنى التقدم قياسين على الأقل لإظهار اتجاه التغير الحقيقي بدقة وموضوعية. تسجيلك القادم سيفعّل المخطط البياني فوراً.';
+      'يتطلب رسم منحنى التقدم قياسين على الأقل لإظهار اتجاه التغيّر. تسجيلك القادم سيفعّل المخطط البياني.';
 
   @override
   String get firstMeasurementLogNew => 'سجّل قياساً جديداً';
@@ -513,7 +513,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get firstMeasurementBackToPlan => 'العودة إلى خطتي اليومية';
 
   @override
-  String get firstMeasurementBaseline => 'نقطة البداية المعتمدة';
+  String get firstMeasurementBaseline => 'نقطة البداية';
 
   @override
   String get firstMeasurementInitial => 'القياس الأولي المسجل';
@@ -532,7 +532,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get firstMeasurementJourneyNote =>
-      'قياس واحد يحدد نقطة انطلاقك، والقياس القادم هو ما يرسم رحلتك مع أخصائي التغذية خطوة بخطوة.';
+      'قياس واحد يحدد نقطة البداية، والقياس القادم يبدأ برسم تقدمك مع أخصائي التغذية خطوة بخطوة.';
 
   @override
   String get firstMeasurementSuggestedTime => 'توقيت القياس المقترح';
@@ -600,21 +600,20 @@ class AppLocalizationsAr extends AppLocalizations {
   String get followUpEndedTitle => 'انتهت المتابعة';
 
   @override
-  String get followUpPlanCompleted => 'اكتمال خطة المتابعة السريرية';
+  String get followUpPlanCompleted => 'اكتمال خطة المتابعة';
 
   @override
   String get followUpPeriodEnded => 'انتهت فترة متابعتك الحالية';
 
   @override
   String get followUpEndedMessage =>
-      'نتمنى أنك استمتعت بخطتك الصحية وحققت أهدافك! لقد انتهت فترة المتابعة الحالية مع أخصائي التغذية. للتجديد أو لاستكمال رحلتك العلاجية والحصول على خطة جديدة، يمكنك التواصل مباشرة وبكل سهولة.';
+      'انتهت فترة المتابعة الحالية مع أخصائي التغذية. للتجديد أو لمتابعة نظامك الغذائي والحصول على خطة جديدة، يمكنك التواصل مباشرة.';
 
   @override
   String get followUpSupervisor => 'مشرفك';
 
   @override
-  String get followUpSupervisingSpecialist =>
-      'أخصائي التغذية العلاجية المشرف عليك';
+  String get followUpSupervisingSpecialist => 'أخصائي التغذية المشرف عليك';
 
   @override
   String get followUpRecordsSafe =>
@@ -627,7 +626,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get followUpViewFinalReport => 'استعراض ملخص التقرير النهائي للمتابعة';
 
   @override
-  String get followUpTerms => 'شروط الخدمة وسياسة الخصوصية للملفات الطبية';
+  String get followUpTerms => 'شروط الخدمة وسياسة الخصوصية للبيانات الصحية';
 
   @override
   String get foodSearchFilterFruitVeg => 'فواكه وخضار';
@@ -753,7 +752,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get consentExitMessage =>
-      'لن تتمكني من متابعة رحلتك العلاجية أو الوصول لخطتك الغذائية قبل الموافقة على شروط الخصوصية الصحية.';
+      'لا يمكن متابعة الخطة الغذائية أو الوصول إليها قبل الموافقة على شروط الخصوصية الصحية.';
 
   @override
   String get consentExitConfirm => 'الخروج الآن';
@@ -770,7 +769,7 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
-  String get consentReadFullDocument => 'قراءة وثيقة الخصوصية السريرية الكاملة';
+  String get consentReadFullDocument => 'قراءة وثيقة الخصوصية الكاملة';
 
   @override
   String get consentVerified => 'موثّق';
@@ -779,8 +778,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get consentCta => 'متابعة إعداد خطتي الصحية';
 
   @override
-  String get consentPleaseAgree =>
-      'يُرجى الموافقة على الشروط السريرية للمتابعة';
+  String get consentPleaseAgree => 'يُرجى الموافقة على شروط الخصوصية للمتابعة';
 
   @override
   String get consentCharterTitle => 'ميثاق الخصوصية التغذوية';
@@ -790,17 +788,16 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get consentDataUseNote =>
-      'بياناتك (سجل الوجبات، القياسات، والحالة الصحية) تصل لأخصائي التغذية المتابع لك فقط وتُستخدم لبناء خطتك الغذائية ومتابعة تقدمك السريري بأمان.';
+      'بياناتك (سجل الوجبات، القياسات، والحالة الصحية) تصل إلى أخصائي التغذية المتابع لك فقط، وتُستخدم لبناء خطتك الغذائية ومتابعة تقدمك.';
 
   @override
   String get consentTitle => 'الموافقة على استخدام البيانات الصحية';
 
   @override
-  String get consentBeforeWeStart => 'قبل أن نبدأ رحلتك الصحية';
+  String get consentBeforeWeStart => 'قبل أن نبدأ';
 
   @override
-  String get consentCommitment =>
-      'نحن نلتزم بحماية خصوصية بياناتك الصحية والسريرية بأقصى درجات الشفافية والأمان.';
+  String get consentCommitment => 'نلتزم بحماية خصوصية بياناتك الصحية.';
 
   @override
   String get consentCheckbox =>
@@ -811,7 +808,7 @@ class AppLocalizationsAr extends AppLocalizations {
       'موافقتك قابلة للتعديل أو الإلغاء فوراً في أي وقت.';
 
   @override
-  String get healthRecordTitle => 'السجل الطبي';
+  String get healthRecordTitle => 'السجل الصحي';
 
   @override
   String get healthRecordAllergies => 'الحساسية والموانع';
@@ -879,7 +876,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get healthRecordCurrentGoal => 'الهدف الصحي الاستراتيجي الحالي';
 
   @override
-  String get healthRecordMedications => 'الأدوية والمكملات اليومية المعتمدة';
+  String get healthRecordMedications => 'الأدوية والمكملات اليومية المسجّلة';
 
   @override
   String get healthRecordActive => 'نشط';
@@ -892,15 +889,15 @@ class AppLocalizationsAr extends AppLocalizations {
       'لم يقبل الخادم قياساً سجّلته دون اتصال، ولم يُحفظ.';
 
   @override
-  String get healthRecordCertified => 'السجل الطبي المعتمد';
+  String get healthRecordCertified => 'السجل الصحي';
 
   @override
   String get healthRecordDiagnosesNote =>
-      'التشخيصات والمحاذير لتخصيص خطتك بدقة';
+      'الحالات الصحية والمحاذير التي تُراعى في خطتك';
 
   @override
   String get healthRecordRequestChange =>
-      'طلب تعديل أو إضافة تقرير إلى السجل الطبي';
+      'طلب تعديل أو إضافة تقرير إلى السجل الصحي';
 
   @override
   String healthRecordStreakDays(Object days) {
@@ -909,7 +906,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get healthRecordStreakNote =>
-      'تسجيل الوجبات والنشاط الحركي اليومي بدقة، حافظ على شعلة الحماس!';
+      'تسجيل الوجبات والنشاط يومياً يحافظ على استمرارك.';
 
   @override
   String get healthRecordDone => 'تم الإنجاز';
@@ -1063,7 +1060,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get homeHydrationTip =>
-      'شرب كوبين من الماء قبل كل وجبة يدعم الحرق المنتظم ويساعدك على الشعور بالشبع الهادئ. أنت تسيرين بوتيرة ممتازة!';
+      'شرب كوبين من الماء قبل الوجبة قد يساعد على الشعور بالشبع، والاستمرار على الخطة خطوة بعد خطوة.';
 
   @override
   String get languageTitle => 'اللغة';
@@ -1102,14 +1099,14 @@ class AppLocalizationsAr extends AppLocalizations {
       'تسجيل ما تناولته بصدق هو خطوتك الأولى نحو نتائج مستدامة. أخصائي التغذية هنا لدعمك دائماً دون أي تقييم.';
 
   @override
-  String get logMealPlannedBadge => 'الوجبات المعتمدة';
+  String get logMealPlannedBadge => 'وجبات الخطة';
 
   @override
   String get logMealFromPlanTitle => 'سجّلت وجبة من خطتي';
 
   @override
   String get logMealFromPlanDesc =>
-      'تأكيد سريع لتناول إحدى وجباتك المجدولة في جدول اليوم (فطور، سناك، غداء، عشاء) مع إمكانية تعديل البدائل المعتمدة.';
+      'تأكيد سريع لتناول إحدى وجبات جدول اليوم (فطور، سناك، غداء، عشاء) مع إمكانية اختيار البدائل المتاحة في الخطة.';
 
   @override
   String get logMealFromPlanNote => 'مطابقة تلقائية للسعرات والمكونات المجدولة';
@@ -1186,10 +1183,10 @@ class AppLocalizationsAr extends AppLocalizations {
     String _temp0 = intl.Intl.selectLogic(
       gender,
       {
-        'male': 'وجبة متوازنة معتمدة من أخصائي التغذية $name',
-        'female': 'وجبة متوازنة معتمدة من أخصائية التغذية $name',
-        'unknown': 'وجبة متوازنة معتمدة من أخصائي التغذية',
-        'other': 'وجبة متوازنة معتمدة من $name',
+        'male': 'وجبة ضمن خطة أخصائي التغذية $name',
+        'female': 'وجبة ضمن خطة أخصائية التغذية $name',
+        'unknown': 'وجبة ضمن خطة أخصائي التغذية',
+        'other': 'وجبة ضمن خطة $name',
       },
     );
     return '$_temp0';
@@ -1236,8 +1233,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get mealLoggedTitle => 'تم تسجيل الوجبة بنجاح';
 
   @override
-  String get mealLoggedBody =>
-      'تم تحديث سجل اليوم ومستوى التزامك الغذائي بنجاح وبدقة سريرية.';
+  String get mealLoggedBody => 'تم تحديث سجل اليوم.';
 
   @override
   String get mealLoggedYourMeal => 'وجبتك المسجلة';
@@ -1349,7 +1345,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get measurementsTrend => 'مسار التغيير';
 
   @override
-  String get measurementsClinicReading => 'قياس العيادة (معتمد)';
+  String get measurementsClinicReading => 'قياس العيادة';
 
   @override
   String get measurementsHomeReading => 'قياس منزلي';
@@ -1383,7 +1379,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get measurementsSyncNote =>
-      'تحديث البيانات متزامن مع قياسات العيادة وسجلك الشخصي بكل موثوقية.';
+      'بياناتك متزامنة مع قياسات العيادة وسجلك الشخصي.';
 
   @override
   String get measurementsLastUpdated => 'آخر تحديث: 19 سبتمبر';
@@ -1409,7 +1405,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get measurementsRegularNote =>
-      'تسجيلك المنتظم يمكّن أخصائي التغذية من تحليل نمطك بدقة ودعمك بالخيارات الأنسب دون أي ضغط أو تسرّع.';
+      'التسجيل المنتظم يساعد أخصائي التغذية على متابعة نمطك واقتراح الخيارات الأنسب لك.';
 
   @override
   String get measurementsLogDaily => 'سجّل قياساتك اليومية';
@@ -1512,9 +1508,9 @@ class AppLocalizationsAr extends AppLocalizations {
       gender,
       {
         'unknown':
-            'جميع بياناتك محمية وتصل بأمان لملفك الطبي المباشر لدى أخصائي التغذية دون أي أحكام أو تقييمات مسبقة، لتعديل خطتك بما يناسبك.',
+            'بياناتك محمية وتصل إلى ملفك الصحي لدى أخصائي التغذية، ليُعدّل خطتك بما يناسبك.',
         'other':
-            'جميع بياناتك محمية وتصل بأمان لملفك الطبي المباشر لدى $name دون أي أحكام أو تقييمات مسبقة، لتعديل خطتك بما يناسبك.',
+            'بياناتك محمية وتصل إلى ملفك الصحي لدى $name، ليُعدّل خطتك بما يناسبك.',
       },
     );
     return '$_temp0';
@@ -1646,7 +1642,7 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
-  String get notificationsClinicalUpdate => 'تحديث سريري';
+  String get notificationsClinicalUpdate => 'تحديث من الأخصائي';
 
   @override
   String get notificationsLogNow => 'تسجيل الآن';
@@ -1757,7 +1753,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get onboardingMeasurementsIntro =>
-      'أدخل وزنك وقياساتك اليوم لنبدأ بتتبع رحلتك الصحية مع الأخصائي بدقة واحترافية.';
+      'أدخل وزنك وقياساتك اليوم لنبدأ متابعة تقدمك مع أخصائي التغذية.';
 
   @override
   String get onboardingMeasurementsMandatory => 'إلزامي';
@@ -1789,7 +1785,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get onboardingMeasurementsExtraNote =>
-      'قياسات إضافية تدعم دقة متابعة الأخصائي لمحيط الجسم ونسب توزيع الدهون بدقة.';
+      'قياسات إضافية تساعد أخصائي التغذية على متابعة محيط الجسم.';
 
   @override
   String get onboardingMeasurementsWaistHint => 'عند أضيق نقطة';
@@ -1836,7 +1832,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get onboardingNotificationsWeightRemindersDesc =>
-      'تذكير أسبوعي في الوقت الصباحي المثالي للقياس لمتابعة تطور نتائجك ومؤشراتك الحيوية بدقة.';
+      'تذكير أسبوعي في الصباح لقياس الوزن ومتابعة تطوره.';
 
   @override
   String get onboardingNotificationsEnable => 'تفعيل الإشعارات الآن';
@@ -1864,7 +1860,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get onboardingTrackDescription =>
-      'سجّل وجباتك اليومية ووزنك بدقة بالغرامات، واستفد من البدائل المتاحة لتسهيل التزامك بالنظام الغذائي دون حرمان.';
+      'تسجيل الوجبات اليومية والوزن بالغرام، مع البدائل التي أتاحها أخصائي التغذية في خطتك.';
 
   @override
   String get onboardingBadgeSmartScan => 'مسح ذكي فوري';
@@ -1877,10 +1873,10 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get onboardingPlanDescription =>
-      'احصل على نظام غذائي مخصص بالكامل يناسب طبيعة جسمك وحالتك الصحية، ومصمم مباشرة من أخصائي التغذية المتابع لك.';
+      'نظام غذائي يعدّه لك أخصائي التغذية المتابع لك بحسب بياناتك وأهدافك.';
 
   @override
-  String get onboardingBadgeApproved => '100% معتمد طبياً ومبني على التحاليل';
+  String get onboardingBadgeApproved => 'خطة يعدّها أخصائي التغذية المتابع لك';
 
   @override
   String get onboardingStartNow => 'ابدأ الآن';
@@ -1942,7 +1938,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get passwordLogoutOthersNote =>
-      'بعد تغيير كلمة المرور بنجاح، سيتم تسجيل خروجك من الأجهزة الأخرى تلقائياً لحماية حسابك الطبي وصحتك.';
+      'بعد تغيير كلمة المرور بنجاح، سيتم تسجيل خروجك من الأجهزة الأخرى تلقائياً لحماية حسابك.';
 
   @override
   String get passwordProtectionTitle => 'حماية الحساب والبيانات الصحية';
@@ -1980,7 +1976,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get planPreparingBody =>
-      'أخصائي التغذية العلاجية يُعدّ الآن جدولك الغذائي المخصص بدقة ليلائم أهدافك الصحية ونتائج قياساتك الأولية. سنرسل لك إشعاراً فور اعتماد الخطة لتجدها هنا.';
+      'يُعدّ أخصائي التغذية الآن جدولك الغذائي بحسب أهدافك وقياساتك الأولية. سنرسل لك إشعاراً فور اعتماد الخطة لتجدها هنا.';
 
   @override
   String get planPreparingExpectedTime => 'الوقت المتوقع للاعتماد';
@@ -1990,7 +1986,7 @@ class AppLocalizationsAr extends AppLocalizations {
       'خلال 24 ساعة عمل من تسجيل قياساتك الأولية';
 
   @override
-  String get planPreparingReview => 'مراجعة طبية سريرية موثقة';
+  String get planPreparingReview => 'يراجعها أخصائي التغذية';
 
   @override
   String planPreparingManualPercent(Object percent) {
@@ -2017,8 +2013,8 @@ class AppLocalizationsAr extends AppLocalizations {
     String _temp0 = intl.Intl.selectLogic(
       gender,
       {
-        'unknown': 'عيادة التغذية العلاجية',
-        'other': 'عيادة التغذية العلاجية • $name',
+        'unknown': 'عيادة التغذية',
+        'other': 'عيادة التغذية • $name',
       },
     );
     return '$_temp0';
@@ -2035,7 +2031,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get profileHealthRecordSubtitle =>
-      'المستوى، الهدف، الأدوية والتشخيصات المعتمدة';
+      'المستوى، الهدف، الأدوية والحالات المسجّلة';
 
   @override
   String get profileAchievements => 'إنجازاتي';
@@ -2066,9 +2062,9 @@ class AppLocalizationsAr extends AppLocalizations {
     String _temp0 = intl.Intl.selectLogic(
       gender,
       {
-        'male': '$name (أخصائي التغذية العلاجية)',
-        'female': '$name (أخصائية التغذية العلاجية)',
-        'unknown': 'أخصائي التغذية العلاجية',
+        'male': '$name (أخصائي التغذية)',
+        'female': '$name (أخصائية التغذية)',
+        'unknown': 'أخصائي التغذية',
         'other': '$name',
       },
     );
@@ -2119,7 +2115,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get profileMoreSubtitle =>
-      'القياسات، السجل الطبي، الإنجازات والمواعيد';
+      'القياسات، السجل الصحي، الإنجازات والمواعيد';
 
   @override
   String get profileLogoutSubtitle => 'إنهاء الجلسة بأمان من هذا الجهاز';
@@ -2140,7 +2136,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get progressActiveFile => 'ملف نشط';
 
   @override
-  String get progressLiveSync => 'مزامنة مباشرة مع العيادة';
+  String get progressLiveSync => 'متزامن مع العيادة';
 
   @override
   String get progressOnlineNow => 'متصل الآن';
@@ -2176,7 +2172,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get commonToday => 'اليوم';
 
   @override
-  String get progressClinicReading => 'قياس العيادة المعتمد';
+  String get progressClinicReading => 'قياس العيادة';
 
   @override
   String get progressHomeReading => 'قياس بيتي دوري';
@@ -2318,8 +2314,7 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
-  String get quantityCalculatedNote =>
-      'القيمة محسوبة بالكامل وتُضاف بدقة إلى خطتك اليومية';
+  String get quantityCalculatedNote => 'القيمة محسوبة وتُضاف إلى سجل اليوم.';
 
   @override
   String quantityRange(Object min, Object max) {
@@ -2474,10 +2469,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get specialistAboutTitle => 'عن أخصائي التغذية';
 
   @override
-  String get specialistProfileActive => 'الملف الغذائي العلاجي نشط';
+  String get specialistProfileActive => 'الملف الغذائي نشط';
 
   @override
-  String get specialistCertified => 'معتمد';
+  String get specialistCertified => 'أخصائي التغذية المتابع لك';
 
   @override
   String get specialistLicensed => 'مرخصة';
@@ -2563,8 +2558,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get weeklyPlanProtein => '105 غ';
 
   @override
-  String get weeklyPlanSummary =>
-      'خطة متوازنة لتعزيز الطاقة وحرق الدهون بإشراف أخصائي التغذية';
+  String get weeklyPlanSummary => 'خطتك كما وضعها أخصائي التغذية';
 
   @override
   String get connectionStatusTitle => 'حالة الاتصال';
@@ -3860,7 +3854,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get weightInsightTitle => 'تفسير تغيّر الوزن';
 
   @override
-  String get weightInsightDisclaimer => 'شرح مبني على تسجيلاتك، مش تشخيص.';
+  String get weightInsightDisclaimer => 'شرح مبني على تسجيلاتك، وليس تشخيصاً.';
 
   @override
   String weightDown(String kg) {
