@@ -118,8 +118,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get aboutSessionAccountTitle => 'Session & account';
 
   @override
-  String get aboutCopyright =>
-      'HealthyLife Clinical Suite © 2026 • All rights reserved';
+  String aboutCopyright(String year) {
+    return '© $year HealthyLife AI';
+  }
 
   @override
   String get aboutBrandName => 'HealthyLife';
@@ -681,9 +682,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get healthSyncTitle => 'Connect a health app';
 
   @override
-  String get homeItemTwoBoiledEggs => '2 boiled eggs';
-
-  @override
   String homeSyncedItems(Object count) {
     return '$count items synced successfully';
   }
@@ -759,7 +757,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get languageSave => 'Save selected language';
 
   @override
-  String get languageFooter => 'HealthyLife Care Portal — Version 2.4.0';
+  String languageFooter(String version) {
+    return 'HealthyLife — Version $version';
+  }
 
   @override
   String get languageCustomizeInterface => 'Customize the interface';
@@ -1029,12 +1029,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String measurementsDaysThisWeek(Object days) {
-    return 'You logged $days of 7 days this week';
+    return 'This week: $days of 7 days logged';
   }
 
   @override
   String measurementsDaysThisMonth(Object days) {
-    return '($days days logged in total this month)';
+    return '(Days logged this month: $days)';
   }
 
   @override
@@ -1400,9 +1400,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get onboardingMeasurementsMaxWeight => '160 kg';
 
   @override
-  String get onboardingMeasurementsIdealRange => 'Estimated ideal: 65-72';
-
-  @override
   String get onboardingMeasurementsMinWeight => '40 kg';
 
   @override
@@ -1605,21 +1602,6 @@ class AppLocalizationsEn extends AppLocalizations {
       'Your nutritionist is preparing your meal schedule based on your goals and initial measurements. We\'ll notify you as soon as the plan is approved, and you\'ll find it here.';
 
   @override
-  String get planPreparingExpectedTime => 'Expected approval time';
-
-  @override
-  String get planPreparingWithin24h =>
-      'Within 24 working hours of logging your initial measurements';
-
-  @override
-  String get planPreparingReview => 'Reviewed by your nutritionist';
-
-  @override
-  String planPreparingManualPercent(Object percent) {
-    return '$percent% personalized';
-  }
-
-  @override
   String get planPreparingUrgentQuestion =>
       'An urgent question or food preference?';
 
@@ -1630,10 +1612,6 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get planPreparingContactWhatsApp =>
       'Contact the specialist on WhatsApp';
-
-  @override
-  String get planPreparingHours =>
-      'Available throughout official working days from 9:00 AM to 6:00 PM';
 
   @override
   String planPreparingClinic(String gender, String name) {
@@ -4222,4 +4200,17 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get aboutCrashTestSent =>
       'The app will now crash to send a test report.';
+
+  @override
+  String get planPreparingByNutritionist =>
+      'Your nutritionist prepares it for you';
+
+  @override
+  String get planPreparingByNutritionistHint =>
+      'Based on your goals and initial measurements, and reviewed before it reaches you';
+
+  @override
+  String planPreparingReplyHours(String hours) {
+    return 'Usual reply hours: $hours';
+  }
 }

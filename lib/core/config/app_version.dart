@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 /// The installed app's version, read from the platform once.
@@ -11,6 +12,10 @@ class AppVersion {
   static Future<String?>? _label;
 
   static Future<String?> label() => _label ??= _read();
+
+  /// Forgets the version read, so a test reads it again in its own zone.
+  @visibleForTesting
+  static void reset() => _label = null;
 
   static Future<String?> _read() async {
     try {

@@ -117,8 +117,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get aboutSessionAccountTitle => 'منطقة الجلسة والحساب';
 
   @override
-  String get aboutCopyright =>
-      'HealthyLife Clinical Suite © 2026 • جميع الحقوق محفوظة';
+  String aboutCopyright(String year) {
+    return '© $year HealthyLife AI';
+  }
 
   @override
   String get aboutBrandName => 'حياة صحية';
@@ -666,9 +667,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get healthSyncTitle => 'ربط تطبيق الصحة';
 
   @override
-  String get homeItemTwoBoiledEggs => '2 بيضة مسلوقة';
-
-  @override
   String homeSyncedItems(Object count) {
     return 'تمت مزامنة $count عنصر بنجاح';
   }
@@ -744,7 +742,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get languageSave => 'حفظ اللغة المختارة';
 
   @override
-  String get languageFooter => 'HealthyLife Care Portal — النسخة 2.4.0';
+  String languageFooter(String version) {
+    return 'HealthyLife — النسخة $version';
+  }
 
   @override
   String get languageCustomizeInterface => 'تخصيص الواجهة';
@@ -1015,12 +1015,12 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String measurementsDaysThisWeek(Object days) {
-    return 'سجّلتِ $days أيام من 7 أيام هذا الأسبوع';
+    return 'قياسات هذا الأسبوع: $days من 7 أيام';
   }
 
   @override
   String measurementsDaysThisMonth(Object days) {
-    return '(إجمالي $days يوماً مسجلاً هذا الشهر)';
+    return '(أيام مسجّلة هذا الشهر: $days)';
   }
 
   @override
@@ -1381,9 +1381,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get onboardingMeasurementsMaxWeight => '160 كجم';
 
   @override
-  String get onboardingMeasurementsIdealRange => 'المثالي التقديري: 65-72';
-
-  @override
   String get onboardingMeasurementsMinWeight => '40 كجم';
 
   @override
@@ -1501,7 +1498,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get passwordErrorEnterCurrent => 'أدخل كلمة المرور الحالية';
 
   @override
-  String get passwordErrorMinLength => 'اجعلي كلمة المرور 8 أحرف على الأقل';
+  String get passwordErrorMinLength =>
+      'يجب أن تتكون كلمة المرور من 8 أحرف على الأقل';
 
   @override
   String get passwordErrorUppercase => 'أضف حرفًا كبيرًا واحدًا على الأقل';
@@ -1575,26 +1573,11 @@ class AppLocalizationsAr extends AppLocalizations {
   String get passwordSave => 'حفظ كلمة المرور';
 
   @override
-  String get planPreparingTitle => 'خطتكِ قيد التحضير بعناية';
+  String get planPreparingTitle => 'خطتك قيد التحضير بعناية';
 
   @override
   String get planPreparingBody =>
       'يُعدّ أخصائي التغذية الآن جدولك الغذائي بحسب أهدافك وقياساتك الأولية. سنرسل لك إشعاراً فور اعتماد الخطة لتجدها هنا.';
-
-  @override
-  String get planPreparingExpectedTime => 'الوقت المتوقع للاعتماد';
-
-  @override
-  String get planPreparingWithin24h =>
-      'خلال 24 ساعة عمل من تسجيل قياساتك الأولية';
-
-  @override
-  String get planPreparingReview => 'يراجعها أخصائي التغذية';
-
-  @override
-  String planPreparingManualPercent(Object percent) {
-    return '$percent٪ يدوي ومخصص';
-  }
 
   @override
   String get planPreparingUrgentQuestion => 'استفسار أو تفضيل غذائي طارئ؟';
@@ -1606,10 +1589,6 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get planPreparingContactWhatsApp =>
       'تواصل مع أخصائي التغذية عبر واتساب';
-
-  @override
-  String get planPreparingHours =>
-      'متاح طوال أيام العمل الرسمية من 9:00 ص حتى 6:00 م';
 
   @override
   String planPreparingClinic(String gender, String name) {
@@ -3111,7 +3090,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get reasonCannotContinue => 'لا أستطيع الالتزام';
 
   @override
-  String get reasonCannotContinueHint => 'الخطة صعبة عليّ هالفترة';
+  String get reasonCannotContinueHint => 'الخطة صعبة عليّ في هذه الفترة';
 
   @override
   String get reasonOther => 'سبب آخر';
@@ -3279,7 +3258,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get foodPrefsSuggestions => 'اقتراحات سريعة';
 
   @override
-  String get foodPrefsAlreadyAdded => 'هالأكلة موجودة بقوائمك';
+  String get foodPrefsAlreadyAdded => 'هذا الطعام موجود في قوائمك';
 
   @override
   String foodPrefsListFull(String max) {
@@ -3495,7 +3474,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get reportDeleteTitle => 'حذف التقرير؟';
 
   @override
-  String get reportCannotShow => 'ما قدرنا نعرض هالملف';
+  String get reportCannotShow => 'تعذّر عرض هذا الملف';
 
   @override
   String get reportUploadTitle => 'رفع تقرير';
@@ -3531,7 +3510,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get reportFileHint => 'صور (JPG، PNG، WebP) أو PDF، لحد 10 ميغابايت.';
 
   @override
-  String get reportPickFailed => 'ما قدرنا نفتح الملف، جرّب مرة ثانية.';
+  String get reportPickFailed => 'تعذّر فتح الملف. حاول مرة أخرى.';
 
   @override
   String get reportUpload => 'رفع التقرير';
@@ -3628,7 +3607,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get wellbeingNote => 'ملاحظة (اختياري)';
 
   @override
-  String get wellbeingNoteHint => 'مثلًا: ضغط شغل هالأسبوع.';
+  String get wellbeingNoteHint => 'مثلًا: ضغط عمل هذا الأسبوع.';
 
   @override
   String get wellbeingDeleteNight => 'حذف تسجيل هذه الليلة';
@@ -3737,7 +3716,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get achvFirstMealBody => 'سجّلت أول وجبة';
 
   @override
-  String get achvStreak3 => '3 أيام ورا بعض';
+  String get achvStreak3 => '3 أيام متتالية';
 
   @override
   String get achvStreak3Body => 'سجّلت وجباتك 3 أيام متتالية';
@@ -3789,7 +3768,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get achvFootnote =>
-      'محسوبة من وجباتك المسجّلة على هالجهاز ومن قياساتك وهدفك.';
+      'محسوبة من وجباتك المسجّلة على هذا الجهاز ومن قياساتك وهدفك.';
 
   @override
   String get callsNextTitle => 'موعدك القادم';
@@ -4208,4 +4187,16 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get aboutCrashTestSent => 'سيتوقف التطبيق الآن لإرسال عطل تجريبي.';
+
+  @override
+  String get planPreparingByNutritionist => 'يعدّها أخصائي التغذية لك';
+
+  @override
+  String get planPreparingByNutritionistHint =>
+      'بحسب أهدافك وقياساتك الأولية، ويراجعها قبل أن تصلك';
+
+  @override
+  String planPreparingReplyHours(String hours) {
+    return 'أوقات الرد المعتادة: $hours';
+  }
 }

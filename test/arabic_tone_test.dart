@@ -26,6 +26,16 @@ void main() {
   });
 
   test('no feminine address and no feminine specialist', () {
-    expect(hits(RegExp(r'أخصائيتك|جرّبي|اطلبي|أضيفي|اختاري|سجّلي')), isEmpty);
+    expect(
+        hits(RegExp(
+            r'أخصائيتك|جرّبي|اطلبي|أضيفي|اختاري|سجّلي|اجعلي|سجّلتِ|خطتكِ')),
+        isEmpty);
+  });
+
+  // Dialect the first pass missed: «هالجهاز», «هالأسبوع», «ورا بعض»,
+  // «ما قدرنا», «شغل».
+  test('no dialect demonstratives or phrasing', () {
+    expect(
+        hits(RegExp(r'(^|\s)هال\S|ورا بعض|ما قدرنا|(^|\s)شغل(\s|$)')), isEmpty);
   });
 }

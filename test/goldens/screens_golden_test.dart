@@ -13,6 +13,7 @@ library;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:healthylife_ai/core/config/app_version.dart';
 import 'package:healthylife_ai/core/di/app_dependencies.dart';
 import 'package:healthylife_ai/domain/entities/meal_entities.dart';
 import 'package:healthylife_ai/presentation/app_shell.dart';
@@ -27,10 +28,16 @@ import 'package:healthylife_ai/presentation/screens/quick_request_screen.dart';
 import 'package:healthylife_ai/presentation/screens/schedule_calls_screen.dart';
 import 'package:healthylife_ai/presentation/screens/weekly_plan_screen.dart';
 import 'package:healthylife_ai/presentation/screens/health_record_screen.dart';
+import 'package:healthylife_ai/presentation/screens/about_app_screen.dart';
+import 'package:healthylife_ai/presentation/screens/language_settings_screen.dart';
+import 'package:healthylife_ai/presentation/screens/onboarding_measurements_screen.dart';
+import 'package:healthylife_ai/presentation/screens/plan_preparing_screen.dart';
 import 'package:healthylife_ai/core/errors/failure.dart';
 import 'package:healthylife_ai/presentation/widgets/app_header_bar.dart';
 import 'package:healthylife_ai/presentation/widgets/load_error_view.dart';
 import 'package:healthylife_ai/presentation/widgets/state_views.dart';
+
+import 'package:package_info_plus/package_info_plus.dart';
 
 import '../helpers/app_font.dart';
 import '../helpers/screen_fixtures.dart';
@@ -59,7 +66,16 @@ void main() {
     TestWidgetsFlutterBinding.ensureInitialized();
     expect(await loadAppFont(), isTrue);
     await loadMaterialIcons();
+    // The version a build shows; the platform has none in a test.
+    PackageInfo.setMockInitialValues(
+      appName: 'HealthyLife',
+      packageName: 'ai.healthylife.app',
+      version: '1.0.0',
+      buildNumber: '1',
+      buildSignature: '',
+    );
   });
+  setUp(AppVersion.reset);
 
   for (final size in const [Size(360, 800), Size(412, 915)]) {
     final t = '${size.width.toInt()}';
@@ -172,6 +188,25 @@ void main() {
         (tester) => _shot(tester, '17_health_record', size,
             (_) => const HealthRecordScreen()));
     testWidgets(
+        'plan preparing $t',
+        (tester) => _shot(tester, '21_plan_preparing', size,
+            (_) => const PlanPreparingScreen(),
+            act: _scrollToEnd));
+    testWidgets(
+        'language $t',
+        (tester) => _shot(tester, '22_language', size,
+            (_) => const LanguageSettingsScreen(),
+            act: _scrollToEnd));
+    testWidgets(
+        'about $t',
+        (tester) => _shot(tester, '23_about', size,
+            (_) => const AboutAppScreen(),
+            act: _scrollToEnd));
+    testWidgets(
+        'onboarding measurements $t',
+        (tester) => _shot(tester, '24_onboarding_measurements', size,
+            (_) => const OnboardingMeasurementsScreen()));
+    testWidgets(
         'state loading $t',
         (tester) => _shot(
             tester,
@@ -210,3 +245,8 @@ void main() {
 }
 
 void _noop() {}
+
+/// Scrolls to the end, where the lines the shot is about sit.
+Future<void> _scrollToEnd(WidgetTester tester) =>
+    tester.drag(find.byType(Scrollable).first, const Offset(0, -4000),
+        warnIfMissed: false);
