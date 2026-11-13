@@ -11,7 +11,9 @@ import '../../core/theme/app_text_styles.dart';
 import '../../domain/entities/meal_entities.dart';
 import '../../domain/food_rules.dart';
 import '../bloc/food_search/food_search_cubit.dart';
+import '../bloc/notifications/notifications_cubit.dart';
 import '../bloc/nutritionist/nutritionist_cubit.dart';
+import '../widgets/app_header_bar.dart';
 import '../widgets/food_tag_icon.dart';
 import '../widgets/load_error_view.dart';
 import '../widgets/clinical_trust_footer.dart';
@@ -289,84 +291,25 @@ class _FoodSearchViewState extends State<_FoodSearchView>
   // ───────────────────────── Header ─────────────────────────
 
   Widget _buildHeader() {
-    return Padding(
-      padding: const EdgeInsetsDirectional.fromSTEB(18, 10, 12, 6),
-      child: Row(
-        children: [
-          Semantics(
-            button: true,
-            label: context.l10n.commonBack,
-            child: _PressScale(
-              onTap: () => Navigator.of(context).maybePop(),
-              child: const Padding(
-                padding: EdgeInsets.all(10),
-                child: Icon(Icons.arrow_back_rounded,
-                    size: 26, color: AppColors.textPrimary),
-              ),
-            ),
+    // The same header as the other pushed screens. The bell shows the real
+    // unread count (a pulsing red dot used to show whether or not there was
+    // anything), and the decorative avatar that did nothing is gone.
+    final unread = context.watch<NotificationsCubit>().state.unreadCount;
+    return AppHeaderBar(
+      title: context.l10n.foodSearchAteOffPlan,
+      actions: [
+        IconButton(
+          tooltip: context.l10n.commonNotifications,
+          onPressed: () => Navigator.of(context).push(
+              AppPageRoute(builder: (_) => const NotificationsCenterScreen())),
+          icon: Badge(
+            isLabelVisible: unread > 0,
+            label: Text(unread > 9 ? '9+' : context.localizeDigits(unread)),
+            child: const Icon(Icons.notifications_none_rounded,
+                color: AppColors.textPrimary),
           ),
-          const SizedBox(width: 2),
-          Expanded(
-              child: Text(context.l10n.foodSearchAteOffPlan,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: AppTextStyles.h1)),
-          Semantics(
-            button: true,
-            label: context.l10n.commonNotifications,
-            child: _PressScale(
-              onTap: () => Navigator.of(context).push(AppPageRoute(
-                  builder: (_) => const NotificationsCenterScreen())),
-              child: SizedBox(
-                width: 44,
-                height: 44,
-                child: Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    const Icon(Icons.notifications_none_rounded,
-                        size: 26, color: AppColors.textPrimary),
-                    PositionedDirectional(
-                      top: 9,
-                      end: 9,
-                      child: AnimatedBuilder(
-                        animation: _loop,
-                        builder: (_, __) {
-                          final s =
-                              .5 + .5 * math.sin(_loop.value * 2 * math.pi);
-                          return Container(
-                            width: 9,
-                            height: 9,
-                            decoration: BoxDecoration(
-                              color: AppColors.danger,
-                              shape: BoxShape.circle,
-                              boxShadow: [
-                                BoxShadow(
-                                    color: AppColors.danger
-                                        .withValues(alpha: .5 * s),
-                                    blurRadius: 6,
-                                    spreadRadius: 2 * s)
-                              ],
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(width: 4),
-          Container(
-            width: 44,
-            height: 44,
-            decoration: const BoxDecoration(
-                color: AppColors.primary, shape: BoxShape.circle),
-            child: const Icon(Icons.person_outline_rounded,
-                color: Colors.white, size: 22),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
