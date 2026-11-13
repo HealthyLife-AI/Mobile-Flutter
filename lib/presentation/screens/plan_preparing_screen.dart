@@ -16,13 +16,13 @@ import '../widgets/spec_ui.dart';
 import '../../l10n/l10n.dart';
 
 // ───────────────────────── ألوان إضافية مأخوذة من التصميم ─────────────────────────
-const Color _kMint = Color(0xFF5EE0B0);
-const Color _kMintSector = Color(0xFFC9F3E3);
-const Color _kMintSoft = Color(0xFFE3F8F0);
-const Color _kSkySector = Color(0xFFD6EEFA);
+const Color _kMint = AppColors.turquoise;
+const Color _kMintSector = AppColors.successBg;
+const Color _kMintSoft = AppColors.successBg;
+const Color _kSkySector = AppColors.primaryTint;
 const Color _kDisc = AppColors.panel;
 const Color _kLavender = AppColors.panel;
-const Color _kIconBg = Color(0xFFBFD6D4);
+const Color _kIconBg = AppColors.border;
 const Color _kLine = AppColors.chipInactiveBg;
 
 /// اهتزاز مخمَّد في أول [span] من الدورة.

@@ -798,7 +798,7 @@ class _TipsFooterCard extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           gradient: const LinearGradient(
-              colors: [Color(0xFFDCEFEA), Color(0xFFEFF8F5)]),
+              colors: [AppColors.successBg, AppColors.panel]),
           borderRadius: BorderRadius.circular(AppRadius.card),
           boxShadow: [
             BoxShadow(

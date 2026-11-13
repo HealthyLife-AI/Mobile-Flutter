@@ -390,7 +390,7 @@ class _InfoBadge extends StatelessWidget {
         border: Border.all(color: AppColors.primary.withValues(alpha: 0.10)),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFF173B36).withValues(alpha: 0.14),
+            color: AppColors.deep.withValues(alpha: 0.14),
             blurRadius: 20,
             offset: const Offset(0, 8),
           ),

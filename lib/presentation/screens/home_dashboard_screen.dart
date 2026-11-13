@@ -36,16 +36,16 @@ import '../../l10n/l10n.dart';
 // ─────────────────────────────────────────────────────────────────────────────
 class _C {
   static Color get teal => AppColors.primary;
-  static const ink = Color(0xFF16303A);
-  static const muted = Color(0xFF8795A0);
-  static const mint = Color(0xFFD6F5E9);
-  static const mintSoft = Color(0xFFE6F8F0);
-  static const green = Color(0xFF1E9E6F);
-  static const greyBox = Color(0xFFF3F5F6);
-  static const line = Color(0xFFE6EBED);
-  static const lavender = Color(0xFFD9DBF2);
-  static const amber = Color(0xFFC98A1F);
-  static const amberBg = Color(0xFFFDF3E4);
+  static const ink = AppColors.textPrimary;
+  static const muted = AppColors.textMuted;
+  static const mint = AppColors.successBg;
+  static const mintSoft = AppColors.successBg;
+  static const green = AppColors.success;
+  static const greyBox = AppColors.panel;
+  static const line = AppColors.chipInactiveBg;
+  static const lavender = AppColors.border;
+  static const amber = AppColors.warning;
+  static const amberBg = AppColors.warningCardBg;
 }
 
 TextStyle _ts(double size,
@@ -594,7 +594,7 @@ class _BellButtonState extends State<_BellButton>
                       padding: const EdgeInsets.symmetric(horizontal: 4),
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
-                        color: const Color(0xFFEF4444),
+                        color: AppColors.danger,
                         borderRadius: BorderRadius.circular(9),
                         border: Border.all(color: Colors.white, width: 1.5),
                       ),
@@ -884,7 +884,7 @@ class _MealCardState extends State<_MealCard>
                 ? const LinearGradient(
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
-                    colors: [Colors.white, Colors.white, Color(0xFFD3F0E6)],
+                    colors: [Colors.white, Colors.white, AppColors.successBg],
                     stops: [0, 0.55, 1],
                   )
                 : null,
@@ -1333,7 +1333,7 @@ class _TipCardState extends State<_TipCard>
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-          color: const Color(0xFFF1F4F5),
+          color: AppColors.panel,
           borderRadius: BorderRadius.circular(18)),
       child: Row(children: [
         AnimatedBuilder(
@@ -1362,7 +1362,7 @@ class _TipCardState extends State<_TipCard>
         Expanded(
           child: Text(
             context.l10n.homeHydrationTip,
-            style: _ts(11.5, c: const Color(0xFF4B5F69), h: 1.7),
+            style: _ts(11.5, c: AppColors.textMuted, h: 1.7),
           ),
         ),
       ]),

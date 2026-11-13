@@ -22,7 +22,7 @@ import 'weekly_plan_screen.dart';
 import '../../l10n/l10n.dart';
 import '../widgets/log_meal_sheet.dart';
 
-const Color _mutedIcon = Color(0xFF475467);
+const Color _mutedIcon = AppColors.textMuted;
 
 String _fmt(int n) {
   final s = n.toString();

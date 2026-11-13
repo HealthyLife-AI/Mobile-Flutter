@@ -196,12 +196,12 @@ class _StreakCard extends StatelessWidget {
             width: 52,
             height: 52,
             decoration: BoxDecoration(
-              color: const Color(0xFFFFEDD5),
+              color: AppColors.accentOrangeBg,
               borderRadius: BorderRadius.circular(AppRadius.panel),
             ),
             child: Icon(Icons.local_fire_department_rounded,
                 color:
-                    current > 0 ? const Color(0xFFEA580C) : AppColors.iconMuted,
+                    current > 0 ? AppColors.accentOrange : AppColors.iconMuted,
                 size: 30),
           ),
           const SizedBox(width: 14),
@@ -225,7 +225,7 @@ class _StreakCard extends StatelessWidget {
               children: [
                 Text(context.localizeDigits(current),
                     style: AppTextStyles.metricLarge
-                        .copyWith(color: const Color(0xFFEA580C), height: 1.1)),
+                        .copyWith(color: AppColors.accentOrange, height: 1.1)),
                 Text(l10n.achvDaysUnit(current), style: AppTextStyles.tiny),
               ],
             ),
@@ -248,25 +248,25 @@ class _AchievementTile extends StatelessWidget {
     final (icon, color, title, body) = switch (a.kind) {
       AchievementKind.firstMeal => (
           Icons.restaurant_rounded,
-          const Color(0xFF16A34A),
+          AppColors.success,
           l10n.achvFirstMeal,
           l10n.achvFirstMealBody
         ),
       AchievementKind.streak3 => (
           Icons.local_fire_department_rounded,
-          const Color(0xFFEA580C),
+          AppColors.accentOrange,
           l10n.achvStreak3,
           l10n.achvStreak3Body
         ),
       AchievementKind.streak7 => (
           Icons.whatshot_rounded,
-          const Color(0xFFDC2626),
+          AppColors.danger,
           l10n.achvStreak7,
           l10n.achvStreak7Body
         ),
       AchievementKind.days30 => (
           Icons.calendar_month_rounded,
-          const Color(0xFF7C3AED),
+          AppColors.accentIndigo,
           l10n.achvDays30,
           l10n.achvDays30Body
         ),
@@ -278,7 +278,7 @@ class _AchievementTile extends StatelessWidget {
         ),
       AchievementKind.fiveReadings => (
           Icons.straighten_rounded,
-          const Color(0xFF0284C7),
+          AppColors.accentBlue,
           l10n.achvFiveReadings,
           l10n.achvFiveReadingsBody
         ),

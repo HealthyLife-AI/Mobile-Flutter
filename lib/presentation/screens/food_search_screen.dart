@@ -24,7 +24,7 @@ import '../../core/navigation/app_page_route.dart';
 
 import '../../l10n/l10n.dart';
 
-const Color _softMint = Color(0xFFF1FAF7);
+const Color _softMint = AppColors.panel;
 
 /// Category filter chips. Held as ids (not their labels) so filtering keeps
 /// working whatever language the labels are shown in.
@@ -337,11 +337,11 @@ class _FoodSearchViewState extends State<_FoodSearchView>
                             width: 9,
                             height: 9,
                             decoration: BoxDecoration(
-                              color: const Color(0xFFE5484D),
+                              color: AppColors.danger,
                               shape: BoxShape.circle,
                               boxShadow: [
                                 BoxShadow(
-                                    color: const Color(0xFFE5484D)
+                                    color: AppColors.danger
                                         .withValues(alpha: .5 * s),
                                     blurRadius: 6,
                                     spreadRadius: 2 * s)
@@ -954,12 +954,12 @@ class _CantFindItCard extends StatelessWidget {
                             width: 12,
                             height: 12,
                             decoration: BoxDecoration(
-                              color: const Color(0xFF19D3A2),
+                              color: AppColors.accentGreen,
                               shape: BoxShape.circle,
                               border: Border.all(color: Colors.white, width: 2),
                               boxShadow: [
                                 BoxShadow(
-                                    color: const Color(0xFF19D3A2)
+                                    color: AppColors.accentGreen
                                         .withValues(alpha: .5 * s),
                                     blurRadius: 6,
                                     spreadRadius: 2 * s)

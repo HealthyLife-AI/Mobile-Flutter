@@ -330,8 +330,8 @@ class _GlowBlob extends StatelessWidget {
         shape: BoxShape.circle,
         gradient: RadialGradient(
           colors: [
-            const Color(0xFFB8F0DF).withValues(alpha: 0.60),
-            const Color(0xFFB8F0DF).withValues(alpha: 0.0),
+            AppColors.successBg.withValues(alpha: 0.60),
+            AppColors.successBg.withValues(alpha: 0.0),
           ],
         ),
       ),
@@ -483,8 +483,8 @@ class _LegalCard extends StatelessWidget {
   static List<_LegalItem> _items(AppLocalizations l10n) => [
         _LegalItem(
           icon: Icons.health_and_safety_outlined,
-          iconColor: const Color(0xFF0E7C86),
-          tint: const Color(0xFFE3F5F7),
+          iconColor: AppColors.primaryInk,
+          tint: AppColors.primaryTint,
           title: l10n.aboutPrivacyPolicyTitle,
           subtitle: l10n.aboutPrivacyPolicySubtitle,
           // `policy_url` from GET /me/consent (API guide 4).
@@ -492,23 +492,23 @@ class _LegalCard extends StatelessWidget {
         ),
         _LegalItem(
           icon: Icons.description_outlined,
-          iconColor: const Color(0xFF3E5A8C),
+          iconColor: AppColors.textSecondary,
           tint: AppColors.chipInactiveBg,
           title: l10n.aboutMedicalTermsTitle,
           subtitle: l10n.aboutMedicalTermsSubtitle,
         ),
         _LegalItem(
           icon: Icons.verified_outlined,
-          iconColor: const Color(0xFF1E9E6A),
-          tint: const Color(0xFFE0F6EC),
+          iconColor: AppColors.success,
+          tint: AppColors.successBg,
           title: l10n.aboutLicensesTitle,
           subtitle: l10n.aboutLicensesSubtitle,
           open: (context) => showLicensePage(context: context),
         ),
         _LegalItem(
           icon: Icons.headset_mic_outlined,
-          iconColor: const Color(0xFF5B52B0),
-          tint: const Color(0xFFECEAFA),
+          iconColor: AppColors.accentPurple,
+          tint: AppColors.accentPurpleBg,
           title: l10n.aboutSupportTitle,
           subtitle: l10n.aboutSupportSubtitle,
           // Support is the nutritionist, on WhatsApp (9.1).
@@ -624,7 +624,7 @@ class _StandardProtectionCard extends StatelessWidget {
             width: 42,
             height: 42,
             decoration: BoxDecoration(
-              color: const Color(0xFFA8CFD0),
+              color: AppColors.border,
               borderRadius: BorderRadius.circular(12),
             ),
             child: const Icon(
@@ -683,7 +683,7 @@ class _SessionNote extends StatelessWidget {
             width: 40,
             height: 40,
             decoration: BoxDecoration(
-              color: const Color(0xFFFFE3E3),
+              color: AppColors.dangerBg,
               borderRadius: BorderRadius.circular(12),
             ),
             child: const Icon(

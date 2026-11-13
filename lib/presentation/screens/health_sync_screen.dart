@@ -42,7 +42,7 @@ class HealthSyncScreen extends StatelessWidget {
                     children: [
                       const _Badge(
                           icon: Icons.favorite_rounded,
-                          color: Color(0xFFFF5A6E)),
+                          color: AppColors.danger),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10),
                         child: Icon(Icons.sync_alt_rounded,
@@ -87,7 +87,7 @@ class HealthSyncScreen extends StatelessWidget {
             const SizedBox(height: 10),
             _Benefit(
               icon: Icons.directions_walk_rounded,
-              color: const Color(0xFF16A34A),
+              color: AppColors.success,
               title: l10n.healthSyncSteps,
               body: l10n.healthSyncStepsBody,
             ),

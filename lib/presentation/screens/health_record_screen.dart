@@ -29,8 +29,8 @@ import '../widgets/directional_icon.dart';
 
 const _lav = AppColors.panel; // خلفية الصناديق الفاتحة
 const _lavGrey = AppColors.panel;
-const _dangerBg = Color(0xFFFDE8E8);
-const _mintPill = Color(0xFFD3F3E8);
+const _dangerBg = AppColors.dangerBg;
+const _mintPill = AppColors.successBg;
 
 double _seg(double v, double b, double e, [Curve c = Curves.easeOutCubic]) {
   final value = v.isFinite ? math.max(0.0, math.min(1.0, v)) : 0.0;
@@ -409,8 +409,8 @@ class _IdentityLevelCard extends StatelessWidget {
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     gradient: RadialGradient(colors: [
-                      const Color(0xFFBDEFDC).withValues(alpha: 0.8),
-                      const Color(0xFFBDEFDC).withValues(alpha: 0),
+                      AppColors.successBg.withValues(alpha: 0.8),
+                      AppColors.successBg.withValues(alpha: 0),
                     ]),
                   ),
                 ),

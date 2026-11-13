@@ -16,7 +16,7 @@ import '../widgets/directional_icon.dart';
 
 const _tintBox = AppColors.panel; // خلفية الصناديق الفاتحة في التصميم
 const _iconBlue = AppColors.chipInactiveBg;
-const _leafGreen = Color(0xFF1FB57A);
+const _leafGreen = AppColors.success;
 
 /// What the prompt asks for, from the readings the patient already has.
 enum MeasurementPrompt {
@@ -594,7 +594,7 @@ class _WaitingIllustration extends StatelessWidget {
                       decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color:
-                              const Color(0xFFD2F4E6).withValues(alpha: 0.85)),
+                              AppColors.successBg.withValues(alpha: 0.85)),
                       alignment: Alignment.center,
                       child: Container(
                         width: 26,
