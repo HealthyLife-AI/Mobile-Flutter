@@ -967,7 +967,7 @@
   "@mealDetailSwapNote": {
     "description": "UI text in presentation/screens/meal_detail_screen.dart"
   },
-  "mealDetailTotalCalories": "إجمالي السعرات النشطة",
+  "mealDetailTotalCalories": "سعرات الوجبة",
   "@mealDetailTotalCalories": {
     "description": "UI text in presentation/screens/meal_detail_screen.dart"
   },
@@ -991,11 +991,11 @@
   "@macroProtein": {
     "description": "UI text in presentation/screens/meal_detail_screen.dart"
   },
-  "macroCarbs": "الكارب",
+  "macroCarbs": "الكربوهيدرات",
   "@macroCarbs": {
     "description": "UI text in presentation/screens/meal_detail_screen.dart"
   },
-  "macroHealthyFats": "الدهون الصحية",
+  "macroHealthyFats": "الدهون",
   "@macroHealthyFats": {
     "description": "UI text in presentation/screens/meal_detail_screen.dart"
   },
@@ -2601,11 +2601,11 @@
   "@weekdayShortFriday": {
     "description": "UI text in presentation/screens/weekly_plan_screen.dart"
   },
-  "weeklyPlanPreviewScreen": "شاشة استعراض الخطة والتحضير المسبق",
+  "weeklyPlanPreviewScreen": "الخطة الأسبوعية",
   "@weeklyPlanPreviewScreen": {
     "description": "UI text in presentation/screens/weekly_plan_screen.dart"
   },
-  "weeklyPlanLoggingHint": "لتسجيل الوجبات وتأكيد تناولها يرجى التوجه لتبويب خطتي اليومية",
+  "weeklyPlanLoggingHint": "خطة كل يوم من أيام الأسبوع. تسجيل الوجبات من تبويب «الخطة».",
   "@weeklyPlanLoggingHint": {
     "description": "UI text in presentation/screens/weekly_plan_screen.dart"
   },
@@ -2613,7 +2613,7 @@
   "@weeklyPlanDetailed": {
     "description": "UI text in presentation/screens/weekly_plan_screen.dart"
   },
-  "macroHealthyFatsShort": "دهون صحية",
+  "macroHealthyFatsShort": "دهون",
   "@macroHealthyFatsShort": {
     "description": "UI text in presentation/screens/weekly_plan_screen.dart"
   },
@@ -2629,7 +2629,7 @@
   "@connectionStatusTitle": {
     "description": "UI text in presentation/widgets/connection_status_sheet.dart"
   },
-  "datePickerKcal": "{value} س",
+  "datePickerKcal": "{value} سعرة",
   "@datePickerKcal": {
     "description": "UI text in presentation/widgets/date_chip_picker.dart",
     "placeholders": {
@@ -4446,7 +4446,7 @@
   "@callsNextTitle": {
     "description": "Patient app design spec"
   },
-  "callsLaterTitle": "المواعيد الجاية",
+  "callsLaterTitle": "المواعيد القادمة",
   "@callsLaterTitle": {
     "description": "Patient app design spec"
   },
@@ -5005,5 +5005,17 @@
         "type": "String"
       }
     }
+  },
+  "aboutCrashTestTitle": "إرسال عطل تجريبي",
+  "aboutCrashTestSubtitle": "لنسخة الاختبار فقط: يتوقف التطبيق عمداً للتحقق من وصول العطل.",
+  "aboutCrashTestSent": "سيتوقف التطبيق الآن لإرسال عطل تجريبي.",
+  "@aboutCrashTestTitle": {
+    "description": "About, internal-test builds only (CRASH_TEST)."
+  },
+  "@aboutCrashTestSubtitle": {
+    "description": "About, internal-test builds only (CRASH_TEST)."
+  },
+  "@aboutCrashTestSent": {
+    "description": "About, internal-test builds only (CRASH_TEST)."
   }
 }

@@ -248,8 +248,34 @@ class _WeeklyPlanScreenState extends State<WeeklyPlanScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Row(
+                  // The day's title on a line of its own, so the date is never
+                  // cut; the "detailed plan" chip sits with the calories.
+                  Text(
+                      l10n.weeklyPlanDayOf(context
+                          .localizeDigits(material.formatMediumDate(selected))),
+                      style: AppTextStyles.cardTitle),
+                  const SizedBox(height: 4),
+                  // A Wrap: on a narrow phone the chip moves under the
+                  // calories instead of overflowing the row.
+                  Wrap(
+                    alignment: WrapAlignment.spaceBetween,
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    spacing: 8,
+                    runSpacing: 6,
                     children: [
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(context.localizeDigits(totals.calories.round()),
+                              style: AppTextStyles.metricLarge
+                                  .copyWith(color: AppColors.primaryInk)),
+                          const SizedBox(width: 6),
+                          Padding(
+                              padding: const EdgeInsets.only(top: 10),
+                              child: Text(l10n.commonCaloriesUnit,
+                                  style: AppTextStyles.secondary)),
+                        ],
+                      ),
                       Container(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 12, vertical: 6),
@@ -257,7 +283,7 @@ class _WeeklyPlanScreenState extends State<WeeklyPlanScreen> {
                             color: AppColors.accentGreenBg,
                             borderRadius:
                                 BorderRadius.circular(AppRadius.pill)),
-                        child: Row(children: [
+                        child: Row(mainAxisSize: MainAxisSize.min, children: [
                           const Icon(Icons.check_circle_rounded,
                               color: AppColors.accentGreen, size: 14),
                           const SizedBox(width: 4),
@@ -265,29 +291,6 @@ class _WeeklyPlanScreenState extends State<WeeklyPlanScreen> {
                               style: AppTextStyles.caption),
                         ]),
                       ),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: Text(
-                            l10n.weeklyPlanDayOf(context.localizeDigits(
-                                material.formatMediumDate(selected))),
-                            textAlign: TextAlign.end,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: AppTextStyles.body),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 4),
-                  Row(
-                    children: [
-                      Text(context.localizeDigits(totals.calories.round()),
-                          style: AppTextStyles.metricLarge
-                              .copyWith(color: AppColors.primaryInk)),
-                      const SizedBox(width: 6),
-                      Padding(
-                          padding: const EdgeInsets.only(top: 10),
-                          child: Text(l10n.commonCaloriesUnit,
-                              style: AppTextStyles.secondary)),
                     ],
                   ),
                   const SizedBox(height: 14),

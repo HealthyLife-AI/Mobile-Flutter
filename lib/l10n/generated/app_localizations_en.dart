@@ -815,7 +815,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Choose an alternative if the original item isn\'t available. The alternative replaces the item rather than adding to it, for precise nutritional balance.';
 
   @override
-  String get mealDetailTotalCalories => 'Total active calories';
+  String get mealDetailTotalCalories => 'Meal calories';
 
   @override
   String get commonCaloriesUnit => 'kcal';
@@ -836,10 +836,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get macroProtein => 'Protein';
 
   @override
-  String get macroCarbs => 'Carbs';
+  String get macroCarbs => 'Carbohydrates';
 
   @override
-  String get macroHealthyFats => 'Healthy fats';
+  String get macroHealthyFats => 'Fat';
 
   @override
   String commonGramsShortValue(Object value) {
@@ -2065,17 +2065,17 @@ class AppLocalizationsEn extends AppLocalizations {
   String get weekdayShortFriday => 'Fri';
 
   @override
-  String get weeklyPlanPreviewScreen => 'Plan preview & advance preparation';
+  String get weeklyPlanPreviewScreen => 'Weekly plan';
 
   @override
   String get weeklyPlanLoggingHint =>
-      'To log meals and confirm you ate them, please go to the My daily plan tab';
+      'The plan for each day of the week. Meals are logged from the Plan tab.';
 
   @override
   String get weeklyPlanDetailed => 'Detailed plan';
 
   @override
-  String get macroHealthyFatsShort => 'Healthy fats';
+  String get macroHealthyFatsShort => 'Fat';
 
   @override
   String get macroProteinLabel => 'Protein';
@@ -3798,7 +3798,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get callsNextTitle => 'Your next appointment';
 
   @override
-  String get callsLaterTitle => 'Later appointments';
+  String get callsLaterTitle => 'Upcoming appointments';
 
   @override
   String get shoppingListTitle => 'Shopping list';
@@ -4211,4 +4211,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String logSheetLogMeal(String meal, String kcal) {
     return 'Log $meal · $kcal kcal';
   }
+
+  @override
+  String get aboutCrashTestTitle => 'Send a test crash';
+
+  @override
+  String get aboutCrashTestSubtitle =>
+      'Test build only: the app crashes on purpose to check the report arrives.';
+
+  @override
+  String get aboutCrashTestSent =>
+      'The app will now crash to send a test report.';
 }

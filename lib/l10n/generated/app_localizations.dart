@@ -1475,7 +1475,7 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/meal_detail_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'إجمالي السعرات النشطة'**
+  /// **'سعرات الوجبة'**
   String get mealDetailTotalCalories;
 
   /// UI text in presentation/screens/meal_detail_screen.dart
@@ -1499,13 +1499,13 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/meal_detail_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'الكارب'**
+  /// **'الكربوهيدرات'**
   String get macroCarbs;
 
   /// UI text in presentation/screens/meal_detail_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'الدهون الصحية'**
+  /// **'الدهون'**
   String get macroHealthyFats;
 
   /// UI text in presentation/screens/meal_detail_screen.dart
@@ -3575,13 +3575,13 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/weekly_plan_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'شاشة استعراض الخطة والتحضير المسبق'**
+  /// **'الخطة الأسبوعية'**
   String get weeklyPlanPreviewScreen;
 
   /// UI text in presentation/screens/weekly_plan_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'لتسجيل الوجبات وتأكيد تناولها يرجى التوجه لتبويب خطتي اليومية'**
+  /// **'خطة كل يوم من أيام الأسبوع. تسجيل الوجبات من تبويب «الخطة».'**
   String get weeklyPlanLoggingHint;
 
   /// UI text in presentation/screens/weekly_plan_screen.dart
@@ -3593,7 +3593,7 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/weekly_plan_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'دهون صحية'**
+  /// **'دهون'**
   String get macroHealthyFatsShort;
 
   /// Short macro label in stat boxes (weekly plan, meal logged).
@@ -3617,7 +3617,7 @@ abstract class AppLocalizations {
   /// UI text in presentation/widgets/date_chip_picker.dart
   ///
   /// In ar, this message translates to:
-  /// **'{value} س'**
+  /// **'{value} سعرة'**
   String datePickerKcal(Object value);
 
   /// UI text in presentation/widgets/live_metric_card.dart
@@ -6413,7 +6413,7 @@ abstract class AppLocalizations {
   /// Patient app design spec
   ///
   /// In ar, this message translates to:
-  /// **'المواعيد الجاية'**
+  /// **'المواعيد القادمة'**
   String get callsLaterTitle;
 
   /// Title of the shopping list built from the plan (API guide 5.4), and the button on the weekly plan that opens it.
@@ -7153,6 +7153,24 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'تسجيل {meal} · {kcal} سعرة'**
   String logSheetLogMeal(String meal, String kcal);
+
+  /// About, internal-test builds only (CRASH_TEST).
+  ///
+  /// In ar, this message translates to:
+  /// **'إرسال عطل تجريبي'**
+  String get aboutCrashTestTitle;
+
+  /// About, internal-test builds only (CRASH_TEST).
+  ///
+  /// In ar, this message translates to:
+  /// **'لنسخة الاختبار فقط: يتوقف التطبيق عمداً للتحقق من وصول العطل.'**
+  String get aboutCrashTestSubtitle;
+
+  /// About, internal-test builds only (CRASH_TEST).
+  ///
+  /// In ar, this message translates to:
+  /// **'سيتوقف التطبيق الآن لإرسال عطل تجريبي.'**
+  String get aboutCrashTestSent;
 }
 
 class _AppLocalizationsDelegate
