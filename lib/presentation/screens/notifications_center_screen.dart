@@ -161,36 +161,44 @@ class _Body extends StatelessWidget {
           padding: const EdgeInsets.fromLTRB(18, 10, 18, 0),
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-            Row(children: [
+            // Both halves can shrink: a large system font wraps the text
+            // instead of overflowing the row.
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
               if (unread > 0)
-                TextButton(
-                  onPressed: () =>
-                      context.read<NotificationsCubit>().markAllRead(),
-                  child: ButtonShine(
-                    borderRadius: BorderRadius.circular(AppRadius.pill),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 8, vertical: 5),
-                      child: Text(context.l10n.notificationsMarkAllRead,
-                          style: AppTextStyles.pillLabel),
+                Flexible(
+                  child: TextButton(
+                    onPressed: () =>
+                        context.read<NotificationsCubit>().markAllRead(),
+                    child: ButtonShine(
+                      borderRadius: BorderRadius.circular(AppRadius.pill),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 5),
+                        child: Text(context.l10n.notificationsMarkAllRead,
+                            style: AppTextStyles.pillLabel),
+                      ),
                     ),
                   ),
                 ),
-              const Spacer(),
+              const SizedBox(width: 8),
               if (unread > 0)
-                Row(children: [
-                  Text(
-                      context.l10n.notificationsNewCount(
-                          unread, context.localizeDigits(unread)),
-                      style: AppTextStyles.caption),
-                  const SizedBox(width: 6),
-                  Container(
-                      width: 7,
-                      height: 7,
-                      decoration: const BoxDecoration(
-                          color: AppColors.accentGreen,
-                          shape: BoxShape.circle)),
-                ]),
+                Flexible(
+                  child: Row(mainAxisSize: MainAxisSize.min, children: [
+                    Flexible(
+                      child: Text(
+                          context.l10n.notificationsNewCount(
+                              unread, context.localizeDigits(unread)),
+                          style: AppTextStyles.caption),
+                    ),
+                    const SizedBox(width: 6),
+                    Container(
+                        width: 7,
+                        height: 7,
+                        decoration: const BoxDecoration(
+                            color: AppColors.accentGreen,
+                            shape: BoxShape.circle)),
+                  ]),
+                ),
             ]),
             const SizedBox(height: 12),
             SizedBox(

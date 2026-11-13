@@ -1046,12 +1046,12 @@ class _VitalCard extends StatelessWidget {
       padding: const EdgeInsets.all(12),
       child: Column(children: [
         Row(children: [
-          Flexible(
+          Expanded(
             child: Text(label,
                 style: AppTextStyles.caption
                     .copyWith(color: AppColors.textPrimary)),
           ),
-          const Spacer(),
+          const SizedBox(width: 6),
           Container(
             width: 34,
             height: 34,

@@ -12,6 +12,7 @@ import '../widgets/app_header_bar.dart';
 import '../widgets/forgot_password_dialog.dart';
 
 import '../../l10n/l10n.dart';
+import '../rate_limit_text.dart';
 
 // ───────────────────────── الألوان (مطابقة للصورة) ─────────────────────────
 const Color _teal = Color(0xFF00636E);
@@ -171,7 +172,7 @@ class _PasswordSettingsScreenState extends State<PasswordSettingsScreen>
           when fieldErrors.containsKey('current_password') =>
         l10n.passwordCurrentWrong,
       ApiFailure(statusCode: 422) => l10n.passwordWeakServer,
-      ApiFailure(statusCode: 429) => l10n.loginErrorRateLimited,
+      ApiFailure(statusCode: 429) => rateLimitedText(l10n, failure),
       NetworkFailure() => l10n.commonOfflineBody,
       _ => l10n.commonErrorBody,
     };
@@ -245,12 +246,14 @@ class _PasswordSettingsScreenState extends State<PasswordSettingsScreen>
               _card(children: [
                 Row(
                   children: [
-                    Text(
-                      context.l10n.passwordCurrent,
-                      style:
-                          AppTextStyles.sectionHeading.copyWith(fontSize: 14),
+                    Expanded(
+                      child: Text(
+                        context.l10n.passwordCurrent,
+                        style:
+                            AppTextStyles.sectionHeading.copyWith(fontSize: 14),
+                      ),
                     ),
-                    const Spacer(),
+                    const SizedBox(width: 8),
                     TextButton(
                       onPressed: () => showForgotPasswordDialog(context),
                       style: TextButton.styleFrom(
@@ -608,12 +611,14 @@ class _StrengthMeter extends StatelessWidget {
       children: [
         Row(
           children: [
-            Text(
-              context.l10n.passwordStrengthLabel,
-              style: AppTextStyles.caption
-                  .copyWith(fontSize: 12, color: AppColors.textSecondary),
+            Expanded(
+              child: Text(
+                context.l10n.passwordStrengthLabel,
+                style: AppTextStyles.caption
+                    .copyWith(fontSize: 12, color: AppColors.textSecondary),
+              ),
             ),
-            const Spacer(),
+            const SizedBox(width: 8),
             AnimatedSwitcher(
               duration: const Duration(milliseconds: 250),
               transitionBuilder: (child, anim) => FadeTransition(
@@ -698,12 +703,36 @@ class _AnimatedCta extends StatefulWidget {
 
 class _AnimatedCtaState extends State<_AnimatedCta>
     with SingleTickerProviderStateMixin {
+  // Made up front, so dispose never creates it. It runs only while the
+  // shine is shown, so an idle button does not tick every frame.
   late final AnimationController _shine = AnimationController(
     vsync: this,
     duration: const Duration(milliseconds: 2600),
-  )..repeat();
+  );
 
   bool _pressed = false;
+
+  bool get _showShine => widget.ready && !widget.saving && !widget.saved;
+
+  void _syncShine() {
+    if (_showShine) {
+      if (!_shine.isAnimating) _shine.repeat();
+    } else {
+      _shine.stop();
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _syncShine();
+  }
+
+  @override
+  void didUpdateWidget(covariant _AnimatedCta oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _syncShine();
+  }
 
   @override
   void dispose() {
@@ -756,7 +785,7 @@ class _AnimatedCtaState extends State<_AnimatedCta>
   @override
   Widget build(BuildContext context) {
     final color = widget.saved ? _success : _teal;
-    final showShine = widget.ready && !widget.saving && !widget.saved;
+    final showShine = _showShine;
 
     return GestureDetector(
       onTapDown: (_) => setState(() => _pressed = true),
