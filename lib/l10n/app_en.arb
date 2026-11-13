@@ -1378,5 +1378,34 @@
         "type": "String"
       }
     }
+  },
+  "logSheetChangeMeal": "Change meal",
+  "logSheetUncheckHint": "Untick what you didn't eat, or pick an alternative.",
+  "logSheetSwapTo": "Swap to: {food}",
+  "logSheetLogMeal": "Log {meal} · {kcal} kcal",
+  "@logSheetChangeMeal": {
+    "description": "Log sheet: a plan meal's foods."
+  },
+  "@logSheetUncheckHint": {
+    "description": "Log sheet: a plan meal's foods."
+  },
+  "@logSheetSwapTo": {
+    "description": "Log sheet: a plan meal's foods.",
+    "placeholders": {
+      "food": {
+        "type": "String"
+      }
+    }
+  },
+  "@logSheetLogMeal": {
+    "description": "Log sheet: a plan meal's foods.",
+    "placeholders": {
+      "meal": {
+        "type": "String"
+      },
+      "kcal": {
+        "type": "String"
+      }
+    }
   }
 }

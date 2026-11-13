@@ -89,6 +89,18 @@ void main() {
           await tester.tap(find.byIcon(Icons.add_rounded).first);
         }));
     testWidgets(
+        'log meal foods $t',
+        (tester) => _shot(tester, '05b_log_meal_foods', size,
+            (_) => const AppShell(), act: (tester) async {
+          // The sheet, then lunch: its foods with ticks and swaps.
+          await tester.tap(find.byIcon(Icons.add_rounded).first);
+          for (var i = 0; i < 6; i++) {
+            await tester.pump(const Duration(milliseconds: 150));
+          }
+          await tester.tap(find.textContaining('422 سعرة').first,
+              warnIfMissed: false);
+        }));
+    testWidgets(
         'meal detail $t',
         (tester) =>
             _shot(tester, '06_home_meals', size, (_) => const AppShell(),

@@ -7129,6 +7129,30 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'{eaten} من {goal} سعرة'**
   String todayPlanKcalOfGoal(String eaten, String goal);
+
+  /// Log sheet: a plan meal's foods.
+  ///
+  /// In ar, this message translates to:
+  /// **'تغيير الوجبة'**
+  String get logSheetChangeMeal;
+
+  /// Log sheet: a plan meal's foods.
+  ///
+  /// In ar, this message translates to:
+  /// **'أزل علامة ما لم تأكله، أو اختر بديلاً.'**
+  String get logSheetUncheckHint;
+
+  /// Log sheet: a plan meal's foods.
+  ///
+  /// In ar, this message translates to:
+  /// **'تبديل إلى: {food}'**
+  String logSheetSwapTo(String food);
+
+  /// Log sheet: a plan meal's foods.
+  ///
+  /// In ar, this message translates to:
+  /// **'تسجيل {meal} · {kcal} سعرة'**
+  String logSheetLogMeal(String meal, String kcal);
 }
 
 class _AppLocalizationsDelegate

@@ -117,16 +117,135 @@ void main() {
     await unmount(tester);
   });
 
-  testWidgets('a row opens the meal\'s details', (tester) async {
-    await openSheet(tester);
+  Future<void> pick(WidgetTester tester, int kcal) async {
+    await tester.tap(find.textContaining(ar.commonCaloriesValue(kcal)).first);
+    for (var i = 0; i < 4; i++) {
+      await tester.pump(const Duration(milliseconds: 150));
+    }
+  }
 
-    await tester.tap(find.textContaining(ar.commonCaloriesValue(330)).first);
+  bool ticked(WidgetTester tester, String food) => tester
+      .widget<Checkbox>(find.descendant(
+          of: find.ancestor(
+              of: find.text(food), matching: find.byType(Material)).first,
+          matching: find.byType(Checkbox)))
+      .value!;
+
+  testWidgets('a row shows the meal\'s foods, all ticked, and one log button',
+      (tester) async {
+    await openSheet(tester);
+    await pick(tester, 330);
+
+    expect(find.byType(LogMealSheet), findsOneWidget);
+    expect(find.text(ar.logSheetUncheckHint), findsOneWidget);
+    expect(ticked(tester, 'بيض مسلوق'), isTrue);
+    expect(ticked(tester, 'خبز شوفان'), isTrue);
+    expect(find.text(ar.logSheetLogMeal(ar.mealTypeBreakfast, '330')),
+        findsOneWidget);
+    // Back to the list, where «أكلتها» stays the quick path.
+    await tester.tap(find.text(ar.logSheetChangeMeal));
+    await tester.pump(const Duration(milliseconds: 300));
+    expect(find.text(ar.mealAte), findsAtLeastNWidgets(3));
+    await unmount(tester);
+  });
+
+  testWidgets('the details and alternatives are one more tap away',
+      (tester) async {
+    await openSheet(tester);
+    await pick(tester, 330);
+    await tester.tap(find.text(ar.mealDetailsAndSwaps));
     for (var i = 0; i < 8; i++) {
       await tester.pump(const Duration(milliseconds: 150));
     }
-
     expect(find.byType(LogMealSheet), findsNothing);
     expect(find.byType(MealDetailScreen), findsOneWidget);
+    await unmount(tester);
+  });
+
+  testWidgets('an unticked food is not logged, and the total follows',
+      (tester) async {
+    final api = await openSheet(tester);
+    await pick(tester, 330);
+
+    await tester.tap(find.descendant(
+        of: find.ancestor(
+            of: find.text('خبز شوفان'), matching: find.byType(Material)).first,
+        matching: find.byType(Checkbox)));
+    await tester.pump();
+    final button = find.text(ar.logSheetLogMeal(ar.mealTypeBreakfast, '155'));
+    expect(button, findsOneWidget);
+
+    await tester.tap(button);
+    for (var i = 0; i < 40 && find.text(ar.mealUndo).evaluate().isEmpty; i++) {
+      await tester.pump(const Duration(milliseconds: 100));
+    }
+    // One log per food eaten (6.1): the egg only.
+    final posts = api.to('POST', 'me/meal-logs');
+    expect(posts, hasLength(1));
+    expect((posts.single.body as Map)['meal_item_id'], 55);
+    // Let the sheet finish closing.
+    for (var i = 0; i < 4; i++) {
+      await tester.pump(const Duration(milliseconds: 150));
+    }
+    expect(find.byType(LogMealSheet), findsNothing);
+    expect(find.text(ar.mealUndo), findsOneWidget);
+    await unmount(tester);
+  });
+
+  testWidgets('«تبديل إلى» swaps a food for its alternative and back',
+      (tester) async {
+    await openSheet(tester);
+    await pick(tester, 330);
+
+    await tester.tap(find.text(ar.logSheetSwapTo('جبنة قريش')));
+    await tester.pump();
+    expect(find.text('جبنة قريش'), findsOneWidget);
+    expect(find.text('بيض مسلوق'), findsNothing);
+    expect(find.text(ar.logSheetLogMeal(ar.mealTypeBreakfast, '273')),
+        findsOneWidget);
+
+    await tester.tap(find.text(ar.logSheetSwapTo('بيض مسلوق')));
+    await tester.pump();
+    expect(find.text('بيض مسلوق'), findsOneWidget);
+    expect(find.text(ar.logSheetLogMeal(ar.mealTypeBreakfast, '330')),
+        findsOneWidget);
+    await unmount(tester);
+  });
+
+  testWidgets('a swapped food is what gets logged', (tester) async {
+    final api = await openSheet(tester);
+    await pick(tester, 330);
+    await tester.tap(find.text(ar.logSheetSwapTo('جبنة قريش')));
+    await tester.pump();
+    await tester.tap(find.text(ar.logSheetLogMeal(ar.mealTypeBreakfast, '273')));
+    for (var i = 0; i < 40 && find.text(ar.mealUndo).evaluate().isEmpty; i++) {
+      await tester.pump(const Duration(milliseconds: 100));
+    }
+    final ids = [
+      for (final r in api.to('POST', 'me/meal-logs'))
+        (r.body as Map)['meal_item_id'],
+    ];
+    // The cottage cheese (56) in place of the egg (55), and the bread.
+    expect(ids, contains(56));
+    expect(ids, isNot(contains(55)));
+    expect(ids, hasLength(2));
+    await unmount(tester);
+  });
+
+  testWidgets('with nothing ticked there is nothing to log', (tester) async {
+    await openSheet(tester);
+    await pick(tester, 330);
+    for (final food in ['بيض مسلوق', 'خبز شوفان']) {
+      await tester.tap(find.descendant(
+          of: find.ancestor(of: find.text(food), matching: find.byType(Material))
+              .first,
+          matching: find.byType(Checkbox)));
+      await tester.pump();
+    }
+    final button = tester.widget<ButtonStyleButton>(find.ancestor(
+        of: find.text(ar.logSheetLogMeal(ar.mealTypeBreakfast, '0')),
+        matching: find.byWidgetPredicate((w) => w is ButtonStyleButton)));
+    expect(button.onPressed, isNull);
     await unmount(tester);
   });
 
@@ -184,6 +303,18 @@ void main() {
     expect(find.byType(LogMealSheet), findsOneWidget);
     expect(find.byType(AppShell), findsOneWidget,
         reason: 'the shell is still there beneath the sheet');
+    await unmount(tester);
+  });
+
+  testWidgets('the foods step fits a 360dp phone with a large font',
+      (tester) async {
+    await openSheet(tester);
+    tester.view.physicalSize = const Size(360, 800);
+    tester.platformDispatcher.textScaleFactorTestValue = 1.3;
+    addTearDown(tester.platformDispatcher.clearTextScaleFactorTestValue);
+    await tester.pump(const Duration(milliseconds: 300));
+    await pick(tester, 422);
+    expect(tester.takeException(), isNull);
     await unmount(tester);
   });
 }
