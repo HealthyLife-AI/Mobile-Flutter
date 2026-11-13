@@ -2945,6 +2945,24 @@
     }
   },
   "loginErrorRateLimited": "محاولات كثيرة خلال وقت قصير، انتظر قليلًا ثم حاول مجددًا.",
+  "rateLimitedWaitSeconds": "محاولات كثيرة خلال وقت قصير. حاول مجددًا بعد {count, plural, =1{ثانية} =2{ثانيتين} few{{count} ثوانٍ} many{{count} ثانية} other{{count} ثانية}}.",
+  "@rateLimitedWaitSeconds": {
+    "description": "A request was refused for too many attempts, with how long to wait (Retry-After).",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "rateLimitedWaitMinutes": "محاولات كثيرة خلال وقت قصير. حاول مجددًا بعد {count, plural, =1{دقيقة} =2{دقيقتين} few{{count} دقائق} many{{count} دقيقة} other{{count} دقيقة}}.",
+  "@rateLimitedWaitMinutes": {
+    "description": "A request was refused for too many attempts, with how long to wait (Retry-After).",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "loginErrorGeneric": "تعذّر تسجيل الدخول. حاول مجددًا.",
   "loginForgotBody": "اطلب من أخصائيك إعادة تعيين كلمة المرور. سيرسل لك اسم المستخدم وكلمة مرور جديدة عبر واتساب.",
   "sessionEndedMessage": "انتهت جلستك. يرجى تسجيل الدخول مجددًا.",

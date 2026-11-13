@@ -13,6 +13,7 @@ import '../widgets/privacy_policy.dart';
 import '../widgets/gradient_cta_button.dart';
 
 import '../../l10n/l10n.dart';
+import '../rate_limit_text.dart';
 
 /// Sign-in with the username and password the nutritionist sent (API guide
 /// 3.1). The password is never checked against the strength policy here: an
@@ -217,7 +218,7 @@ String? _messageFor(BuildContext context, Failure failure) {
     ValidationFailure() => l10n.loginErrorRequired,
     NetworkFailure() => l10n.commonOfflineBody,
     ApiFailure(statusCode: 423) => _lockedMessage(context, failure),
-    ApiFailure(statusCode: 429) => l10n.loginErrorRateLimited,
+    ApiFailure(statusCode: 429) => rateLimitedText(l10n, failure),
     ApiFailure(statusCode: 401) => l10n.loginErrorInvalid,
     _ => l10n.loginErrorGeneric,
   };

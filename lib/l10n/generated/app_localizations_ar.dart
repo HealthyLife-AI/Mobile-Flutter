@@ -2327,6 +2327,34 @@ class AppLocalizationsAr extends AppLocalizations {
       'محاولات كثيرة خلال وقت قصير، انتظر قليلًا ثم حاول مجددًا.';
 
   @override
+  String rateLimitedWaitSeconds(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ثانية',
+      many: '$count ثانية',
+      few: '$count ثوانٍ',
+      two: 'ثانيتين',
+      one: 'ثانية',
+    );
+    return 'محاولات كثيرة خلال وقت قصير. حاول مجددًا بعد $_temp0.';
+  }
+
+  @override
+  String rateLimitedWaitMinutes(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count دقيقة',
+      many: '$count دقيقة',
+      few: '$count دقائق',
+      two: 'دقيقتين',
+      one: 'دقيقة',
+    );
+    return 'محاولات كثيرة خلال وقت قصير. حاول مجددًا بعد $_temp0.';
+  }
+
+  @override
   String get loginErrorGeneric => 'تعذّر تسجيل الدخول. حاول مجددًا.';
 
   @override

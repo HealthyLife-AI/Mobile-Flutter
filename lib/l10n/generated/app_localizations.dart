@@ -3992,6 +3992,18 @@ abstract class AppLocalizations {
   /// **'محاولات كثيرة خلال وقت قصير، انتظر قليلًا ثم حاول مجددًا.'**
   String get loginErrorRateLimited;
 
+  /// A request was refused for too many attempts, with how long to wait (Retry-After).
+  ///
+  /// In ar, this message translates to:
+  /// **'محاولات كثيرة خلال وقت قصير. حاول مجددًا بعد {count, plural, =1{ثانية} =2{ثانيتين} few{{count} ثوانٍ} many{{count} ثانية} other{{count} ثانية}}.'**
+  String rateLimitedWaitSeconds(int count);
+
+  /// A request was refused for too many attempts, with how long to wait (Retry-After).
+  ///
+  /// In ar, this message translates to:
+  /// **'محاولات كثيرة خلال وقت قصير. حاول مجددًا بعد {count, plural, =1{دقيقة} =2{دقيقتين} few{{count} دقائق} many{{count} دقيقة} other{{count} دقيقة}}.'**
+  String rateLimitedWaitMinutes(int count);
+
   /// No description provided for @loginErrorGeneric.
   ///
   /// In ar, this message translates to:

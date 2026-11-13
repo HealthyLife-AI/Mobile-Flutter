@@ -673,6 +673,24 @@
     }
   },
   "loginErrorRateLimited": "Too many attempts in a short time. Wait a moment and try again.",
+  "rateLimitedWaitSeconds": "Too many attempts in a short time. Try again in {count, plural, =1{1 second} other{{count} seconds}}.",
+  "@rateLimitedWaitSeconds": {
+    "description": "A request was refused for too many attempts, with how long to wait (Retry-After).",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "rateLimitedWaitMinutes": "Too many attempts in a short time. Try again in {count, plural, =1{1 minute} other{{count} minutes}}.",
+  "@rateLimitedWaitMinutes": {
+    "description": "A request was refused for too many attempts, with how long to wait (Retry-After).",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "loginErrorGeneric": "Sign-in failed. Please try again.",
   "loginForgotBody": "Ask your specialist to reset your password. They will send you a new username and password on WhatsApp.",
   "sessionEndedMessage": "Your session has ended. Please sign in again.",

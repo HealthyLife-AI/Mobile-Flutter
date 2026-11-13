@@ -10,6 +10,7 @@ import '../widgets/app_header_bar.dart';
 import '../widgets/confirm_action_sheet.dart';
 
 import '../../l10n/l10n.dart';
+import '../rate_limit_text.dart';
 
 /// «ملفي ← حذف الحساب» (API guide 13). Deletion cannot be undone, so the patient
 /// types the current password and confirms once more.
@@ -69,7 +70,7 @@ class _DeleteAccountScreenState extends State<DeleteAccountScreen> {
       switch (failure) {
         NetworkFailure() => l10n.commonOfflineBody,
         ApiFailure(statusCode: 422) => l10n.accountDeleteWrongPassword,
-        ApiFailure(statusCode: 429) => l10n.loginErrorRateLimited,
+        ApiFailure(statusCode: 429) => rateLimitedText(l10n, failure),
         _ => l10n.commonErrorBody,
       };
 

@@ -2352,6 +2352,28 @@ class AppLocalizationsEn extends AppLocalizations {
       'Too many attempts in a short time. Wait a moment and try again.';
 
   @override
+  String rateLimitedWaitSeconds(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count seconds',
+      one: '1 second',
+    );
+    return 'Too many attempts in a short time. Try again in $_temp0.';
+  }
+
+  @override
+  String rateLimitedWaitMinutes(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count minutes',
+      one: '1 minute',
+    );
+    return 'Too many attempts in a short time. Try again in $_temp0.';
+  }
+
+  @override
   String get loginErrorGeneric => 'Sign-in failed. Please try again.';
 
   @override
