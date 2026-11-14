@@ -799,7 +799,7 @@ class AppLocalizationsAr extends AppLocalizations {
       'اختر البديل إذا لم يتوفر الصنف الأصلي، والبديل يستبدل الصنف ولا يُضاف إليه لتحقيق التوازن التغذوي الدقيق.';
 
   @override
-  String get mealDetailTotalCalories => 'إجمالي السعرات النشطة';
+  String get mealDetailTotalCalories => 'سعرات الوجبة';
 
   @override
   String get commonCaloriesUnit => 'سعرة حرارية';
@@ -822,10 +822,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get macroProtein => 'البروتين';
 
   @override
-  String get macroCarbs => 'الكارب';
+  String get macroCarbs => 'الكربوهيدرات';
 
   @override
-  String get macroHealthyFats => 'الدهون الصحية';
+  String get macroHealthyFats => 'الدهون';
 
   @override
   String commonGramsShortValue(Object value) {
@@ -2038,17 +2038,17 @@ class AppLocalizationsAr extends AppLocalizations {
   String get weekdayShortFriday => 'الجمعة';
 
   @override
-  String get weeklyPlanPreviewScreen => 'شاشة استعراض الخطة والتحضير المسبق';
+  String get weeklyPlanPreviewScreen => 'الخطة الأسبوعية';
 
   @override
   String get weeklyPlanLoggingHint =>
-      'لتسجيل الوجبات وتأكيد تناولها يرجى التوجه لتبويب خطتي اليومية';
+      'خطة كل يوم من أيام الأسبوع. تسجيل الوجبات من تبويب «الخطة».';
 
   @override
   String get weeklyPlanDetailed => 'خطة غذائية مفصلة';
 
   @override
-  String get macroHealthyFatsShort => 'دهون صحية';
+  String get macroHealthyFatsShort => 'دهون';
 
   @override
   String get macroProteinLabel => 'بروتين';
@@ -2061,7 +2061,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String datePickerKcal(Object value) {
-    return '$value س';
+    return '$value سعرة';
   }
 
   @override
@@ -3795,7 +3795,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get callsNextTitle => 'موعدك القادم';
 
   @override
-  String get callsLaterTitle => 'المواعيد الجاية';
+  String get callsLaterTitle => 'المواعيد القادمة';
 
   @override
   String get shoppingListTitle => 'قائمة التسوق';
@@ -4198,4 +4198,14 @@ class AppLocalizationsAr extends AppLocalizations {
   String logSheetLogMeal(String meal, String kcal) {
     return 'تسجيل $meal · $kcal سعرة';
   }
+
+  @override
+  String get aboutCrashTestTitle => 'إرسال عطل تجريبي';
+
+  @override
+  String get aboutCrashTestSubtitle =>
+      'لنسخة الاختبار فقط: يتوقف التطبيق عمداً للتحقق من وصول العطل.';
+
+  @override
+  String get aboutCrashTestSent => 'سيتوقف التطبيق الآن لإرسال عطل تجريبي.';
 }

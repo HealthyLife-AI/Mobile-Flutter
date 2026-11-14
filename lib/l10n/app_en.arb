@@ -229,12 +229,12 @@
   "mealDetailCurrentMeal": "Current meal • {time}",
   "mealDetailSmartSwap": "Smart swap flexibility",
   "mealDetailSwapNote": "Choose an alternative if the original item isn't available. The alternative replaces the item rather than adding to it, for precise nutritional balance.",
-  "mealDetailTotalCalories": "Total active calories",
+  "mealDetailTotalCalories": "Meal calories",
   "commonCaloriesUnit": "kcal",
   "mealDetailApprovedBy": "{gender, select, unknown{A meal in your nutritionist's plan} other{A meal in {name}'s plan}}",
   "macroProtein": "Protein",
-  "macroCarbs": "Carbs",
-  "macroHealthyFats": "Healthy fats",
+  "macroCarbs": "Carbohydrates",
+  "macroHealthyFats": "Fat",
   "commonGramsShortValue": "{value} g",
   "mealDetailNoAlternative": "Core item, no alternative",
   "mealDetailChooseOne": "Choose one item",
@@ -596,10 +596,10 @@
   "splashPreparing": "Preparing your health experience",
   "weekdayShortSaturday": "Sat",
   "weekdayShortFriday": "Fri",
-  "weeklyPlanPreviewScreen": "Plan preview & advance preparation",
-  "weeklyPlanLoggingHint": "To log meals and confirm you ate them, please go to the My daily plan tab",
+  "weeklyPlanPreviewScreen": "Weekly plan",
+  "weeklyPlanLoggingHint": "The plan for each day of the week. Meals are logged from the Plan tab.",
   "weeklyPlanDetailed": "Detailed plan",
-  "macroHealthyFatsShort": "Healthy fats",
+  "macroHealthyFatsShort": "Fat",
   "macroProteinLabel": "Protein",
   "macroFatLabel": "Fat",
   "connectionStatusTitle": "Connection status",
@@ -1158,7 +1158,7 @@
   "achvGoalReachedBody": "You reached your target weight",
   "achvFootnote": "Worked out from the meals logged on this device, your measurements and your goal.",
   "callsNextTitle": "Your next appointment",
-  "callsLaterTitle": "Later appointments",
+  "callsLaterTitle": "Upcoming appointments",
   "shoppingListTitle": "Shopping list",
   "shoppingDayTab": "This day",
   "shoppingWeekTab": "Whole week",
@@ -1407,5 +1407,17 @@
         "type": "String"
       }
     }
+  },
+  "aboutCrashTestTitle": "Send a test crash",
+  "aboutCrashTestSubtitle": "Test build only: the app crashes on purpose to check the report arrives.",
+  "aboutCrashTestSent": "The app will now crash to send a test report.",
+  "@aboutCrashTestTitle": {
+    "description": "About, internal-test builds only (CRASH_TEST)."
+  },
+  "@aboutCrashTestSubtitle": {
+    "description": "About, internal-test builds only (CRASH_TEST)."
+  },
+  "@aboutCrashTestSent": {
+    "description": "About, internal-test builds only (CRASH_TEST)."
   }
 }

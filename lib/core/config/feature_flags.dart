@@ -15,4 +15,9 @@ class FeatureFlags {
   /// "Connect the Health app" in the account screen. Apple Health and Health
   /// Connect are not wired yet.
   static const bool healthSync = bool.fromEnvironment('FEATURE_HEALTH_SYNC');
+
+  /// "Send a test crash" in About, to check on a phone that a crash reaches
+  /// Crashlytics. Only the internal-test APK built by CI turns it on; a store
+  /// build never does.
+  static const bool crashTest = bool.fromEnvironment('CRASH_TEST');
 }

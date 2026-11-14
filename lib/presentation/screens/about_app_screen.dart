@@ -1,6 +1,9 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+
+import '../../core/config/feature_flags.dart';
+import '../../core/logging/crash_test.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_radius.dart';
 import '../../core/theme/app_text_styles.dart';
@@ -514,6 +517,21 @@ class _LegalCard extends StatelessWidget {
           // Support is the nutritionist, on WhatsApp (9.1).
           open: openNutritionistWhatsApp,
         ),
+        // Internal-test builds only (CRASH_TEST=true): a crash on purpose, to
+        // see it arrive in Crashlytics.
+        if (FeatureFlags.crashTest)
+          _LegalItem(
+            icon: Icons.bug_report_outlined,
+            iconColor: AppColors.danger,
+            tint: AppColors.dangerBg,
+            title: l10n.aboutCrashTestTitle,
+            subtitle: l10n.aboutCrashTestSubtitle,
+            open: (context) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text(l10n.aboutCrashTestSent)));
+              triggerTestCrash();
+            },
+          ),
       ];
 
   @override

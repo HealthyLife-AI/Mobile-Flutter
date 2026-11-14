@@ -16,7 +16,7 @@ class MetricStatBox extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 14),
         margin: const EdgeInsets.symmetric(horizontal: 4),
         decoration: BoxDecoration(
-          color: AppColors.accentPurpleBg.withValues(alpha: 0.5),
+          color: AppColors.primaryTint,
           borderRadius: BorderRadius.circular(AppRadius.cardSmall),
         ),
         child: Column(

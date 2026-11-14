@@ -58,6 +58,28 @@ class _MealDetailScreenState extends State<MealDetailScreen>
   int _selectedIndex(int groupIndex, FoodCategoryGroup g) =>
       ((_selected[groupIndex] ?? 0).clamp(0, g.options.length - 1)).toInt();
 
+  /// The meal's protein, carbs and fat: the planned meal's values plus the
+  /// change of each alternative picked, as for the calories. Null when the
+  /// meal is not from the plan, so no made-up numbers are shown.
+  Macros? _totalMacros(List<FoodCategoryGroup> groups) {
+    final base = widget.meal.source?.macros;
+    if (base == null) return null;
+    var protein = base.proteinG, carbs = base.carbsG, fat = base.fatG;
+    for (var gi = 0; gi < groups.length; gi++) {
+      final g = groups[gi];
+      final original = g.options
+          .firstWhere((o) => o.isOriginal, orElse: () => g.options.first)
+          .planItem
+          ?.macros;
+      final picked = g.options[_selectedIndex(gi, g)].planItem?.macros;
+      if (original == null || picked == null) continue;
+      protein += picked.proteinG - original.proteinG;
+      carbs += picked.carbsG - original.carbsG;
+      fat += picked.fatG - original.fatG;
+    }
+    return Macros(proteinG: protein, carbsG: carbs, fatG: fat);
+  }
+
   /// إجمالي السعرات = سعرات الوجبة الأصلية + فرق كل بديل مختار.
   int _totalCalories(List<FoodCategoryGroup> groups) {
     var total = widget.meal.calories;
@@ -136,8 +158,10 @@ class _MealDetailScreenState extends State<MealDetailScreen>
             _Reveal(
               anim: _intro,
               index: i++,
-              child:
-                  _CaloriesCard(calories: _totalCalories(groups), loop: _loop),
+              child: _CaloriesCard(
+                  calories: _totalCalories(groups),
+                  macros: _totalMacros(groups),
+                  loop: _loop),
             ),
             const SizedBox(height: 22),
             _Reveal(
@@ -145,15 +169,16 @@ class _MealDetailScreenState extends State<MealDetailScreen>
               index: i++,
               child: Row(
                 children: [
-                  Flexible(
+                  // Expanded, not Flexible + Spacer: those split the row in
+                  // half and cut the title at 360px.
+                  Expanded(
                     child: Text(
                       context.l10n.mealDetailIngredients,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
+                      maxLines: 2,
                       style: AppTextStyles.sectionHeading,
                     ),
                   ),
-                  const Spacer(),
+                  const SizedBox(width: 8),
                   Text(context.l10n.mealDetailItemsCount(groups.length),
                       style: AppTextStyles.caption),
                 ],
@@ -421,8 +446,12 @@ class _SwapIconState extends State<_SwapIcon> {
 // ═════════════════════════════════════════════════════════════════════════
 class _CaloriesCard extends StatelessWidget {
   final int calories;
+
+  /// Null hides the protein, carbs and fat row.
+  final Macros? macros;
   final Animation<double> loop;
-  const _CaloriesCard({required this.calories, required this.loop});
+  const _CaloriesCard(
+      {required this.calories, required this.macros, required this.loop});
 
   @override
   Widget build(BuildContext context) {
@@ -496,24 +525,30 @@ class _CaloriesCard extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 14),
-          Row(
-            children: [
-              Expanded(
-                  child: _MacroBox(
-                      label: context.l10n.macroProtein, grams: 43, order: 0)),
-              const SizedBox(width: 10),
-              Expanded(
-                  child: _MacroBox(
-                      label: context.l10n.macroCarbs, grams: 38, order: 1)),
-              const SizedBox(width: 10),
-              Expanded(
-                  child: _MacroBox(
-                      label: context.l10n.macroHealthyFats,
-                      grams: 14,
-                      order: 2)),
-            ],
-          ),
+          if (macros case final m?) ...[
+            const SizedBox(height: 14),
+            Row(
+              children: [
+                Expanded(
+                    child: _MacroBox(
+                        label: context.l10n.macroProtein,
+                        grams: m.proteinG.round(),
+                        order: 0)),
+                const SizedBox(width: 10),
+                Expanded(
+                    child: _MacroBox(
+                        label: context.l10n.macroCarbs,
+                        grams: m.carbsG.round(),
+                        order: 1)),
+                const SizedBox(width: 10),
+                Expanded(
+                    child: _MacroBox(
+                        label: context.l10n.macroHealthyFats,
+                        grams: m.fatG.round(),
+                        order: 2)),
+              ],
+            ),
+          ],
         ],
       ),
     );
@@ -595,8 +630,7 @@ class _MacroBox extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 6),
         decoration: BoxDecoration(
-            color: AppColors.panel,
-            borderRadius: BorderRadius.circular(14)),
+            color: AppColors.panel, borderRadius: BorderRadius.circular(14)),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -874,8 +908,7 @@ class _FoodThumb extends StatelessWidget {
         ),
         border: Border.all(color: Colors.white, width: 2),
       ),
-      child:
-          Icon(categoryIcon(option), size: 28, color: AppColors.warning),
+      child: Icon(categoryIcon(option), size: 28, color: AppColors.warning),
     );
   }
 }

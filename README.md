@@ -21,6 +21,7 @@ Build-time settings (`--dart-define`), all optional:
 | `API_BASE_URL` | the production API | The API root. Point it at staging when testing writes. |
 | `WEBSITE_URL` | the public website | Serves the privacy policy and the account-deletion page before sign-in. Empty turns the fallback off. |
 | `FEATURE_BARCODE_SCANNER`, `FEATURE_HEALTH_SYNC` | off | Screens that are built but not wired to anything yet. |
+| `CRASH_TEST` | off | Adds "send a test crash" to About. Only CI's internal-test APK sets it; never a store build. |
 
 ## Structure
 
