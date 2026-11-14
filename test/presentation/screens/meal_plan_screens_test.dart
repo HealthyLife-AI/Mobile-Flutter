@@ -63,7 +63,6 @@ void main() {
       // The day card: none of the four meals logged yet.
       expect(find.text('0/4'), findsOneWidget);
       // None of the old demo content.
-      expect(find.text(ar.homeItemTwoBoiledEggs), findsNothing);
       await unmount(tester);
     });
 

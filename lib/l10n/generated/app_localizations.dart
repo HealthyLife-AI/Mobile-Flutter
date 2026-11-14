@@ -308,11 +308,11 @@ abstract class AppLocalizations {
   /// **'منطقة الجلسة والحساب'**
   String get aboutSessionAccountTitle;
 
-  /// UI text in presentation/screens/about_app_screen.dart
+  /// Copyright line on the about screen, the same as the dashboard; {year} is the current year.
   ///
   /// In ar, this message translates to:
-  /// **'HealthyLife Clinical Suite © 2026 • جميع الحقوق محفوظة'**
-  String get aboutCopyright;
+  /// **'© {year} HealthyLife AI'**
+  String aboutCopyright(String year);
 
   /// UI text in presentation/screens/about_app_screen.dart
   ///
@@ -1259,12 +1259,6 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/home_dashboard_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'2 بيضة مسلوقة'**
-  String get homeItemTwoBoiledEggs;
-
-  /// UI text in presentation/screens/home_dashboard_screen.dart
-  ///
-  /// In ar, this message translates to:
   /// **'تمت مزامنة {count} عنصر بنجاح'**
   String homeSyncedItems(Object count);
 
@@ -1376,11 +1370,11 @@ abstract class AppLocalizations {
   /// **'حفظ اللغة المختارة'**
   String get languageSave;
 
-  /// UI text in presentation/screens/language_settings_screen.dart
+  /// Footer of the language screen; {version} is the installed app version, such as 1.0.0 (1).
   ///
   /// In ar, this message translates to:
-  /// **'HealthyLife Care Portal — النسخة 2.4.0'**
-  String get languageFooter;
+  /// **'HealthyLife — النسخة {version}'**
+  String languageFooter(String version);
 
   /// UI text in presentation/screens/language_settings_screen.dart
   ///
@@ -1823,13 +1817,13 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/measurements_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'سجّلتِ {days} أيام من 7 أيام هذا الأسبوع'**
+  /// **'قياسات هذا الأسبوع: {days} من 7 أيام'**
   String measurementsDaysThisWeek(Object days);
 
   /// UI text in presentation/screens/measurements_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'(إجمالي {days} يوماً مسجلاً هذا الشهر)'**
+  /// **'(أيام مسجّلة هذا الشهر: {days})'**
   String measurementsDaysThisMonth(Object days);
 
   /// UI text in presentation/screens/measurements_screen.dart
@@ -2441,12 +2435,6 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/onboarding_measurements_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'المثالي التقديري: 65-72'**
-  String get onboardingMeasurementsIdealRange;
-
-  /// UI text in presentation/screens/onboarding_measurements_screen.dart
-  ///
-  /// In ar, this message translates to:
   /// **'40 كجم'**
   String get onboardingMeasurementsMinWeight;
 
@@ -2651,7 +2639,7 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/password_settings_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'اجعلي كلمة المرور 8 أحرف على الأقل'**
+  /// **'يجب أن تتكون كلمة المرور من 8 أحرف على الأقل'**
   String get passwordErrorMinLength;
 
   /// UI text in presentation/screens/password_settings_screen.dart
@@ -2795,7 +2783,7 @@ abstract class AppLocalizations {
   /// UI text in presentation/screens/plan_preparing_screen.dart
   ///
   /// In ar, this message translates to:
-  /// **'خطتكِ قيد التحضير بعناية'**
+  /// **'خطتك قيد التحضير بعناية'**
   String get planPreparingTitle;
 
   /// UI text in presentation/screens/plan_preparing_screen.dart
@@ -2803,30 +2791,6 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'يُعدّ أخصائي التغذية الآن جدولك الغذائي بحسب أهدافك وقياساتك الأولية. سنرسل لك إشعاراً فور اعتماد الخطة لتجدها هنا.'**
   String get planPreparingBody;
-
-  /// UI text in presentation/screens/plan_preparing_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'الوقت المتوقع للاعتماد'**
-  String get planPreparingExpectedTime;
-
-  /// UI text in presentation/screens/plan_preparing_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'خلال 24 ساعة عمل من تسجيل قياساتك الأولية'**
-  String get planPreparingWithin24h;
-
-  /// UI text in presentation/screens/plan_preparing_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'يراجعها أخصائي التغذية'**
-  String get planPreparingReview;
-
-  /// UI text in presentation/screens/plan_preparing_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'{percent}٪ يدوي ومخصص'**
-  String planPreparingManualPercent(Object percent);
 
   /// UI text in presentation/screens/plan_preparing_screen.dart
   ///
@@ -2845,12 +2809,6 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'تواصل مع أخصائي التغذية عبر واتساب'**
   String get planPreparingContactWhatsApp;
-
-  /// UI text in presentation/screens/plan_preparing_screen.dart
-  ///
-  /// In ar, this message translates to:
-  /// **'متاح طوال أيام العمل الرسمية من 9:00 ص حتى 6:00 م'**
-  String get planPreparingHours;
 
   /// Plan preparing: clinic line. gender: other | unknown.
   ///
@@ -5207,7 +5165,7 @@ abstract class AppLocalizations {
   /// Patient app design spec
   ///
   /// In ar, this message translates to:
-  /// **'الخطة صعبة عليّ هالفترة'**
+  /// **'الخطة صعبة عليّ في هذه الفترة'**
   String get reasonCannotContinueHint;
 
   /// Patient app design spec
@@ -5495,7 +5453,7 @@ abstract class AppLocalizations {
   /// Patient app design spec
   ///
   /// In ar, this message translates to:
-  /// **'هالأكلة موجودة بقوائمك'**
+  /// **'هذا الطعام موجود في قوائمك'**
   String get foodPrefsAlreadyAdded;
 
   /// Patient app design spec
@@ -5861,7 +5819,7 @@ abstract class AppLocalizations {
   /// Patient app design spec
   ///
   /// In ar, this message translates to:
-  /// **'ما قدرنا نعرض هالملف'**
+  /// **'تعذّر عرض هذا الملف'**
   String get reportCannotShow;
 
   /// Patient app design spec
@@ -5933,7 +5891,7 @@ abstract class AppLocalizations {
   /// Patient app design spec
   ///
   /// In ar, this message translates to:
-  /// **'ما قدرنا نفتح الملف، جرّب مرة ثانية.'**
+  /// **'تعذّر فتح الملف. حاول مرة أخرى.'**
   String get reportPickFailed;
 
   /// Patient app design spec
@@ -6125,7 +6083,7 @@ abstract class AppLocalizations {
   /// Patient app design spec
   ///
   /// In ar, this message translates to:
-  /// **'مثلًا: ضغط شغل هالأسبوع.'**
+  /// **'مثلًا: ضغط عمل هذا الأسبوع.'**
   String get wellbeingNoteHint;
 
   /// Patient app design spec
@@ -6299,7 +6257,7 @@ abstract class AppLocalizations {
   /// Patient app design spec
   ///
   /// In ar, this message translates to:
-  /// **'3 أيام ورا بعض'**
+  /// **'3 أيام متتالية'**
   String get achvStreak3;
 
   /// Patient app design spec
@@ -6401,7 +6359,7 @@ abstract class AppLocalizations {
   /// Patient app design spec
   ///
   /// In ar, this message translates to:
-  /// **'محسوبة من وجباتك المسجّلة على هالجهاز ومن قياساتك وهدفك.'**
+  /// **'محسوبة من وجباتك المسجّلة على هذا الجهاز ومن قياساتك وهدفك.'**
   String get achvFootnote;
 
   /// Patient app design spec
@@ -7171,6 +7129,24 @@ abstract class AppLocalizations {
   /// In ar, this message translates to:
   /// **'سيتوقف التطبيق الآن لإرسال عطل تجريبي.'**
   String get aboutCrashTestSent;
+
+  /// Plan preparing screen: who prepares the plan.
+  ///
+  /// In ar, this message translates to:
+  /// **'يعدّها أخصائي التغذية لك'**
+  String get planPreparingByNutritionist;
+
+  /// Plan preparing screen: line under planPreparingByNutritionist.
+  ///
+  /// In ar, this message translates to:
+  /// **'بحسب أهدافك وقياساتك الأولية، ويراجعها قبل أن تصلك'**
+  String get planPreparingByNutritionistHint;
+
+  /// Plan preparing screen: the nutritionist's own reply hours from their profile, as they wrote them.
+  ///
+  /// In ar, this message translates to:
+  /// **'أوقات الرد المعتادة: {hours}'**
+  String planPreparingReplyHours(String hours);
 }
 
 class _AppLocalizationsDelegate

@@ -142,7 +142,10 @@ class _AboutAppScreenState extends State<AboutAppScreen>
             dy: 0.08,
             child: Center(
               child: Text(
-                context.l10n.aboutCopyright,
+                context.l10n.aboutCopyright(
+                    context.localizeDigits(DateTime.now().year)),
+                // All Latin: reads «© 2026 HealthyLife AI» in Arabic too.
+                textDirection: TextDirection.ltr,
                 textAlign: TextAlign.center,
                 style: AppTextStyles.caption,
               ),

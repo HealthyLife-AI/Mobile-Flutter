@@ -134,6 +134,7 @@ Map<String, Object?> screenRoutes() {
       'name': 'د. فاطمة الزهراء عبد الرحمن',
       'gender': 'female',
       'whatsapp_number': '+966500000000',
+      'reply_hours': 'الأحد – الخميس، 9 ص – 5 م',
     },
     'GET me/reviews': [
       {
@@ -217,7 +218,6 @@ const screenUser = PatientUser(
   username: 'abdulrahman17',
 );
 
-
 /// Mounts [screen] at [size] (a phone, at 2x), signed in as [screenUser], with
 /// the cubits the shell loads on entry, and lets the data arrive. Returns the
 /// key of the [RepaintBoundary] around it, for a screenshot. The caller
@@ -229,12 +229,13 @@ Future<GlobalKey> pumpScreen(
   Future<void> Function(WidgetTester tester)? act,
   bool signedIn = true,
   Map<String, Object?> Function(Map<String, Object?>)? routes,
+  Map<String, Object?>? plan,
+  PatientUser user = screenUser,
   Locale locale = const Locale('ar'),
   double textScale = 1.0,
 }) async {
   // A phone is used by touch: no keyboard focus rings, as on a device.
-  FocusManager.instance.highlightStrategy =
-      FocusHighlightStrategy.alwaysTouch;
+  FocusManager.instance.highlightStrategy = FocusHighlightStrategy.alwaysTouch;
   addTearDown(() => FocusManager.instance.highlightStrategy =
       FocusHighlightStrategy.automatic);
   tester.view.devicePixelRatio = 2;
@@ -243,11 +244,11 @@ Future<GlobalKey> pumpScreen(
   final base = screenRoutes();
   final api = ScriptedApi(routes == null ? base : routes(base));
   final deps = AppDependencies.inMemory(
-      mealPlanSource: FakeMealPlanSource(samplePlanJson()), api: api);
+      mealPlanSource: FakeMealPlanSource(plan ?? samplePlanJson()), api: api);
   if (signedIn) {
-    await tester.runAsync(() => deps.session.save(const StoredSession(
-          tokens: AuthTokens(accessToken: 'a', refreshToken: 'r'),
-          user: screenUser,
+    await tester.runAsync(() => deps.session.save(StoredSession(
+          tokens: const AuthTokens(accessToken: 'a', refreshToken: 'r'),
+          user: user,
           onboardingCompleted: true,
         )));
   }

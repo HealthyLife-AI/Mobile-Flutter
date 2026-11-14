@@ -212,7 +212,7 @@ void main() {
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 400));
     expect(find.byType(PlanPreparingScreen), findsOneWidget);
-    expect(find.text('خطتكِ قيد التحضير بعناية'), findsOneWidget);
+    expect(find.text('خطتك قيد التحضير بعناية'), findsOneWidget);
   });
 
   testWidgets('initial measurement headings are right aligned', (tester) async {

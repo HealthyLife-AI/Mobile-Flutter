@@ -18,20 +18,11 @@ import '../../l10n/l10n.dart';
 // ───────────────────────── ألوان إضافية مأخوذة من التصميم ─────────────────────────
 const Color _kMint = AppColors.turquoise;
 const Color _kMintSector = AppColors.successBg;
-const Color _kMintSoft = AppColors.successBg;
 const Color _kSkySector = AppColors.primaryTint;
 const Color _kDisc = AppColors.panel;
 const Color _kLavender = AppColors.panel;
 const Color _kIconBg = AppColors.border;
 const Color _kLine = AppColors.chipInactiveBg;
-
-/// اهتزاز مخمَّد في أول [span] من الدورة.
-double _swing(double t,
-    {double span = 0.22, double amp = 0.45, int waves = 5}) {
-  if (t >= span) return 0;
-  final u = t / span;
-  return amp * (1 - u) * math.sin(u * math.pi * waves);
-}
 
 /// "خطتك قيد التحضير بعناية" — تظهر بينما تُعدّ الأخصائية الخطة.
 /// تنتقل تلقائياً بعد 5 ثوانٍ.
@@ -41,8 +32,8 @@ double _swing(double t,
 ///  2) المشهد الرئيسي "حيّ": القرص تتمايل قطاعاته، موجات رادار تنتشر منه،
 ///     حلقة منقّطة تدور، والمستند يطفو وتُكتب أسطره سطراً سطراً (كأن الخطة تُعدّ الآن)،
 ///     وعقرب الساعة يدور، وعلامة الصح تنبض، واللمعة تومض.
-///  3) الساعة الرملية تنقلب كل بضع ثوانٍ، وجرس "مفعّل" يهتز.
-///  4) عدّاد "١٠٠٪" يعدّ تصاعدياً، وزر واتساب بلمعة وتوهج وhaptic.
+///  3) الساعة الرملية تنقلب كل بضع ثوانٍ.
+///  4) زر واتساب بلمعة وتوهج وhaptic.
 class PlanPreparingScreen extends StatefulWidget {
   const PlanPreparingScreen({super.key});
 
@@ -62,8 +53,7 @@ class _PlanPreparingScreenState extends State<PlanPreparingScreen>
       _title,
       _desc,
       _card1,
-      _card2,
-      _count;
+      _card2;
 
   Timer? _timer;
 
@@ -88,7 +78,6 @@ class _PlanPreparingScreenState extends State<PlanPreparingScreen>
     _desc = _iv(0.36, 0.58);
     _card1 = _iv(0.48, 0.74);
     _card2 = _iv(0.60, 0.88);
-    _count = _iv(0.55, 0.95);
 
     _timer = Timer(const Duration(seconds: 5), _goNext);
   }
@@ -181,62 +170,26 @@ class _PlanPreparingScreenState extends State<PlanPreparingScreen>
               ),
               const SizedBox(height: 24),
 
-              // ───────── بطاقة 1: الوقت المتوقع ─────────
+              // ───────── بطاقة 1: من يعدّ الخطة ─────────
+              // No time promise and no percentage: nothing in the data backs
+              // either.
               _Reveal(
                 animation: _card1,
                 dy: 0.25,
                 child: _CardShell(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                  child: Row(
                     children: [
-                      Row(
-                        children: [
-                          _FlippingHourglass(loop: _loop),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(context.l10n.planPreparingExpectedTime,
-                                    style: AppTextStyles.cardTitle),
-                                const SizedBox(height: 4),
-                                Text(context.l10n.planPreparingWithin24h,
-                                    style: AppTextStyles.caption),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(width: 6),
-                          _ActiveBadge(loop: _loop),
-                        ],
-                      ),
-                      const SizedBox(height: 14),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 12, vertical: 11),
-                        decoration: BoxDecoration(
-                            color: _kLavender,
-                            borderRadius: BorderRadius.circular(14)),
-                        child: Row(
+                      _FlippingHourglass(loop: _loop),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Icon(Icons.verified_user_outlined,
-                                color: AppColors.primary, size: 17),
-                            const SizedBox(width: 6),
-                            Text(
-                              context.l10n.planPreparingReview,
-                              style: AppTextStyles.caption.copyWith(
-                                  color: AppColors.primaryInk,
-                                  fontWeight: FontWeight.w700),
-                            ),
-                            const Spacer(),
-                            AnimatedBuilder(
-                              animation: _count,
-                              builder: (_, __) => Text(
-                                context.l10n.planPreparingManualPercent(
-                                    context.localizeDigits(
-                                        (100 * _count.value).round())),
-                                style: AppTextStyles.caption,
-                              ),
-                            ),
+                            Text(context.l10n.planPreparingByNutritionist,
+                                style: AppTextStyles.cardTitle),
+                            const SizedBox(height: 4),
+                            Text(context.l10n.planPreparingByNutritionistHint,
+                                style: AppTextStyles.caption),
                           ],
                         ),
                       ),
@@ -272,33 +225,40 @@ class _PlanPreparingScreenState extends State<PlanPreparingScreen>
                           ),
                         ],
                       ),
-                      // The nutritionist's WhatsApp (9.1). Left out until
-                      // the profile has a number.
+                      // The nutritionist's WhatsApp (9.1) and their own reply
+                      // hours, as on their profile. Each is left out until
+                      // the profile has it.
                       Builder(builder: (context) {
-                        final whatsapp = context
-                            .watch<NutritionistCubit>()
-                            .state
-                            .dataOrNull
-                            ?.whatsappUri;
-                        if (whatsapp == null) return const SizedBox.shrink();
-                        return Padding(
-                          padding: const EdgeInsets.only(top: 14),
-                          child: _ShimmerButton(
-                            label: context.l10n.planPreparingContactWhatsApp,
-                            icon: Icons.support_agent_rounded,
-                            loop: _loop,
-                            onPressed: () => _openWhatsApp(whatsapp),
-                          ),
+                        final profile =
+                            context.watch<NutritionistCubit>().state.dataOrNull;
+                        final whatsapp = profile?.whatsappUri;
+                        final hours = profile?.replyHours;
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            if (whatsapp != null)
+                              Padding(
+                                padding: const EdgeInsets.only(top: 14),
+                                child: _ShimmerButton(
+                                  label:
+                                      context.l10n.planPreparingContactWhatsApp,
+                                  icon: Icons.support_agent_rounded,
+                                  loop: _loop,
+                                  onPressed: () => _openWhatsApp(whatsapp),
+                                ),
+                              ),
+                            if (hours != null)
+                              Padding(
+                                padding: const EdgeInsets.only(top: 12),
+                                child: Text(
+                                  context.l10n.planPreparingReplyHours(hours),
+                                  textAlign: TextAlign.center,
+                                  style: AppTextStyles.caption,
+                                ),
+                              ),
+                          ],
                         );
                       }),
-                      const SizedBox(height: 12),
-                      Center(
-                        child: Text(
-                          context.l10n.planPreparingHours,
-                          textAlign: TextAlign.center,
-                          style: AppTextStyles.caption,
-                        ),
-                      ),
                     ],
                   ),
                 ),
@@ -818,38 +778,6 @@ class _FlippingHourglass extends StatelessWidget {
           ),
         );
       },
-    );
-  }
-}
-
-class _ActiveBadge extends StatelessWidget {
-  final Animation<double> loop;
-  const _ActiveBadge({required this.loop});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-      decoration: BoxDecoration(
-          color: _kMintSoft,
-          borderRadius: BorderRadius.circular(AppRadius.pill)),
-      child: Row(mainAxisSize: MainAxisSize.min, children: [
-        AnimatedBuilder(
-          animation: loop,
-          builder: (_, __) => Transform.rotate(
-            angle: _swing(loop.value, span: 0.18),
-            alignment: Alignment.topCenter,
-            child: const Icon(Icons.notifications_active_rounded,
-                size: 13, color: AppColors.primary),
-          ),
-        ),
-        const SizedBox(width: 4),
-        Text(context.l10n.commonEnabled,
-            style: const TextStyle(
-                fontSize: 11,
-                fontWeight: FontWeight.w700,
-                color: AppColors.primaryInk)),
-      ]),
     );
   }
 }

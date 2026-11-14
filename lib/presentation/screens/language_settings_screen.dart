@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_radius.dart';
 import '../../core/theme/app_text_styles.dart';
+import '../widgets/app_version_text.dart';
 import '../widgets/gradient_cta_button.dart';
 import '../widgets/app_header_bar.dart';
 import '../../core/di/app_dependencies.dart';
@@ -93,9 +94,11 @@ class _LanguageSettingsScreenState extends State<LanguageSettingsScreen> {
             onPressed: _save,
           ),
           const SizedBox(height: 14),
+          // The installed version, and nothing until it is known.
           Center(
-            child: Text(
-              context.l10n.languageFooter,
+            child: AppVersionText(
+              builder: context.l10n.languageFooter,
+              textAlign: TextAlign.center,
               style: AppTextStyles.caption,
             ),
           ),

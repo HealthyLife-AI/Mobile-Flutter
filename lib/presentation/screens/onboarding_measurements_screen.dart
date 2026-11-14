@@ -430,10 +430,6 @@ class _OnboardingMeasurementsScreenState
                               Text(context.l10n.onboardingMeasurementsMaxWeight,
                                   style: AppTextStyles.caption),
                               const Spacer(),
-                              Text(
-                                  context.l10n.onboardingMeasurementsIdealRange,
-                                  style: AppTextStyles.caption),
-                              const Spacer(),
                               Text(context.l10n.onboardingMeasurementsMinWeight,
                                   style: AppTextStyles.caption),
                             ],
