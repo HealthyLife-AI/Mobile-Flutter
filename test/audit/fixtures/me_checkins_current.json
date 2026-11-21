@@ -3,5 +3,126 @@
  "path": "me/checkins/current",
  "status": 200,
  "request": null,
- "body": null
+ "body": {
+  "id": 2,
+  "due_on": "2026-11-21",
+  "questions": [
+   {
+    "key": "adherence",
+    "type": "single",
+    "label": "كيف كان التزامك بالخطة هالفترة؟",
+    "options": [
+     {
+      "value": "excellent",
+      "label": "ممتاز"
+     },
+     {
+      "value": "good",
+      "label": "جيد"
+     },
+     {
+      "value": "fair",
+      "label": "متوسط"
+     },
+     {
+      "value": "poor",
+      "label": "ضعيف"
+     }
+    ],
+    "max": null,
+    "required": true
+   },
+   {
+    "key": "barriers",
+    "type": "multi",
+    "label": "شو أكثر شي صعّب عليك؟",
+    "options": [
+     {
+      "value": "time",
+      "label": "الوقت"
+     },
+     {
+      "value": "food_availability",
+      "label": "توفر الأكل"
+     },
+     {
+      "value": "budget",
+      "label": "الميزانية"
+     },
+     {
+      "value": "occasions",
+      "label": "المناسبات والعزايم"
+     },
+     {
+      "value": "hunger",
+      "label": "الجوع والشهية"
+     },
+     {
+      "value": "mood",
+      "label": "المزاج والتوتر"
+     },
+     {
+      "value": "work_study",
+      "label": "الدوام أو الدراسة"
+     },
+     {
+      "value": "none",
+      "label": "ولا شي"
+     }
+    ],
+    "max": 3,
+    "required": true
+   },
+   {
+    "key": "appetite",
+    "type": "single",
+    "label": "كيف كانت شهيتك؟",
+    "options": [
+     {
+      "value": "lower",
+      "label": "أقل من العادة"
+     },
+     {
+      "value": "normal",
+      "label": "طبيعية"
+     },
+     {
+      "value": "higher",
+      "label": "أكثر من العادة"
+     }
+    ],
+    "max": null,
+    "required": true
+   },
+   {
+    "key": "sleep",
+    "type": "single",
+    "label": "كيف كان نومك؟",
+    "options": [
+     {
+      "value": "good",
+      "label": "جيد"
+     },
+     {
+      "value": "interrupted",
+      "label": "متقطع"
+     },
+     {
+      "value": "short",
+      "label": "قليل"
+     }
+    ],
+    "max": null,
+    "required": true
+   },
+   {
+    "key": "note",
+    "type": "text",
+    "label": "شي بتحب تحكيه لأخصائيتك؟",
+    "options": [],
+    "max": 280,
+    "required": false
+   }
+  ]
+ }
 }

@@ -16,7 +16,7 @@
   },
   "medications": [
    {
-    "id": 2,
+    "id": 4,
     "name": "Metformin",
     "dose": "500mg",
     "frequency": "مساء",
@@ -30,7 +30,7 @@
   ],
   "allergies": [
    {
-    "id": 2,
+    "id": 5,
     "group": "peanuts",
     "other_text": null,
     "label": "الفول السوداني",

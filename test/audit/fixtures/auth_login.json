@@ -3,22 +3,22 @@
  "path": "auth/login",
  "status": 200,
  "request": {
-  "username": "pt101.fgy6",
+  "username": "pt101.pf5y",
   "password": "<password>"
  },
  "body": {
   "user": {
-   "id": 11,
+   "id": 17,
    "name": "Fixture Patient Rich",
    "email": null,
-   "phone": "+970595267761",
+   "phone": "+970595268000",
    "role": "client",
-   "nutritionist_id": 10,
+   "nutritionist_id": 16,
    "avatar_url": null,
-   "subscriber_id": 6,
+   "subscriber_id": 10,
    "gender": "female",
    "patient_code": "PT-101",
-   "username": "pt101.fgy6",
+   "username": "pt101.pf5y",
    "password_is_temporary": true
   },
   "access_token": "<access_token>",

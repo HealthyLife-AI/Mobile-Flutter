@@ -5,11 +5,11 @@
  "request": {
   "food_id": 36,
   "quantity_grams": 80,
-  "logged_at": "2026-11-21T13:29:23+00:00",
-  "idempotency_key": "00000000-0000-4000-8000-267761000002"
+  "logged_at": "2026-11-21T13:33:22+00:00",
+  "idempotency_key": "00000000-0000-4000-8000-268000000002"
  },
  "body": {
-  "id": 4,
+  "id": 8,
   "food": {
    "id": 36,
    "name_en": "Arabic Pita Bread",
@@ -40,9 +40,9 @@
   "meal_type": "lunch",
   "is_on_plan": false,
   "log_kind": "off_plan",
-  "logged_at": "2026-11-21T13:29:23+00:00",
+  "logged_at": "2026-11-21T13:33:22+00:00",
   "is_late": false,
   "edited_at": null,
-  "editable_until": "2026-11-28T13:29:23+00:00"
+  "editable_until": "2026-11-28T13:33:23+00:00"
  }
 }

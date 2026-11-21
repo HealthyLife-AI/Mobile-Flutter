@@ -1,6 +1,6 @@
 {
  "base": "http://127.0.0.1:8000/api/v1",
- "captured_at": "2026-11-21T13:29:26Z",
+ "captured_at": "2026-11-21T13:33:25Z",
  "fixtures": [
   {
    "name": "auth_login",
@@ -107,7 +107,7 @@
   {
    "name": "me_meal_logs_patch",
    "method": "PATCH",
-   "path": "me/meal-logs/4",
+   "path": "me/meal-logs/8",
    "status": 200
   },
   {
@@ -162,6 +162,12 @@
    "name": "me_posts_unread_count",
    "method": "GET",
    "path": "me/posts/unread-count",
+   "status": 200
+  },
+  {
+   "name": "me_post_show",
+   "method": "GET",
+   "path": "me/posts/2",
    "status": 200
   },
   {
@@ -263,13 +269,13 @@
   {
    "name": "me_reviews_acknowledge",
    "method": "POST",
-   "path": "me/reviews/2/acknowledge",
+   "path": "me/reviews/4/acknowledge",
    "status": 200
   },
   {
    "name": "me_tasks_done",
    "method": "POST",
-   "path": "me/tasks/2/done",
+   "path": "me/tasks/4/done",
    "status": 200
   },
   {
@@ -421,6 +427,18 @@
    "method": "GET",
    "path": "me/posts?page=1",
    "status": 200
+  },
+  {
+   "name": "error_follow_up_ended",
+   "method": "GET",
+   "path": "me/meal-plan",
+   "status": 403
+  },
+  {
+   "name": "error_follow_up_ended_meal_log_post",
+   "method": "POST",
+   "path": "me/meal-logs",
+   "status": 403
   }
  ]
 }

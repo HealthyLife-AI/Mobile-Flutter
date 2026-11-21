@@ -1,0 +1,20 @@
+{
+ "method": "POST",
+ "path": "me/meal-logs",
+ "status": 403,
+ "request": {
+  "food_id": 36,
+  "quantity_grams": 80,
+  "idempotency_key": "00000000-0000-4000-8000-268000000009"
+ },
+ "body": {
+  "message": "Your nutritionist has ended follow-up. Contact them to resume.",
+  "code": "follow_up_ended",
+  "nutritionist": {
+   "name": "Fixture Nutritionist",
+   "whatsapp_number": null
+  },
+  "weeks_followed": 1,
+  "adherence_percent": null
+ }
+}

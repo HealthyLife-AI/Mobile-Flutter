@@ -4,14 +4,14 @@
  "status": 200,
  "request": null,
  "body": {
-  "id": 4,
-  "subscriber_id": 6,
+  "id": 7,
+  "subscriber_id": 10,
   "is_template": false,
   "is_ai_draft": false,
   "patient_instructions": "اشرب الماء",
   "activities": [
    {
-    "id": 4,
+    "id": 6,
     "title": "مشي",
     "description": "مشي سريع",
     "duration_minutes": 30,
@@ -23,10 +23,10 @@
   "name": null,
   "start_date": null,
   "status": "active",
-  "activated_at": "2026-11-21T13:29:22+00:00",
+  "activated_at": "2026-11-21T13:33:21+00:00",
   "meals": [
    {
-    "id": 13,
+    "id": 25,
     "name": "breakfast",
     "day_index": null,
     "macros": {
@@ -37,7 +37,7 @@
     },
     "items": [
      {
-      "id": 19,
+      "id": 43,
       "food": {
        "id": 31,
        "name_en": "Boiled Egg (Arabic breakfast)",
@@ -68,7 +68,7 @@
       },
       "alternatives": [
        {
-        "id": 20,
+        "id": 44,
         "food": {
          "id": 56,
          "name_en": "Plain Yogurt (Arabic style)",
@@ -101,7 +101,7 @@
       ]
      },
      {
-      "id": 21,
+      "id": 45,
       "food": {
        "id": 36,
        "name_en": "Arabic Pita Bread",
@@ -135,7 +135,7 @@
     ]
    },
    {
-    "id": 14,
+    "id": 26,
     "name": "lunch",
     "day_index": null,
     "macros": {
@@ -146,7 +146,7 @@
     },
     "items": [
      {
-      "id": 22,
+      "id": 46,
       "food": {
        "id": 4,
        "name_en": "Chicken Kabsa",
@@ -178,7 +178,7 @@
     ]
    },
    {
-    "id": 15,
+    "id": 27,
     "name": "snack",
     "day_index": null,
     "macros": {
@@ -189,7 +189,7 @@
     },
     "items": [
      {
-      "id": 23,
+      "id": 47,
       "food": {
        "id": 56,
        "name_en": "Plain Yogurt (Arabic style)",
@@ -223,7 +223,7 @@
     ]
    },
    {
-    "id": 16,
+    "id": 28,
     "name": "dinner",
     "day_index": null,
     "macros": {
@@ -234,7 +234,7 @@
     },
     "items": [
      {
-      "id": 24,
+      "id": 48,
       "food": {
        "id": 29,
        "name_en": "Lentil Soup",
@@ -274,7 +274,7 @@
     "fat_g": 34.8
    }
   ],
-  "created_at": "2026-11-21T13:29:22+00:00",
-  "updated_at": "2026-11-21T13:29:22+00:00"
+  "created_at": "2026-11-21T13:33:21+00:00",
+  "updated_at": "2026-11-21T13:33:21+00:00"
  }
 }

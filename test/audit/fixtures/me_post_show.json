@@ -1,0 +1,14 @@
+{
+ "method": "GET",
+ "path": "me/posts/2",
+ "status": 200,
+ "request": null,
+ "body": {
+  "id": 2,
+  "title": "نصيحة",
+  "body": "اشرب الماء قبل الوجبة",
+  "published_at": "2026-11-21T13:33:21+00:00",
+  "pinned": true,
+  "is_read": false
+ }
+}

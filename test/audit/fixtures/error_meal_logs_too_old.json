@@ -6,7 +6,7 @@
   "food_id": 36,
   "quantity_grams": 80,
   "logged_at": "2025-01-01T10:00:00+00:00",
-  "idempotency_key": "00000000-0000-4000-8000-267761000003"
+  "idempotency_key": "00000000-0000-4000-8000-268000000003"
  },
  "body": {
   "message": "The logged_at is older than entries may be dated.",

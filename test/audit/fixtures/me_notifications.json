@@ -6,36 +6,49 @@
  "body": {
   "data": [
    {
-    "id": 6,
+    "id": 14,
+    "category": "nutritionist",
+    "type": "checkin_due",
+    "title": "استبيان قصير",
+    "body": "عندك استبيان قصير من أخصائيتك",
+    "data": {
+     "checkin_id": 2
+    },
+    "read_at": null,
+    "created_at": "2026-11-21T13:33:21+00:00",
+    "updated_at": "2026-11-21T13:33:21+00:00"
+   },
+   {
+    "id": 13,
     "category": "nutritionist",
     "type": "review_new",
     "title": "لديك ملاحظة جديدة من أخصائيك",
     "body": "افتح التطبيق للاطلاع عليها.",
     "data": {
-     "review_id": 2
+     "review_id": 4
     },
     "read_at": null,
-    "created_at": "2026-11-21T13:29:22+00:00",
-    "updated_at": "2026-11-21T13:29:22+00:00"
+    "created_at": "2026-11-21T13:33:21+00:00",
+    "updated_at": "2026-11-21T13:33:21+00:00"
    },
    {
-    "id": 5,
+    "id": 12,
     "category": "plan",
     "type": "plan_activated",
     "title": "خطتك الغذائية جاهزة",
     "body": "اعتمد أخصائيك خطتك. افتح التطبيق لمشاهدتها.",
     "data": {
-     "plan_id": 4
+     "plan_id": 7
     },
     "read_at": null,
-    "created_at": "2026-11-21T13:29:22+00:00",
-    "updated_at": "2026-11-21T13:29:22+00:00"
+    "created_at": "2026-11-21T13:33:21+00:00",
+    "updated_at": "2026-11-21T13:33:21+00:00"
    }
   ],
   "meta": {
    "current_page": 1,
    "last_page": 1,
-   "total": 2
+   "total": 3
   }
  }
 }

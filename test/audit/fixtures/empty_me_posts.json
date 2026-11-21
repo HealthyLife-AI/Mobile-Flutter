@@ -4,7 +4,16 @@
  "status": 200,
  "request": null,
  "body": {
-  "data": [],
+  "data": [
+   {
+    "id": 2,
+    "title": "نصيحة",
+    "body": "اشرب الماء قبل الوجبة",
+    "published_at": "2026-11-21T13:33:21+00:00",
+    "pinned": true,
+    "is_read": false
+   }
+  ],
   "links": {
    "first": "http://127.0.0.1:8000/api/v1/me/posts?page=1",
    "last": "http://127.0.0.1:8000/api/v1/me/posts?page=1",
@@ -13,7 +22,7 @@
   },
   "meta": {
    "current_page": 1,
-   "from": null,
+   "from": 1,
    "last_page": 1,
    "links": [
     {
@@ -37,8 +46,8 @@
    ],
    "path": "http://127.0.0.1:8000/api/v1/me/posts",
    "per_page": 20,
-   "to": null,
-   "total": 0
+   "to": 1,
+   "total": 1
   }
  }
 }

@@ -1,0 +1,16 @@
+{
+ "method": "GET",
+ "path": "me/meal-plan",
+ "status": 403,
+ "request": null,
+ "body": {
+  "message": "Your nutritionist has ended follow-up. Contact them to resume.",
+  "code": "follow_up_ended",
+  "nutritionist": {
+   "name": "Fixture Nutritionist",
+   "whatsapp_number": null
+  },
+  "weeks_followed": 1,
+  "adherence_percent": null
+ }
+}

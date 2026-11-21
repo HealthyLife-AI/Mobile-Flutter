@@ -8,7 +8,7 @@
   "recorded_at": "2026-11-21"
  },
  "body": {
-  "id": 2,
+  "id": 4,
   "recorded_at": "2026-11-21",
   "source": "self-reported",
   "is_late": false,
@@ -21,6 +21,6 @@
   "hip_cm": null,
   "thigh_cm": null,
   "arm_cm": null,
-  "deletable_until": "2026-11-28T13:29:24+00:00"
+  "deletable_until": "2026-11-28T13:33:23+00:00"
  }
 }

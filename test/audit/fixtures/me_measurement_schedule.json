@@ -3,5 +3,8 @@
  "path": "me/measurement-schedule",
  "status": 200,
  "request": null,
- "body": null
+ "body": {
+  "interval_days": 7,
+  "next_due_on": "2026-11-21"
+ }
 }
