@@ -1,0 +1,9 @@
+{
+ "method": "GET",
+ "path": "auth/me",
+ "status": 401,
+ "request": null,
+ "body": {
+  "message": "Unauthenticated."
+ }
+}

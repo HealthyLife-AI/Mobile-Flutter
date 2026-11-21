@@ -1,0 +1,26 @@
+{
+ "method": "POST",
+ "path": "me/measurements",
+ "status": 201,
+ "request": {
+  "weight_kg": 82.4,
+  "waist_cm": 90.5,
+  "recorded_at": "2026-11-21"
+ },
+ "body": {
+  "id": 2,
+  "recorded_at": "2026-11-21",
+  "source": "self-reported",
+  "is_late": false,
+  "edited_at": null,
+  "weight_kg": 82.4,
+  "body_fat_percent": null,
+  "muscle_mass_kg": null,
+  "water_percent": null,
+  "waist_cm": 90.5,
+  "hip_cm": null,
+  "thigh_cm": null,
+  "arm_cm": null,
+  "deletable_until": "2026-11-28T13:29:24+00:00"
+ }
+}

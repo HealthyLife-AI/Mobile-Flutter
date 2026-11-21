@@ -1,0 +1,426 @@
+{
+ "base": "http://127.0.0.1:8000/api/v1",
+ "captured_at": "2026-11-21T13:29:26Z",
+ "fixtures": [
+  {
+   "name": "auth_login",
+   "method": "POST",
+   "path": "auth/login",
+   "status": 200
+  },
+  {
+   "name": "auth_refresh",
+   "method": "POST",
+   "path": "auth/refresh",
+   "status": 200
+  },
+  {
+   "name": "auth_me",
+   "method": "GET",
+   "path": "auth/me",
+   "status": 200
+  },
+  {
+   "name": "error_consent_required_meal_plan",
+   "method": "GET",
+   "path": "me/meal-plan",
+   "status": 403
+  },
+  {
+   "name": "me_consent_get",
+   "method": "GET",
+   "path": "me/consent",
+   "status": 200
+  },
+  {
+   "name": "me_consent_post",
+   "method": "POST",
+   "path": "me/consent",
+   "status": 201
+  },
+  {
+   "name": "auth_me_after_consent",
+   "method": "GET",
+   "path": "auth/me",
+   "status": 200
+  },
+  {
+   "name": "me_meal_plan",
+   "method": "GET",
+   "path": "me/meal-plan",
+   "status": 200
+  },
+  {
+   "name": "me_nutritionist",
+   "method": "GET",
+   "path": "me/nutritionist",
+   "status": 200
+  },
+  {
+   "name": "me_health_profile",
+   "method": "GET",
+   "path": "me/health-profile",
+   "status": 200
+  },
+  {
+   "name": "me_measurement_schedule",
+   "method": "GET",
+   "path": "me/measurement-schedule",
+   "status": 200
+  },
+  {
+   "name": "me_today_before_logs",
+   "method": "GET",
+   "path": "me/today",
+   "status": 200
+  },
+  {
+   "name": "me_meal_logs_post_planned",
+   "method": "POST",
+   "path": "me/meal-logs",
+   "status": 201
+  },
+  {
+   "name": "me_meal_logs_post_replay",
+   "method": "POST",
+   "path": "me/meal-logs",
+   "status": 200
+  },
+  {
+   "name": "me_meal_logs_post_offplan",
+   "method": "POST",
+   "path": "me/meal-logs",
+   "status": 201
+  },
+  {
+   "name": "error_meal_logs_too_old",
+   "method": "POST",
+   "path": "me/meal-logs",
+   "status": 422
+  },
+  {
+   "name": "error_meal_logs_future",
+   "method": "POST",
+   "path": "me/meal-logs",
+   "status": 422
+  },
+  {
+   "name": "me_meal_logs_patch",
+   "method": "PATCH",
+   "path": "me/meal-logs/4",
+   "status": 200
+  },
+  {
+   "name": "me_meal_logs_index",
+   "method": "GET",
+   "path": "me/meal-logs?from=2026-11-20&to=2026-11-22&page=1",
+   "status": 200
+  },
+  {
+   "name": "me_measurements_post",
+   "method": "POST",
+   "path": "me/measurements",
+   "status": 201
+  },
+  {
+   "name": "me_measurements_get",
+   "method": "GET",
+   "path": "me/measurements",
+   "status": 200
+  },
+  {
+   "name": "me_progress",
+   "method": "GET",
+   "path": "me/progress?from=2026-11-20&to=2026-11-21",
+   "status": 200
+  },
+  {
+   "name": "me_goal_projection",
+   "method": "GET",
+   "path": "me/goal-projection",
+   "status": 200
+  },
+  {
+   "name": "me_weight_insight",
+   "method": "GET",
+   "path": "me/weight-insight",
+   "status": 200
+  },
+  {
+   "name": "me_today",
+   "method": "GET",
+   "path": "me/today",
+   "status": 200
+  },
+  {
+   "name": "me_posts",
+   "method": "GET",
+   "path": "me/posts?page=1",
+   "status": 200
+  },
+  {
+   "name": "me_posts_unread_count",
+   "method": "GET",
+   "path": "me/posts/unread-count",
+   "status": 200
+  },
+  {
+   "name": "me_reports_consent_get",
+   "method": "GET",
+   "path": "me/consent?type=medical_reports",
+   "status": 404
+  },
+  {
+   "name": "me_reports",
+   "method": "GET",
+   "path": "me/reports",
+   "status": 404
+  },
+  {
+   "name": "me_wellbeing_put",
+   "method": "PUT",
+   "path": "me/wellbeing/2026-11-21",
+   "status": 201
+  },
+  {
+   "name": "me_wellbeing_get",
+   "method": "GET",
+   "path": "me/wellbeing?from=2026-11-20&to=2026-11-21",
+   "status": 200
+  },
+  {
+   "name": "me_food_preferences_get",
+   "method": "GET",
+   "path": "me/food-preferences",
+   "status": 200
+  },
+  {
+   "name": "me_food_preferences_put",
+   "method": "PUT",
+   "path": "me/food-preferences",
+   "status": 200
+  },
+  {
+   "name": "me_checkins_current",
+   "method": "GET",
+   "path": "me/checkins/current",
+   "status": 200
+  },
+  {
+   "name": "me_quick_requests_post",
+   "method": "POST",
+   "path": "me/quick-requests",
+   "status": 201
+  },
+  {
+   "name": "me_quick_requests_get",
+   "method": "GET",
+   "path": "me/quick-requests",
+   "status": 200
+  },
+  {
+   "name": "me_proposals_post",
+   "method": "POST",
+   "path": "me/proposals",
+   "status": 201
+  },
+  {
+   "name": "me_health_profile_after_proposal",
+   "method": "GET",
+   "path": "me/health-profile",
+   "status": 200
+  },
+  {
+   "name": "me_appointments_slots",
+   "method": "GET",
+   "path": "me/appointments/slots?type=follow_up",
+   "status": 200
+  },
+  {
+   "name": "me_appointments_post",
+   "method": "POST",
+   "path": "me/appointments",
+   "status": 201
+  },
+  {
+   "name": "me_appointments_upcoming",
+   "method": "GET",
+   "path": "me/appointments?scope=upcoming",
+   "status": 200
+  },
+  {
+   "name": "me_appointments_past",
+   "method": "GET",
+   "path": "me/appointments?scope=past",
+   "status": 200
+  },
+  {
+   "name": "me_reviews",
+   "method": "GET",
+   "path": "me/reviews",
+   "status": 200
+  },
+  {
+   "name": "me_reviews_acknowledge",
+   "method": "POST",
+   "path": "me/reviews/2/acknowledge",
+   "status": 200
+  },
+  {
+   "name": "me_tasks_done",
+   "method": "POST",
+   "path": "me/tasks/2/done",
+   "status": 200
+  },
+  {
+   "name": "me_notifications",
+   "method": "GET",
+   "path": "me/notifications?page=1",
+   "status": 200
+  },
+  {
+   "name": "me_notifications_unread_count",
+   "method": "GET",
+   "path": "me/notifications/unread-count",
+   "status": 200
+  },
+  {
+   "name": "me_notification_preferences_get",
+   "method": "GET",
+   "path": "me/notification-preferences",
+   "status": 200
+  },
+  {
+   "name": "me_notification_preferences_put",
+   "method": "PUT",
+   "path": "me/notification-preferences",
+   "status": 200
+  },
+  {
+   "name": "me_fcm_token_put",
+   "method": "PUT",
+   "path": "me/fcm-token",
+   "status": 204
+  },
+  {
+   "name": "foods_search",
+   "method": "GET",
+   "path": "foods/search?q=%D8%AE%D8%A8%D8%B2&per_page=50",
+   "status": 200
+  },
+  {
+   "name": "error_unauthenticated",
+   "method": "GET",
+   "path": "auth/me",
+   "status": 401
+  },
+  {
+   "name": "empty_me_meal_plan",
+   "method": "GET",
+   "path": "me/meal-plan",
+   "status": 204
+  },
+  {
+   "name": "empty_me_meal_logs_index",
+   "method": "GET",
+   "path": "me/meal-logs?from=2026-11-20&to=2026-11-22&page=1",
+   "status": 200
+  },
+  {
+   "name": "empty_me_measurements_get",
+   "method": "GET",
+   "path": "me/measurements",
+   "status": 200
+  },
+  {
+   "name": "empty_me_progress",
+   "method": "GET",
+   "path": "me/progress?from=2026-11-20&to=2026-11-21",
+   "status": 200
+  },
+  {
+   "name": "empty_me_today",
+   "method": "GET",
+   "path": "me/today",
+   "status": 200
+  },
+  {
+   "name": "empty_me_health_profile",
+   "method": "GET",
+   "path": "me/health-profile",
+   "status": 200
+  },
+  {
+   "name": "empty_me_measurement_schedule",
+   "method": "GET",
+   "path": "me/measurement-schedule",
+   "status": 200
+  },
+  {
+   "name": "empty_me_goal_projection",
+   "method": "GET",
+   "path": "me/goal-projection",
+   "status": 200
+  },
+  {
+   "name": "empty_me_weight_insight",
+   "method": "GET",
+   "path": "me/weight-insight",
+   "status": 200
+  },
+  {
+   "name": "empty_me_reviews",
+   "method": "GET",
+   "path": "me/reviews",
+   "status": 200
+  },
+  {
+   "name": "empty_me_notifications",
+   "method": "GET",
+   "path": "me/notifications?page=1",
+   "status": 200
+  },
+  {
+   "name": "empty_me_checkins_current",
+   "method": "GET",
+   "path": "me/checkins/current",
+   "status": 200
+  },
+  {
+   "name": "empty_me_appointments_upcoming",
+   "method": "GET",
+   "path": "me/appointments?scope=upcoming",
+   "status": 200
+  },
+  {
+   "name": "empty_me_nutritionist",
+   "method": "GET",
+   "path": "me/nutritionist",
+   "status": 200
+  },
+  {
+   "name": "empty_me_food_preferences_get",
+   "method": "GET",
+   "path": "me/food-preferences",
+   "status": 200
+  },
+  {
+   "name": "empty_me_wellbeing_get",
+   "method": "GET",
+   "path": "me/wellbeing?from=2026-11-20&to=2026-11-21",
+   "status": 200
+  },
+  {
+   "name": "empty_me_quick_requests_get",
+   "method": "GET",
+   "path": "me/quick-requests",
+   "status": 200
+  },
+  {
+   "name": "empty_me_posts",
+   "method": "GET",
+   "path": "me/posts?page=1",
+   "status": 200
+  }
+ ]
+}

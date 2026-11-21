@@ -1,0 +1,31 @@
+{
+ "method": "PUT",
+ "path": "me/food-preferences",
+ "status": 200,
+ "request": {
+  "likes": [
+   36
+  ],
+  "dislikes": [
+   29
+  ]
+ },
+ "body": {
+  "likes": [
+   {
+    "food_id": 36,
+    "name_ar": "خبز عربي",
+    "name_en": "Arabic Pita Bread",
+    "source": "patient"
+   }
+  ],
+  "dislikes": [
+   {
+    "food_id": 29,
+    "name_ar": "شوربة عدس",
+    "name_en": "Lentil Soup",
+    "source": "patient"
+   }
+  ]
+ }
+}

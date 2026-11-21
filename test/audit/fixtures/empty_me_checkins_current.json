@@ -1,0 +1,7 @@
+{
+ "method": "GET",
+ "path": "me/checkins/current",
+ "status": 200,
+ "request": null,
+ "body": null
+}

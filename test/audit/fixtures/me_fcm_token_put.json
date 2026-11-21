@@ -1,0 +1,9 @@
+{
+ "method": "PUT",
+ "path": "me/fcm-token",
+ "status": 204,
+ "request": {
+  "fcm_token": "fixture-fcm-token-not-real"
+ },
+ "body": null
+}

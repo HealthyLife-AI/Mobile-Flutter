@@ -1,0 +1,15 @@
+{
+ "method": "GET",
+ "path": "me/nutritionist",
+ "status": 200,
+ "request": null,
+ "body": {
+  "name": "Fixture Nutritionist",
+  "gender": null,
+  "clinic_name": null,
+  "specialty": null,
+  "whatsapp_number": null,
+  "bio": null,
+  "reply_hours": null
+ }
+}

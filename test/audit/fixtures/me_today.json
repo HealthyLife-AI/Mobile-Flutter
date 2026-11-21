@@ -1,0 +1,40 @@
+{
+ "method": "GET",
+ "path": "me/today",
+ "status": 200,
+ "request": null,
+ "body": {
+  "date": "2026-11-21",
+  "meals": [
+   {
+    "name": "breakfast",
+    "name_ar": "الفطور",
+    "window": "الصبح"
+   },
+   {
+    "name": "lunch",
+    "name_ar": "الغداء",
+    "window": "الظهر"
+   },
+   {
+    "name": "snack",
+    "name_ar": "سناك",
+    "window": "بين الوجبات"
+   },
+   {
+    "name": "dinner",
+    "name_ar": "العشاء",
+    "window": "المساء"
+   }
+  ],
+  "activities": [
+   {
+    "title": "مشي",
+    "duration_minutes": 30,
+    "times_per_day": 1
+   }
+  ],
+  "reminders": [],
+  "motivation_ar": "كمية كافية من الماء، وأكل على مهل."
+ }
+}

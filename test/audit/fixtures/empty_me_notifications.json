@@ -1,0 +1,14 @@
+{
+ "method": "GET",
+ "path": "me/notifications?page=1",
+ "status": 200,
+ "request": null,
+ "body": {
+  "data": [],
+  "meta": {
+   "current_page": 1,
+   "last_page": 1,
+   "total": 0
+  }
+ }
+}

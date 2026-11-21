@@ -1,0 +1,7 @@
+{
+ "method": "GET",
+ "path": "me/wellbeing?from=2026-11-20&to=2026-11-21",
+ "status": 200,
+ "request": null,
+ "body": []
+}

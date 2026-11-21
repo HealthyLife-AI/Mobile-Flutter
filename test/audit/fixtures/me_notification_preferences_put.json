@@ -1,0 +1,28 @@
+{
+ "method": "PUT",
+ "path": "me/notification-preferences",
+ "status": 200,
+ "request": {
+  "locale": "ar",
+  "timezone": "Asia/Gaza"
+ },
+ "body": {
+  "locale": "ar",
+  "categories": {
+   "meals": true,
+   "measurements": true,
+   "nutritionist": true,
+   "plan": true,
+   "education": true,
+   "morning": true,
+   "system": true
+  },
+  "quiet_hours": {
+   "enabled": true,
+   "start": "22:00",
+   "end": "07:00"
+  },
+  "timezone": "Asia/Gaza",
+  "effective_timezone": "Asia/Gaza"
+ }
+}

@@ -1,0 +1,28 @@
+{
+ "method": "POST",
+ "path": "me/appointments",
+ "status": 201,
+ "request": {
+  "type": "follow_up",
+  "starts_at": "2026-11-22T08:00:00+03:00",
+  "channel": "phone",
+  "topics": [
+   "meals"
+  ]
+ },
+ "body": {
+  "id": 2,
+  "type": "follow_up",
+  "channel": "phone",
+  "starts_at": "2026-11-22T08:00:00+03:00",
+  "ends_at": "2026-11-22T08:30:00+03:00",
+  "status": "booked",
+  "topics": [
+   "meals"
+  ],
+  "note": null,
+  "cancelled_by": null,
+  "cancel_reason": null,
+  "meeting_link": null
+ }
+}

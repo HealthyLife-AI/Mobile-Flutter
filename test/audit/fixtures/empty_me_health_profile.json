@@ -1,0 +1,21 @@
+{
+ "method": "GET",
+ "path": "me/health-profile",
+ "status": 200,
+ "request": null,
+ "body": {
+  "goal": {
+   "goal_type": "weight_loss",
+   "target_weight_kg": null,
+   "target_date": null,
+   "activity_level": null,
+   "training_days_per_week": null,
+   "training_level": null,
+   "training_type": null,
+   "details": null
+  },
+  "medications": [],
+  "allergies": [],
+  "proposals": []
+ }
+}

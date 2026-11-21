@@ -1,0 +1,20 @@
+{
+ "method": "PUT",
+ "path": "me/wellbeing/2026-11-21",
+ "status": 201,
+ "request": {
+  "sleep_hours": 7.5,
+  "sleep_quality": "good",
+  "stress": "low",
+  "mood": "good",
+  "note": "جيد"
+ },
+ "body": {
+  "date": "2026-11-21",
+  "sleep_hours": 7.5,
+  "sleep_quality": "good",
+  "stress": "low",
+  "mood": "good",
+  "note": "جيد"
+ }
+}

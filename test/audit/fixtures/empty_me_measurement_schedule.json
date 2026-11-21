@@ -1,0 +1,7 @@
+{
+ "method": "GET",
+ "path": "me/measurement-schedule",
+ "status": 200,
+ "request": null,
+ "body": null
+}

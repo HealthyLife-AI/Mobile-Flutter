@@ -1,0 +1,9 @@
+{
+ "method": "GET",
+ "path": "me/notifications/unread-count",
+ "status": 200,
+ "request": null,
+ "body": {
+  "unread": 2
+ }
+}

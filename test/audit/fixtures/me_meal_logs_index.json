@@ -1,0 +1,119 @@
+{
+ "method": "GET",
+ "path": "me/meal-logs?from=2026-11-20&to=2026-11-22&page=1",
+ "status": 200,
+ "request": null,
+ "body": {
+  "data": [
+   {
+    "id": 4,
+    "food": {
+     "id": 36,
+     "name_en": "Arabic Pita Bread",
+     "name_ar": "خبز عربي",
+     "source": "admin",
+     "status": "approved",
+     "calories_per_100g": 275,
+     "protein_g_per_100g": 9.1,
+     "carbs_g_per_100g": 55.7,
+     "fat_g_per_100g": 1.2,
+     "fiber_g_per_100g": 2.2,
+     "allergens": [
+      "wheat_gluten"
+     ],
+     "shopping_section": "grains_starches",
+     "cost_tier": null,
+     "prep_level": null,
+     "meal_slots": null
+    },
+    "quantity_grams": 120,
+    "macros": {
+     "calories": 330,
+     "protein_g": 10.9,
+     "carbs_g": 66.8,
+     "fat_g": 1.4
+    },
+    "meal_item_id": null,
+    "meal_type": "lunch",
+    "is_on_plan": false,
+    "log_kind": "off_plan",
+    "logged_at": "2026-11-21T13:29:23+00:00",
+    "is_late": false,
+    "edited_at": "2026-11-21T13:29:23+00:00",
+    "editable_until": "2026-11-28T13:29:23+00:00"
+   },
+   {
+    "id": 3,
+    "food": {
+     "id": 31,
+     "name_en": "Boiled Egg (Arabic breakfast)",
+     "name_ar": "بيض مسلوق",
+     "source": "admin",
+     "status": "approved",
+     "calories_per_100g": 155,
+     "protein_g_per_100g": 12.6,
+     "carbs_g_per_100g": 1.1,
+     "fat_g_per_100g": 10.6,
+     "fiber_g_per_100g": 0,
+     "allergens": [
+      "egg"
+     ],
+     "shopping_section": "dairy_eggs",
+     "cost_tier": null,
+     "prep_level": null,
+     "meal_slots": null
+    },
+    "quantity_grams": 100,
+    "macros": {
+     "calories": 155,
+     "protein_g": 12.6,
+     "carbs_g": 1.1,
+     "fat_g": 10.6
+    },
+    "meal_item_id": 19,
+    "meal_type": "breakfast",
+    "is_on_plan": true,
+    "log_kind": "planned",
+    "logged_at": "2026-11-21T13:29:23+00:00",
+    "is_late": false,
+    "edited_at": null,
+    "editable_until": "2026-11-28T13:29:23+00:00"
+   }
+  ],
+  "links": {
+   "first": "http://127.0.0.1:8000/api/v1/me/meal-logs?page=1",
+   "last": "http://127.0.0.1:8000/api/v1/me/meal-logs?page=1",
+   "prev": null,
+   "next": null
+  },
+  "meta": {
+   "current_page": 1,
+   "from": 1,
+   "last_page": 1,
+   "links": [
+    {
+     "url": null,
+     "label": "&laquo; Previous",
+     "page": null,
+     "active": false
+    },
+    {
+     "url": "http://127.0.0.1:8000/api/v1/me/meal-logs?page=1",
+     "label": "1",
+     "page": 1,
+     "active": true
+    },
+    {
+     "url": null,
+     "label": "Next &raquo;",
+     "page": null,
+     "active": false
+    }
+   ],
+   "path": "http://127.0.0.1:8000/api/v1/me/meal-logs",
+   "per_page": 15,
+   "to": 2,
+   "total": 2
+  }
+ }
+}

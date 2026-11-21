@@ -1,0 +1,20 @@
+{
+ "method": "GET",
+ "path": "auth/me",
+ "status": 200,
+ "request": null,
+ "body": {
+  "id": 11,
+  "name": "Fixture Patient Rich",
+  "email": null,
+  "phone": "+970595267761",
+  "role": "client",
+  "nutritionist_id": 10,
+  "avatar_url": null,
+  "subscriber_id": 6,
+  "gender": "female",
+  "patient_code": "PT-101",
+  "username": "pt101.fgy6",
+  "password_is_temporary": true
+ }
+}

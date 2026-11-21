@@ -1,0 +1,7 @@
+{
+ "method": "GET",
+ "path": "me/weight-insight",
+ "status": 200,
+ "request": null,
+ "body": null
+}

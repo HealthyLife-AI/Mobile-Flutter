@@ -1,0 +1,7 @@
+{
+ "method": "GET",
+ "path": "me/appointments?scope=past",
+ "status": 200,
+ "request": null,
+ "body": []
+}

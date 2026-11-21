@@ -1,0 +1,15 @@
+{
+ "method": "POST",
+ "path": "me/consent",
+ "status": 201,
+ "request": {
+  "version": "2026-10-01"
+ },
+ "body": {
+  "required": false,
+  "current_version": "2026-10-01",
+  "accepted_version": "2026-10-01",
+  "accepted_at": "2026-11-21T13:29:23+00:00",
+  "policy_url": "https://your-dashboard-domain/ar/privacy"
+ }
+}

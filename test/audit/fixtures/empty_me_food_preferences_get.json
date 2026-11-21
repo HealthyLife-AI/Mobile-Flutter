@@ -1,0 +1,10 @@
+{
+ "method": "GET",
+ "path": "me/food-preferences",
+ "status": 200,
+ "request": null,
+ "body": {
+  "likes": [],
+  "dislikes": []
+ }
+}

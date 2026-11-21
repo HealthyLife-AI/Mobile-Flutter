@@ -1,0 +1,49 @@
+{
+ "method": "POST",
+ "path": "me/meal-logs",
+ "status": 201,
+ "request": {
+  "food_id": 31,
+  "meal_item_id": 19,
+  "quantity_grams": 100,
+  "logged_at": "2026-11-21T13:29:23+00:00",
+  "idempotency_key": "00000000-0000-4000-8000-267761000001"
+ },
+ "body": {
+  "id": 3,
+  "food": {
+   "id": 31,
+   "name_en": "Boiled Egg (Arabic breakfast)",
+   "name_ar": "بيض مسلوق",
+   "source": "admin",
+   "status": "approved",
+   "calories_per_100g": 155,
+   "protein_g_per_100g": 12.6,
+   "carbs_g_per_100g": 1.1,
+   "fat_g_per_100g": 10.6,
+   "fiber_g_per_100g": 0,
+   "allergens": [
+    "egg"
+   ],
+   "shopping_section": "dairy_eggs",
+   "cost_tier": null,
+   "prep_level": null,
+   "meal_slots": null
+  },
+  "quantity_grams": 100,
+  "macros": {
+   "calories": 155,
+   "protein_g": 12.6,
+   "carbs_g": 1.1,
+   "fat_g": 10.6
+  },
+  "meal_item_id": 19,
+  "meal_type": "breakfast",
+  "is_on_plan": true,
+  "log_kind": "planned",
+  "logged_at": "2026-11-21T13:29:23+00:00",
+  "is_late": false,
+  "edited_at": null,
+  "editable_until": "2026-11-28T13:29:23+00:00"
+ }
+}

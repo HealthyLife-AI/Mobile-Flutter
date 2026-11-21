@@ -1,0 +1,7 @@
+{
+ "method": "GET",
+ "path": "me/meal-plan",
+ "status": 204,
+ "request": null,
+ "body": null
+}

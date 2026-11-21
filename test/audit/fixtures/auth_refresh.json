@@ -1,0 +1,12 @@
+{
+ "method": "POST",
+ "path": "auth/refresh",
+ "status": 200,
+ "request": null,
+ "body": {
+  "access_token": "<access_token>",
+  "refresh_token": "<refresh_token>",
+  "token_type": "Bearer",
+  "expires_in": 900
+ }
+}

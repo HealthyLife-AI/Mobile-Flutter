@@ -1,0 +1,42 @@
+{
+ "method": "GET",
+ "path": "me/progress?from=2026-11-20&to=2026-11-21",
+ "status": 200,
+ "request": null,
+ "body": {
+  "weight_trend": [],
+  "body_composition": {
+   "latest": null,
+   "previous": null,
+   "change": null
+  },
+  "adherence": {
+   "from": "2026-11-20",
+   "to": "2026-11-21",
+   "total_logs": 0,
+   "on_plan_logs": 0,
+   "off_plan_logs": 0,
+   "adherence_percent": null,
+   "previous": {
+    "from": "2026-11-18",
+    "to": "2026-11-19",
+    "adherence_percent": null
+   },
+   "change_pp": null,
+   "status": "stopped_logging",
+   "reference_percent": 70
+  },
+  "daily_calories": [
+   {
+    "date": "2026-11-20",
+    "planned_calories": null,
+    "logged_calories": 0
+   },
+   {
+    "date": "2026-11-21",
+    "planned_calories": null,
+    "logged_calories": 0
+   }
+  ]
+ }
+}

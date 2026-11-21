@@ -1,0 +1,9 @@
+{
+ "method": "GET",
+ "path": "me/posts/unread-count",
+ "status": 200,
+ "request": null,
+ "body": {
+  "unread": 0
+ }
+}

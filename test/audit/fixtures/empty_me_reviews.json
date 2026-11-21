@@ -1,0 +1,7 @@
+{
+ "method": "GET",
+ "path": "me/reviews",
+ "status": 200,
+ "request": null,
+ "body": []
+}

@@ -1,0 +1,18 @@
+{
+ "method": "GET",
+ "path": "me/quick-requests",
+ "status": 200,
+ "request": null,
+ "body": [
+  {
+   "id": 1,
+   "reason": "food_unavailable",
+   "note": "أريد تغيير العشاء",
+   "occasion_date": null,
+   "status": "open",
+   "response": null,
+   "responded_at": null,
+   "created_at": "2026-11-21T13:29:24+00:00"
+  }
+ ]
+}

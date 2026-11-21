@@ -1,0 +1,13 @@
+{
+ "method": "GET",
+ "path": "me/consent",
+ "status": 200,
+ "request": null,
+ "body": {
+  "required": true,
+  "current_version": "2026-10-01",
+  "accepted_version": null,
+  "accepted_at": null,
+  "policy_url": "https://your-dashboard-domain/ar/privacy"
+ }
+}

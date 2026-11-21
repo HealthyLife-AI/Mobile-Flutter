@@ -1,0 +1,43 @@
+{
+ "method": "GET",
+ "path": "me/health-profile",
+ "status": 200,
+ "request": null,
+ "body": {
+  "goal": {
+   "goal_type": "weight_loss",
+   "target_weight_kg": null,
+   "target_date": null,
+   "activity_level": "light",
+   "training_days_per_week": null,
+   "training_level": null,
+   "training_type": null,
+   "details": null
+  },
+  "medications": [
+   {
+    "id": 2,
+    "name": "Metformin",
+    "dose": "500mg",
+    "frequency": "مساء",
+    "timing": "any",
+    "reason": null,
+    "status": "ongoing",
+    "until_date": null,
+    "reviewed_at": null,
+    "review_note": null
+   }
+  ],
+  "allergies": [
+   {
+    "id": 2,
+    "group": "peanuts",
+    "other_text": null,
+    "label": "الفول السوداني",
+    "class": "confirmed_allergy",
+    "note": "Peanuts"
+   }
+  ],
+  "proposals": []
+ }
+}

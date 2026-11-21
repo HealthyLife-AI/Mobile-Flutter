@@ -1,0 +1,12 @@
+{
+ "method": "GET",
+ "path": "me/meal-plan",
+ "status": 403,
+ "request": null,
+ "body": {
+  "message": "You must accept the privacy policy to continue.",
+  "code": "consent_required",
+  "current_version": "2026-10-01",
+  "policy_url": "https://your-dashboard-domain/ar/privacy"
+ }
+}

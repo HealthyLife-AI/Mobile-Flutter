@@ -1,0 +1,151 @@
+{
+ "method": "GET",
+ "path": "foods/search?q=%D8%AE%D8%A8%D8%B2&per_page=50",
+ "status": 200,
+ "request": null,
+ "body": {
+  "data": [
+   {
+    "id": 36,
+    "name_en": "Arabic Pita Bread",
+    "name_ar": "خبز عربي",
+    "source": "admin",
+    "status": "approved",
+    "calories_per_100g": 275,
+    "protein_g_per_100g": 9.1,
+    "carbs_g_per_100g": 55.7,
+    "fat_g_per_100g": 1.2,
+    "fiber_g_per_100g": 2.2,
+    "allergens": [
+     "wheat_gluten"
+    ],
+    "shopping_section": "grains_starches",
+    "cost_tier": null,
+    "prep_level": null,
+    "meal_slots": null
+   },
+   {
+    "id": 7462,
+    "name_en": "Bread, pita, white, enriched",
+    "name_ar": "خبز عربي أبيض",
+    "source": "usda",
+    "status": "approved",
+    "calories_per_100g": 275,
+    "protein_g_per_100g": 9.1,
+    "carbs_g_per_100g": 55.7,
+    "fat_g_per_100g": 1.2,
+    "fiber_g_per_100g": 2.2,
+    "allergens": [],
+    "shopping_section": "other",
+    "cost_tier": null,
+    "prep_level": null,
+    "meal_slots": null
+   },
+   {
+    "id": 7471,
+    "name_en": "Bread, white, commercially prepared (includes soft bread crumbs)",
+    "name_ar": "خبز توست أبيض",
+    "source": "usda",
+    "status": "approved",
+    "calories_per_100g": 266,
+    "protein_g_per_100g": 8.8,
+    "carbs_g_per_100g": 49.4,
+    "fat_g_per_100g": 3.3,
+    "fiber_g_per_100g": 2.7,
+    "allergens": [],
+    "shopping_section": "other",
+    "cost_tier": null,
+    "prep_level": null,
+    "meal_slots": null
+   },
+   {
+    "id": 37,
+    "name_en": "Whole Wheat Bread (Arabic style)",
+    "name_ar": "خبز حبوب كاملة",
+    "source": "admin",
+    "status": "approved",
+    "calories_per_100g": 247,
+    "protein_g_per_100g": 13,
+    "carbs_g_per_100g": 41,
+    "fat_g_per_100g": 3.4,
+    "fiber_g_per_100g": 7,
+    "allergens": [
+     "wheat_gluten"
+    ],
+    "shopping_section": "grains_starches",
+    "cost_tier": null,
+    "prep_level": null,
+    "meal_slots": null
+   },
+   {
+    "id": 5235,
+    "name_en": "Bread, whole-wheat, commercially prepared",
+    "name_ar": "خبز توست قمح كامل",
+    "source": "usda",
+    "status": "approved",
+    "calories_per_100g": 252,
+    "protein_g_per_100g": 12.4,
+    "carbs_g_per_100g": 42.7,
+    "fat_g_per_100g": 3.5,
+    "fiber_g_per_100g": 6,
+    "allergens": [],
+    "shopping_section": "other",
+    "cost_tier": null,
+    "prep_level": null,
+    "meal_slots": null
+   },
+   {
+    "id": 7463,
+    "name_en": "Bread, pita, whole-wheat",
+    "name_ar": "خبز عربي قمح كامل",
+    "source": "usda",
+    "status": "approved",
+    "calories_per_100g": 262,
+    "protein_g_per_100g": 9.8,
+    "carbs_g_per_100g": 55.9,
+    "fat_g_per_100g": 1.7,
+    "fiber_g_per_100g": 6.1,
+    "allergens": [],
+    "shopping_section": "other",
+    "cost_tier": null,
+    "prep_level": null,
+    "meal_slots": null
+   }
+  ],
+  "links": {
+   "first": "http://127.0.0.1:8000/api/v1/foods/search?page=1",
+   "last": "http://127.0.0.1:8000/api/v1/foods/search?page=1",
+   "prev": null,
+   "next": null
+  },
+  "meta": {
+   "current_page": 1,
+   "from": 1,
+   "last_page": 1,
+   "links": [
+    {
+     "url": null,
+     "label": "&laquo; Previous",
+     "page": null,
+     "active": false
+    },
+    {
+     "url": "http://127.0.0.1:8000/api/v1/foods/search?page=1",
+     "label": "1",
+     "page": 1,
+     "active": true
+    },
+    {
+     "url": null,
+     "label": "Next &raquo;",
+     "page": null,
+     "active": false
+    }
+   ],
+   "path": "http://127.0.0.1:8000/api/v1/foods/search",
+   "per_page": 50,
+   "to": 6,
+   "total": 6
+  }
+ }
+}

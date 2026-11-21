@@ -1,0 +1,63 @@
+{
+ "method": "GET",
+ "path": "me/progress?from=2026-11-20&to=2026-11-21",
+ "status": 200,
+ "request": null,
+ "body": {
+  "weight_trend": [
+   {
+    "recorded_at": "2026-11-21",
+    "weight_kg": 82.4,
+    "source": "self-reported",
+    "is_late": false,
+    "edited_at": null
+   }
+  ],
+  "body_composition": {
+   "latest": {
+    "recorded_at": "2026-11-21",
+    "source": "self-reported",
+    "is_late": false,
+    "edited_at": null,
+    "weight_kg": 82.4,
+    "body_fat_percent": null,
+    "muscle_mass_kg": null,
+    "water_percent": null,
+    "waist_cm": 90.5,
+    "hip_cm": null,
+    "thigh_cm": null,
+    "arm_cm": null
+   },
+   "previous": null,
+   "change": null
+  },
+  "adherence": {
+   "from": "2026-11-20",
+   "to": "2026-11-21",
+   "total_logs": 2,
+   "on_plan_logs": 1,
+   "off_plan_logs": 1,
+   "adherence_percent": 50,
+   "previous": {
+    "from": "2026-11-18",
+    "to": "2026-11-19",
+    "adherence_percent": null
+   },
+   "change_pp": null,
+   "status": "stable",
+   "reference_percent": 70
+  },
+  "daily_calories": [
+   {
+    "date": "2026-11-20",
+    "planned_calories": null,
+    "logged_calories": 0
+   },
+   {
+    "date": "2026-11-21",
+    "planned_calories": 1110.4,
+    "logged_calories": 485
+   }
+  ]
+ }
+}

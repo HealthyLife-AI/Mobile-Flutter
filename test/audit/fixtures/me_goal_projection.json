@@ -1,0 +1,7 @@
+{
+ "method": "GET",
+ "path": "me/goal-projection",
+ "status": 200,
+ "request": null,
+ "body": null
+}
