@@ -41,9 +41,15 @@ class OfflineQueueReport {
 /// Writes made without a connection, sent in creation order (API guide 14).
 ///
 /// Only `POST` writes are queued: meal logs and measurements. Each write stays
-/// in storage until the server answers, so a restart does not lose it. The
-/// queue is cleared when the session ends (2.5), so one patient's writes are
-/// never sent under another patient's session.
+/// in storage until the server answers, so a restart does not lose it.
+///
+/// Audit MO-02: a write is never lost because the session ended. Ending the
+/// session (a refused refresh, the follow-up ending, signing out) keeps the
+/// queue; only deleting the account drops it ([forgetOwner]). Each write
+/// carries the patient it belongs to ([PendingWrite.owner]) and is sent only
+/// while that same patient is signed in: after the patient signs in again it
+/// goes out; if another patient signs in on this phone it is kept, never
+/// shown or sent under their account, and waits for its owner.
 class OfflineQueue implements PatientCache {
   OfflineQueue({
     required StorageService storage,
@@ -53,8 +59,10 @@ class OfflineQueue implements PatientCache {
     void Function(DroppedWrite write)? onDropped,
     Future<void> Function(PendingWrite write, Object? response)? onSaved,
     Timer Function(Duration delay, void Function() run)? scheduleRetry,
+    Future<String?> Function()? currentOwner,
     this.minGap = const Duration(milliseconds: 500),
   })  : _storage = storage,
+        _currentOwner = currentOwner,
         _scheduleRetry = scheduleRetry,
         _api = api,
         _clock = clock ?? DateTime.now,
@@ -64,6 +72,10 @@ class OfflineQueue implements PatientCache {
 
   final StorageService _storage;
   final ApiClient _api;
+
+  /// The signed-in patient's user id, or null when nobody is signed in. When
+  /// not given (tests of the sending rules), every write is the caller's.
+  final Future<String?> Function()? _currentOwner;
   final DateTime Function() _clock;
   final Future<void> Function(Duration delay) _pause;
 
@@ -97,27 +109,63 @@ class OfflineQueue implements PatientCache {
 
   static Future<void> _delay(Duration delay) => Future<void>.delayed(delay);
 
-  /// How many writes are waiting.
-  Future<int> pendingCount() async => (await _load()).length;
+  /// How many of the signed-in patient's writes are waiting.
+  Future<int> pendingCount() async => (await pendingWrites()).length;
 
-  /// The writes waiting, oldest first. Only the queue's own copy is read, so
-  /// callers can show what has not reached the server yet.
-  Future<List<PendingWrite>> pendingWrites() => _load();
+  /// The signed-in patient's writes waiting, oldest first. Only the queue's
+  /// own copy is read, so callers can show what has not reached the server
+  /// yet. Another patient's writes are never listed.
+  Future<List<PendingWrite>> pendingWrites() async {
+    final owner = await _owner();
+    return [
+      for (final item in await _load())
+        if (_belongsTo(item, owner)) item,
+    ];
+  }
 
-  /// Stores a write. Nothing is sent until [flush] runs.
+  /// Stores a write for the signed-in patient. Nothing is sent until [flush]
+  /// runs.
   Future<void> enqueue({
     required String path,
     required Map<String, dynamic> body,
-  }) =>
-      _edit((items) => [
-            ...items,
-            PendingWrite(
-              id: _nextId(),
-              path: path,
-              body: body,
-              queuedAt: _clock().toUtc(),
-            ),
-          ]);
+  }) async {
+    final owner = await _owner();
+    await _edit((items) => [
+          ...items,
+          PendingWrite(
+            id: _nextId(),
+            path: path,
+            body: body,
+            queuedAt: _clock().toUtc(),
+            owner: owner,
+          ),
+        ]);
+  }
+
+  /// Drops [owner]'s writes. Called when the account is deleted: its data
+  /// must not be sent or kept. Writes with no owner (an older build's, which
+  /// were the signed-in patient's) go too, since that patient is the one
+  /// deleted.
+  Future<void> forgetOwner(String owner) => _edit((items) => [
+        for (final item in items)
+          if (item.owner != null && item.owner != owner) item,
+      ]);
+
+  Future<String?> _owner() async {
+    final read = _currentOwner;
+    if (read == null) return null;
+    try {
+      return await read();
+    } catch (error) {
+      _log.warn('The signed-in patient could not be read', error: error);
+      return null;
+    }
+  }
+
+  /// A write stored without an owner was made by an older build, under the
+  /// session that is still signed in: it is that patient's.
+  static bool _belongsTo(PendingWrite write, String? owner) =>
+      write.owner == null || write.owner == owner;
 
   /// Forgets every queued write. Called when the session ends.
   Future<void> clear() => _edit((_) => const []);
@@ -155,11 +203,12 @@ class OfflineQueue implements PatientCache {
     }
   }
 
+  /// The session ended. The planned retry stops, but the writes are KEPT
+  /// (audit MO-02): they go out after the same patient signs in again.
   @override
-  Future<void> forgetPatientData() {
+  Future<void> forgetPatientData() async {
     _retry?.cancel();
     _retry = null;
-    return clear();
   }
 
   /// Sends the queued writes in order and reports what happened. Only one
@@ -211,8 +260,17 @@ class OfflineQueue implements PatientCache {
     final dropped = <DroppedWrite>[];
     var paced = false;
 
+    // Nothing is sent while nobody is signed in: the writes wait for their owner.
+    final owner = await _owner();
+    if (_currentOwner != null && owner == null) {
+      return const OfflineQueueReport(halt: QueueHalt.unauthorized);
+    }
+
     while (true) {
-      final items = await _load();
+      final items = [
+        for (final item in await _load())
+          if (_belongsTo(item, owner)) item,
+      ];
       if (items.isEmpty) {
         return OfflineQueueReport(sent: sent, dropped: dropped);
       }
