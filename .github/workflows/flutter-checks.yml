@@ -128,6 +128,21 @@ jobs:
           path: build/app/outputs/flutter-apk/app-release.apk
           retention-days: 7
 
+      # Play takes an app bundle, not an APK, and the bundle goes through its
+      # own Gradle tasks (bundleRelease, R8, resource shrinking per ABI split).
+      # This proves `flutter build appbundle --release` builds on every change
+      # that reaches Android. Debug key only: this is a CI check, never a
+      # store build, and the artifact is not uploaded.
+      - name: Release app bundle builds (debug key, CI check only)
+        env:
+          ORG_GRADLE_PROJECT_allowDebugSigning: "true"
+        run: flutter build appbundle --release
+
+      - name: Report the bundle's SDK levels
+        run: |
+          ls -l build/app/outputs/bundle/release/app-release.aab
+          grep -rhoE '(minSdk|targetSdk|compileSdk)[A-Za-z]* *=? *[^ ]+' android/app/build.gradle* || true
+
   ios-build:
     # A build without signing: it proves the Xcode project, the entitlements
     # file, the localized strings and the privacy manifest are wired right.
