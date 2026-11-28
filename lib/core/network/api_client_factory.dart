@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 
 import '../config/app_config.dart';
 import 'api_client.dart';
+import 'app_version_interceptor.dart';
 import 'auth_interceptor.dart';
 import 'redacting_log_interceptor.dart';
 import 'retry_interceptor.dart';
@@ -14,7 +15,7 @@ import 'token_store.dart';
 ///
 /// Interceptor order matters:
 /// 1. logging (debug only): sees each request before auth adds its header,
-///    so the header itself is never logged;
+///    so the header itself is never logged; the version header follows it;
 /// 2. auth: adds the bearer token and recovers from 401/403 events;
 /// 3. retry: retries idempotent GETs after the auth layer has had its turn.
 ApiClient createApiClient({
@@ -33,6 +34,7 @@ ApiClient createApiClient({
   ));
 
   if (kDebugMode) dio.interceptors.add(RedactingLogInterceptor());
+  dio.interceptors.add(AppVersionInterceptor());
   dio.interceptors.add(AuthInterceptor(
     dio: dio,
     store: store,

@@ -464,6 +464,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get followUpContactWhatsApp => 'Contact your specialist on WhatsApp';
 
   @override
+  String get updateRequiredTitle => 'Update the app';
+
+  @override
+  String get updateRequiredBody =>
+      'This version of the app is no longer supported. Update it to keep using it. Everything you logged is kept.';
+
+  @override
+  String get updateRequiredButton => 'Update';
+
+  @override
   String get followUpTerms =>
       'Terms of service & privacy policy for health data';
 

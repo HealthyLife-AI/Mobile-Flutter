@@ -8,6 +8,7 @@ import '../../presentation/screens/follow_up_ended_screen.dart';
 import '../../presentation/screens/health_data_consent_screen.dart';
 import '../../presentation/screens/login_screen.dart';
 import '../../presentation/screens/onboarding_measurements_screen.dart';
+import '../../presentation/screens/update_required_screen.dart';
 import 'app_navigator.dart';
 import 'app_page_route.dart';
 
@@ -34,6 +35,9 @@ abstract final class AppRouter {
         AuthStatus.ready => const AppShell(),
         AuthStatus.followUpEnded => FollowUpEndedScreen(
             followUp: state.followUp ?? FollowUpEnded.fallback,
+          ),
+        AuthStatus.updateRequired => UpdateRequiredScreen(
+            update: state.updateRequired ?? UpdateRequired.fallback,
           ),
       };
 

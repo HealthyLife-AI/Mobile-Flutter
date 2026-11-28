@@ -520,6 +520,18 @@
   "@followUpContactWhatsApp": {
     "description": "UI text in presentation/screens/follow_up_ended_screen.dart"
   },
+  "updateRequiredTitle": "حدّث التطبيق",
+  "@updateRequiredTitle": {
+    "description": "UI text in presentation/screens/update_required_screen.dart"
+  },
+  "updateRequiredBody": "هذه النسخة من التطبيق لم تعد مدعومة. حدّثه لتتابع استخدامه. كل ما سجّلته محفوظ.",
+  "@updateRequiredBody": {
+    "description": "UI text in presentation/screens/update_required_screen.dart"
+  },
+  "updateRequiredButton": "تحديث",
+  "@updateRequiredButton": {
+    "description": "UI text in presentation/screens/update_required_screen.dart"
+  },
   "followUpTerms": "شروط الخدمة وسياسة الخصوصية للبيانات الصحية",
   "@followUpTerms": {
     "description": "UI text in presentation/screens/follow_up_ended_screen.dart"

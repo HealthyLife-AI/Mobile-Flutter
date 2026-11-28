@@ -452,6 +452,16 @@ class AppLocalizationsAr extends AppLocalizations {
   String get followUpContactWhatsApp => 'التواصل مع أخصائي التغذية عبر واتساب';
 
   @override
+  String get updateRequiredTitle => 'حدّث التطبيق';
+
+  @override
+  String get updateRequiredBody =>
+      'هذه النسخة من التطبيق لم تعد مدعومة. حدّثه لتتابع استخدامه. كل ما سجّلته محفوظ.';
+
+  @override
+  String get updateRequiredButton => 'تحديث';
+
+  @override
   String get followUpTerms => 'شروط الخدمة وسياسة الخصوصية للبيانات الصحية';
 
   @override

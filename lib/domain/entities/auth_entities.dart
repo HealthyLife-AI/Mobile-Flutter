@@ -109,6 +109,27 @@ class ConsentStatus {
 /// (API guide section 2.4). Every field except [message] can be null, and the
 /// screen hides whatever is missing.
 @immutable
+/// The `426 app_update_required` body (audit MO-06): this build is older than
+/// the server's minimum. [storeUrl] is null until a store listing exists; the
+/// screen then shows the text without a button.
+class UpdateRequired {
+  const UpdateRequired({this.storeUrl, this.message});
+
+  static const UpdateRequired fallback = UpdateRequired();
+
+  final String? storeUrl;
+  final String? message;
+
+  factory UpdateRequired.fromJson(Map<String, dynamic> json) {
+    final url = json['store_url'];
+    final message = json['message'];
+    return UpdateRequired(
+      storeUrl: url is String && url.isNotEmpty ? url : null,
+      message: message is String && message.isNotEmpty ? message : null,
+    );
+  }
+}
+
 class FollowUpEnded {
   const FollowUpEnded({
     this.message,

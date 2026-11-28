@@ -33,6 +33,10 @@ enum AuthStatus {
 
   /// The nutritionist ended follow-up (API guide 2.4). The tokens are gone.
   followUpEnded,
+
+  /// This build is older than the server's minimum (426, audit MO-06): a
+  /// blocking update screen. The session and the offline queue are kept.
+  updateRequired,
 }
 
 @immutable
@@ -45,6 +49,7 @@ class AuthState {
     this.user,
     this.consent,
     this.followUp,
+    this.updateRequired,
     this.onboardingCompleted = false,
     this.sessionEnded = false,
   });
@@ -68,6 +73,9 @@ class AuthState {
 
   /// Only while [status] is `followUpEnded`.
   final FollowUpEnded? followUp;
+
+  /// Only while [status] is `updateRequired`.
+  final UpdateRequired? updateRequired;
 
   final bool onboardingCompleted;
 
@@ -360,6 +368,11 @@ class AuthCubit extends Cubit<AuthState> {
         _moveTo(AuthStatus.signedOut, sessionEnded: true);
       case SessionEventType.followUpEnded:
         _showFollowUp(event.body);
+      case SessionEventType.updateRequired:
+        _moveTo(
+          AuthStatus.updateRequired,
+          updateRequired: UpdateRequired.fromJson(event.body),
+        );
       case SessionEventType.consentRequired:
         if (state.status == AuthStatus.signedOut) return;
         _moveTo(
@@ -438,6 +451,7 @@ class AuthCubit extends Cubit<AuthState> {
     PatientUser? user,
     ConsentStatus? consent,
     FollowUpEnded? followUp,
+    UpdateRequired? updateRequired,
     bool onboardingCompleted = false,
     bool sessionEnded = false,
   }) {
@@ -448,6 +462,7 @@ class AuthCubit extends Cubit<AuthState> {
       user: user,
       consent: consent,
       followUp: followUp,
+      updateRequired: updateRequired,
       onboardingCompleted: onboardingCompleted,
       sessionEnded: sessionEnded,
     ));

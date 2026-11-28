@@ -8,6 +8,7 @@ import 'package:flutter/foundation.dart'
     show TargetPlatform, defaultTargetPlatform, kDebugMode, kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'core/config/app_version.dart';
 import 'core/di/app_dependencies.dart';
 import 'core/logging/app_logger.dart';
 import 'core/logging/crash_reporter.dart';
@@ -48,6 +49,10 @@ Future<void> main() async {
       stackTrace: stackTrace,
     );
   }
+
+  // Read once, so every request can carry X-App-Version without waiting for
+  // the platform (audit MO-06).
+  await AppVersion.loadHeader();
 
   // Built exactly once, before the first frame, and handed down, so the whole
   // app shares one dependency graph and one session.
