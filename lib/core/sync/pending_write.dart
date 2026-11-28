@@ -9,7 +9,13 @@ class PendingWrite {
     this.attempts = 0,
     this.nextAttemptAt,
     this.retriedWithout = const <String>{},
+    this.owner,
   });
+
+  /// The signed-in patient's user id when the write was made. Only that
+  /// patient's session ever sends it (audit MO-02). Null for a write stored
+  /// by an older build: it belongs to whoever is signed in, as before.
+  final String? owner;
 
   /// Local identifier. It is not sent to the server.
   final String id;
@@ -47,6 +53,7 @@ class PendingWrite {
         attempts: attempts,
         nextAttemptAt: nextAttemptAt,
         retriedWithout: {...retriedWithout, field},
+        owner: owner,
       );
 
   /// The same write after a failed send, due again at [next].
@@ -58,6 +65,7 @@ class PendingWrite {
         attempts: attempts + 1,
         nextAttemptAt: next,
         retriedWithout: retriedWithout,
+        owner: owner,
       );
 
   Map<String, dynamic> toJson() => {
@@ -69,6 +77,7 @@ class PendingWrite {
         if (nextAttemptAt != null)
           'nextAttemptAt': nextAttemptAt!.toIso8601String(),
         'retriedWithout': retriedWithout.toList(),
+        if (owner != null) 'owner': owner,
       };
 
   /// Null for a malformed entry. Such an entry is skipped, never sent.
@@ -87,6 +96,7 @@ class PendingWrite {
     final attempts = json['attempts'];
     final next = json['nextAttemptAt'];
     final removed = json['retriedWithout'];
+    final owner = json['owner'];
     return PendingWrite(
       id: id,
       path: path,
@@ -97,6 +107,7 @@ class PendingWrite {
       retriedWithout: removed is List
           ? removed.whereType<String>().toSet()
           : const <String>{},
+      owner: owner is String ? owner : null,
     );
   }
 }

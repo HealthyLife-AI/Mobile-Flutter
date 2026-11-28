@@ -197,6 +197,12 @@ class AppDependencies {
     // A saved meal log's server id, so it can be deleted later (6.4).
     onSaved: (write, response) => _mealLog.recordSaved(write, response),
     scheduleRetry: _onDevice ? Timer.new : null,
+    // Audit MO-02: each write belongs to the patient signed in when it was
+    // made. A test that scripts the server with its own [api] stands in for a
+    // signed-in patient, so it has no owner to check.
+    currentOwner: _apiOverride == null
+        ? () async => (await session.read())?.user.id.toString()
+        : null,
   );
 
   late final AuthRemoteDataSource _authRemote = AuthRemoteDataSource(api);
@@ -245,7 +251,12 @@ class AppDependencies {
     remote: _authRemote,
     local: session,
     push: push,
-    onAccountDeleted: passwordHelp.forget,
+    onAccountDeleted: () async {
+      await passwordHelp.forget();
+      // The account is gone: its unsent writes are not kept (audit MO-02).
+      final owner = (await session.read())?.user.id;
+      if (owner != null) await offlineQueue.forgetOwner(owner.toString());
+    },
     onConsent: (consent) => privacyPolicy.remember(consent.policyUrl),
   );
 
@@ -381,7 +392,8 @@ class AppDependencies {
 
   /// Everything that holds this patient's data on the device. Cleared when the
   /// session ends (2.5). The offline queue comes first, so nothing is sent
-  /// while the rest is being cleared.
+  /// while the rest is being cleared; it keeps its unsent writes for the same
+  /// patient's next sign-in (audit MO-02).
   late final List<PatientCache> _patientCaches = [
     offlineQueue,
     _mealPlan,
