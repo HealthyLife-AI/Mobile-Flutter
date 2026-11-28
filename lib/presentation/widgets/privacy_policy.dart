@@ -55,6 +55,7 @@ bool _hasSession(AuthStatus status) => switch (status) {
         true,
       AuthStatus.unknown ||
       AuthStatus.signedOut ||
-      AuthStatus.followUpEnded =>
+      AuthStatus.followUpEnded ||
+      AuthStatus.updateRequired =>
         false,
     };

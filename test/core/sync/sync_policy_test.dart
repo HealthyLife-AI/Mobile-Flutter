@@ -107,6 +107,15 @@ void main() {
       );
     });
 
+    test('426 app_update_required stops the queue and never drops the write', () {
+      // Audit MO-06: the app is too old for the server. The write is fine and
+      // must wait for the update, not be removed as "rejected".
+      expect(
+        _decide(_write(), _api(426, code: 'app_update_required')),
+        isA<SyncHalt>().having((d) => d.halt, 'halt', QueueHalt.updateRequired),
+      );
+    });
+
     test('follow_up_ended stops the queue', () {
       expect(
         _decide(_write(), _api(403, code: 'follow_up_ended')),

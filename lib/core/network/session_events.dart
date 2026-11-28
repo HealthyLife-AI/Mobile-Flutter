@@ -15,6 +15,11 @@ enum SessionEventType {
 
   /// The privacy policy changed or was never accepted (403 `consent_required`).
   consentRequired,
+
+  /// This build is older than the server's minimum (426 `app_update_required`,
+  /// audit MO-06). The session and the offline queue are NOT touched: the
+  /// patient updates, and everything is still there.
+  updateRequired,
 }
 
 @immutable

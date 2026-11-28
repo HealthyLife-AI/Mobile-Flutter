@@ -5,6 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:healthylife_ai/core/errors/app_exception.dart';
 import 'package:healthylife_ai/core/network/api_client.dart';
+import 'package:healthylife_ai/core/network/app_version_interceptor.dart';
 import 'package:healthylife_ai/core/network/auth_interceptor.dart';
 import 'package:healthylife_ai/core/network/auth_tokens.dart';
 import 'package:healthylife_ai/core/network/session_events.dart';
@@ -108,6 +109,80 @@ class _Rig {
 }
 
 void main() {
+  group('426 app_update_required (audit MO-06)', () {
+    ResponseBody tooOld(RequestOptions _) => json(426, {
+          'code': 'app_update_required',
+          'message': 'update',
+          'store_url': 'https://play.example.test/app',
+        });
+
+    test('on a signed-in request it raises the event and keeps the session',
+        () async {
+      final rig = _Rig(tooOld);
+      final seen = <SessionEvent>[];
+      rig.events.stream.listen(seen.add);
+
+      await expectLater(rig.dio.get<dynamic>('me/today'), throwsA(anything));
+      await Future<void>.delayed(Duration.zero);
+
+      expect(seen.single.type, SessionEventType.updateRequired);
+      expect(seen.single.body['store_url'], 'https://play.example.test/app');
+      expect(rig.store.tokens, isNotNull, reason: 'the session must stay');
+      expect(rig.refreshCalls, isEmpty);
+    });
+
+    test('sign-in itself answers it, so it is raised there too', () async {
+      final rig = _Rig(tooOld);
+      final seen = <SessionEvent>[];
+      rig.events.stream.listen(seen.add);
+
+      await expectLater(
+        rig.dio.post<dynamic>('auth/login',
+            options: Options(extra: {kAuthRequiredKey: false})),
+        throwsA(anything),
+      );
+      await Future<void>.delayed(Duration.zero);
+
+      expect(seen.single.type, SessionEventType.updateRequired);
+    });
+
+    test('a 426 with another code is not an update request', () async {
+      final rig = _Rig((_) => json(426, {'code': 'upgrade_to_tls'}));
+      final seen = <SessionEvent>[];
+      rig.events.stream.listen(seen.add);
+
+      await expectLater(rig.dio.get<dynamic>('me/today'), throwsA(anything));
+      await Future<void>.delayed(Duration.zero);
+
+      expect(seen, isEmpty);
+    });
+  });
+
+  group('version header (audit MO-06)', () {
+    test('every request carries the version and the platform', () async {
+      final adapter = _ScriptedAdapter((_) => json(200, {'ok': true}));
+      final dio = Dio(BaseOptions(baseUrl: 'https://example.test/api/v1/'))
+        ..httpClientAdapter = adapter;
+      dio.interceptors.add(AppVersionInterceptor(version: () => '1.4.2+17'));
+
+      await dio.get<dynamic>('me/today');
+
+      expect(adapter.seen.single.headers['X-App-Version'], '1.4.2+17');
+      expect(adapter.seen.single.headers['X-App-Platform'], 'android');
+    });
+
+    test('where the version cannot be read, no header is sent', () async {
+      final adapter = _ScriptedAdapter((_) => json(200, {'ok': true}));
+      final dio = Dio(BaseOptions(baseUrl: 'https://example.test/api/v1/'))
+        ..httpClientAdapter = adapter;
+      dio.interceptors.add(AppVersionInterceptor(version: () => null));
+
+      await dio.get<dynamic>('me/today');
+
+      expect(adapter.seen.single.headers.containsKey('X-App-Version'), isFalse);
+    });
+  });
+
   group('bearer token', () {
     test('a signed-in request carries the access token', () async {
       final rig = _Rig((_) => json(200, {'ok': true}));

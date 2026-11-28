@@ -890,6 +890,24 @@ abstract class AppLocalizations {
   /// **'التواصل مع أخصائي التغذية عبر واتساب'**
   String get followUpContactWhatsApp;
 
+  /// UI text in presentation/screens/update_required_screen.dart
+  ///
+  /// In ar, this message translates to:
+  /// **'حدّث التطبيق'**
+  String get updateRequiredTitle;
+
+  /// UI text in presentation/screens/update_required_screen.dart
+  ///
+  /// In ar, this message translates to:
+  /// **'هذه النسخة من التطبيق لم تعد مدعومة. حدّثه لتتابع استخدامه. كل ما سجّلته محفوظ.'**
+  String get updateRequiredBody;
+
+  /// UI text in presentation/screens/update_required_screen.dart
+  ///
+  /// In ar, this message translates to:
+  /// **'تحديث'**
+  String get updateRequiredButton;
+
   /// UI text in presentation/screens/follow_up_ended_screen.dart
   ///
   /// In ar, this message translates to:

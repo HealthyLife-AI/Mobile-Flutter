@@ -34,7 +34,16 @@ enum DropReason {
 
 /// Where the queue stops. [waitingForRetry] is temporary. The others need the
 /// patient or the session to change first.
-enum QueueHalt { waitingForRetry, consentRequired, unauthorized, followUpEnded }
+enum QueueHalt {
+  waitingForRetry,
+  consentRequired,
+  unauthorized,
+  followUpEnded,
+
+  /// `426 app_update_required` (audit MO-06): this build is too old for the
+  /// server. The writes wait for the update, they are not refused.
+  updateRequired,
+}
 
 /// What to do after one send failed.
 sealed class SyncDecision {
@@ -90,6 +99,7 @@ SyncDecision decideSync({
   if (status == null) return const SyncDrop(DropReason.rejected);
   if (status >= 500) return SyncWait(backoffFor(write.attempts));
   if (status == 401) return const SyncHalt(QueueHalt.unauthorized);
+  if (status == 426) return const SyncHalt(QueueHalt.updateRequired);
   if (status == 429) {
     return SyncWait(error.retryAfter ?? backoffFor(write.attempts));
   }

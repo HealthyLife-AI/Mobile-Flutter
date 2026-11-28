@@ -132,6 +132,18 @@
   "followUpSupervisingSpecialist": "The nutritionist following your case",
   "followUpRecordsSafe": "Your past logs and measurements are safely kept in your health record, and the plan and follow-up can resume as soon as you renew.",
   "followUpContactWhatsApp": "Contact your specialist on WhatsApp",
+  "updateRequiredTitle": "Update the app",
+  "@updateRequiredTitle": {
+    "description": "UI text in presentation/screens/update_required_screen.dart"
+  },
+  "updateRequiredBody": "This version of the app is no longer supported. Update it to keep using it. Everything you logged is kept.",
+  "@updateRequiredBody": {
+    "description": "UI text in presentation/screens/update_required_screen.dart"
+  },
+  "updateRequiredButton": "Update",
+  "@updateRequiredButton": {
+    "description": "UI text in presentation/screens/update_required_screen.dart"
+  },
   "followUpTerms": "Terms of service & privacy policy for health data",
   "foodSearchFilterFruitVeg": "Fruits & vegetables",
   "foodSearchFilterCarbsGrains": "Starches & grains",

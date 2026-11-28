@@ -51,6 +51,15 @@ class AuthInterceptor extends Interceptor {
     final options = err.requestOptions;
     final status = err.response?.statusCode;
 
+    // MO-06: too old for the server. Checked before the auth exemption below,
+    // because sign-in itself answers it. Nothing is cleared: the session and
+    // the queued writes stay for after the update.
+    if (status == 426 && _bodyOf(err)['code'] == 'app_update_required') {
+      events.emit(SessionEvent(SessionEventType.updateRequired,
+          body: _bodyOf(err)));
+      return handler.next(err);
+    }
+
     // Login, refresh and logout report their own errors to the caller.
     if (!_requiresAuth(options)) return handler.next(err);
 

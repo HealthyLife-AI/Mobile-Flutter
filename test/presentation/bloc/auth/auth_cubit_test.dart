@@ -407,6 +407,21 @@ void main() {
       expect(h.cubit.state.followUp?.message, 'ended');
     });
 
+    test('too old for the server shows the update screen and keeps the user',
+        () async {
+      await _startSignedIn(h);
+
+      h.events.emit(const SessionEvent(
+        SessionEventType.updateRequired,
+        body: {'store_url': 'https://play.example.test/app'},
+      ));
+      await flush();
+
+      expect(h.cubit.state.status, AuthStatus.updateRequired);
+      expect(h.cubit.state.updateRequired?.storeUrl,
+          'https://play.example.test/app');
+    });
+
     test('an expired session mid-session signs out and says why', () async {
       await _startSignedIn(h);
 
